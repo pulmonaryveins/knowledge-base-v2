@@ -1,0 +1,124 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/search-overlay/search-overlay.component.scss ──
+
+.search-overlay {
+  &__backdrop {
+    @apply fixed inset-0 flex items-start justify-center;
+    z-index: 1000;
+    background: rgba(9, 22, 53, 0.65);
+    backdrop-filter: blur(5px);
+    padding-top: 80px;
+  }
+
+  &__modal {
+    @apply flex flex-col w-full;
+    max-width: 660px;
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(9, 22, 53, 0.35);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin: 0 16px;
+  }
+
+  &__input-row {
+    @apply flex items-center gap-3;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__input-icon { font-size: 16px; }
+
+  &__input {
+    @apply flex-1 bg-transparent border-0 outline-none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+
+    &::placeholder { color: var(--light); }
+  }
+
+  &__esc-badge {
+    @apply cursor-pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 5px;
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  &__results {
+    @apply list-none m-0 p-0;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+
+  &__result {
+    @apply flex items-start gap-3 cursor-pointer;
+    padding: 12px 20px;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s, border-color 0.1s;
+
+    &:last-child { border-bottom: 0; }
+
+    &:hover,
+    &--focused {
+      background: var(--bg);
+      border-left-color: var(--green);
+    }
+  }
+
+  &__result-badge {
+    @apply inline-flex items-center flex-shrink-0;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 8px;
+    border-width: 1px;
+    border-style: solid;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  &__result-body {
+    @apply flex flex-col gap-1;
+  }
+
+  &__result-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  &__result-snippet {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  &__empty {
+    padding: 24px 20px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  &__footer {
+    @apply flex items-center gap-4;
+    padding: 10px 20px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+
+  &__hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--light);
+  }
+}

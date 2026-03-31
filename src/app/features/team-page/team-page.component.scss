@@ -1,0 +1,74 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/features/team-page/team-page.component.scss ──
+
+:host {
+  display: block;
+}
+
+.team-page {
+  &__content {
+    @apply flex flex-col gap-12;
+    padding: 40px 48px 80px;
+  }
+
+  &__section {
+    @apply flex flex-col gap-6;
+    scroll-margin-top: 80px;
+  }
+
+  // ── Getting Started ───────────────────────────────────────────────────────
+
+  &__getting-started {
+    @apply flex flex-col gap-6;
+  }
+
+  &__code-block {
+    margin-top: 4px;
+  }
+
+  // ── Folder Architecture ───────────────────────────────────────────────────
+
+  &__folder-arch {
+    @apply flex flex-col gap-6;
+  }
+
+  &__cards-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // ── Coding Patterns ───────────────────────────────────────────────────────
+
+  &__patterns {
+    @apply flex flex-col gap-8;
+  }
+
+  &__pattern {
+    @apply flex flex-col gap-4;
+    padding: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  &__pattern-title {
+    @apply font-bold m-0;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    color: var(--navy);
+  }
+
+  &__pattern-desc {
+    @apply m-0;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  // ── Projects ──────────────────────────────────────────────────────────────
+
+  &__projects {
+    @apply flex flex-col gap-3;
+  }
+}

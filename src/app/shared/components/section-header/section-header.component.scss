@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/section-header/section-header.component.scss ──
+
+.sec-header {
+  @apply flex items-center gap-3 mb-5;
+
+  &__num {
+    @apply inline-flex items-center justify-center font-bold;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    background: var(--green-bg);
+    border: 1.5px solid var(--green-dim);
+    border-radius: 8px;
+    min-width: 36px;
+    height: 28px;
+    padding: 0 8px;
+  }
+
+  &__title {
+    @apply font-bold m-0;
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    color: var(--navy);
+  }
+}

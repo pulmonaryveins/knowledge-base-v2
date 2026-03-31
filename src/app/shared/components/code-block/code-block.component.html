@@ -1,0 +1,12 @@
+<!-- FILE: src/app/shared/components/code-block/code-block.component.html -->
+<div class="code-block">
+  <div class="code-block__header">
+    <div class="code-block__dots">
+      <span class="code-block__dot code-block__dot--red"></span>
+      <span class="code-block__dot code-block__dot--yellow"></span>
+      <span class="code-block__dot code-block__dot--green"></span>
+    </div>
+    <span class="code-block__lang">{{ data().language }}</span>
+  </div>
+  <pre class="code-block__pre"><code class="code-block__code">{{ data().code }}</code></pre>
+</div>

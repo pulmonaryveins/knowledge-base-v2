@@ -1,0 +1,75 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/hero/hero.component.scss ──
+
+:host {
+  display: block;
+}
+
+.hero {
+  @apply w-full;
+  padding: 48px 48px 40px;
+  min-height: 220px;
+
+  &__inner {
+    @apply flex flex-col gap-4;
+    max-width: 720px;
+  }
+
+  &__badge {
+    @apply inline-flex items-center gap-2 self-start;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border-width: 1px;
+    border-style: solid;
+
+    &-icon { font-size: 15px; }
+    &-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+  }
+
+  &__title {
+    @apply font-bold m-0;
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    color: #ffffff;
+    line-height: 1.15;
+  }
+
+  &__subtitle {
+    @apply m-0;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    font-family: 'DM Mono', monospace;
+  }
+
+  &__stats {
+    @apply flex flex-wrap gap-6 mt-2;
+  }
+
+  &__stat {
+    @apply flex flex-col;
+
+    &-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    &-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+  }
+}

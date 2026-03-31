@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/code-block/code-block.component.scss ──
+
+.code-block {
+  @apply rounded-xl overflow-hidden;
+  background: #0f1c38;
+  box-shadow: 0 4px 24px rgba(9, 22, 53, 0.28);
+
+  &__header {
+    @apply flex items-center justify-between px-4 py-3;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  &__dots {
+    @apply flex items-center gap-2;
+  }
+
+  &__dot {
+    @apply inline-block rounded-full;
+    width: 10px;
+    height: 10px;
+
+    &--red { background: #ff5f57; }
+    &--yellow { background: #febc2e; }
+    &--green { background: #28c840; }
+  }
+
+  &__lang {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: lowercase;
+  }
+
+  &__pre {
+    @apply m-0 overflow-x-auto;
+    padding: 16px 20px;
+  }
+
+  &__code {
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.7;
+    white-space: pre;
+  }
+}

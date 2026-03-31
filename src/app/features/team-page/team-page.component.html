@@ -1,0 +1,80 @@
+<!-- FILE: src/app/features/team-page/team-page.component.html -->
+<div class="team-page">
+  <!-- Hero Banner -->
+  <app-hero
+    [teamLabel]="team().label"
+    [gradient]="team().gradient"
+    [icon]="team().icon"
+    [subtitle]="team().subtitle"
+    [color]="team().color"
+    [stats]="team().stats"
+  />
+
+  <!-- Sections -->
+  <div class="team-page__content">
+    @for (section of sections(); track section.id) {
+      <section class="team-page__section" [id]="section.id">
+        <app-section-header [num]="section.num" [label]="section.label" />
+
+        @switch (section.content.type) {
+          <!-- 01 Tech Stack Table -->
+          @case ('tech-stack') {
+            <app-data-table [table]="asTechStack(section.content).table" />
+          }
+
+          <!-- 02 Getting Started -->
+          @case ('getting-started') {
+            <div class="team-page__getting-started">
+              <app-step-list [steps]="asGettingStarted(section.content).steps" />
+              <div class="team-page__code-block">
+                <app-code-block [data]="asGettingStarted(section.content).codeBlock" />
+              </div>
+            </div>
+          }
+
+          <!-- 03 Folder Architecture -->
+          @case ('folder-arch') {
+            <div class="team-page__folder-arch">
+              <div class="team-page__cards-grid">
+                @for (card of asFolderArch(section.content).cards; track card.title) {
+                  <app-info-card [data]="card" />
+                }
+              </div>
+              <app-code-block [data]="asFolderArch(section.content).codeBlock" />
+            </div>
+          }
+
+          <!-- 04 Coding Patterns -->
+          @case ('coding-patterns') {
+            <div class="team-page__patterns">
+              @for (pattern of asCodingPatterns(section.content).patterns; track pattern.title) {
+                <div class="team-page__pattern">
+                  <h3 class="team-page__pattern-title">{{ pattern.title }}</h3>
+                  <p class="team-page__pattern-desc">{{ pattern.description }}</p>
+                  <app-code-block [data]="pattern.codeBlock" />
+                  @if (pattern.callout) {
+                    <app-callout [data]="pattern.callout" />
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <!-- 05 Common Mistakes -->
+          @case ('mistakes') {
+            <app-data-table [table]="asMistakes(section.content).table" />
+          }
+
+          <!-- 06 Projects -->
+          @case ('projects') {
+            <div class="team-page__projects">
+              @for (project of team().projects; track project.id) {
+                <app-project-doc [project]="project" />
+              }
+            </div>
+          }
+        }
+      </section>
+    }
+  </div>
+</div>

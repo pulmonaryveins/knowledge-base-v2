@@ -1,0 +1,208 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/sidebar/sidebar.component.scss ──
+
+:host {
+  display: block;
+  width: 268px;
+  flex-shrink: 0;
+}
+
+.sidebar {
+  @apply flex flex-col;
+  width: 268px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--navy);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 100;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 2px; }
+
+  // ── Brand ──────────────────────────────────────────────────────────────
+
+  &__brand {
+    @apply flex items-center gap-3;
+    padding: 20px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  &__logo {
+    @apply flex items-center justify-center flex-shrink-0;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--green);
+
+    &-icon { font-size: 18px; }
+  }
+
+  &__brand-text {
+    @apply flex flex-col;
+  }
+
+  &__brand-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  &__brand-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  // ── Search ─────────────────────────────────────────────────────────────
+
+  &__search-wrap {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  &__search-btn {
+    @apply flex items-center gap-2 w-full cursor-pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    transition: background 0.15s;
+
+    &:hover { background: rgba(255, 255, 255, 0.1); }
+  }
+
+  &__search-icon { font-size: 13px; }
+
+  &__search-placeholder {
+    @apply flex-1 text-left;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  &__search-kbd {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  // ── Teams Section ──────────────────────────────────────────────────────
+
+  &__section {
+    @apply flex flex-col;
+    padding: 14px 0;
+    flex: 1;
+  }
+
+  &__section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.25);
+    padding: 0 18px 8px;
+  }
+
+  &__team-group {
+    @apply flex flex-col;
+  }
+
+  &__team-btn {
+    @apply flex items-center gap-3 w-full cursor-pointer;
+    padding: 9px 18px;
+    background: transparent;
+    border: 0;
+    transition: background 0.15s;
+    text-align: left;
+
+    &:hover { background: rgba(255, 255, 255, 0.05); }
+
+    &--active {
+      background: rgba(255, 255, 255, 0.09);
+
+      .sidebar__team-name { color: #ffffff; }
+    }
+  }
+
+  &__team-dot {
+    @apply flex-shrink-0 rounded-full;
+    width: 8px;
+    height: 8px;
+  }
+
+  &__team-name {
+    @apply flex-1;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+
+  &__team-chevron {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  // ── Project Sub-links ──────────────────────────────────────────────────
+
+  &__projects {
+    @apply list-none m-0 p-0 flex flex-col;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  &__project {
+    @apply flex;
+  }
+
+  &__project-btn {
+    @apply flex items-center gap-2 w-full cursor-pointer;
+    padding: 7px 18px 7px 34px;
+    background: transparent;
+    border: 0;
+    transition: background 0.1s;
+    text-align: left;
+
+    &:hover { background: rgba(255, 255, 255, 0.04); }
+
+    &--active { background: rgba(255, 255, 255, 0.06); }
+  }
+
+  &__project-icon { font-size: 12px; }
+
+  &__project-name {
+    @apply flex-1;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────────────
+
+  &__footer {
+    padding: 16px 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    margin-top: auto;
+  }
+
+  &__footer-text {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.2);
+    font-family: 'DM Mono', monospace;
+  }
+}

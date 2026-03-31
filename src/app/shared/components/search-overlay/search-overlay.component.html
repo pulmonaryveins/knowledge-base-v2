@@ -1,0 +1,57 @@
+<!-- FILE: src/app/shared/components/search-overlay/search-overlay.component.html -->
+@if (isOpen()) {
+  <div class="search-overlay__backdrop" (click)="onBackdropClick($event)">
+    <div class="search-overlay__modal">
+      <!-- Input Row -->
+      <div class="search-overlay__input-row">
+        <span class="search-overlay__input-icon">🔍</span>
+        <input
+          #searchInput
+          class="search-overlay__input"
+          type="text"
+          placeholder="Search the portal…"
+          [value]="query()"
+          (input)="onQueryChange($any($event.target).value)"
+          autocomplete="off"
+        />
+        <kbd class="search-overlay__esc-badge" (click)="close()">ESC</kbd>
+      </div>
+
+      <!-- Results -->
+      @if (results().length > 0) {
+        <ul class="search-overlay__results">
+          @for (result of results(); track result.id) {
+            <li
+              class="search-overlay__result"
+              [class.search-overlay__result--focused]="$index === focusedIndex()"
+              (click)="selectResult(result)"
+              (mouseenter)="focusedIndex.set($index)"
+            >
+              <span
+                class="search-overlay__result-badge"
+                [style.background]="result.teamColor + '22'"
+                [style.color]="result.teamColor"
+                [style.border-color]="result.teamColor + '44'"
+              >
+                {{ result.teamLabel }}
+              </span>
+              <div class="search-overlay__result-body">
+                <span class="search-overlay__result-title">{{ result.title }}</span>
+                <span class="search-overlay__result-snippet">{{ result.snippet }}</span>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else if (query().length > 0) {
+        <div class="search-overlay__empty">No results for "{{ query() }}"</div>
+      }
+
+      <!-- Footer -->
+      <div class="search-overlay__footer">
+        <span class="search-overlay__hint">↑↓ navigate</span>
+        <span class="search-overlay__hint">↵ go</span>
+        <span class="search-overlay__hint">Esc close</span>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm install:*)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(sed -i '1s/^/@reference \"\"tailwindcss\"\";\\\\n\\\\n/' \"$f\")",
+      "Bash(done)"
+    ]
+  }
+}
