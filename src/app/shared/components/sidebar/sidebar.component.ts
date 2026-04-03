@@ -58,10 +58,21 @@ export class SidebarComponent {
   }
 
   /**
-   * Toggle the expanded project card.
+   * Toggle the expanded project card and scroll to it.
    * @param id - Project ID to toggle
    */
   protected toggleProject(id: string): void {
     this._nav.toggleProject(id);
+    
+    // Defer scrolling slightly to allow Angular to render the open state,
+    // so we scroll to the actual opened element properly.
+    setTimeout(() => {
+      const el = document.getElementById(`project-${id}`);
+      if (el) {
+        // Offset by 100px to account for the sticky header / spacing
+        const top = el.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }, 50);
   }
 }

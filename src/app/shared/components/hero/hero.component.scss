@@ -7,69 +7,93 @@
 }
 
 .hero {
-  @apply w-full;
-  padding: 48px 48px 40px;
-  min-height: 220px;
+  @apply w-full relative overflow-hidden;
+  padding: 64px 48px;
+  min-height: 240px;
+  transition: all 0.3s ease;
+
+  // Add a subtle glass effect overlay to the bottom
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
 
   &__inner {
-    @apply flex flex-col gap-4;
-    max-width: 720px;
+    @apply flex flex-col gap-6;
+    max-width: 1200px;
+    padding-right: 240px; // Clearance for the right rail TOC
+    position: relative;
+    z-index: 2;
   }
 
   &__badge {
     @apply inline-flex items-center gap-2 self-start;
     padding: 6px 14px;
-    border-radius: 20px;
+    border-radius: 100px; // Pill shape
     border-width: 1px;
     border-style: solid;
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease;
 
-    &-icon { font-size: 15px; }
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &-icon { font-size: 14px; }
     &-label {
       font-family: 'Syne', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.1em;
     }
   }
 
   &__title {
     @apply font-bold m-0;
     font-family: 'Syne', sans-serif;
-    font-size: 32px;
+    font-size: 48px; // Larger title
     color: #ffffff;
-    line-height: 1.15;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
 
   &__subtitle {
     @apply m-0;
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.5;
-    font-family: 'DM Mono', monospace;
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    font-family: 'DM Sans', sans-serif; // Changed to match body for better readability
+    max-width: 600px;
   }
 
   &__stats {
-    @apply flex flex-wrap gap-6 mt-2;
+    @apply flex flex-wrap gap-10 mt-4;
   }
 
   &__stat {
-    @apply flex flex-col;
+    @apply flex flex-col gap-1;
 
     &-value {
       font-family: 'Syne', sans-serif;
-      font-size: 22px;
-      font-weight: 700;
+      font-size: 28px;
+      font-weight: 800;
       color: #ffffff;
-      line-height: 1.1;
+      line-height: 1;
     }
 
     &-label {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.45);
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.4);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-top: 2px;
+      letter-spacing: 0.08em;
     }
   }
 }

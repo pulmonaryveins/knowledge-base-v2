@@ -8,11 +8,10 @@
   @apply flex min-h-screen;
   background: var(--bg);
 
-  // The sidebar is fixed, so push main content with margin-left
+  // The sidebar and rail take up space in the flex layout via their :host width,
+  // so we don't need additional margins here.
   &__main {
     @apply flex-1 min-w-0;
-    margin-left: 268px;
-    margin-right: 216px;
   }
 
   &__rail {

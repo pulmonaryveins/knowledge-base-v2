@@ -80,11 +80,22 @@ export class RightRailComponent implements OnInit {
     const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
     this._nav.setScrollProgress(progress);
 
-    // Snap past hero when scrolled 220px (hero min-height)
-    this.snapped.set(scrollY > 200);
+    // Snap past hero when scrolled past its taller height
+    this.snapped.set(scrollY > 320);
+
+    const sections = this._nav.activeSections();
+    if (sections.length === 0) return;
+
+    // Check if scrolled to the absolute bottom of the page
+    // Using a 5px threshold to account for potential fractional pixel rounding issues
+    const isAtBottom = Math.ceil(window.innerHeight + scrollY) >= document.documentElement.scrollHeight - 5;
+    
+    if (isAtBottom) {
+      this._nav.setActiveSection(sections[sections.length - 1].id);
+      return;
+    }
 
     // Determine active section by checking element visibility
-    const sections = this._nav.activeSections();
     for (let i = sections.length - 1; i >= 0; i--) {
       const el = document.getElementById(sections[i].id);
       if (el && el.getBoundingClientRect().top <= 120) {
@@ -92,9 +103,9 @@ export class RightRailComponent implements OnInit {
         return;
       }
     }
-    if (sections.length > 0) {
-      this._nav.setActiveSection(sections[0].id);
-    }
+    
+    // Fallback to first section
+    this._nav.setActiveSection(sections[0].id);
   }
 
   /**

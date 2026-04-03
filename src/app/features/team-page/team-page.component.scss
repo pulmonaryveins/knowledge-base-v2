@@ -9,7 +9,7 @@
 .team-page {
   &__content {
     @apply flex flex-col gap-12;
-    padding: 40px 48px 80px;
+    padding: 40px 240px 80px 48px; // Increased right padding for rail clearance
   }
 
   &__section {
