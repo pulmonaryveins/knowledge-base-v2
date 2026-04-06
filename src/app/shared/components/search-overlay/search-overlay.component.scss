@@ -4,85 +4,44 @@
 
 .search-overlay {
   &__backdrop {
-    @apply fixed inset-0 flex items-start justify-center;
-    z-index: 1000;
-    background: rgba(9, 22, 53, 0.65);
-    backdrop-filter: blur(5px);
-    padding-top: 80px;
+    @apply fixed inset-0 flex items-start justify-center z-[1000] bg-[rgba(9,22,53,0.65)] backdrop-blur-[5px] pt-[80px];
   }
 
   &__modal {
-    @apply flex flex-col w-full;
-    max-width: 660px;
-    background: var(--card);
-    border-radius: 16px;
-    box-shadow: 0 24px 64px rgba(9, 22, 53, 0.35);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin: 0 16px;
+    @apply flex flex-col w-full max-w-[660px] bg-[var(--card)] rounded-[16px] shadow-[0_24px_64px_rgba(9,22,53,0.35)] border border-[var(--border)] overflow-hidden my-0 mx-[16px];
   }
 
   &__input-row {
-    @apply flex items-center gap-3;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
+    @apply flex items-center gap-3 py-[16px] px-[20px] border-b border-[var(--border)];
   }
 
-  &__input-icon { font-size: 16px; }
+  &__input-icon { @apply text-[16px]; }
 
   &__input {
-    @apply flex-1 bg-transparent border-0 outline-none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    color: var(--navy);
+    @apply flex-1 bg-transparent border-0 outline-none font-['DM_Sans',_sans-serif] text-[16px] text-[var(--navy)];
 
-    &::placeholder { color: var(--light); }
+    &::placeholder { @apply text-[var(--light)]; }
   }
 
   &__esc-badge {
-    @apply cursor-pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 3px 7px;
-    border-radius: 5px;
-    background: var(--bg);
-    color: var(--muted);
-    border: 1px solid var(--border);
+    @apply cursor-pointer font-['DM_Mono',_monospace] text-[10px] py-[3px] px-[7px] rounded-[5px] bg-[var(--bg)] text-[var(--muted)] border border-[var(--border)];
   }
 
   &__results {
-    @apply list-none m-0 p-0;
-    max-height: 360px;
-    overflow-y: auto;
+    @apply list-none m-0 p-0 max-h-[360px] overflow-y-auto;
   }
 
   &__result {
-    @apply flex items-start gap-3 cursor-pointer;
-    padding: 12px 20px;
-    border-left: 3px solid transparent;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s, border-color 0.1s;
-
-    &:last-child { border-bottom: 0; }
+    @apply flex items-start gap-3 cursor-pointer py-[12px] px-[20px] border-l-[3px] border-transparent border-b-[var(--border)] transition-colors duration-[0.1s] border-b last:border-b-0;
 
     &:hover,
     &--focused {
-      background: var(--bg);
-      border-left-color: var(--green);
+      @apply bg-[var(--bg)] border-l-[var(--green)];
     }
   }
 
   &__result-badge {
-    @apply inline-flex items-center flex-shrink-0;
-    font-family: 'Syne', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 8px;
-    border-width: 1px;
-    border-style: solid;
-    margin-top: 2px;
-    white-space: nowrap;
+    @apply inline-flex items-center shrink-0 font-['Syne',_sans-serif] text-[10px] font-bold py-[2px] px-[8px] rounded-[8px] border border-solid mt-[2px] whitespace-nowrap;
   }
 
   &__result-body {
@@ -90,35 +49,22 @@
   }
 
   &__result-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--navy);
-    font-family: 'DM Sans', sans-serif;
+    @apply text-[14px] font-semibold text-[var(--navy)] font-['DM_Sans',_sans-serif];
   }
 
   &__result-snippet {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.4;
+    @apply text-[12px] text-[var(--muted)] leading-[1.4];
   }
 
   &__empty {
-    padding: 24px 20px;
-    font-size: 13px;
-    color: var(--muted);
-    text-align: center;
+    @apply py-[24px] px-[20px] text-[13px] text-[var(--muted)] text-center;
   }
 
   &__footer {
-    @apply flex items-center gap-4;
-    padding: 10px 20px;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
+    @apply flex items-center gap-4 py-[10px] px-[20px] bg-[var(--bg)] border-t border-[var(--border)];
   }
 
   &__hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--light);
+    @apply font-['DM_Mono',_monospace] text-[10px] text-[var(--light)];
   }
 }

@@ -2,75 +2,35 @@
 
 // ── FILE: src/app/shared/components/hero/hero.component.scss ──
 
-:host {
-  display: block;
-}
+:host { @apply block; }
 
 .hero {
-  @apply w-full relative overflow-hidden;
-  padding: 64px 48px;
-  min-height: 240px;
-  transition: all 0.3s ease;
+  @apply w-full relative overflow-hidden py-[64px] px-[48px] min-h-[240px] transition-all duration-[0.3s] ease-in-out;
 
   // Add a subtle glass effect overlay to the bottom
   &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    @apply content-[''] absolute bottom-0 left-0 right-0 h-[1px] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)];
   }
 
   &__inner {
-    @apply flex flex-col gap-6;
-    max-width: 1200px;
-    padding-right: 240px; // Clearance for the right rail TOC
-    position: relative;
-    z-index: 2;
+    @apply flex flex-col gap-6 max-w-[1200px] pr-[240px] relative z-[2]; // Clearance for the right rail TOC
   }
 
   &__badge {
-    @apply inline-flex items-center gap-2 self-start;
-    padding: 6px 14px;
-    border-radius: 100px; // Pill shape
-    border-width: 1px;
-    border-style: solid;
-    backdrop-filter: blur(8px);
-    transition: transform 0.2s ease;
+    @apply inline-flex items-center gap-2 self-start py-[6px] px-[14px] rounded-full border border-solid backdrop-blur-[8px] transition-transform duration-[0.2s] ease-in-out hover:-translate-y-[1px];
 
-    &:hover {
-      transform: translateY(-1px);
-    }
-
-    &-icon { font-size: 14px; }
+    &-icon { @apply text-[14px]; }
     &-label {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      @apply font-['Syne',_sans-serif] text-[11px] font-extrabold uppercase tracking-[0.1em];
     }
   }
 
   &__title {
-    @apply font-bold m-0;
-    font-family: 'Syne', sans-serif;
-    font-size: 48px; // Larger title
-    color: #ffffff;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    @apply font-bold m-0 font-['Syne',_sans-serif] text-[48px] text-[#ffffff] leading-[1.1] tracking-[-0.02em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.1)]; // Larger title
   }
 
   &__subtitle {
-    @apply m-0;
-    font-size: 17px;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.6;
-    font-family: 'DM Sans', sans-serif; // Changed to match body for better readability
-    max-width: 600px;
+    @apply m-0 text-[17px] text-[rgba(255,255,255,0.7)] leading-[1.6] font-['DM_Sans',_sans-serif] max-w-[600px]; // Changed to match body for better readability
   }
 
   &__stats {
@@ -81,19 +41,11 @@
     @apply flex flex-col gap-1;
 
     &-value {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 1;
+      @apply font-['Syne',_sans-serif] text-[28px] font-extrabold text-[#ffffff] leading-[1];
     }
 
     &-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      @apply text-[12px] font-semibold text-[rgba(255,255,255,0.4)] uppercase tracking-[0.08em];
     }
   }
 }

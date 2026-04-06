@@ -2,11 +2,10 @@
 
 // ── FILE: src/app/features/docs-shell/docs-shell.component.scss ──
 
-:host { display: block; }
+:host { @apply block; }
 
 .shell {
-  @apply flex min-h-screen;
-  background: var(--bg);
+  @apply flex min-h-screen bg-[var(--bg)];
 
   // The sidebar and rail take up space in the flex layout via their :host width,
   // so we don't need additional margins here.
@@ -15,14 +14,7 @@
   }
 
   &__rail {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 216px;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-top: 0;
+    @apply fixed top-0 right-0 w-[216px] h-screen overflow-y-auto overflow-x-hidden pt-0;
 
     &::-webkit-scrollbar { width: 3px; }
     &::-webkit-scrollbar-track { background: transparent; }

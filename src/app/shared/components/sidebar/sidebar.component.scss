@@ -2,45 +2,25 @@
 
 // ── FILE: src/app/shared/components/sidebar/sidebar.component.scss ──
 
-:host {
-  display: block;
-  width: 268px;
-  flex-shrink: 0;
-}
+:host { @apply block w-[268px] shrink-0; }
 
 .sidebar {
-  @apply flex flex-col;
-  width: 268px;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: var(--navy);
-  border-right: 1px solid rgba(255, 255, 255, 0.07);
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 100;
+  @apply flex flex-col w-[268px] h-screen fixed top-0 left-0 bg-[var(--navy)] border-r border-[rgba(255,255,255,0.07)] overflow-y-auto overflow-x-hidden z-[100];
 
-  &::-webkit-scrollbar { width: 4px; }
-  &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 2px; }
+  &::-webkit-scrollbar { @apply w-[4px]; }
+  &::-webkit-scrollbar-track { @apply bg-transparent; }
+  &::-webkit-scrollbar-thumb { @apply bg-[rgba(255,255,255,.12)] rounded-[2px]; }
 
   // ── Brand ──────────────────────────────────────────────────────────────
 
   &__brand {
-    @apply flex items-center gap-3;
-    padding: 20px 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    @apply flex items-center gap-3 py-[20px] px-[18px] border-b border-[rgba(255,255,255,0.07)];
   }
 
   &__logo {
-    @apply flex items-center justify-center flex-shrink-0;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--green);
+    @apply flex items-center justify-center shrink-0 w-[36px] h-[36px] rounded-[10px] bg-[var(--green)];
 
-    &-icon { font-size: 18px; }
+    &-icon { @apply text-[18px]; }
   }
 
   &__brand-text {
@@ -48,73 +28,41 @@
   }
 
   &__brand-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1.2;
+    @apply font-['Syne',_sans-serif] text-[14px] font-bold text-[#ffffff] leading-[1.2];
   }
 
   &__brand-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: rgba(255, 255, 255, 0.35);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    @apply font-['DM_Mono',_monospace] text-[9px] text-[rgba(255,255,255,0.35)] tracking-[0.12em] uppercase;
   }
 
   // ── Search ─────────────────────────────────────────────────────────────
 
   &__search-wrap {
-    padding: 12px 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    @apply py-[12px] px-[14px] border-b border-[rgba(255,255,255,0.07)];
   }
 
   &__search-btn {
-    @apply flex items-center gap-2 w-full cursor-pointer;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    transition: background 0.15s;
-
-    &:hover { background: rgba(255, 255, 255, 0.1); }
+    @apply flex items-center gap-2 w-full cursor-pointer py-[8px] px-[12px] rounded-[8px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.09)] transition-colors duration-[0.15s] hover:bg-[rgba(255,255,255,0.1)];
   }
 
-  &__search-icon { font-size: 13px; }
+  &__search-icon { @apply text-[13px]; }
 
   &__search-placeholder {
-    @apply flex-1 text-left;
-    font-size: 12.5px;
-    color: rgba(255, 255, 255, 0.3);
+    @apply flex-1 text-left text-[12.5px] text-[rgba(255,255,255,0.3)];
   }
 
   &__search-kbd {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    padding: 2px 5px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    @apply font-['DM_Mono',_monospace] text-[9px] py-[2px] px-[5px] rounded-[4px] bg-[rgba(255,255,255,0.08)] text-[rgba(255,255,255,0.35)] border border-[rgba(255,255,255,0.12)];
   }
 
   // ── Teams Section ──────────────────────────────────────────────────────
 
   &__section {
-    @apply flex flex-col;
-    padding: 14px 0;
-    flex: 1;
+    @apply flex flex-col py-[14px] px-0 flex-[1_1_0%];
   }
 
   &__section-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.25);
-    padding: 0 18px 8px;
+    @apply font-['Syne',_sans-serif] text-[9.5px] font-bold tracking-[0.1em] uppercase text-[rgba(255,255,255,0.25)] pt-0 px-[18px] pb-[8px];
   }
 
   &__team-group {
@@ -122,48 +70,31 @@
   }
 
   &__team-btn {
-    @apply flex items-center gap-3 w-full cursor-pointer;
-    padding: 9px 18px;
-    background: transparent;
-    border: 0;
-    transition: background 0.15s;
-    text-align: left;
-
-    &:hover { background: rgba(255, 255, 255, 0.05); }
+    @apply flex items-center gap-3 w-full cursor-pointer py-[9px] px-[18px] bg-transparent border-0 transition-colors duration-[0.15s] text-left hover:bg-[rgba(255,255,255,0.05)];
 
     &--active {
-      background: rgba(255, 255, 255, 0.09);
+      @apply bg-[rgba(255,255,255,0.09)];
 
-      .sidebar__team-name { color: #ffffff; }
+      .sidebar__team-name { @apply text-[#ffffff]; }
     }
   }
 
   &__team-dot {
-    @apply flex-shrink-0 rounded-full;
-    width: 8px;
-    height: 8px;
+    @apply shrink-0 rounded-full w-[8px] h-[8px];
   }
 
   &__team-name {
-    @apply flex-1;
-    font-size: 13.5px;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
+    @apply flex-1 text-[13.5px] text-[rgba(255,255,255,0.6)] font-['DM_Sans',_sans-serif] font-medium;
   }
 
   &__team-chevron {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.35);
+    @apply text-[13px] text-[rgba(255,255,255,0.35)];
   }
 
   // ── Project Sub-links ──────────────────────────────────────────────────
 
   &__projects {
-    @apply list-none m-0 p-0 flex flex-col;
-    background: rgba(0, 0, 0, 0.15);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    @apply list-none m-0 p-0 flex flex-col bg-[rgba(0,0,0,0.15)] border-y border-[rgba(255,255,255,0.05)];
   }
 
   &__project {
@@ -171,38 +102,24 @@
   }
 
   &__project-btn {
-    @apply flex items-center gap-2 w-full cursor-pointer;
-    padding: 7px 18px 7px 34px;
-    background: transparent;
-    border: 0;
-    transition: background 0.1s;
-    text-align: left;
+    @apply flex items-center gap-2 w-full cursor-pointer py-[7px] pr-[18px] pl-[34px] bg-transparent border-0 transition-colors duration-[0.1s] text-left hover:bg-[rgba(255,255,255,0.04)];
 
-    &:hover { background: rgba(255, 255, 255, 0.04); }
-
-    &--active { background: rgba(255, 255, 255, 0.06); }
+    &--active { @apply bg-[rgba(255,255,255,0.06)]; }
   }
 
-  &__project-icon { font-size: 12px; }
+  &__project-icon { @apply text-[12px]; }
 
   &__project-name {
-    @apply flex-1;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
-    font-family: 'DM Sans', sans-serif;
+    @apply flex-1 text-[12px] text-[rgba(255,255,255,0.5)] font-['DM_Sans',_sans-serif];
   }
 
   // ── Footer ─────────────────────────────────────────────────────────────
 
   &__footer {
-    padding: 16px 18px;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    margin-top: auto;
+    @apply py-[16px] px-[18px] border-t border-[rgba(255,255,255,0.07)] mt-auto;
   }
 
   &__footer-text {
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.2);
-    font-family: 'DM Mono', monospace;
+    @apply text-[10px] text-[rgba(255,255,255,0.2)] font-['DM_Mono',_monospace];
   }
 }

@@ -2,19 +2,15 @@
 
 // ── FILE: src/app/features/team-page/team-page.component.scss ──
 
-:host {
-  display: block;
-}
+:host { @apply block; }
 
 .team-page {
   &__content {
-    @apply flex flex-col gap-12;
-    padding: 40px 240px 80px 48px; // Increased right padding for rail clearance
+    @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px]; // Increased right padding for rail clearance
   }
 
   &__section {
-    @apply flex flex-col gap-6;
-    scroll-margin-top: 80px;
+    @apply flex flex-col gap-6 scroll-mt-[80px];
   }
 
   // ── Getting Started ───────────────────────────────────────────────────────
@@ -24,7 +20,7 @@
   }
 
   &__code-block {
-    margin-top: 4px;
+    @apply mt-[4px];
   }
 
   // ── Folder Architecture ───────────────────────────────────────────────────
@@ -34,8 +30,7 @@
   }
 
   &__cards-grid {
-    @apply grid gap-4;
-    grid-template-columns: repeat(2, 1fr);
+    @apply grid gap-4 grid-cols-2;
   }
 
   // ── Coding Patterns ───────────────────────────────────────────────────────
@@ -45,25 +40,15 @@
   }
 
   &__pattern {
-    @apply flex flex-col gap-4;
-    padding: 24px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    @apply flex flex-col gap-4 p-[24px] bg-[var(--card)] border border-[var(--border)] rounded-[14px];
   }
 
   &__pattern-title {
-    @apply font-bold m-0;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    color: var(--navy);
+    @apply font-bold m-0 font-['Syne',_sans-serif] text-[15px] text-[var(--navy)];
   }
 
   &__pattern-desc {
-    @apply m-0;
-    font-size: 13.5px;
-    color: var(--muted);
-    line-height: 1.55;
+    @apply m-0 text-[13.5px] text-[var(--muted)] leading-[1.55];
   }
 
   // ── Projects ──────────────────────────────────────────────────────────────

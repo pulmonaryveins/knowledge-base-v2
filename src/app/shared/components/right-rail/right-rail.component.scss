@@ -2,158 +2,88 @@
 
 // ── FILE: src/app/shared/components/right-rail/right-rail.component.scss ──
 
-:host {
-  display: block;
-  width: 216px;
-  flex-shrink: 0;
-}
+:host { @apply block w-[216px] shrink-0; }
 
 .rail {
-  @apply flex flex-col gap-5;
-  position: sticky;
-  top: 440px; 
-  padding: 24px 20px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-right: 0; // Seamless with the right edge
-  border-radius: 12px 0 0 12px;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.05);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  @apply flex flex-col gap-5 sticky top-[440px] py-[24px] px-[20px] bg-[rgba(255,255,255,0.8)] backdrop-blur-[12px] border border-[var(--border)] border-r-0 rounded-[12px_0_0_12px] shadow-[-4px_0_20px_rgba(0,0,0,0.05)] transition-all duration-[0.4s] ease-[cubic-bezier(0.4,0,0.2,1)];
 
   &--snapped {
-    top: 80px; 
-    background: #ffffff;
-    box-shadow: -4px 0 30px rgba(0, 0, 0, 0.08);
+    @apply top-[80px] bg-[#ffffff] shadow-[-4px_0_30px_rgba(0,0,0,0.08)];
   }
 
   &__header {
     @apply flex items-center gap-3 mb-2;
 
     &-line {
-      display: block;
-      width: 14px;
-      height: 2px;
-      background: var(--green);
-      border-radius: 1px;
+      @apply block w-[14px] h-[2px] bg-[var(--green)] rounded-[1px];
     }
 
     &-label {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--navy);
-      opacity: 0.4;
+      @apply font-['Syne',_sans-serif] text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--navy)] opacity-40;
     }
   }
 
   &__list {
-    @apply list-none m-0 p-0 flex flex-col;
-    position: relative;
+    @apply list-none m-0 p-0 flex flex-col relative;
 
     // Vertical line behind all items
     &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: var(--border);
+      @apply content-[''] absolute left-0 top-0 bottom-0 w-[1px] bg-[var(--border)];
     }
   }
 
   &__item {
-    position: relative;
-    transition: all 0.2s ease;
+    @apply relative transition-all duration-[0.2s] ease-in-out;
 
     &--active {
       &::before {
-        content: '';
-        position: absolute;
-        left: -1px;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: var(--green);
-        z-index: 2;
-        border-radius: 2px;
+        @apply content-[''] absolute left-[-1px] top-0 bottom-0 w-[3px] bg-[var(--green)] z-[2] rounded-[2px];
       }
 
       .rail__label {
-        color: var(--navy);
-        font-weight: 600;
-        transform: translateX(2px);
+        @apply text-[var(--navy)] font-semibold translate-x-[2px];
       }
 
       .rail__num {
-        color: var(--green);
-        opacity: 1;
+        @apply text-[var(--green)] opacity-100;
       }
 
       .rail__btn {
-        background: rgba(0, 0, 0, 0.02);
+        @apply bg-[rgba(0,0,0,0.02)];
       }
     }
   }
 
   &__btn {
-    @apply flex items-center gap-3 w-full text-left bg-transparent border-0 cursor-pointer;
-    padding: 10px 12px;
-    transition: all 0.15s ease;
-    border-radius: 0 8px 8px 0;
+    @apply flex items-center gap-3 w-full text-left bg-transparent border-0 cursor-pointer py-[10px] px-[12px] transition-all duration-[0.15s] ease-in-out rounded-[0_8px_8px_0];
 
     &:hover:not(.rail__item--active &) {
-      background: rgba(0, 0, 0, 0.03);
-      .rail__label { transform: translateX(2px); color: var(--navy); }
+      @apply bg-[rgba(0,0,0,0.03)];
+      .rail__label { @apply translate-x-[2px] text-[var(--navy)]; }
     }
   }
 
   &__num {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--navy);
-    opacity: 0.25;
-    flex-shrink: 0;
-    width: 20px;
-    transition: all 0.15s ease;
+    @apply font-['DM_Mono',_monospace] text-[10px] font-semibold text-[var(--navy)] opacity-25 shrink-0 w-[20px] transition-all duration-[0.15s] ease-in-out;
   }
 
   &__label {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.4;
-    transition: all 0.15s ease;
+    @apply text-[13px] text-[var(--muted)] leading-[1.4] transition-all duration-[0.15s] ease-in-out;
   }
 
   &__footer {
-    @apply flex flex-col gap-3 mt-2;
-    padding: 16px 12px 0;
-    border-top: 1px solid var(--border);
+    @apply flex flex-col gap-3 mt-2 pt-[16px] px-[12px] pb-0 border-t border-[var(--border)];
   }
 
   &__progress-bar {
-    @apply w-full overflow-hidden rounded-full;
-    height: 4px;
-    background: var(--border);
+    @apply w-full overflow-hidden rounded-full h-[4px] bg-[var(--border)];
   }
 
   &__progress-fill {
-    height: 100%;
-    background: var(--green);
-    border-radius: 2px;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 8px rgba(141, 203, 44, 0.3);
+    @apply h-full bg-[var(--green)] rounded-[2px] transition-all duration-[0.4s] ease-[cubic-bezier(0.4,0,0.2,1)] shadow-[0_0_8px_rgba(141,203,44,0.3)];
   }
 
   &__counter {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--light);
-    letter-spacing: 0.05em;
+    @apply font-['DM_Mono',_monospace] text-[10px] font-semibold text-[var(--light)] tracking-[0.05em];
   }
 }

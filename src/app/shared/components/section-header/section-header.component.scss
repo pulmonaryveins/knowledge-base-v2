@@ -6,22 +6,10 @@
   @apply flex items-center gap-3 mb-5;
 
   &__num {
-    @apply inline-flex items-center justify-center font-bold;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--green);
-    background: var(--green-bg);
-    border: 1.5px solid var(--green-dim);
-    border-radius: 8px;
-    min-width: 36px;
-    height: 28px;
-    padding: 0 8px;
+    @apply inline-flex items-center justify-center font-bold font-['DM_Mono',_monospace] text-[12px] text-[var(--green)] bg-[var(--green-bg)] border-[1.5px] border-[var(--green-dim)] rounded-[8px] min-w-[36px] h-[28px] px-[8px];
   }
 
   &__title {
-    @apply font-bold m-0;
-    font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    color: var(--navy);
+    @apply font-bold m-0 font-['Syne',_sans-serif] text-[20px] text-[var(--navy)];
   }
 }

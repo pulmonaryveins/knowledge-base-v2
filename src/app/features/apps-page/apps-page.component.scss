@@ -2,24 +2,21 @@
 
 // ── FILE: src/app/features/apps-page/apps-page.component.scss ──
 
-:host { display: block; }
+:host { @apply block; }
 
 .apps-page {
   &__content {
-    @apply flex flex-col gap-12;
-    padding: 40px 240px 80px 48px; // Increased right padding for rail clearance
+    @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px]; // Increased right padding for rail clearance
   }
 
   &__section {
-    @apply flex flex-col gap-6;
-    scroll-margin-top: 80px;
+    @apply flex flex-col gap-6 scroll-mt-[80px];
   }
 
   // ── All Apps Grid ──────────────────────────────────────────────────────────
 
   &__apps-grid {
-    @apply grid gap-4;
-    grid-template-columns: repeat(2, 1fr);
+    @apply grid gap-4 grid-cols-2;
   }
 
   // ── Projects by Team ──────────────────────────────────────────────────────
@@ -31,47 +28,35 @@
   // ── Ownership Matrix ──────────────────────────────────────────────────────
 
   &__matrix-wrap {
-    @apply rounded-xl border overflow-hidden;
-    border-color: var(--border);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    @apply rounded-xl border border-[var(--border)] overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.06)];
   }
 
   // ── Shared Infra Grid ─────────────────────────────────────────────────────
 
   &__infra-grid {
-    @apply grid gap-4;
-    grid-template-columns: repeat(3, 1fr);
+    @apply grid gap-4 grid-cols-3;
   }
 }
 
 // ── App Card ───────────────────────────────────────────────────────────────
 
 .app-card {
-  @apply flex flex-col gap-2 p-5 rounded-2xl border;
-  background: var(--card);
-  border-color: var(--border);
-  transition: box-shadow 0.15s;
-
-  &:hover { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07); }
+  @apply flex flex-col gap-2 p-5 rounded-2xl border bg-[var(--card)] border-[var(--border)] transition-shadow duration-[0.15s] hover:shadow-[0_2px_12px_rgba(0,0,0,0.07)];
 
   &__header {
     @apply flex items-center justify-between;
   }
 
-  &__icon { font-size: 22px; }
+  &__icon {
+    @apply text-[22px];
+  }
 
   &__name {
-    @apply font-bold m-0;
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    color: var(--navy);
+    @apply font-bold m-0 font-['Syne',_sans-serif] text-[14px] text-[var(--navy)];
   }
 
   &__desc {
-    @apply m-0;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.5;
+    @apply m-0 text-[13px] text-[var(--muted)] leading-[1.5];
   }
 
   &__tags {
@@ -79,20 +64,11 @@
   }
 
   &__tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 5px;
-    background: var(--bg);
-    color: var(--muted);
-    border: 1px solid var(--border);
+    @apply font-['DM_Mono',_monospace] text-[10px] py-[2px] px-[7px] rounded-[5px] bg-[var(--bg)] text-[var(--muted)] border border-[var(--border)];
   }
 
   &__notes {
-    @apply m-0;
-    font-size: 11.5px;
-    color: var(--light);
-    font-style: italic;
+    @apply m-0 text-[11.5px] text-[var(--light)] italic;
   }
 }
 
@@ -106,48 +82,37 @@
   }
 
   &__dot {
-    @apply rounded-full flex-shrink-0;
-    width: 10px;
-    height: 10px;
+    @apply rounded-full flex-shrink-0 w-[10px] h-[10px];
   }
 
   &__name {
-    @apply font-bold m-0;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    color: var(--navy);
+    @apply font-bold m-0 font-['Syne',_sans-serif] text-[15px] text-[var(--navy)];
   }
 
   &__projects {
-    @apply grid gap-3;
-    grid-template-columns: repeat(3, 1fr);
+    @apply grid gap-3 grid-cols-3;
   }
 }
 
 // ── Mini Project Card ──────────────────────────────────────────────────────
 
 .mini-project-card {
-  @apply flex items-start gap-3 p-4 rounded-xl border;
-  background: var(--card);
-  border-color: var(--border);
+  @apply flex items-start gap-3 p-4 rounded-xl border bg-[var(--card)] border-[var(--border)];
 
-  &__icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  &__icon {
+    @apply text-[18px] shrink-0 mt-[2px];
+  }
 
   &__info {
-    @apply flex flex-col gap-1 flex-1;
+    @apply flex flex-col gap-1 flex-[1_1_0%];
   }
 
   &__name {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--navy);
+    @apply font-['Syne',_sans-serif] text-[13px] font-bold text-[var(--navy)];
   }
 
   &__desc {
-    font-size: 11.5px;
-    color: var(--muted);
-    line-height: 1.4;
+    @apply text-[11.5px] text-[var(--muted)] leading-[1.4];
   }
 }
 
@@ -156,56 +121,43 @@
 .matrix {
   @apply w-full border-collapse;
 
-  &__head { background: var(--navy); }
+  &__head {
+    @apply bg-[var(--navy)];
+  }
 
   &__th {
-    @apply text-left;
-    padding: 11px 20px;
-    font-family: 'Syne', sans-serif;
-    font-size: 10.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: rgba(255, 255, 255, 0.7);
-    white-space: nowrap;
+    @apply text-left py-[11px] px-[20px] font-['Syne',_sans-serif] text-[10.5px] font-semibold uppercase tracking-[0.05em] text-[rgba(255,255,255,0.7)] whitespace-nowrap;
 
-    &--app { color: rgba(255, 255, 255, 0.5); }
+    &--app {
+      @apply text-[rgba(255,255,255,0.5)];
+    }
   }
 
   &__row {
-    @apply border-b;
-    border-color: var(--border);
-    transition: background 0.1s;
-
-    &:hover { background: #f9fafb; }
-    &:last-child { border-bottom: 0; }
+    @apply border-b border-[var(--border)] transition-colors duration-[0.1s] hover:bg-[#f9fafb] last:border-b-0;
   }
 
   &__td {
-    padding: 11px 20px;
-    font-size: 13.5px;
-    color: var(--muted);
+    @apply py-[11px] px-[20px] text-[13.5px] text-[var(--muted)];
 
     &--app {
-      @apply flex items-center gap-2;
-      font-family: 'DM Mono', monospace;
-      font-size: 12.5px;
-      color: var(--navy);
-      font-weight: 500;
+      @apply flex items-center gap-2 font-['DM_Mono',_monospace] text-[12.5px] text-[var(--navy)] font-medium;
     }
 
-    &--check { text-align: center; }
+    &--check {
+      @apply text-center;
+    }
   }
 
-  &__app-icon { font-size: 14px; }
+  &__app-icon {
+    @apply text-[14px];
+  }
 
   &__check {
-    font-size: 14px;
-    font-weight: 700;
+    @apply text-[14px] font-bold;
   }
 
   &__dash {
-    font-size: 14px;
-    color: var(--border);
+    @apply text-[14px] text-[var(--border)];
   }
 }

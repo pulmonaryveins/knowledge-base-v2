@@ -3,38 +3,22 @@
 // ── FILE: src/app/features/project-doc/project-doc.component.scss ──
 
 .proj-card {
-  @apply rounded-2xl border overflow-hidden;
-  background: var(--card);
-  border-color: var(--border);
-  transition: box-shadow 0.2s;
+  @apply rounded-2xl border overflow-hidden bg-[var(--card)] border-[var(--border)] transition-shadow duration-[0.2s] hover:shadow-[0_2px_12px_rgba(0,0,0,0.07)];
 
-  &:hover { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07); }
-
-  &--open { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+  &--open { @apply shadow-[0_4px_20px_rgba(0,0,0,0.1)]; }
 
   // ── Trigger Row ──────────────────────────────────────────────────────────
 
   &__trigger {
-    @apply flex items-center gap-3 w-full cursor-pointer;
-    padding: 14px 18px;
-    background: transparent;
-    border: 0;
-    text-align: left;
-    transition: background 0.15s;
-
-    &:hover { background: #fafbfc; }
+    @apply flex items-center gap-3 w-full cursor-pointer py-[14px] px-[18px] bg-transparent border-0 text-left transition-colors duration-[0.15s] hover:bg-[#fafbfc];
 
     .proj-card--open & {
-      background: #f8fafc;
-      border-bottom: 1px solid var(--border);
+      @apply bg-[#f8fafc] border-b border-[var(--border)];
     }
   }
 
   &__icon {
-    @apply flex items-center justify-center flex-shrink-0 rounded-xl;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
+    @apply flex items-center justify-center shrink-0 rounded-xl w-[40px] h-[40px] text-[20px];
   }
 
   &__info {
@@ -42,37 +26,23 @@
   }
 
   &__name {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--navy);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @apply font-['Syne',_sans-serif] text-[14px] font-bold text-[var(--navy)] whitespace-nowrap overflow-hidden text-ellipsis;
   }
 
   &__desc {
-    font-size: 12px;
-    color: var(--muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @apply text-[12px] text-[var(--muted)] whitespace-nowrap overflow-hidden text-ellipsis;
   }
 
   &__chevron {
-    font-size: 10px;
-    color: var(--light);
-    flex-shrink: 0;
-    transition: transform 0.2s;
+    @apply text-[10px] text-[var(--light)] shrink-0 transition-transform duration-[0.2s];
 
-    &--open { transform: rotate(90deg); }
+    &--open { @apply rotate-90; }
   }
 
   // ── Doc Panel ────────────────────────────────────────────────────────────
 
   &__panel {
-    @apply flex flex-col;
-    animation: slideDown 0.2s ease;
+    @apply flex flex-col animate-[slideDown_0.2s_ease];
   }
 
   @keyframes slideDown {
@@ -81,36 +51,27 @@
   }
 
   &__section {
-    @apply flex;
-    border-bottom: 1px solid var(--border);
+    @apply flex border-b border-[var(--border)];
 
-    &--last { border-bottom: 0; }
+    &--last { @apply border-b-0; }
   }
 
   &__section-bar {
-    width: 3px;
-    flex-shrink: 0;
+    @apply w-[3px] shrink-0;
   }
 
   &__section-body {
-    @apply flex flex-col gap-4 flex-1;
-    padding: 20px 24px;
+    @apply flex flex-col gap-4 flex-1 py-[20px] px-[24px];
   }
 
   &__section-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
+    @apply font-['Syne',_sans-serif] text-[10px] font-bold tracking-[0.1em] uppercase text-[var(--muted)];
   }
 
   // ── Meta Grid ────────────────────────────────────────────────────────────
 
   &__meta-grid {
-    @apply grid gap-4;
-    grid-template-columns: repeat(4, 1fr);
+    @apply grid gap-4 grid-cols-4;
   }
 
   &__meta-item {
@@ -118,34 +79,23 @@
   }
 
   &__meta-key {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--light);
-    font-family: 'DM Mono', monospace;
+    @apply text-[10px] uppercase tracking-[0.06em] text-[var(--light)] font-['DM_Mono',_monospace];
   }
 
   &__meta-val {
-    font-size: 12.5px;
-    color: var(--navy);
-    font-weight: 500;
-    font-family: 'DM Mono', monospace;
+    @apply text-[12.5px] text-[var(--navy)] font-medium font-['DM_Mono',_monospace];
   }
 
   // ── Purpose ──────────────────────────────────────────────────────────────
 
   &__purpose {
-    @apply m-0;
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.6;
+    @apply m-0 text-[14px] text-[var(--muted)] leading-[1.6];
   }
 
   // ── Features Grid ────────────────────────────────────────────────────────
 
   &__features-grid {
-    @apply grid gap-3;
-    grid-template-columns: repeat(3, 1fr);
+    @apply grid gap-3 grid-cols-3;
   }
 
   // ── Contacts + Links ─────────────────────────────────────────────────────
@@ -163,13 +113,7 @@
   }
 
   &__contact-avatar {
-    @apply flex items-center justify-center flex-shrink-0 rounded-full;
-    width: 32px;
-    height: 32px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-    font-family: 'Syne', sans-serif;
+    @apply flex items-center justify-center shrink-0 rounded-full w-[32px] h-[32px] text-[11px] font-bold text-white font-['Syne',_sans-serif];
   }
 
   &__contact-info {
@@ -177,14 +121,11 @@
   }
 
   &__contact-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--navy);
+    @apply text-[13px] font-semibold text-[var(--navy)];
   }
 
   &__contact-role {
-    font-size: 11px;
-    color: var(--muted);
+    @apply text-[11px] text-[var(--muted)];
   }
 
   &__links {
@@ -192,11 +133,6 @@
   }
 
   &__link {
-    font-size: 12.5px;
-    color: var(--info);
-    text-decoration: none;
-    font-family: 'DM Mono', monospace;
-
-    &:hover { text-decoration: underline; }
+    @apply text-[12.5px] text-[var(--info)] no-underline font-['DM_Mono',_monospace] hover:underline;
   }
 }
