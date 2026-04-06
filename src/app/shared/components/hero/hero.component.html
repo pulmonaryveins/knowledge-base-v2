@@ -1,0 +1,19 @@
+<!-- FILE: src/app/shared/components/hero/hero.component.html -->
+<section class="hero" [style.background]="gradient()">
+  <div class="hero__inner">
+    <div class="hero__badge" [style.background]="color() + '22'" [style.border-color]="color() + '55'">
+      <span class="hero__badge-icon">{{ icon() }}</span>
+      <span class="hero__badge-label" [style.color]="color()">{{ teamLabel() }} Team</span>
+    </div>
+    <h1 class="hero__title">{{ teamLabel() }} Documentation</h1>
+    <p class="hero__subtitle">{{ subtitle() }}</p>
+    <div class="hero__stats">
+      @for (stat of stats(); track stat.label) {
+        <div class="hero__stat">
+          <span class="hero__stat-value">{{ stat.value }}</span>
+          <span class="hero__stat-label">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>

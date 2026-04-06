@@ -1,0 +1,116 @@
+<!-- FILE: src/app/features/project-doc/project-doc.component.html -->
+<div class="proj-card" [class.proj-card--open]="isOpen()" [id]="'project-' + project().id">
+  <!-- Trigger Row -->
+  <button class="proj-card__trigger" (click)="toggle()">
+    <span class="proj-card__icon" [style.background]="project().teamColor + '22'">
+      {{ project().icon }}
+    </span>
+    <div class="proj-card__info">
+      <span class="proj-card__name">{{ project().name }}</span>
+      <span class="proj-card__desc">{{ project().description }}</span>
+    </div>
+    <app-status-badge [status]="project().status" />
+    <span class="proj-card__chevron" [class.proj-card__chevron--open]="isOpen()">▶</span>
+  </button>
+
+  <!-- Expanded Doc Panel -->
+  @if (isOpen()) {
+    <div class="proj-card__panel">
+      <!-- Overview & Meta -->
+      <div class="proj-card__section">
+        <div class="proj-card__section-bar" [style.background]="project().teamColor"></div>
+        <div class="proj-card__section-body">
+          <span class="proj-card__section-label">OVERVIEW & META</span>
+          <div class="proj-card__meta-grid">
+            <div class="proj-card__meta-item">
+              <span class="proj-card__meta-key">Stack</span>
+              <span class="proj-card__meta-val">{{ project().doc.meta.stack }}</span>
+            </div>
+            <div class="proj-card__meta-item">
+              <span class="proj-card__meta-key">Repo</span>
+              <span class="proj-card__meta-val">{{ project().doc.meta.repo }}</span>
+            </div>
+            <div class="proj-card__meta-item">
+              <span class="proj-card__meta-key">Deploy</span>
+              <span class="proj-card__meta-val">{{ project().doc.meta.deploy }}</span>
+            </div>
+            <div class="proj-card__meta-item">
+              <span class="proj-card__meta-key">Sprint</span>
+              <span class="proj-card__meta-val">{{ project().doc.meta.sprint }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Purpose -->
+      <div class="proj-card__section">
+        <div class="proj-card__section-bar" [style.background]="project().teamColor"></div>
+        <div class="proj-card__section-body">
+          <span class="proj-card__section-label">PURPOSE</span>
+          <p class="proj-card__purpose">{{ project().doc.purpose }}</p>
+        </div>
+      </div>
+
+      <!-- Key Features -->
+      <div class="proj-card__section">
+        <div class="proj-card__section-bar" [style.background]="project().teamColor"></div>
+        <div class="proj-card__section-body">
+          <span class="proj-card__section-label">KEY FEATURES</span>
+          <div class="proj-card__features-grid">
+            @for (feature of project().doc.features; track feature.title) {
+              <app-info-card [data]="feature" />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Folder Structure -->
+      <div class="proj-card__section">
+        <div class="proj-card__section-bar" [style.background]="project().teamColor"></div>
+        <div class="proj-card__section-body">
+          <span class="proj-card__section-label">FOLDER STRUCTURE</span>
+          <app-code-block [data]="project().doc.folderStructure" />
+        </div>
+      </div>
+
+      <!-- Getting Started -->
+      <div class="proj-card__section">
+        <div class="proj-card__section-bar" [style.background]="project().teamColor"></div>
+        <div class="proj-card__section-body">
+          <span class="proj-card__section-label">GETTING STARTED</span>
+          <app-step-list [steps]="project().doc.gettingStarted" />
+        </div>
+      </div>
+
+      <!-- Team Contacts + Links -->
+      <div class="proj-card__section proj-card__section--last">
+        <div class="proj-card__section-bar" [style.background]="project().teamColor"></div>
+        <div class="proj-card__section-body">
+          <span class="proj-card__section-label">TEAM CONTACTS &amp; LINKS</span>
+          <div class="proj-card__contacts-row">
+            <div class="proj-card__contacts">
+              @for (contact of project().doc.contacts; track contact.name) {
+                <div class="proj-card__contact">
+                  <span class="proj-card__contact-avatar" [style.background]="contact.color">
+                    {{ contact.initials }}
+                  </span>
+                  <div class="proj-card__contact-info">
+                    <span class="proj-card__contact-name">{{ contact.name }}</span>
+                    <span class="proj-card__contact-role">{{ contact.role }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="proj-card__links">
+              @for (link of project().doc.links; track link.label) {
+                <a class="proj-card__link" href="{{ link.url }}" target="_blank" rel="noopener">
+                  {{ link.label }} →
+                </a>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

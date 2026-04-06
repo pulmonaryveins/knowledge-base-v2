@@ -1,0 +1,125 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/sidebar/sidebar.component.scss ──
+
+:host { @apply block w-[268px] shrink-0; }
+
+.sidebar {
+  @apply flex flex-col w-[268px] h-screen fixed top-0 left-0 bg-[var(--navy)] border-r border-[rgba(255,255,255,0.07)] overflow-y-auto overflow-x-hidden z-[100];
+
+  &::-webkit-scrollbar { @apply w-[4px]; }
+  &::-webkit-scrollbar-track { @apply bg-transparent; }
+  &::-webkit-scrollbar-thumb { @apply bg-[rgba(255,255,255,.12)] rounded-[2px]; }
+
+  // ── Brand ──────────────────────────────────────────────────────────────
+
+  &__brand {
+    @apply flex items-center gap-3 py-[20px] px-[18px] border-b border-[rgba(255,255,255,0.07)];
+  }
+
+  &__logo {
+    @apply flex items-center justify-center shrink-0 w-[36px] h-[36px] rounded-[10px] bg-[var(--green)];
+
+    &-icon { @apply text-[18px]; }
+  }
+
+  &__brand-text {
+    @apply flex flex-col;
+  }
+
+  &__brand-name {
+    @apply font-['Syne',_sans-serif] text-[14px] font-bold text-[#ffffff] leading-[1.2];
+  }
+
+  &__brand-sub {
+    @apply font-['DM_Mono',_monospace] text-[9px] text-[rgba(255,255,255,0.35)] tracking-[0.12em] uppercase;
+  }
+
+  // ── Search ─────────────────────────────────────────────────────────────
+
+  &__search-wrap {
+    @apply py-[12px] px-[14px] border-b border-[rgba(255,255,255,0.07)];
+  }
+
+  &__search-btn {
+    @apply flex items-center gap-2 w-full cursor-pointer py-[8px] px-[12px] rounded-[8px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.09)] transition-colors duration-[0.15s] hover:bg-[rgba(255,255,255,0.1)];
+  }
+
+  &__search-icon { @apply text-[13px]; }
+
+  &__search-placeholder {
+    @apply flex-1 text-left text-[12.5px] text-[rgba(255,255,255,0.3)];
+  }
+
+  &__search-kbd {
+    @apply font-['DM_Mono',_monospace] text-[9px] py-[2px] px-[5px] rounded-[4px] bg-[rgba(255,255,255,0.08)] text-[rgba(255,255,255,0.35)] border border-[rgba(255,255,255,0.12)];
+  }
+
+  // ── Teams Section ──────────────────────────────────────────────────────
+
+  &__section {
+    @apply flex flex-col py-[14px] px-0 flex-[1_1_0%];
+  }
+
+  &__section-label {
+    @apply font-['Syne',_sans-serif] text-[9.5px] font-bold tracking-[0.1em] uppercase text-[rgba(255,255,255,0.25)] pt-0 px-[18px] pb-[8px];
+  }
+
+  &__team-group {
+    @apply flex flex-col;
+  }
+
+  &__team-btn {
+    @apply flex items-center gap-3 w-full cursor-pointer py-[9px] px-[18px] bg-transparent border-0 transition-colors duration-[0.15s] text-left hover:bg-[rgba(255,255,255,0.05)];
+
+    &--active {
+      @apply bg-[rgba(255,255,255,0.09)];
+
+      .sidebar__team-name { @apply text-[#ffffff]; }
+    }
+  }
+
+  &__team-dot {
+    @apply shrink-0 rounded-full w-[8px] h-[8px];
+  }
+
+  &__team-name {
+    @apply flex-1 text-[13.5px] text-[rgba(255,255,255,0.6)] font-['DM_Sans',_sans-serif] font-medium;
+  }
+
+  &__team-chevron {
+    @apply text-[13px] text-[rgba(255,255,255,0.35)];
+  }
+
+  // ── Project Sub-links ──────────────────────────────────────────────────
+
+  &__projects {
+    @apply list-none m-0 p-0 flex flex-col bg-[rgba(0,0,0,0.15)] border-y border-[rgba(255,255,255,0.05)];
+  }
+
+  &__project {
+    @apply flex;
+  }
+
+  &__project-btn {
+    @apply flex items-center gap-2 w-full cursor-pointer py-[7px] pr-[18px] pl-[34px] bg-transparent border-0 transition-colors duration-[0.1s] text-left hover:bg-[rgba(255,255,255,0.04)];
+
+    &--active { @apply bg-[rgba(255,255,255,0.06)]; }
+  }
+
+  &__project-icon { @apply text-[12px]; }
+
+  &__project-name {
+    @apply flex-1 text-[12px] text-[rgba(255,255,255,0.5)] font-['DM_Sans',_sans-serif];
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────────────
+
+  &__footer {
+    @apply py-[16px] px-[18px] border-t border-[rgba(255,255,255,0.07)] mt-auto;
+  }
+
+  &__footer-text {
+    @apply text-[10px] text-[rgba(255,255,255,0.2)] font-['DM_Mono',_monospace];
+  }
+}

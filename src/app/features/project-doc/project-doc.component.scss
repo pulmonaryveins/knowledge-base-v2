@@ -1,0 +1,138 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/features/project-doc/project-doc.component.scss ──
+
+.proj-card {
+  @apply rounded-2xl border overflow-hidden bg-[var(--card)] border-[var(--border)] transition-shadow duration-[0.2s] hover:shadow-[0_2px_12px_rgba(0,0,0,0.07)];
+
+  &--open { @apply shadow-[0_4px_20px_rgba(0,0,0,0.1)]; }
+
+  // ── Trigger Row ──────────────────────────────────────────────────────────
+
+  &__trigger {
+    @apply flex items-center gap-3 w-full cursor-pointer py-[14px] px-[18px] bg-transparent border-0 text-left transition-colors duration-[0.15s] hover:bg-[#fafbfc];
+
+    .proj-card--open & {
+      @apply bg-[#f8fafc] border-b border-[var(--border)];
+    }
+  }
+
+  &__icon {
+    @apply flex items-center justify-center shrink-0 rounded-xl w-[40px] h-[40px] text-[20px];
+  }
+
+  &__info {
+    @apply flex flex-col flex-1 gap-0.5 overflow-hidden;
+  }
+
+  &__name {
+    @apply font-['Syne',_sans-serif] text-[14px] font-bold text-[var(--navy)] whitespace-nowrap overflow-hidden text-ellipsis;
+  }
+
+  &__desc {
+    @apply text-[12px] text-[var(--muted)] whitespace-nowrap overflow-hidden text-ellipsis;
+  }
+
+  &__chevron {
+    @apply text-[10px] text-[var(--light)] shrink-0 transition-transform duration-[0.2s];
+
+    &--open { @apply rotate-90; }
+  }
+
+  // ── Doc Panel ────────────────────────────────────────────────────────────
+
+  &__panel {
+    @apply flex flex-col animate-[slideDown_0.2s_ease];
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  &__section {
+    @apply flex border-b border-[var(--border)];
+
+    &--last { @apply border-b-0; }
+  }
+
+  &__section-bar {
+    @apply w-[3px] shrink-0;
+  }
+
+  &__section-body {
+    @apply flex flex-col gap-4 flex-1 py-[20px] px-[24px];
+  }
+
+  &__section-label {
+    @apply font-['Syne',_sans-serif] text-[10px] font-bold tracking-[0.1em] uppercase text-[var(--muted)];
+  }
+
+  // ── Meta Grid ────────────────────────────────────────────────────────────
+
+  &__meta-grid {
+    @apply grid gap-4 grid-cols-4;
+  }
+
+  &__meta-item {
+    @apply flex flex-col gap-1;
+  }
+
+  &__meta-key {
+    @apply text-[10px] uppercase tracking-[0.06em] text-[var(--light)] font-['DM_Mono',_monospace];
+  }
+
+  &__meta-val {
+    @apply text-[12.5px] text-[var(--navy)] font-medium font-['DM_Mono',_monospace];
+  }
+
+  // ── Purpose ──────────────────────────────────────────────────────────────
+
+  &__purpose {
+    @apply m-0 text-[14px] text-[var(--muted)] leading-[1.6];
+  }
+
+  // ── Features Grid ────────────────────────────────────────────────────────
+
+  &__features-grid {
+    @apply grid gap-3 grid-cols-3;
+  }
+
+  // ── Contacts + Links ─────────────────────────────────────────────────────
+
+  &__contacts-row {
+    @apply flex gap-8;
+  }
+
+  &__contacts {
+    @apply flex flex-col gap-3 flex-1;
+  }
+
+  &__contact {
+    @apply flex items-center gap-3;
+  }
+
+  &__contact-avatar {
+    @apply flex items-center justify-center shrink-0 rounded-full w-[32px] h-[32px] text-[11px] font-bold text-white font-['Syne',_sans-serif];
+  }
+
+  &__contact-info {
+    @apply flex flex-col gap-0;
+  }
+
+  &__contact-name {
+    @apply text-[13px] font-semibold text-[var(--navy)];
+  }
+
+  &__contact-role {
+    @apply text-[11px] text-[var(--muted)];
+  }
+
+  &__links {
+    @apply flex flex-col gap-2;
+  }
+
+  &__link {
+    @apply text-[12.5px] text-[var(--info)] no-underline font-['DM_Mono',_monospace] hover:underline;
+  }
+}

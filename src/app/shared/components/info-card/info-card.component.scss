@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/info-card/info-card.component.scss ──
+
+.info-card {
+  @apply rounded-xl p-4 bg-[var(--card)] border border-[var(--border)];
+
+  &__title {
+    @apply font-bold m-0 mb-2 font-['Syne',_sans-serif] text-[13px] text-[var(--navy)];
+  }
+
+  &__body {
+    @apply m-0 text-[13px] text-[var(--muted)] leading-[1.55];
+  }
+}

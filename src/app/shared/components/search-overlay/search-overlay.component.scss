@@ -1,0 +1,70 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/search-overlay/search-overlay.component.scss ──
+
+.search-overlay {
+  &__backdrop {
+    @apply fixed inset-0 flex items-start justify-center z-[1000] bg-[rgba(9,22,53,0.65)] backdrop-blur-[5px] pt-[80px];
+  }
+
+  &__modal {
+    @apply flex flex-col w-full max-w-[660px] bg-[var(--card)] rounded-[16px] shadow-[0_24px_64px_rgba(9,22,53,0.35)] border border-[var(--border)] overflow-hidden my-0 mx-[16px];
+  }
+
+  &__input-row {
+    @apply flex items-center gap-3 py-[16px] px-[20px] border-b border-[var(--border)];
+  }
+
+  &__input-icon { @apply text-[16px]; }
+
+  &__input {
+    @apply flex-1 bg-transparent border-0 outline-none font-['DM_Sans',_sans-serif] text-[16px] text-[var(--navy)];
+
+    &::placeholder { @apply text-[var(--light)]; }
+  }
+
+  &__esc-badge {
+    @apply cursor-pointer font-['DM_Mono',_monospace] text-[10px] py-[3px] px-[7px] rounded-[5px] bg-[var(--bg)] text-[var(--muted)] border border-[var(--border)];
+  }
+
+  &__results {
+    @apply list-none m-0 p-0 max-h-[360px] overflow-y-auto;
+  }
+
+  &__result {
+    @apply flex items-start gap-3 cursor-pointer py-[12px] px-[20px] border-l-[3px] border-transparent border-b-[var(--border)] transition-colors duration-[0.1s] border-b last:border-b-0;
+
+    &:hover,
+    &--focused {
+      @apply bg-[var(--bg)] border-l-[var(--green)];
+    }
+  }
+
+  &__result-badge {
+    @apply inline-flex items-center shrink-0 font-['Syne',_sans-serif] text-[10px] font-bold py-[2px] px-[8px] rounded-[8px] border border-solid mt-[2px] whitespace-nowrap;
+  }
+
+  &__result-body {
+    @apply flex flex-col gap-1;
+  }
+
+  &__result-title {
+    @apply text-[14px] font-semibold text-[var(--navy)] font-['DM_Sans',_sans-serif];
+  }
+
+  &__result-snippet {
+    @apply text-[12px] text-[var(--muted)] leading-[1.4];
+  }
+
+  &__empty {
+    @apply py-[24px] px-[20px] text-[13px] text-[var(--muted)] text-center;
+  }
+
+  &__footer {
+    @apply flex items-center gap-4 py-[10px] px-[20px] bg-[var(--bg)] border-t border-[var(--border)];
+  }
+
+  &__hint {
+    @apply font-['DM_Mono',_monospace] text-[10px] text-[var(--light)];
+  }
+}

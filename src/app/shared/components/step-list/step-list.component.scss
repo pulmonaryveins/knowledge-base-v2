@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/step-list/step-list.component.scss ──
+
+.step-list {
+  @apply list-none m-0 p-0 flex flex-col gap-0;
+
+  &__item {
+    @apply flex gap-4;
+  }
+
+  &__marker {
+    @apply flex flex-col items-center shrink-0;
+  }
+
+  &__num {
+    @apply flex items-center justify-center font-bold shrink-0 font-['Syne',_sans-serif] text-[13px] w-[34px] h-[34px] rounded-full bg-[var(--navy)] text-[var(--green)] border-2 border-[var(--green)];
+  }
+
+  &__line {
+    @apply flex-1 w-[2px] min-h-[24px] mt-[4px] bg-[linear-gradient(to_bottom,var(--green),transparent)];
+  }
+
+  &__content {
+    @apply flex flex-col gap-2 pb-6 pt-[6px] min-h-[34px];
+  }
+
+  &__title {
+    @apply font-semibold m-0 text-[14px] text-[var(--navy)];
+  }
+
+  &__desc {
+    @apply m-0 text-[13.5px] text-[var(--muted)] leading-[1.5];
+  }
+}

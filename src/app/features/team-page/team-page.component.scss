@@ -1,0 +1,59 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/features/team-page/team-page.component.scss ──
+
+:host { @apply block; }
+
+.team-page {
+  &__content {
+    @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px]; // Increased right padding for rail clearance
+  }
+
+  &__section {
+    @apply flex flex-col gap-6 scroll-mt-[80px];
+  }
+
+  // ── Getting Started ───────────────────────────────────────────────────────
+
+  &__getting-started {
+    @apply flex flex-col gap-6;
+  }
+
+  &__code-block {
+    @apply mt-[4px];
+  }
+
+  // ── Folder Architecture ───────────────────────────────────────────────────
+
+  &__folder-arch {
+    @apply flex flex-col gap-6;
+  }
+
+  &__cards-grid {
+    @apply grid gap-4 grid-cols-2;
+  }
+
+  // ── Coding Patterns ───────────────────────────────────────────────────────
+
+  &__patterns {
+    @apply flex flex-col gap-8;
+  }
+
+  &__pattern {
+    @apply flex flex-col gap-4 p-[24px] bg-[var(--card)] border border-[var(--border)] rounded-[14px];
+  }
+
+  &__pattern-title {
+    @apply font-bold m-0 font-['Syne',_sans-serif] text-[15px] text-[var(--navy)];
+  }
+
+  &__pattern-desc {
+    @apply m-0 text-[13.5px] text-[var(--muted)] leading-[1.55];
+  }
+
+  // ── Projects ──────────────────────────────────────────────────────────────
+
+  &__projects {
+    @apply flex flex-col gap-3;
+  }
+}

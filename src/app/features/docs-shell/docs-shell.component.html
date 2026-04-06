@@ -1,0 +1,25 @@
+<!-- FILE: src/app/features/docs-shell/docs-shell.component.html -->
+<div class="shell">
+  <!-- Fixed Left Sidebar -->
+  <app-sidebar />
+
+  <!-- Main Content -->
+  <main class="shell__main">
+    @if (isTeamPage()) {
+      <app-team-page />
+    }
+    @if (isAppsPage()) {
+      <app-apps-page />
+    }
+  </main>
+
+  <!-- Fixed Right Rail -->
+  @if (isTeamPage()) {
+    <div class="shell__rail">
+      <app-right-rail />
+    </div>
+  }
+
+  <!-- Global Search Overlay (rendered at root to layer above everything) -->
+  <app-search-overlay />
+</div>

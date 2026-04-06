@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/status-badge/status-badge.component.scss ──
+
+.badge {
+  @apply inline-block font-bold uppercase text-[10px] rounded-[10px] py-[2px] px-[8px] border border-solid tracking-[0.04em];
+
+  &--live { @apply bg-[#dcfce7] text-[#166534] border-[#bbf7d0]; }
+
+  &--dev { @apply bg-[#eff6ff] text-[#1e40af] border-[#bfdbfe]; }
+
+  &--beta { @apply bg-[#f5f3ff] text-[#5b21b6] border-[#ddd6fe]; }
+
+  &--revamp { @apply bg-[#fef9c3] text-[#854d0e] border-[#fde68a]; }
+
+  &--design { @apply bg-[#fef9c3] text-[#854d0e] border-[#fde68a]; }
+}

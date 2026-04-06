@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/code-block/code-block.component.scss ──
+
+.code-block {
+  @apply rounded-xl overflow-hidden bg-[#0f1c38] shadow-[0_4px_24px_rgba(9,22,53,0.28)];
+
+  &__header {
+    @apply flex items-center justify-between px-4 py-3 bg-[rgba(255,255,255,0.05)] border-b border-[rgba(255,255,255,0.07)];
+  }
+
+  &__dots {
+    @apply flex items-center gap-2;
+  }
+
+  &__dot {
+    @apply inline-block rounded-full w-[10px] h-[10px];
+
+    &--red { @apply bg-[#ff5f57]; }
+    &--yellow { @apply bg-[#febc2e]; }
+    &--green { @apply bg-[#28c840]; }
+  }
+
+  &__lang {
+    @apply font-['DM_Mono',_monospace] text-[10px] text-[rgba(255,255,255,0.3)] lowercase;
+  }
+
+  &__pre {
+    @apply m-0 overflow-x-auto py-[16px] px-[20px];
+  }
+
+  &__code {
+    @apply font-['DM_Mono',_monospace] text-[12.5px] text-[#e2e8f0] leading-[1.7] whitespace-pre;
+  }
+}

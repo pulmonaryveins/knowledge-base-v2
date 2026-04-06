@@ -1,3 +1,78 @@
-/* You can add global styles to this file, and also import other style files */
+// ── FILE: src/styles.scss ──
 
-@import 'tailwindcss';
+@use 'tailwindcss';
+
+// ─── Google Fonts ──────────────────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+// ─── CSS Custom Properties ─────────────────────────────────────────────────
+:root {
+  --navy:       #091635;
+  --navy-mid:   #1a3366;
+  --green:      #8DCB2C;
+  --green-bg:   #f4fce8;
+  --green-dim:  #d8f0a0;
+  --danger:     #E83E3E;
+  --warning:    #FFA500;
+  --success:    #3ADB30;
+  --info:       #095AF3;
+  --be:         #7C3AED;
+  --ux:         #EC4899;
+  --qa:         #0891B2;
+  --apps:       #D97706;
+  --bg:         #f7f8fc;
+  --card:       #ffffff;
+  --border:     #e4e8f0;
+  --muted:      #64748b;
+  --light:      #94a3b8;
+}
+
+// ─── Global Resets ─────────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Syne', sans-serif;
+}
+
+code, pre, kbd {
+  font-family: 'DM Mono', monospace;
+}
+
+button {
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+a {
+  color: var(--info);
+}
+
+// ─── Scrollbar Styling ─────────────────────────────────────────────────────
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}

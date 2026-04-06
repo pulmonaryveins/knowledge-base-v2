@@ -1,0 +1,21 @@
+<!-- FILE: src/app/shared/components/data-table/data-table.component.html -->
+<div class="data-table">
+  <table class="data-table__table">
+    <thead class="data-table__head">
+      <tr>
+        @for (header of table().headers; track $index) {
+          <th class="data-table__th">{{ header }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of table().rows; track $index) {
+        <tr class="data-table__row">
+          @for (cell of row.cells; track $index) {
+            <td class="data-table__td" [class.data-table__td--first]="$first">{{ cell }}</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

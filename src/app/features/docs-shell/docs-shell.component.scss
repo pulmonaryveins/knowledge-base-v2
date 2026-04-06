@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/features/docs-shell/docs-shell.component.scss ──
+
+:host { @apply block; }
+
+.shell {
+  @apply flex min-h-screen bg-[var(--bg)];
+
+  // The sidebar and rail take up space in the flex layout via their :host width,
+  // so we don't need additional margins here.
+  &__main {
+    @apply flex-1 min-w-0;
+  }
+
+  &__rail {
+    @apply fixed top-0 right-0 w-[216px] h-screen overflow-y-auto overflow-x-hidden pt-0;
+
+    &::-webkit-scrollbar { width: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  }
+}

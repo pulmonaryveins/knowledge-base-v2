@@ -1,0 +1,20 @@
+<!-- FILE: src/app/shared/components/step-list/step-list.component.html -->
+<ol class="step-list">
+  @for (step of steps(); track $index) {
+    <li class="step-list__item">
+      <div class="step-list__marker">
+        <span class="step-list__num">{{ $index + 1 }}</span>
+        @if (!$last) {
+          <div class="step-list__line"></div>
+        }
+      </div>
+      <div class="step-list__content">
+        <h4 class="step-list__title">{{ step.title }}</h4>
+        <p class="step-list__desc">{{ step.description }}</p>
+        @if (step.code) {
+          <app-code-block [data]="{ language: step.language ?? 'bash', code: step.code }" />
+        }
+      </div>
+    </li>
+  }
+</ol>

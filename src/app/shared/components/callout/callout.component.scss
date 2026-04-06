@@ -1,0 +1,39 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/callout/callout.component.scss ──
+
+.callout {
+  @apply flex gap-3 rounded-xl border py-[13px] px-[17px] text-[14px] leading-[1.5];
+
+  &__icon {
+    @apply text-[16px] shrink-0 mt-[1px];
+  }
+
+  &__body {
+    @apply flex flex-col gap-1;
+  }
+
+  &__title {
+    @apply font-semibold;
+  }
+
+  &__text {
+    @apply m-0;
+  }
+
+  &--tip {
+    @apply bg-[#f4fce8] border-[#d8f0a0] text-[#2d5a0e];
+  }
+
+  &--warning {
+    @apply bg-[#fffbeb] border-[#fde68a] text-[#854d0e];
+  }
+
+  &--info {
+    @apply bg-[#eff6ff] border-[#bfdbfe] text-[#1e40af];
+  }
+
+  &--danger {
+    @apply bg-[#fef2f2] border-[#fecaca] text-[#991b1b];
+  }
+}

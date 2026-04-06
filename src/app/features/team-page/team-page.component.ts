@@ -1,0 +1,102 @@
+// ── FILE: src/app/features/team-page/team-page.component.ts ──
+
+import { Component, computed, inject } from '@angular/core';
+import { NavigationService } from '../../core/services';
+import {
+  Team,
+  TeamSection,
+  SectionContent,
+  TechStackSection,
+  GettingStartedSection,
+  FolderArchSection,
+  CodingPatternsSection,
+  MistakesSection,
+} from '../../core/models';
+import { HeroComponent } from '../../shared/components/hero/hero.component';
+import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
+import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
+import { StepListComponent } from '../../shared/components/step-list/step-list.component';
+import { CodeBlockComponent } from '../../shared/components/code-block/code-block.component';
+import { InfoCardComponent } from '../../shared/components/info-card/info-card.component';
+import { CalloutComponent } from '../../shared/components/callout/callout.component';
+import { ProjectDocComponent } from '../project-doc/project-doc.component';
+
+/**
+ * TeamPageComponent renders the full documentation page for the active team.
+ * It uses the generic section structure from NavigationService, rendering each
+ * section's typed content via @switch on the content.type discriminant.
+ * Smart component — injects NavigationService.
+ */
+@Component({
+  selector: 'app-team-page',
+  standalone: true,
+  imports: [
+    HeroComponent,
+    SectionHeaderComponent,
+    DataTableComponent,
+    StepListComponent,
+    CodeBlockComponent,
+    InfoCardComponent,
+    CalloutComponent,
+    ProjectDocComponent,
+  ],
+  templateUrl: './team-page.component.html',
+  styleUrl: './team-page.component.scss',
+})
+export class TeamPageComponent {
+  /** Navigation service for the active team signal */
+  private readonly _nav = inject(NavigationService);
+
+  /** The currently active team object */
+  protected readonly team = computed<Team>(() => this._nav.activeTeam());
+
+  /** Ordered documentation sections for the active team */
+  protected readonly sections = computed<ReadonlyArray<TeamSection>>(
+    () => this._nav.activeSections()
+  );
+
+  /**
+   * Narrow a SectionContent to TechStackSection for template binding.
+   * @param c - Raw section content
+   * @returns The content typed as TechStackSection
+   */
+  public asTechStack(c: SectionContent): TechStackSection {
+    return c as TechStackSection;
+  }
+
+  /**
+   * Narrow a SectionContent to GettingStartedSection for template binding.
+   * @param c - Raw section content
+   * @returns The content typed as GettingStartedSection
+   */
+  public asGettingStarted(c: SectionContent): GettingStartedSection {
+    return c as GettingStartedSection;
+  }
+
+  /**
+   * Narrow a SectionContent to FolderArchSection for template binding.
+   * @param c - Raw section content
+   * @returns The content typed as FolderArchSection
+   */
+  public asFolderArch(c: SectionContent): FolderArchSection {
+    return c as FolderArchSection;
+  }
+
+  /**
+   * Narrow a SectionContent to CodingPatternsSection for template binding.
+   * @param c - Raw section content
+   * @returns The content typed as CodingPatternsSection
+   */
+  public asCodingPatterns(c: SectionContent): CodingPatternsSection {
+    return c as CodingPatternsSection;
+  }
+
+  /**
+   * Narrow a SectionContent to MistakesSection for template binding.
+   * @param c - Raw section content
+   * @returns The content typed as MistakesSection
+   */
+  public asMistakes(c: SectionContent): MistakesSection {
+    return c as MistakesSection;
+  }
+}

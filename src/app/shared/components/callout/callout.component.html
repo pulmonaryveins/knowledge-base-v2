@@ -1,0 +1,10 @@
+<!-- FILE: src/app/shared/components/callout/callout.component.html -->
+<div class="callout" [class]="'callout--' + modifier()">
+  <span class="callout__icon">{{ icon() }}</span>
+  <div class="callout__body">
+    @if (data().title) {
+      <strong class="callout__title">{{ data().title }}</strong>
+    }
+    <p class="callout__text">{{ data().body }}</p>
+  </div>
+</div>

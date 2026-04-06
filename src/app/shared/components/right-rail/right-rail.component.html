@@ -1,0 +1,25 @@
+<!-- FILE: src/app/shared/components/right-rail/right-rail.component.html -->
+<nav class="rail" [class.rail--snapped]="snapped()">
+  <div class="rail__header">
+    <span class="rail__header-line"></span>
+    <span class="rail__header-label">On This Page</span>
+  </div>
+
+  <ul class="rail__list">
+    @for (section of sections(); track section.id) {
+      <li class="rail__item" [class.rail__item--active]="section.id === sections()[activeIndex()].id">
+        <button class="rail__btn" (click)="scrollTo(section.id)">
+          <span class="rail__num">{{ section.num }}</span>
+          <span class="rail__label">{{ section.label }}</span>
+        </button>
+      </li>
+    }
+  </ul>
+
+  <div class="rail__footer">
+    <div class="rail__progress-bar">
+      <div class="rail__progress-fill" [style.width.%]="progress()"></div>
+    </div>
+    <span class="rail__counter">{{ counter() }}</span>
+  </div>
+</nav>
