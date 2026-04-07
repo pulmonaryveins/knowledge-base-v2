@@ -15,10 +15,10 @@ export class DocsDataService {
   private readonly _teams: ReadonlyArray<Team> = [
     frontendTeam,
     backendTeam,
-    uiuxTeam,
+    webdevTeam,
     qaTeam,
     rdTeam,
-    webdevTeam,
+    uiuxTeam,
   ];
 
   private readonly _appEntries: ReadonlyArray<AppEntry> = appEntries;
