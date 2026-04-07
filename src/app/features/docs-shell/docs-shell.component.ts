@@ -31,13 +31,13 @@ export class DocsShellComponent {
   /** Navigation service for reading the active team key */
   private readonly _nav = inject(NavigationService);
 
-  /** True when the Apps & Projects page should be rendered */
+  /** True when the Research & Development page should be rendered */
   protected readonly isAppsPage = computed<boolean>(
-    () => this._nav.activeTeamKey() === 'apps'
+    () => this._nav.activeTeamKey() === 'rd'
   );
 
   /** True when a regular team documentation page should be rendered */
   protected readonly isTeamPage = computed<boolean>(
-    () => this._nav.activeTeamKey() !== 'apps'
+    () => this._nav.activeTeamKey() !== 'rd'
   );
 }
