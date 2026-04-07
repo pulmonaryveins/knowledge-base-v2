@@ -18,9 +18,9 @@
   }
 
   &__logo {
-    @apply flex items-center justify-center shrink-0 w-[36px] h-[36px] rounded-[10px] bg-[var(--green)];
+    @apply flex items-center justify-center shrink-0 w-[36px] h-[36px];
 
-    &-icon { @apply text-[18px]; }
+    &-img { @apply w-full h-full object-contain; }
   }
 
   &__brand-text {

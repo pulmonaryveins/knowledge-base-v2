@@ -4,56 +4,58 @@ import { Team } from '../models/team.model';
 
 export const webdevTeam: Team = {
   key: 'webdev',
-  label: 'Web Dev',
+  label: 'Web Development',
   color: '#F97316',
   gradient: 'linear-gradient(135deg, #3d1500, #7c2d12)',
   icon: '🌐',
-  subtitle: 'Next.js · WordPress · Tailwind CSS · Public-facing Web Properties',
+  subtitle: 'Astro · Svelte · Tailwind CSS · AI-Assisted Development · Multi-framework',
   stats: [
     { label: 'Live Sites', value: '6' },
     { label: 'Projects', value: '3' },
-    { label: 'Avg Page Speed', value: '94' },
-    { label: 'Uptime', value: '99.9%' },
+    { label: 'Frameworks', value: '4+' },
+    { label: 'AI Tools', value: '3' },
   ],
   projects: [
     {
-      id: 'wd-marketing-site',
-      name: 'Marketing Site',
-      description: 'Public-facing NCompassTV marketing website with landing pages and product info.',
+      id: 'wd-franchisee-templates',
+      name: 'Franchisee / Dealer Templates',
+      description: 'Reusable Astro website templates built for franchisee and dealer clients under a unified structure.',
       status: 'Live',
-      icon: '🏠',
+      icon: '🏗️',
       teamKey: 'webdev',
       teamColor: '#F97316',
       doc: {
-        meta: { stack: 'Next.js 14 · Tailwind CSS · Contentful CMS', repo: 'nctv/marketing-site', deploy: 'Vercel', sprint: 'Sprint 42' },
-        purpose: 'The NCompassTV marketing site is the primary public-facing web presence. Built with Next.js for optimal SEO and performance, it uses Contentful as a headless CMS so the marketing team can update copy and images without engineering involvement.',
+        meta: { stack: 'Astro · Tailwind CSS · PageCMS · JSON', repo: 'nctv/franchisee-templates', deploy: 'Vercel', sprint: 'Sprint 42' },
+        purpose: 'The Franchisee / Dealer Templates project builds reusable and scalable static website templates for multiple clients under a unified structure. Astro is the primary framework for performance and maintainability. Static content is managed via JSON files; dynamic content is handled through PageCMS.',
         features: [
-          { title: 'CMS-driven Content', body: 'All page copy, hero images, and blog posts are managed in Contentful and pulled at build time via ISR for fast revalidation.' },
-          { title: 'SEO Optimisation', body: 'Structured data (JSON-LD), Open Graph tags, XML sitemap, and canonical URLs configured via next/metadata for every page.' },
-          { title: 'Landing Page Builder', body: 'Contentful-modelled component blocks (hero, feature grid, testimonials, CTA) let the marketing team assemble new landing pages without code.' },
+          { title: 'Reusable Component Architecture', body: 'Each template is built from composable Astro components — Hero, Nav, Features, CTA, Footer — shared across all franchise instances with client-specific overrides.' },
+          { title: 'Dual Content Strategy', body: 'Static content (copy, links, config) lives in JSON files for zero-dependency updates. Dynamic content (blog posts, promos) is managed through PageCMS and fetched at build time.' },
+          { title: 'Easy Client Updates', body: 'Template structure is intentionally designed for maintainability — adding a new franchise site requires only a new JSON config and a one-command deploy, with no code duplication.' },
         ],
         folderStructure: {
           language: 'bash',
-          code: `marketing-site/
-├── app/
-│   ├── (pages)/
-│   │   ├── page.tsx          # Home
-│   │   ├── about/
-│   │   └── blog/
+          code: `franchisee-templates/
+├── src/
 │   ├── components/
-│   │   ├── hero/
-│   │   ├── feature-grid/
-│   │   └── cta/
-│   └── layout.tsx
-├── lib/
-│   └── contentful.ts         # CMS client
-└── public/`,
+│   │   ├── Hero.astro
+│   │   ├── Nav.astro
+│   │   ├── Features.astro
+│   │   ├── CTA.astro
+│   │   └── Footer.astro
+│   ├── layouts/
+│   │   └── BaseLayout.astro
+│   ├── pages/
+│   │   └── index.astro
+│   └── data/
+│       └── site.json        # Client-specific config
+├── public/
+└── astro.config.mjs`,
         },
         gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone and install dependencies.', code: 'git clone git@github.com:nctv/marketing-site.git && npm i', language: 'bash' },
-          { title: 'Configure Environment', description: 'Add Contentful API keys to your env file.', code: 'cp .env.example .env.local\n# Set CONTENTFUL_SPACE_ID and CONTENTFUL_ACCESS_TOKEN', language: 'bash' },
-          { title: 'Start Dev Server', description: 'Launch Next.js in development mode.', code: 'npm run dev\n# Opens at http://localhost:3000', language: 'bash' },
-          { title: 'Build & Preview', description: 'Build and run a production preview locally.', code: 'npm run build && npm start', language: 'bash' },
+          { title: 'Clone & Install', description: 'Clone the template repo and install dependencies.', code: 'git clone git@github.com:nctv/franchisee-templates.git && npm i', language: 'bash' },
+          { title: 'Configure Client Data', description: 'Edit the JSON config file with the client\'s content and branding.', code: '# Edit src/data/site.json\n# Set name, colors, copy, and links', language: 'bash' },
+          { title: 'Start Dev Server', description: 'Launch the Astro development server.', code: 'npm run dev\n# Opens at http://localhost:4321', language: 'bash' },
+          { title: 'Build for Production', description: 'Generate the static output for deployment.', code: 'npm run build\n# Output in dist/', language: 'bash' },
         ],
         contacts: [
           { name: 'Diana Reyes', role: 'Web Dev Lead', initials: 'DR', color: '#F97316' },
@@ -62,92 +64,97 @@ export const webdevTeam: Team = {
         links: [
           { label: 'GitHub Repo', url: '#', type: 'repo' },
           { label: 'Vercel Dashboard', url: '#', type: 'deploy' },
-          { label: 'Contentful CMS', url: '#', type: 'docs' },
+          { label: 'PageCMS', url: '#', type: 'docs' },
         ],
       },
     },
     {
-      id: 'wd-host-portal-web',
-      name: 'Host Portal Web',
-      description: 'WordPress-based self-service portal for NCompassTV host account management.',
-      status: 'Live',
-      icon: '🖥️',
-      teamKey: 'webdev',
-      teamColor: '#F97316',
-      doc: {
-        meta: { stack: 'WordPress · PHP 8.2 · ACF · WooCommerce', repo: 'nctv/host-portal-wp', deploy: 'WP Engine', sprint: 'Sprint 40' },
-        purpose: 'The Host Portal Web is a WordPress-powered self-service hub where NCompassTV host partners manage subscriptions, download invoices, and submit support tickets. Custom ACF fields and a child theme power all business-specific UI.',
-        features: [
-          { title: 'Subscription Management', body: 'WooCommerce Subscriptions integration lets hosts upgrade, downgrade, or cancel their plans directly without contacting support.' },
-          { title: 'Custom ACF Blocks', body: 'Advanced Custom Fields (ACF) Pro blocks power the dashboard widgets, device list, and invoice table with no shortcode spaghetti.' },
-          { title: 'Support Ticket Integration', body: 'Embedded Zendesk widget linked to the host\'s account ID lets hosts create and track tickets without leaving the portal.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `host-portal-wp/
-├── wp-content/
-│   ├── themes/
-│   │   └── nctv-host/       # Child theme
-│   │       ├── functions.php
-│   │       ├── blocks/      # ACF Pro blocks
-│   │       └── templates/
-│   └── plugins/
-│       └── nctv-core/       # Custom plugin`,
-        },
-        gettingStarted: [
-          { title: 'Clone & Setup', description: 'Clone the repo into your local WordPress install.', code: 'git clone git@github.com:nctv/host-portal-wp.git\n# Place in wp-content/themes/nctv-host', language: 'bash' },
-          { title: 'Install Dependencies', description: 'Install PHP and Node dependencies.', code: 'composer install\nnpm install', language: 'bash' },
-          { title: 'Local WP Environment', description: 'Use Local by Flywheel for the dev environment.', code: '# Import the .sql dump via Local\n# Then activate the nctv-host theme', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Diana Reyes', role: 'Web Dev Lead', initials: 'DR', color: '#F97316' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
-          { label: 'WP Engine', url: '#', type: 'deploy' },
-        ],
-      },
-    },
-    {
-      id: 'wd-docs-site',
-      name: 'Public Docs Site',
-      description: 'Developer-facing documentation site for the NCompassTV public API.',
+      id: 'wd-internal-dashboard',
+      name: 'Internal Tools Dashboard',
+      description: 'Svelte-powered internal dashboard for team tooling, workflow tracking, and automation monitoring.',
       status: 'Dev',
-      icon: '📖',
+      icon: '⚙️',
       teamKey: 'webdev',
       teamColor: '#F97316',
       doc: {
-        meta: { stack: 'Docusaurus 3 · MDX · OpenAPI Plugin', repo: 'nctv/public-docs', deploy: 'Cloudflare Pages', sprint: 'Sprint 41' },
-        purpose: 'The Public Docs Site is a Docusaurus 3 site providing API reference documentation, integration guides, and SDK examples for third-party developers integrating with the NCompassTV platform API.',
+        meta: { stack: 'Svelte · SvelteKit · Tailwind CSS', repo: 'nctv/webdev-dashboard', deploy: 'Vercel', sprint: 'Sprint 41' },
+        purpose: 'The Internal Tools Dashboard is built with Svelte for its performance and reactive UI model. It centralises workflow tracking, automation status monitoring, tool research notes, and project planning for the Web Dev department.',
         features: [
-          { title: 'OpenAPI Reference', body: 'Auto-generated REST API reference pages from the ntv360-api OpenAPI 3.1 spec via the docusaurus-plugin-openapi-docs plugin.' },
-          { title: 'MDX Guides', body: 'Long-form integration guides written in MDX, enabling interactive code tabs, callout blocks, and live code sandboxes.' },
-          { title: 'Versioned Docs', body: 'Docusaurus versioning keeps v1 and v2 API docs accessible simultaneously as the platform evolves.' },
+          { title: 'Reactive UI with Svelte', body: 'Svelte\'s compile-time reactivity eliminates virtual DOM overhead, resulting in fast, low-bundle dashboards ideal for internal tooling.' },
+          { title: 'Workflow Tracker', body: 'Tracks active projects through the Analyze → Plan → Build → Test → Refine workflow stages, with per-project status and notes.' },
+          { title: 'Automation Monitor', body: 'Displays status of automated build pipelines, CMS webhooks, and deployment jobs — surfacing failures before they reach production.' },
         ],
         folderStructure: {
           language: 'bash',
-          code: `public-docs/
-├── docs/
-│   ├── getting-started/
-│   ├── guides/
-│   └── api/
-├── openapi/
-│   └── ntv360-api.yaml      # Synced from monorepo
+          code: `webdev-dashboard/
 ├── src/
-│   └── pages/
-└── docusaurus.config.ts`,
+│   ├── routes/
+│   │   ├── +layout.svelte
+│   │   ├── +page.svelte       # Overview
+│   │   ├── projects/
+│   │   └── automation/
+│   ├── lib/
+│   │   ├── components/
+│   │   └── stores/            # Svelte writable stores
+│   └── app.html
+└── svelte.config.js`,
         },
         gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone the docs repo and install.', code: 'git clone git@github.com:nctv/public-docs.git && npm i', language: 'bash' },
-          { title: 'Generate API Docs', description: 'Run the OpenAPI doc generation script.', code: 'npm run gen:api', language: 'bash' },
-          { title: 'Start Dev Server', description: 'Launch Docusaurus locally.', code: 'npm start\n# Opens at http://localhost:3000', language: 'bash' },
+          { title: 'Clone & Install', description: 'Clone and install dependencies.', code: 'git clone git@github.com:nctv/webdev-dashboard.git && npm i', language: 'bash' },
+          { title: 'Start Dev Server', description: 'Launch SvelteKit in development mode.', code: 'npm run dev\n# Opens at http://localhost:5173', language: 'bash' },
+          { title: 'Build', description: 'Build the production version.', code: 'npm run build', language: 'bash' },
         ],
         contacts: [
           { name: 'Sam Nguyen', role: 'Web Developer', initials: 'SN', color: '#8DCB2C' },
         ],
         links: [
           { label: 'GitHub Repo', url: '#', type: 'repo' },
-          { label: 'Live Docs Site', url: '#', type: 'docs' },
+          { label: 'Internal Deploy', url: '#', type: 'deploy' },
+        ],
+      },
+    },
+    {
+      id: 'wd-client-websites',
+      name: 'Client Website Projects',
+      description: 'Complete multi-page websites and landing pages built for clients using the appropriate framework per project.',
+      status: 'Live',
+      icon: '🖥️',
+      teamKey: 'webdev',
+      teamColor: '#F97316',
+      doc: {
+        meta: { stack: 'Astro · Next.js · WordPress · Svelte', repo: 'nctv/client-sites', deploy: 'Vercel / WP Engine', sprint: 'Sprint 42' },
+        purpose: 'The Web Dev team builds complete websites for clients — from single landing pages to full multi-page sites. The framework is selected based on project requirements: Astro for static/marketing sites, Svelte for interactive tools, Next.js for dynamic content, and WordPress for client-managed CMS needs.',
+        features: [
+          { title: 'Framework-appropriate Selection', body: 'Each client project uses the right tool for the job. Static service sites use Astro, interactive dashboards use Svelte, and CMS-heavy sites use WordPress — never one-size-fits-all.' },
+          { title: 'AI-assisted Development', body: 'Claude Code, Codex, and Kiro are used throughout the build lifecycle to accelerate development, catch issues early, and maintain consistent code quality.' },
+          { title: 'SEO-first Implementation', body: 'All client sites include structured data, Open Graph tags, XML sitemaps, semantic HTML, and Core Web Vitals optimisation from the start — not as an afterthought.' },
+        ],
+        folderStructure: {
+          language: 'bash',
+          code: `# Structure depends on framework — follow the existing project.
+# General pattern across all frameworks:
+
+<project-name>/
+├── src/
+│   ├── components/      # Reusable UI components
+│   ├── pages/           # Route-level pages
+│   ├── layouts/         # Shared page wrappers
+│   └── data/            # JSON / CMS content files
+├── public/              # Static assets
+└── <config-file>        # astro.config / svelte.config / next.config`,
+        },
+        gettingStarted: [
+          { title: 'Clone the Project Repo', description: 'Each client site has its own repo — clone the relevant one.', code: 'git clone git@github.com:nctv/<client-site>.git && npm i', language: 'bash' },
+          { title: 'Start Dev Server', description: 'The dev command is consistent across all frameworks.', code: 'npm run dev', language: 'bash' },
+          { title: 'Follow the 5-step Workflow', description: 'Analyze requirements → Plan components → Build → Test responsiveness → Refine.', code: '# See the Development Workflow section for full details', language: 'bash' },
+        ],
+        contacts: [
+          { name: 'Diana Reyes', role: 'Web Dev Lead', initials: 'DR', color: '#F97316' },
+          { name: 'Sam Nguyen', role: 'Web Developer', initials: 'SN', color: '#8DCB2C' },
+        ],
+        links: [
+          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'Staging Deploy', url: '#', type: 'deploy' },
         ],
       },
     },
@@ -160,40 +167,72 @@ export const webdevTeam: Team = {
       content: {
         type: 'tech-stack',
         table: {
-          headers: ['Technology', 'Version', 'Purpose', 'Status'],
+          headers: ['Technology', 'Version', 'Purpose', 'Usage'],
           rows: [
-            { cells: ['Next.js', '14.x', 'React framework for public-facing marketing and landing pages', 'Live'] },
-            { cells: ['WordPress', '6.x', 'CMS for the host portal and content-heavy properties', 'Live'] },
-            { cells: ['Tailwind CSS', 'v4.1', 'Utility-first CSS for all Next.js and custom theme work', 'Live'] },
-            { cells: ['Contentful', 'v10', 'Headless CMS powering marketing site content and blog', 'Live'] },
-            { cells: ['Docusaurus', '3.x', 'Static site generator for the public developer docs site', 'Dev'] },
-            { cells: ['ACF Pro', '6.x', 'Advanced Custom Fields for WordPress block development', 'Live'] },
-            { cells: ['Vercel', 'N/A', 'Deployment and preview environments for Next.js sites', 'Live'] },
-            { cells: ['Cloudflare Pages', 'N/A', 'Deployment for the Docusaurus docs site with edge caching', 'Dev'] },
+            { cells: ['Astro', '4.x', 'Primary framework for static sites — franchisee/dealer templates and service-based marketing websites', 'Primary'] },
+            { cells: ['Svelte / SvelteKit', '4.x', 'Internal tools and dashboards — performance-focused, reactive UI', 'Primary'] },
+            { cells: ['Tailwind CSS', 'v3/v4', 'Utility-first CSS used across all frameworks for consistent styling', 'Primary'] },
+            { cells: ['Next.js', '14.x', 'React framework for dynamic, content-heavy, or SSR-required sites', 'Flexible'] },
+            { cells: ['WordPress', '6.x', 'CMS-driven sites where clients need self-service content editing', 'Flexible'] },
+            { cells: ['PageCMS', 'N/A', 'Headless CMS for dynamic content in Astro-based sites', 'Flexible'] },
+            { cells: ['JSON Files', 'N/A', 'Static content management for franchisee template configuration', 'Primary'] },
+            { cells: ['Claude Code', 'Latest', 'AI assistant used inside the IDE for writing, refactoring, and debugging', 'AI Tool'] },
+            { cells: ['Codex', 'Latest', 'AI-based code generation for boilerplate and repetitive patterns', 'AI Tool'] },
+            { cells: ['Kiro', 'Latest', 'AI IDE extension for development assistance and code suggestions', 'AI Tool'] },
+            { cells: ['Vercel', 'N/A', 'Primary deployment platform for Astro, Svelte, and Next.js sites', 'Deploy'] },
           ],
         },
       },
     },
     {
       id: 'wd-getting-started',
-      label: 'Getting Started',
+      label: 'Development Workflow',
       num: '02',
       content: {
         type: 'getting-started',
         steps: [
-          { title: 'Clone the Target Repo', description: 'Each web property has its own repository — clone the one you need.', code: 'git clone git@github.com:nctv/<site-repo>.git\ncd <site-repo>', language: 'bash' },
-          { title: 'Install Dependencies', description: 'Install Node packages (and Composer packages for WordPress projects).', code: 'npm install\n# WordPress projects also need:\ncomposer install', language: 'bash' },
-          { title: 'Configure Environment', description: 'Copy the env template and add API keys for CMS or database access.', code: 'cp .env.example .env.local\n# Fill in CMS tokens, DB credentials, etc.', language: 'bash' },
-          { title: 'Start Dev Server', description: 'Launch the local development server for the project.', code: 'npm run dev      # Next.js / Docusaurus\nnpm start        # Docusaurus alternate\n# WordPress: use Local by Flywheel', language: 'bash' },
+          {
+            title: 'Step 1 — Analyze',
+            description: 'Understand the requirements and study all reference materials before writing a single line of code. Identify the correct framework for the project type.',
+            code: '# Questions to answer before starting:\n# - What framework fits this project? (Astro / Svelte / Next.js / WordPress)\n# - Is content static (JSON) or dynamic (PageCMS)?\n# - What are the responsiveness requirements?\n# - Are there reference designs or existing sites to study?',
+            language: 'bash',
+          },
+          {
+            title: 'Step 2 — Plan',
+            description: 'Break the layout into components before building. Identify reusable pieces, define the folder structure following the existing project convention, and plan the page hierarchy.',
+            code: '# Component planning checklist:\n# - List all unique UI components needed\n# - Identify which components are reusable across pages\n# - Sketch the folder structure: components/, pages/, layouts/, data/\n# - Plan responsiveness breakpoints: mobile / tablet / desktop',
+            language: 'bash',
+          },
+          {
+            title: 'Step 3 — Build',
+            description: 'Develop in order: layout shell first, then shared components, then individual pages. Use AI tools (Claude Code, Codex, Kiro) to accelerate boilerplate and catch issues early.',
+            code: '# Build order:\n# 1. Base layout / shell (layout.astro or +layout.svelte)\n# 2. Shared components (Nav, Footer, Button, Card)\n# 3. Page-level composition\n# 4. Wire up content (JSON / CMS)\nnpm run dev   # Keep dev server running throughout',
+            language: 'bash',
+          },
+          {
+            title: 'Step 4 — Test',
+            description: 'Check responsiveness across all three breakpoints (mobile 375px, tablet 768px, desktop 1440px). Verify all links work, interactions are clear, and there are no console errors.',
+            code: '# Testing checklist:\n# - Resize to 375px (mobile), 768px (tablet), 1440px (desktop)\n# - Open browser DevTools → check for console errors\n# - Test all navigation links and buttons\n# - Verify hover states and interactive elements\n# - Run Lighthouse for performance and SEO score',
+            language: 'bash',
+          },
+          {
+            title: 'Step 5 — Refine',
+            description: 'Improve code structure and UI quality. Extract repeated code into reusable components. Ensure code is clean, readable, and follows consistent patterns before submitting.',
+            code: '# Refine checklist:\n# - Extract any duplicated markup into components\n# - Remove unused code and commented-out blocks\n# - Ensure consistent spacing and visual clarity\n# - Verify Definition of Done criteria are all met\nnpm run build   # Confirm production build passes with no errors',
+            language: 'bash',
+          },
         ],
         codeBlock: {
           language: 'bash',
-          code: `# Marketing site quick-start
-git clone git@github.com:nctv/marketing-site.git
-cd marketing-site && npm install
-cp .env.example .env.local
-# Add CONTENTFUL_SPACE_ID + CONTENTFUL_ACCESS_TOKEN
-npm run dev`,
+          code: `# Astro project quick-start
+git clone git@github.com:nctv/<project>.git
+cd <project> && npm install
+npm run dev   # http://localhost:4321
+
+# Svelte / SvelteKit quick-start
+git clone git@github.com:nctv/<project>.git
+cd <project> && npm install
+npm run dev   # http://localhost:5173`,
         },
       },
     },
@@ -204,113 +243,155 @@ npm run dev`,
       content: {
         type: 'folder-arch',
         cards: [
-          { title: 'app/ (Next.js)', body: 'App Router pages and layouts. Each route segment is a folder with page.tsx, layout.tsx, and loading.tsx. All data fetching is server-side via fetch() with ISR revalidation.' },
-          { title: 'components/', body: 'Shared UI components used across multiple pages. Presentational only — no data fetching. Styled with Tailwind utility classes directly (no BEM/SCSS — this is not an Angular project).' },
-          { title: 'lib/', body: 'CMS clients (Contentful), utility functions, and type definitions. All external API calls live here, keeping components free of fetch logic.' },
-          { title: 'wp-content/themes/nctv-*/ (WordPress)', body: 'Child theme directory containing functions.php, ACF block definitions, and Twig/PHP templates. All custom logic lives in the nctv-core plugin, not the theme.' },
+          { title: 'No fixed structure', body: 'There is no single folder structure across all projects. Structure depends on the framework used, project type, and client requirements. Always follow the structure of the existing project you are working in.' },
+          { title: 'components/', body: 'Reusable UI components shared across pages. Each component handles one UI concern. Avoid duplicating markup — if you write the same HTML twice, it belongs in a component.' },
+          { title: 'pages/ or routes/', body: 'Route-level page files. In Astro these are .astro files; in SvelteKit they are +page.svelte files. Pages compose components — they do not contain raw HTML blocks.' },
+          { title: 'data/ or lib/', body: 'JSON content files (for static data) and CMS client utilities (for PageCMS or other dynamic sources). All external data access lives here, keeping components and pages clean.' },
         ],
         codeBlock: {
           language: 'bash',
-          code: `# Next.js structure
-marketing-site/
-├── app/
-│   ├── (marketing)/
-│   │   ├── page.tsx
-│   │   └── about/page.tsx
-│   └── layout.tsx
-├── components/
-│   ├── hero.tsx
-│   └── nav.tsx
-└── lib/
-    └── contentful.ts
+          code: `# Astro (franchisee templates / marketing sites)
+<project>/
+├── src/
+│   ├── components/      # Hero.astro, Nav.astro, CTA.astro
+│   ├── layouts/         # BaseLayout.astro
+│   ├── pages/           # index.astro, about.astro
+│   └── data/            # site.json (client config)
+├── public/
+└── astro.config.mjs
 
-# WordPress structure
-host-portal-wp/
-└── wp-content/
-    ├── themes/nctv-host/
-    └── plugins/nctv-core/`,
+# Svelte / SvelteKit (internal tools / dashboards)
+<project>/
+├── src/
+│   ├── routes/          # +layout.svelte, +page.svelte
+│   ├── lib/
+│   │   ├── components/  # Shared Svelte components
+│   │   └── stores/      # Svelte writable stores
+│   └── app.html
+└── svelte.config.js
+
+# General rule: organise components, pages, and data separately.
+# Keep files clean and easy to navigate.`,
         },
       },
     },
     {
       id: 'wd-coding-patterns',
-      label: 'Coding Patterns',
+      label: 'Dev Principles & Patterns',
       num: '04',
       content: {
         type: 'coding-patterns',
         patterns: [
           {
-            title: 'Server Components with ISR (Next.js)',
-            description: 'Fetch CMS content in async React Server Components. Use next/cache revalidation tags instead of time-based ISR where fine-grained cache invalidation is needed.',
+            title: 'Recreate, Do Not Copy',
+            description: 'Study reference websites to understand layout, structure, and interactions. Then rebuild using your own implementation. Never copy-paste source code from a reference site.',
+            codeBlock: {
+              language: 'bash',
+              code: `# The correct approach when given a reference design:
+# 1. Open the reference in the browser
+# 2. Inspect the layout using DevTools → identify grid/flex structure
+# 3. Note the spacing, typography, and color patterns
+# 4. Close the source — open your editor and implement from understanding
+# 5. Your output should match the visual result, not the source code`,
+            },
+            callout: { type: 'warning', title: 'This is a core principle', body: 'Copy-pasting source code bypasses the learning process and produces unmaintainable output. Study the what and why, then implement your own version.' },
+          },
+          {
+            title: 'Component-Based Development',
+            description: 'Break every UI into reusable components. If a block of markup appears more than once — or could appear on multiple pages — it belongs in a component file.',
+            codeBlock: {
+              language: 'html',
+              code: `---
+// ✅ Correct — src/components/FeatureCard.astro
+interface Props {
+  title: string;
+  body: string;
+  icon: string;
+}
+const { title, body, icon } = Astro.props;
+---
+
+<div class="feature-card">
+  <span>{icon}</span>
+  <h3>{title}</h3>
+  <p>{body}</p>
+</div>
+
+<!-- Usage in page -->
+<FeatureCard title="Fast" body="Built with Astro." icon="⚡" />`,
+            },
+            callout: { type: 'tip', title: 'Avoid code duplication', body: 'If you find yourself writing the same HTML structure twice, stop and extract it into a component. Components are the foundation of maintainable projects.' },
+          },
+          {
+            title: 'Reactive State with Svelte Stores',
+            description: 'For Svelte internal tools, manage shared state with writable stores from svelte/store. Keep stores in lib/stores/ and import them into components — never manage state in page files directly.',
             codeBlock: {
               language: 'typescript',
-              code: `// app/(marketing)/blog/[slug]/page.tsx
-import { getPost } from '@/lib/contentful';
+              code: `// lib/stores/projects.ts
+import { writable } from 'svelte/store';
 
-export default async function BlogPost({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<JSX.Element> {
-  const post = await getPost(params.slug);
-
-  return (
-    <article>
-      <h1>{post.title}</h1>
-      <p>{post.body}</p>
-    </article>
-  );
+export interface Project {
+  id: string;
+  name: string;
+  stage: 'analyze' | 'plan' | 'build' | 'test' | 'refine';
 }
 
-export const revalidate = 3600; // 1-hour ISR`,
-            },
-            callout: { type: 'tip', title: 'Prefer Server Components', body: 'Only add \'use client\' when you need browser APIs or event handlers. Data fetching, SEO metadata, and layout should stay server-side.' },
-          },
-          {
-            title: 'ACF Block Registration (WordPress)',
-            description: 'Register all custom Gutenberg blocks via acf_register_block_type() in the nctv-core plugin. Block templates live in the theme\'s blocks/ folder as PHP partials.',
-            codeBlock: {
-              language: 'php',
-              code: `// plugins/nctv-core/blocks.php
-add_action('acf/init', function (): void {
-  acf_register_block_type([
-    'name'            => 'nctv-feature-grid',
-    'title'           => 'Feature Grid',
-    'render_template' => get_template_directory()
-                         . '/blocks/feature-grid.php',
-    'category'        => 'nctv',
-    'icon'            => 'grid-view',
-    'keywords'        => ['features', 'grid'],
-  ]);
-});`,
-            },
-            callout: { type: 'warning', title: 'No logic in templates', body: 'Block PHP templates should only call get_field() and echo output. All business logic belongs in the nctv-core plugin, not the theme template.' },
-          },
-          {
-            title: 'Metadata & SEO (Next.js)',
-            description: 'Export a generateMetadata() function from every page to provide dynamic Open Graph, Twitter card, and canonical URL metadata.',
-            codeBlock: {
-              language: 'typescript',
-              code: `import type { Metadata } from 'next';
-import { getPost } from '@/lib/contentful';
+export const projects = writable<Project[]>([]);
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const post = await getPost(params.slug);
-  return {
-    title: post.title,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      images: [post.heroImage.url],
-    },
-    alternates: { canonical: \`/blog/\${params.slug}\` },
-  };
-}`,
+// In a component — subscribe automatically via $
+// <script>
+import { projects } from '$lib/stores/projects';
+// </script>
+// {#each $projects as project}
+//   <ProjectCard {project} />
+// {/each}`,
             },
+          },
+          {
+            title: 'AI-Assisted Development',
+            description: 'Use Claude Code, Codex, and Kiro throughout the workflow to accelerate development. AI tools are meant to support understanding, not replace it — always review and understand generated code before committing.',
+            codeBlock: {
+              language: 'bash',
+              code: `# How to use AI tools effectively in this team:
+
+# Claude Code (IDE) — best for:
+# - Refactoring existing components
+# - Debugging layout issues
+# - Writing repetitive boilerplate (JSON schemas, config files)
+
+# Codex — best for:
+# - Generating starter component code from a description
+# - Converting designs into initial markup
+
+# Kiro — best for:
+# - Inline suggestions while actively writing code
+# - Quick lookups without leaving the editor
+
+# Rule: AI tools reduce repetitive tasks and improve speed.
+# You are still responsible for understanding every line you ship.`,
+            },
+            callout: { type: 'info', title: 'AI supports, not replaces', body: 'AI tools are integrated across planning, development, testing, and deployment. The goal is faster, higher-quality output — not removing the developer from the process.' },
+          },
+          {
+            title: 'Debugging Practice',
+            description: 'When layout or styling issues occur, follow a structured debugging process. Avoid rewriting entire sections — isolate the problem first.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Structured debugging steps:
+# 1. Open browser DevTools (F12)
+# 2. Select the broken element with the Inspector
+# 3. Check the layout system — is it Flexbox or Grid?
+#    → Look for display: flex / display: grid in Styles panel
+# 4. Review applied classes and computed styles
+#    → Check for conflicting or overridden rules
+# 5. Fix one issue at a time — do not rewrite the whole section
+
+# Common Flexbox/Grid checks:
+# - Is the parent set to flex/grid? (not the child)
+# - Are gap / align-items / justify-content set correctly?
+# - Are width/height constraints causing overflow?`,
+            },
+            callout: { type: 'tip', title: 'Fix step by step', body: 'Avoid the temptation to rewrite entire components when debugging. Identify the root cause using DevTools, make the minimal fix, and verify before moving on.' },
           },
         ],
       },
@@ -324,12 +405,16 @@ export async function generateMetadata({
         table: {
           headers: ['❌ Mistake', '✅ Correct Approach'],
           rows: [
-            { cells: ["Adding 'use client' to every component", 'Only add use client when browser APIs or event handlers are needed'] },
-            { cells: ['Fetching CMS data inside a Client Component', 'Fetch in an async Server Component and pass data as props'] },
-            { cells: ['Hard-coding copy text in JSX', 'Drive all copy from the Contentful CMS so marketing can update without a deploy'] },
-            { cells: ['Business logic in WordPress block templates', 'Keep templates as pure output; move logic to the nctv-core plugin'] },
-            { cells: ['Pushing directly to the WordPress production DB', 'Use WP Engine\'s push/pull workflow — always pull prod → local, push local → staging'] },
-            { cells: ['Missing revalidate export on Next.js pages', 'Set export const revalidate = N or use revalidateTag() for cache invalidation'] },
+            { cells: ['Copying source code from reference websites', 'Study the layout and structure, then recreate with your own implementation'] },
+            { cells: ['Duplicating markup across pages instead of using components', 'Extract repeated UI into reusable components in components/'] },
+            { cells: ['Building desktop-only layouts', 'Design and test at 375px (mobile), 768px (tablet), and 1440px (desktop) from the start'] },
+            { cells: ['Cluttered navigation with too many items', 'Keep navigation simple, organised, and free of broken links'] },
+            { cells: ['Inconsistent button styles or missing hover states', 'Use consistent component-based button styles with clear, non-misleading hover states'] },
+            { cells: ['Overcrowded layouts with no breathing room', 'Maintain consistent spacing — avoid overcrowding and ensure visual clarity'] },
+            { cells: ['Rewriting entire sections when debugging', 'Use DevTools to isolate the issue, check Flexbox/Grid, and fix step by step'] },
+            { cells: ['Submitting without a deployed URL or repo', 'Every task must include a GitHub repo, a live Vercel deploy, and short documentation'] },
+            { cells: ['Using AI output without understanding it', 'Review and understand every line of AI-generated code before committing it'] },
+            { cells: ['Choosing a framework out of habit, not fit', 'Select the right tool per project: Astro for static, Svelte for reactive tools, WordPress for client CMS'] },
           ],
         },
       },
