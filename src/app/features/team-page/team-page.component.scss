@@ -6,7 +6,10 @@
 
 .team-page {
   &__content {
-    @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px]; // Increased right padding for rail clearance
+    @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px];
+
+    @media (max-width: 1024px) { @apply pr-[48px]; }
+    @media (max-width: 768px)  { @apply pt-[24px] pr-[20px] pb-[60px] pl-[20px]; }
   }
 
   &__section {
@@ -31,6 +34,8 @@
 
   &__cards-grid {
     @apply grid gap-4 grid-cols-2;
+
+    @media (max-width: 768px) { @apply grid-cols-1; }
   }
 
   // ── Coding Patterns ───────────────────────────────────────────────────────

@@ -2,7 +2,9 @@
 <section class="hero" [style.background]="gradient()">
   <div class="hero__inner">
     <div class="hero__badge" [style.background]="color() + '22'" [style.border-color]="color() + '55'">
-      <span class="hero__badge-icon">{{ icon() }}</span>
+      <span class="hero__badge-icon" [style.color]="color()">
+        <lucide-icon [img]="teamIcon()" [size]="15" />
+      </span>
       <span class="hero__badge-label" [style.color]="color()">{{ teamLabel() }} Team</span>
     </div>
     <h1 class="hero__title">{{ teamLabel() }} Documentation</h1>

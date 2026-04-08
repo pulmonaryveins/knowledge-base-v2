@@ -6,7 +6,9 @@
 
 .apps-page {
   &__content {
-    @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px]; // Increased right padding for rail clearance
+    @apply flex flex-col gap-12 pt-[40px] pr-[48px] pb-[80px] pl-[48px];
+
+    @media (max-width: 768px) { @apply pt-[24px] pr-[20px] pb-[60px] pl-[20px]; }
   }
 
   &__section {
@@ -17,6 +19,8 @@
 
   &__apps-grid {
     @apply grid gap-4 grid-cols-2;
+
+    @media (max-width: 768px) { @apply grid-cols-1; }
   }
 
   // ── Projects by Team ──────────────────────────────────────────────────────
@@ -91,6 +95,9 @@
 
   &__projects {
     @apply grid gap-3 grid-cols-3;
+
+    @media (max-width: 768px) { @apply grid-cols-1; }
+    @media (max-width: 1024px) and (min-width: 769px) { @apply grid-cols-2; }
   }
 }
 

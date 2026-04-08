@@ -2,14 +2,44 @@
 
 // ── FILE: src/app/shared/components/sidebar/sidebar.component.scss ──
 
-:host { @apply block w-[268px] shrink-0; }
+:host {
+  @apply block w-[268px] shrink-0;
+
+  // On mobile the sidebar is a fixed overlay — remove its layout footprint
+  @media (max-width: 768px) { @apply w-0; }
+}
+
+// ── Mobile hamburger (hidden on desktop) ─────────────────────────────────────
+
+.sidebar__hamburger {
+  @apply hidden fixed top-[14px] left-[14px] z-[200] items-center justify-center w-[40px] h-[40px] rounded-[10px] bg-[var(--navy)] text-white border border-[rgba(255,255,255,0.1)] cursor-pointer transition-opacity duration-[0.15s];
+
+  @media (max-width: 768px) { @apply flex; }
+}
+
+// ── Mobile backdrop ───────────────────────────────────────────────────────────
+
+.sidebar__backdrop {
+  @apply fixed inset-0 z-[149] bg-[rgba(0,0,0,0.45)] backdrop-blur-[2px];
+  @media (min-width: 769px) { @apply hidden; }
+}
+
+// ── Sidebar shell ─────────────────────────────────────────────────────────────
 
 .sidebar {
-  @apply flex flex-col w-[268px] h-screen fixed top-0 left-0 bg-[var(--navy)] border-r border-[rgba(255,255,255,0.07)] overflow-y-auto overflow-x-hidden z-[100];
+  @apply flex flex-col w-[268px] h-screen fixed top-0 left-0 bg-[var(--navy)] border-r border-[rgba(255,255,255,0.07)] overflow-y-auto overflow-x-hidden z-[150];
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 
   &::-webkit-scrollbar { @apply w-[4px]; }
   &::-webkit-scrollbar-track { @apply bg-transparent; }
   &::-webkit-scrollbar-thumb { @apply bg-[rgba(255,255,255,.12)] rounded-[2px]; }
+
+  // On mobile: slide off-screen by default, slide in when --open
+  @media (max-width: 768px) {
+    transform: translateX(-100%);
+
+    &--open { transform: translateX(0); }
+  }
 
   // ── Brand ──────────────────────────────────────────────────────────────
 
@@ -24,7 +54,7 @@
   }
 
   &__brand-text {
-    @apply flex flex-col;
+    @apply flex flex-col flex-1;
   }
 
   &__brand-name {
@@ -33,6 +63,12 @@
 
   &__brand-sub {
     @apply font-['DM_Mono',_monospace] text-[9px] text-[rgba(255,255,255,0.35)] tracking-[0.12em] uppercase;
+  }
+
+  &__close {
+    @apply hidden items-center justify-center w-[28px] h-[28px] rounded-[6px] bg-transparent border-0 text-[rgba(255,255,255,0.4)] cursor-pointer hover:bg-[rgba(255,255,255,0.08)] transition-colors duration-[0.15s] ml-auto;
+
+    @media (max-width: 768px) { @apply flex; }
   }
 
   // ── Search ─────────────────────────────────────────────────────────────
@@ -45,7 +81,9 @@
     @apply flex items-center gap-2 w-full cursor-pointer py-[8px] px-[12px] rounded-[8px] bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.09)] transition-colors duration-[0.15s] hover:bg-[rgba(255,255,255,0.1)];
   }
 
-  &__search-icon { @apply text-[13px]; }
+  &__search-icon {
+    @apply text-[rgba(255,255,255,0.35)] flex items-center;
+  }
 
   &__search-placeholder {
     @apply flex-1 text-left text-[12.5px] text-[rgba(255,255,255,0.3)];
@@ -76,11 +114,12 @@
       @apply bg-[rgba(255,255,255,0.09)];
 
       .sidebar__team-name { @apply text-[#ffffff]; }
+      .sidebar__team-icon { @apply opacity-100; }
     }
   }
 
-  &__team-dot {
-    @apply shrink-0 rounded-full w-[8px] h-[8px];
+  &__team-icon {
+    @apply shrink-0 flex items-center opacity-70 transition-opacity duration-[0.15s];
   }
 
   &__team-name {
@@ -88,7 +127,7 @@
   }
 
   &__team-chevron {
-    @apply text-[13px] text-[rgba(255,255,255,0.35)];
+    @apply text-[rgba(255,255,255,0.35)] flex items-center;
   }
 
   // ── Project Sub-links ──────────────────────────────────────────────────
@@ -107,7 +146,9 @@
     &--active { @apply bg-[rgba(255,255,255,0.06)]; }
   }
 
-  &__project-icon { @apply text-[12px]; }
+  &__project-icon {
+    @apply flex items-center text-[rgba(255,255,255,0.3)] shrink-0;
+  }
 
   &__project-name {
     @apply flex-1 text-[12px] text-[rgba(255,255,255,0.5)] font-['DM_Sans',_sans-serif];

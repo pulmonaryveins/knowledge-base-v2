@@ -7,17 +7,17 @@
 .shell {
   @apply flex min-h-screen bg-[var(--bg)];
 
-  // The sidebar and rail take up space in the flex layout via their :host width,
-  // so we don't need additional margins here.
   &__main {
     @apply flex-1 min-w-0;
   }
 
+  // ── Right Rail ──────────────────────────────────────────────────────────
+  // Fixed to the viewport right edge — always follows the user while scrolling.
+  // The inner right-rail component handles the hover-reveal animation.
   &__rail {
-    @apply fixed top-0 right-0 w-[216px] h-screen overflow-y-auto overflow-x-hidden pt-0;
+    @apply fixed top-0 right-0 w-[216px] h-screen z-[90];
 
-    &::-webkit-scrollbar { width: 3px; }
-    &::-webkit-scrollbar-track { background: transparent; }
-    &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    // Hide on tablet and below
+    @media (max-width: 1024px) { @apply hidden; }
   }
 }

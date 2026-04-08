@@ -7,30 +7,36 @@
 .hero {
   @apply w-full relative overflow-hidden py-[64px] px-[48px] min-h-[240px] transition-all duration-[0.3s] ease-in-out;
 
-  // Add a subtle glass effect overlay to the bottom
+  @media (max-width: 768px) {
+    @apply py-[40px] px-[20px] min-h-[180px];
+  }
+
   &::after {
     @apply content-[''] absolute bottom-0 left-0 right-0 h-[1px] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)];
   }
 
   &__inner {
-    @apply flex flex-col gap-6 max-w-[1200px] pr-[240px] relative z-[2]; // Clearance for the right rail TOC
+    @apply flex flex-col gap-6 max-w-[1200px] relative z-[2];
   }
 
   &__badge {
     @apply inline-flex items-center gap-2 self-start py-[6px] px-[14px] rounded-full border border-solid backdrop-blur-[8px] transition-transform duration-[0.2s] ease-in-out hover:-translate-y-[1px];
 
-    &-icon { @apply text-[14px]; }
+    &-icon { @apply flex items-center; }
+
     &-label {
       @apply font-['Syne',_sans-serif] text-[11px] font-extrabold uppercase tracking-[0.1em];
     }
   }
 
   &__title {
-    @apply font-bold m-0 font-['Syne',_sans-serif] text-[48px] text-[#ffffff] leading-[1.1] tracking-[-0.02em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.1)]; // Larger title
+    @apply font-bold m-0 font-['Syne',_sans-serif] text-[48px] text-[#ffffff] leading-[1.1] tracking-[-0.02em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.1)];
+
+    @media (max-width: 768px) { @apply text-[32px]; }
   }
 
   &__subtitle {
-    @apply m-0 text-[17px] text-[rgba(255,255,255,0.7)] leading-[1.6] font-['DM_Sans',_sans-serif] max-w-[600px]; // Changed to match body for better readability
+    @apply m-0 text-[17px] text-[rgba(255,255,255,0.7)] leading-[1.6] font-['DM_Sans',_sans-serif] max-w-[600px];
   }
 
   &__stats {

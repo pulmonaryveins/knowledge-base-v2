@@ -1,5 +1,16 @@
 <!-- FILE: src/app/shared/components/sidebar/sidebar.component.html -->
-<aside class="sidebar">
+
+<!-- Mobile hamburger trigger (visible only on small screens) -->
+<button class="sidebar__hamburger" (click)="toggleMobile()" aria-label="Open navigation">
+  <lucide-icon [img]="MenuIcon" [size]="20" />
+</button>
+
+<!-- Backdrop for mobile -->
+@if (mobileOpen()) {
+  <div class="sidebar__backdrop" (click)="closeMobile()"></div>
+}
+
+<aside class="sidebar" [class.sidebar--open]="mobileOpen()">
   <!-- Brand -->
   <div class="sidebar__brand">
     <div class="sidebar__logo">
@@ -9,12 +20,16 @@
       <span class="sidebar__brand-name">NCompassTV</span>
       <span class="sidebar__brand-sub">DEV PORTAL</span>
     </div>
+    <!-- Close button (mobile only) -->
+    <button class="sidebar__close" (click)="closeMobile()" aria-label="Close navigation">
+      <lucide-icon [img]="CloseIcon" [size]="16" />
+    </button>
   </div>
 
   <!-- Search Button -->
   <div class="sidebar__search-wrap">
     <button class="sidebar__search-btn" (click)="openSearch()">
-      <span class="sidebar__search-icon">🔍</span>
+      <lucide-icon class="sidebar__search-icon" [img]="SearchIcon" [size]="13" />
       <span class="sidebar__search-placeholder">Search the portal…</span>
       <kbd class="sidebar__search-kbd">⌘K</kbd>
     </button>
@@ -31,10 +46,14 @@
           [class.sidebar__team-btn--active]="team.key === activeKey()"
           (click)="switchTeam(team.key)"
         >
-          <span class="sidebar__team-dot" [style.background]="team.color"></span>
+          <span class="sidebar__team-icon" [style.color]="team.color">
+            <lucide-icon [img]="teamIcon(team.key)" [size]="15" />
+          </span>
           <span class="sidebar__team-name">{{ team.label }}</span>
           @if (team.key === activeKey()) {
-            <span class="sidebar__team-chevron">▾</span>
+            <span class="sidebar__team-chevron">
+              <lucide-icon [img]="ChevronDownIcon" [size]="13" />
+            </span>
           }
         </button>
 
@@ -48,7 +67,9 @@
                   [class.sidebar__project-btn--active]="project.id === activeProjectId()"
                   (click)="toggleProject(project.id)"
                 >
-                  <span class="sidebar__project-icon">{{ project.icon }}</span>
+                  <span class="sidebar__project-icon">
+                    <lucide-icon [img]="ProjectIcon" [size]="12" />
+                  </span>
                   <span class="sidebar__project-name">{{ project.name }}</span>
                   <app-status-badge [status]="project.status" />
                 </button>
