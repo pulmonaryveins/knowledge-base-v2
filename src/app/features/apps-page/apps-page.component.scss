@@ -52,7 +52,7 @@
   }
 
   &__icon {
-    @apply text-[22px];
+    @apply flex items-center text-[var(--navy)];
   }
 
   &__name {
@@ -85,8 +85,8 @@
     @apply flex items-center gap-2;
   }
 
-  &__dot {
-    @apply rounded-full flex-shrink-0 w-[10px] h-[10px];
+  &__icon {
+    @apply flex items-center shrink-0;
   }
 
   &__name {
@@ -107,7 +107,7 @@
   @apply flex items-start gap-3 p-4 rounded-xl border bg-[var(--card)] border-[var(--border)];
 
   &__icon {
-    @apply text-[18px] shrink-0 mt-[2px];
+    @apply flex items-center shrink-0 mt-[2px] text-[var(--muted)];
   }
 
   &__info {

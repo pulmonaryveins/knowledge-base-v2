@@ -16,14 +16,39 @@
   &__dot {
     @apply inline-block rounded-full w-[10px] h-[10px];
 
-    &--red { @apply bg-[#ff5f57]; }
+    &--red    { @apply bg-[#ff5f57]; }
     &--yellow { @apply bg-[#febc2e]; }
-    &--green { @apply bg-[#28c840]; }
+    &--green  { @apply bg-[#28c840]; }
   }
 
   &__lang {
-    @apply font-['DM_Mono',_monospace] text-[10px] text-[rgba(255,255,255,0.3)] lowercase;
+    @apply font-['DM_Mono',_monospace] text-[10px] text-[rgba(255,255,255,0.3)] lowercase flex-1 text-center;
   }
+
+  // ── Copy button ────────────────────────────────────────────────────────
+
+  &__copy {
+    @apply flex items-center gap-[5px] cursor-pointer border-0 rounded-[6px] py-[4px] px-[8px];
+    @apply font-['DM_Mono',_monospace] text-[10px];
+    @apply bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.35)];
+    @apply transition-all duration-[0.15s] ease-in-out;
+
+    &:hover {
+      @apply bg-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.7)];
+    }
+
+    // Copied state — green accent
+    &--done {
+      @apply bg-[rgba(141,203,44,0.12)] text-[#8DCB2C];
+      pointer-events: none;
+    }
+  }
+
+  &__copy-label {
+    @apply leading-none;
+  }
+
+  // ── Code area ──────────────────────────────────────────────────────────
 
   &__pre {
     @apply m-0 overflow-x-auto py-[16px] px-[20px];

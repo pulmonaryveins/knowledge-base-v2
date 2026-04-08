@@ -7,7 +7,7 @@ export const backendTeam: Team = {
   label: 'Backend',
   color: '#7C3AED',
   gradient: 'linear-gradient(135deg, #1e1035, #3b1d6e)',
-  icon: '🔧',
+  icon: 'server',
   subtitle: 'NestJS Monorepo · AWS Lambda (SAM) · TypeORM · MySQL · GraphQL',
   stats: [
     { label: 'API Apps', value: '3' },
@@ -21,7 +21,7 @@ export const backendTeam: Team = {
       name: 'ntv360-api',
       description: 'Core NestJS REST API — the primary HTTP interface for the NTV360 platform.',
       status: 'Live',
-      icon: '⚡',
+      icon: 'zap',
       teamKey: 'backend',
       teamColor: '#7C3AED',
       doc: {
@@ -74,7 +74,7 @@ export const backendTeam: Team = {
       name: 'ntv360-graphql',
       description: 'GraphQL API app within the NestJS monorepo for flexible client queries.',
       status: 'Dev',
-      icon: '🔮',
+      icon: 'network',
       teamKey: 'backend',
       teamColor: '#7C3AED',
       doc: {
@@ -115,7 +115,7 @@ export const backendTeam: Team = {
       name: 'ntv360-websocket',
       description: 'Real-time WebSocket gateway for device health and live event streaming.',
       status: 'Live',
-      icon: '🔌',
+      icon: 'plug',
       teamKey: 'backend',
       teamColor: '#7C3AED',
       doc: {

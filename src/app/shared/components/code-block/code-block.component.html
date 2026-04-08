@@ -7,6 +7,21 @@
       <span class="code-block__dot code-block__dot--green"></span>
     </div>
     <span class="code-block__lang">{{ data().language }}</span>
+    <button
+      class="code-block__copy"
+      [class.code-block__copy--done]="copied()"
+      (click)="copyCode()"
+      [attr.aria-label]="copied() ? 'Copied!' : 'Copy code'"
+      title="Copy"
+    >
+      @if (copied()) {
+        <lucide-icon [img]="CheckIcon" [size]="13" />
+        <span class="code-block__copy-label">Copied!</span>
+      } @else {
+        <lucide-icon [img]="CopyIcon" [size]="13" />
+        <span class="code-block__copy-label">Copy</span>
+      }
+    </button>
   </div>
   <pre class="code-block__pre"><code class="code-block__code">{{ data().code }}</code></pre>
 </div>

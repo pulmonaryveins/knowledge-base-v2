@@ -18,7 +18,9 @@
         @for (app of apps(); track app.name) {
           <div class="app-card">
             <div class="app-card__header">
-              <span class="app-card__icon">{{ app.icon }}</span>
+              <span class="app-card__icon">
+                <lucide-icon [img]="appIcon(app.icon)" [size]="22" />
+              </span>
               <app-status-badge [status]="app.status" />
             </div>
             <h3 class="app-card__name">{{ app.name }}</h3>
@@ -43,13 +45,17 @@
         @for (team of teams(); track team.key) {
           <div class="team-block">
             <div class="team-block__header">
-              <span class="team-block__dot" [style.background]="team.color"></span>
+              <span class="team-block__icon" [style.color]="team.color">
+                <lucide-icon [img]="teamIcon(team.key)" [size]="16" />
+              </span>
               <h3 class="team-block__name">{{ team.label }}</h3>
             </div>
             <div class="team-block__projects">
               @for (project of team.projects; track project.id) {
                 <div class="mini-project-card">
-                  <span class="mini-project-card__icon">{{ project.icon }}</span>
+                  <span class="mini-project-card__icon">
+                    <lucide-icon [img]="appIcon(project.icon)" [size]="16" />
+                  </span>
                   <div class="mini-project-card__info">
                     <span class="mini-project-card__name">{{ project.name }}</span>
                     <span class="mini-project-card__desc">{{ project.description }}</span>
@@ -80,7 +86,9 @@
             @for (app of apps(); track app.name) {
               <tr class="matrix__row">
                 <td class="matrix__td matrix__td--app">
-                  <span class="matrix__app-icon">{{ app.icon }}</span>
+                  <span class="matrix__app-icon">
+                    <lucide-icon [img]="appIcon(app.icon)" [size]="14" />
+                  </span>
                   {{ app.name }}
                 </td>
                 @for (team of matrixTeams(); track team.key) {

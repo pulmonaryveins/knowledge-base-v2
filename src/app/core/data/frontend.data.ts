@@ -7,7 +7,7 @@ export const frontendTeam: Team = {
   label: 'Frontend',
   color: '#8DCB2C',
   gradient: 'linear-gradient(135deg, #091635, #1a3366)',
-  icon: '⚡',
+  icon: 'monitor',
   subtitle: 'Angular 21 · Tailwind CSS v4 · TypeScript 5 · Zoneless Signals',
   stats: [
     { label: 'Components', value: '84' },
@@ -21,7 +21,7 @@ export const frontendTeam: Team = {
       name: 'Dashboard',
       description: 'Main operator dashboard — analytics, schedules, and device management.',
       status: 'Live',
-      icon: '📊',
+      icon: 'layout-dashboard',
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {
@@ -73,7 +73,7 @@ export const frontendTeam: Team = {
       name: 'Channels App',
       description: 'Channel lineup builder and preview tool for content managers.',
       status: 'Dev',
-      icon: '📺',
+      icon: 'tv',
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {
@@ -114,7 +114,7 @@ export const frontendTeam: Team = {
       name: 'Host Revamp',
       description: 'Redesigned host portal with updated UX and Angular 21 migration.',
       status: 'Revamp',
-      icon: '🎨',
+      icon: 'paintbrush',
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {
@@ -154,7 +154,7 @@ export const frontendTeam: Team = {
       name: 'Screen Player',
       description: 'Browser-based kiosk player rendering scheduled content on displays.',
       status: 'Live',
-      icon: '🖥️',
+      icon: 'monitor',
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {

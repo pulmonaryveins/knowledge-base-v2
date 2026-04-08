@@ -1,6 +1,7 @@
 // ── FILE: src/app/features/apps-page/apps-page.component.ts ──
 
 import { Component, computed, inject } from '@angular/core';
+import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 import { DocsDataService } from '../../core/services/docs-data.service';
 import { NavigationService } from '../../core/services/navigation.service';
 import { AppEntry, Team } from '../../core/models';
@@ -8,62 +9,43 @@ import { HeroComponent } from '../../shared/components/hero/hero.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { InfoCardComponent } from '../../shared/components/info-card/info-card.component';
+import { getAppIcon, getTeamIcon } from '../../core/utils/icons';
 
-/**
- * AppsPageComponent renders the "Apps & Projects" page.
- * It shows an all-apps grid, projects-by-team blocks, an ownership matrix,
- * and shared infrastructure cards.
- * Smart component — injects DocsDataService and NavigationService.
- */
 @Component({
   selector: 'app-apps-page',
   standalone: true,
-  imports: [HeroComponent, SectionHeaderComponent, StatusBadgeComponent, InfoCardComponent],
+  imports: [
+    HeroComponent,
+    SectionHeaderComponent,
+    StatusBadgeComponent,
+    InfoCardComponent,
+    LucideAngularModule,
+  ],
   templateUrl: './apps-page.component.html',
   styleUrl: './apps-page.component.scss',
 })
 export class AppsPageComponent {
-  /** Data service for app entries and team data */
   private readonly _docsData = inject(DocsDataService);
-  /** Navigation service for the active team (used for hero) */
   private readonly _nav = inject(NavigationService);
 
-  /** The Apps & Projects team object (for hero) */
-  protected readonly appsTeam = computed<Team>(
-    () => this._nav.activeTeam()
-  );
-
-  /** All application entries */
-  protected readonly apps = computed<ReadonlyArray<AppEntry>>(
-    () => this._docsData.getAppEntries()
-  );
-
-  /** All teams (excluding the Apps meta-team) for the by-team section */
+  protected readonly appsTeam = computed<Team>(() => this._nav.activeTeam());
+  protected readonly apps = computed<ReadonlyArray<AppEntry>>(() => this._docsData.getAppEntries());
   protected readonly teams = computed<ReadonlyArray<Team>>(() =>
-    this._docsData.getTeams().filter((t) => t.key !== 'apps')
+    this._docsData.getTeams().filter((t) => t.key !== 'rd')
   );
+  protected readonly matrixTeams = computed<ReadonlyArray<Team>>(() => this.teams());
 
-  /** Unique team keys for the ownership matrix columns */
-  protected readonly matrixTeams = computed<ReadonlyArray<Team>>(() =>
-    this.teams()
-  );
-
-  /**
-   * Return whether the given team owns the given app.
-   * @param app - The app entry to check
-   * @param teamKey - The team key to match against
-   * @returns True when the team owns the app
-   */
-  protected owns(app: AppEntry, teamKey: string): boolean {
-    return app.ownerTeam === teamKey;
+  /** Resolve a lucide icon for an app/project icon name string */
+  protected appIcon(name: string): LucideIconData {
+    return getAppIcon(name);
   }
 
-  /**
-   * Filter apps to only those owned by the given team key.
-   * @param teamKey - The team key to filter by
-   * @returns Subset of apps owned by that team
-   */
-  protected appsForTeam(teamKey: string): ReadonlyArray<AppEntry> {
-    return this.apps().filter((a) => a.ownerTeam === teamKey);
+  /** Resolve a lucide icon for a team key */
+  protected teamIcon(key: string): LucideIconData {
+    return getTeamIcon(key);
+  }
+
+  protected owns(app: AppEntry, teamKey: string): boolean {
+    return app.ownerTeam === teamKey;
   }
 }

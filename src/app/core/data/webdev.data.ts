@@ -7,7 +7,7 @@ export const webdevTeam: Team = {
   label: 'Web Development',
   color: '#F97316',
   gradient: 'linear-gradient(135deg, #3d1500, #7c2d12)',
-  icon: '🌐',
+  icon: 'globe',
   subtitle: 'Astro · Svelte · Tailwind CSS · AI-Assisted Development · Multi-framework',
   stats: [
     { label: 'Live Sites', value: '6' },
@@ -21,7 +21,7 @@ export const webdevTeam: Team = {
       name: 'Franchisee / Dealer Templates',
       description: 'Reusable Astro website templates built for franchisee and dealer clients under a unified structure.',
       status: 'Live',
-      icon: '🏗️',
+      icon: 'construction',
       teamKey: 'webdev',
       teamColor: '#F97316',
       doc: {
@@ -73,7 +73,7 @@ export const webdevTeam: Team = {
       name: 'Internal Tools Dashboard',
       description: 'Svelte-powered internal dashboard for team tooling, workflow tracking, and automation monitoring.',
       status: 'Dev',
-      icon: '⚙️',
+      icon: 'settings',
       teamKey: 'webdev',
       teamColor: '#F97316',
       doc: {
@@ -118,7 +118,7 @@ export const webdevTeam: Team = {
       name: 'Client Website Projects',
       description: 'Complete multi-page websites and landing pages built for clients using the appropriate framework per project.',
       status: 'Live',
-      icon: '🖥️',
+      icon: 'monitor',
       teamKey: 'webdev',
       teamColor: '#F97316',
       doc: {

@@ -2,15 +2,17 @@
 <div class="proj-card" [class.proj-card--open]="isOpen()" [id]="'project-' + project().id">
   <!-- Trigger Row -->
   <button class="proj-card__trigger" (click)="toggle()">
-    <span class="proj-card__icon" [style.background]="project().teamColor + '22'">
-      {{ project().icon }}
+    <span class="proj-card__icon" [style.background]="project().teamColor + '22'" [style.color]="project().teamColor">
+      <lucide-icon [img]="projectIcon(project().icon)" [size]="18" />
     </span>
     <div class="proj-card__info">
       <span class="proj-card__name">{{ project().name }}</span>
       <span class="proj-card__desc">{{ project().description }}</span>
     </div>
     <app-status-badge [status]="project().status" />
-    <span class="proj-card__chevron" [class.proj-card__chevron--open]="isOpen()">▶</span>
+    <span class="proj-card__chevron" [class.proj-card__chevron--open]="isOpen()">
+      <lucide-icon [img]="ChevronRight" [size]="14" />
+    </span>
   </button>
 
   <!-- Expanded Doc Panel -->

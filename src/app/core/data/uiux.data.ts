@@ -7,7 +7,7 @@ export const uiuxTeam: Team = {
   label: 'UI / UX',
   color: '#EC4899',
   gradient: 'linear-gradient(135deg, #4a0a2e, #831843)',
-  icon: '🎨',
+  icon: 'palette',
   subtitle: 'Figma · Design Tokens · Storybook 7 · WCAG 2.1',
   stats: [
     { label: 'Components', value: '120+' },
@@ -21,7 +21,7 @@ export const uiuxTeam: Team = {
       name: 'Dashboard Design',
       description: 'Figma design system and component library for the operator dashboard.',
       status: 'Live',
-      icon: '🎨',
+      icon: 'palette',
       teamKey: 'uiux',
       teamColor: '#EC4899',
       doc: {
@@ -65,7 +65,7 @@ export const uiuxTeam: Team = {
       name: 'Host Revamp Design',
       description: 'New UI/UX designs for the host portal redesign project.',
       status: 'Revamp',
-      icon: '✏️',
+      icon: 'pencil',
       teamKey: 'uiux',
       teamColor: '#EC4899',
       doc: {
@@ -103,7 +103,7 @@ export const uiuxTeam: Team = {
       name: 'Channels Design',
       description: 'UX flows and components for the Channels App lineup builder.',
       status: 'Dev',
-      icon: '🖌️',
+      icon: 'paintbrush',
       teamKey: 'uiux',
       teamColor: '#EC4899',
       doc: {

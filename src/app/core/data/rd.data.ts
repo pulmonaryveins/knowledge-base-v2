@@ -7,7 +7,7 @@ export const rdTeam: Team = {
   label: 'Research & Development',
   color: '#0D9488',
   gradient: 'linear-gradient(135deg, #022c22, #065f46)',
-  icon: '🔬',
+  icon: 'microscope',
   subtitle: 'Innovation · Proof of Concepts · Internal Tools · Tech Exploration',
   stats: [
     { label: 'Live Apps', value: '7' },

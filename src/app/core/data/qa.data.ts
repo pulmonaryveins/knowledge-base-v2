@@ -7,7 +7,7 @@ export const qaTeam: Team = {
   label: 'Quality Assurance',
   color: '#0891B2',
   gradient: 'linear-gradient(135deg, #042f3d, #0c4a6e)',
-  icon: '🧪',
+  icon: 'test-tube',
   subtitle: 'Python · Playwright · Selenium · Page Object Model · pytest · flake8',
   stats: [
     { label: 'Automation Suites', value: '3' },
@@ -21,7 +21,7 @@ export const qaTeam: Team = {
       name: 'Dashboard Automation Suite',
       description: 'Python + Selenium POM automation suite for the NCompassTV Dashboard, covering module scripts, suites, and test data.',
       status: 'Live',
-      icon: '🧪',
+      icon: 'test-tube',
       teamKey: 'qa',
       teamColor: '#0891B2',
       doc: {
@@ -103,7 +103,7 @@ export const qaTeam: Team = {
       name: 'Playwright Automation Suite',
       description: 'TypeScript Playwright POM test suite with role-based selectors, test isolation, and structured test data management.',
       status: 'Live',
-      icon: '🎭',
+      icon: 'play',
       teamKey: 'qa',
       teamColor: '#0891B2',
       doc: {
@@ -185,7 +185,7 @@ export const qaTeam: Team = {
       name: 'Player Testing Suite',
       description: 'API regression and hardware-in-the-loop testing for NCompassTV players — Pi devices with Flask server, SSH-based automation, and Selenium Chromium.',
       status: 'Live',
-      icon: '🖥️',
+      icon: 'monitor',
       teamKey: 'qa',
       teamColor: '#0891B2',
       doc: {
