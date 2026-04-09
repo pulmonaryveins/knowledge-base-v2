@@ -1,0 +1,64 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/typography-scale/typography-scale.component.scss ──
+
+:host { @apply block; }
+
+.tscale {
+  @apply flex flex-col rounded-[14px] border border-[var(--border)] overflow-hidden bg-[var(--card)];
+
+  // ── Table header row ──────────────────────────────────────────────────
+  &__header {
+    @apply flex items-center gap-4 px-5 py-3 bg-[var(--navy)] border-b border-[var(--border)];
+  }
+
+  &__col {
+    @apply font-['Syne',_sans-serif] text-[11px] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.5)];
+
+    &--tag     { @apply w-[64px] shrink-0; }
+    &--preview { @apply flex-1; }
+    &--spec    { @apply w-[200px] shrink-0 text-right; }
+  }
+
+  // ── Specimen row ──────────────────────────────────────────────────────
+  &__row {
+    @apply flex items-center gap-4 px-5 py-4 border-b border-[var(--border)] last:border-b-0;
+    transition: background 0.12s ease;
+
+    &:hover { @apply bg-[var(--bg)]; }
+  }
+
+  &__tag {
+    @apply w-[64px] shrink-0 font-['DM_Mono',_monospace] text-[11px] font-bold
+           text-[var(--ux)] bg-[#EC489922] rounded-[6px] px-[6px] py-[3px] text-center;
+  }
+
+  &__body {
+    @apply flex-1 flex flex-col gap-[2px] min-w-0 overflow-hidden;
+  }
+
+  &__preview {
+    @apply text-[var(--navy)] leading-[1.2] block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__usecase {
+    @apply text-[12px] text-[var(--muted)] font-['DM_Sans',_sans-serif] leading-[1.4] mt-1;
+  }
+
+  // ── Spec pills ────────────────────────────────────────────────────────
+  &__spec {
+    @apply w-[200px] shrink-0 flex justify-end flex-wrap gap-1;
+  }
+
+  &__spec-pill {
+    @apply font-['DM_Mono',_monospace] text-[10px] px-[6px] py-[2px] rounded-[5px]
+           bg-[var(--bg)] border border-[var(--border)] text-[var(--muted)];
+
+    &--font {
+      @apply bg-[#8DCB2C22] border-[#8DCB2C55] text-[#5a8a00];
+    }
+  }
+}

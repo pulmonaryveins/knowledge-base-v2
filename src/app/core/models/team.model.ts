@@ -1,7 +1,7 @@
 // ── FILE: src/app/core/models/team.model.ts ──
 
 import { Project } from './project.model';
-import { DataTable, Step, CodeBlockData, InfoCardData, CodingPattern } from './ui.models';
+import { DataTable, Step, CodeBlockData, InfoCardData, CodingPattern, ColorGroup, TypographySample, ComponentVariant } from './ui.models';
 
 /** A stat pill shown in the hero banner */
 export interface HeroStat {
@@ -25,8 +25,8 @@ export interface GettingStartedSection {
   readonly type: 'getting-started';
   /** Numbered steps with descriptions */
   readonly steps: ReadonlyArray<Step>;
-  /** Primary code block shown below the steps */
-  readonly codeBlock: CodeBlockData;
+  /** Optional summary code block shown below the steps */
+  readonly codeBlock?: CodeBlockData;
 }
 
 /** Content for a Folder Architecture section */
@@ -35,8 +35,8 @@ export interface FolderArchSection {
   readonly type: 'folder-arch';
   /** Info cards describing each major layer */
   readonly cards: ReadonlyArray<InfoCardData>;
-  /** Tree code block showing the folder structure */
-  readonly codeBlock: CodeBlockData;
+  /** Optional tree code block showing the folder structure */
+  readonly codeBlock?: CodeBlockData;
 }
 
 /** Content for a Coding Patterns section */
@@ -61,6 +61,34 @@ export interface ProjectsSection {
   readonly type: 'projects';
 }
 
+/** Visual color palette section */
+export interface ColorPaletteSection {
+  /** Discriminant for @switch rendering */
+  readonly type: 'color-palette';
+  /** Grouped color swatches (primary, accent, semantic, other, shades) */
+  readonly groups: ReadonlyArray<ColorGroup>;
+}
+
+/** Visual typography scale section */
+export interface TypographyScaleSection {
+  /** Discriminant for @switch rendering */
+  readonly type: 'typography-scale';
+  /** Ordered list of type samples from H1 to P.XXS */
+  readonly samples: ReadonlyArray<TypographySample>;
+}
+
+/** Visual component specification section */
+export interface ComponentSpecSection {
+  /** Discriminant for @switch rendering */
+  readonly type: 'component-spec';
+  /** Component name shown as section heading */
+  readonly name: string;
+  /** Short description of the component */
+  readonly description: string;
+  /** Size variants with their dimension specs */
+  readonly variants: ReadonlyArray<ComponentVariant>;
+}
+
 /** Discriminated union of all possible section content types */
 export type SectionContent =
   | TechStackSection
@@ -68,7 +96,10 @@ export type SectionContent =
   | FolderArchSection
   | CodingPatternsSection
   | MistakesSection
-  | ProjectsSection;
+  | ProjectsSection
+  | ColorPaletteSection
+  | TypographyScaleSection
+  | ComponentSpecSection;
 
 /** A single documentation section within a team page */
 export interface TeamSection {

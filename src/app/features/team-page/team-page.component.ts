@@ -11,6 +11,9 @@ import {
   FolderArchSection,
   CodingPatternsSection,
   MistakesSection,
+  ColorPaletteSection,
+  TypographyScaleSection,
+  ComponentSpecSection,
 } from '../../core/models';
 import { HeroComponent } from '../../shared/components/hero/hero.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -20,6 +23,9 @@ import { CodeBlockComponent } from '../../shared/components/code-block/code-bloc
 import { InfoCardComponent } from '../../shared/components/info-card/info-card.component';
 import { CalloutComponent } from '../../shared/components/callout/callout.component';
 import { ProjectDocComponent } from '../project-doc/project-doc.component';
+import { ColorPaletteComponent } from '../../shared/components/color-palette/color-palette.component';
+import { TypographyScaleComponent } from '../../shared/components/typography-scale/typography-scale.component';
+import { ComponentSpecComponent } from '../../shared/components/component-spec/component-spec.component';
 
 /**
  * TeamPageComponent renders the full documentation page for the active team.
@@ -39,6 +45,9 @@ import { ProjectDocComponent } from '../project-doc/project-doc.component';
     InfoCardComponent,
     CalloutComponent,
     ProjectDocComponent,
+    ColorPaletteComponent,
+    TypographyScaleComponent,
+    ComponentSpecComponent,
   ],
   templateUrl: './team-page.component.html',
   styleUrl: './team-page.component.scss',
@@ -98,5 +107,17 @@ export class TeamPageComponent {
    */
   public asMistakes(c: SectionContent): MistakesSection {
     return c as MistakesSection;
+  }
+
+  public asColorPalette(c: SectionContent): ColorPaletteSection {
+    return c as ColorPaletteSection;
+  }
+
+  public asTypographyScale(c: SectionContent): TypographyScaleSection {
+    return c as TypographyScaleSection;
+  }
+
+  public asComponentSpec(c: SectionContent): ComponentSpecSection {
+    return c as ComponentSpecSection;
   }
 }

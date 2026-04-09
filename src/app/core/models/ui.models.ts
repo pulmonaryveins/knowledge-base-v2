@@ -73,3 +73,44 @@ export interface CodingPattern {
   /** Optional tip/warning callout attached to this pattern */
   readonly callout?: CalloutData;
 }
+
+// ── UI/UX Visual Section Models ──────────────────────────────────────────────
+
+/** A single color swatch with name and hex value */
+export interface ColorSwatch {
+  readonly name: string;
+  readonly hex: string;
+}
+
+/** A group of color swatches with a section label */
+export interface ColorGroup {
+  readonly label: string;
+  /** Large featured swatches (primary, accent, semantic) */
+  readonly main?: ReadonlyArray<ColorSwatch>;
+  /** Smaller shade swatches (the full tint/shade scale) */
+  readonly shades?: ReadonlyArray<ColorSwatch>;
+}
+
+/** A single typography level sample */
+export interface TypographySample {
+  readonly tag: string;
+  readonly label: string;
+  readonly useCase: string;
+  readonly size: string;
+  readonly weight: string;
+  readonly font: string;
+}
+
+/** A single component size variant with its spec values */
+export interface ComponentVariant {
+  readonly label: string;
+  readonly height: string;
+  readonly width: string;
+  readonly paddingX: string;
+  readonly paddingY: string;
+  readonly cornerRadius: string;
+  readonly borderSize: string;
+  readonly borderPlacement: string;
+  readonly gap: string;
+  readonly align: string;
+}

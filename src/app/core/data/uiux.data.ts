@@ -170,132 +170,287 @@ export const uiuxTeam: Team = {
         type: 'getting-started',
         steps: [
           {
-            title: 'Phase 1 — Introduction to UI/UX & User Research',
-            description: 'Familiarise yourself with the company, teams, and tools. Understand the difference between UI and UX, the importance of user-centered design, and core research methods (surveys, interviews, usability testing). Create user personas and conduct a mini research project. Duration: 4–6 hours.',
-            code: `# Key activities\n# · Watch: "What is UI UX?" — Simplilearn (YouTube)\n# · Overview of NCompassTV teams and design tools\n# · Conduct a mini user research project\n# · Deliver: user personas document`,
-            language: 'bash',
+            title: 'Phase 1 — Design Basics: Core Structure & Consistency',
+            description: 'Study the foundational balance between aesthetic appeal and functional utility. Understand how visual hierarchy, consistent standardized components, and mental-model alignment reduce cognitive load. Explore simplicity as a design virtue — stripping decorative clutter empowers users to achieve goals efficiently. Duration: 4–6 hours.',
           },
           {
-            title: 'Phase 2 — Information Architecture & Wire-framing',
-            description: 'Learn the importance of structure and navigation, create sitemaps and user flows, and get hands-on with wireframing tools (Figma, Sketch, Adobe XD, Framer). Build wireframes for 1–3 mobile app screens. Duration: 8 hours.',
-            code: `# Key activities\n# · Read: Information Architecture — Wireframes & Prototype article\n# · Deliver: sitemap for an assigned project\n# · Deliver: 1–3 mobile wireframe screens in Figma`,
-            language: 'bash',
+            title: 'Phase 2 — UX Design Fundamentals',
+            description: 'Explore core UX concepts including the Golden Ratio, Design Aesthetics, Centered Design, Product Design, and Design Ethics. Learn Research Methods, Lateral Thinking, and Design Thinking frameworks. Study Gestalt Principles, Skeuomorphism, Visual Hierarchy, and how Human–Computer Interaction shapes inclusive, accessible design. Duration: 8 hours.',
           },
           {
-            title: 'Phase 3 — Prototyping & Usability Testing',
-            description: 'Compare low-fidelity vs high-fidelity prototyping, build a lo-fi prototype from your wireframes, then conduct usability tests with users. Document findings and suggest improvements. Duration: 8 hours.',
-            code: `# Key activities\n# · Build lo-fi prototype in Figma or Framer\n# · Run usability test sessions via Maze or UserTesting\n# · Deliver: findings report with suggested improvements`,
-            language: 'bash',
+            title: 'Phase 3 — Wireframing: The Foundation of Blueprinting',
+            description: 'Master wireframing as the architectural phase of design. Using low-fidelity skeletons, map user flows and information architecture without the distraction of typography or color. This stage is critical for identifying usability issues early and ensuring the interface hierarchy supports user objectives before any high-fidelity assets are created. Duration: 8 hours.',
           },
           {
-            title: 'Phase 4 — Visual Design Principles, Design System & Style Guides',
-            description: 'Study colour theory, typography, and layout. Learn why consistency matters in design systems. Create a component using design principles, then produce a full homepage design referencing the N-Compass TV website. Duration: 12 hours.',
-            code: `# Key activities\n# · Study: Colour Theory, Typography, Layout fundamentals\n# · Reference: https://ncompasstv.com for the homepage task\n# · Deliver: 1 Figma component using design principles\n# · Deliver: homepage redesign in Figma (high-fidelity)`,
-            language: 'bash',
+            title: 'Phase 4 — Prototyping: Validation Through Motion',
+            description: 'Transform static wireframes into interactive experiences, bridging the gap between design concept and finished product. Add transitions and functional interactions to simulate actual user flows. This iterative process allows teams to validate the interface, gather meaningful feedback, and ensure the final developer handoff is a tested, refined flow. Duration: 8 hours.',
           },
           {
-            title: 'Phase 5 — Accessibility, Collaboration & Feedback',
-            description: 'Learn inclusive design principles (WCAG 2.1 AA), evaluate existing designs for accessibility issues, and participate in cross-team collaboration sessions. Present your work and receive structured feedback. Duration: 6 hours.',
-            code: `# Key activities\n# · Audit a design for WCAG 2.1 AA compliance\n# · Use Figma Contrast plugin — minimum 4.5:1 for body text\n# · Present work to team and incorporate feedback`,
-            language: 'bash',
+            title: 'Phase 5 — Web Design: Responsive Architecture & Accessibility',
+            description: 'Apply responsive grids and flexible layouts to ensure seamless experiences across all devices. Incorporate accessibility standards — high color contrast, keyboard navigability, WCAG 2.1 AA compliance — so the digital environment is inclusive and usable regardless of physical or technical constraints. Balance aesthetic impact with technical performance and strategic whitespace. Duration: 8 hours.',
           },
           {
-            title: 'Phase 6 — Portfolio Development & Final Presentation',
-            description: 'Prepare your portfolio and present the final project incorporating everything learned across all phases. Reflect on the experience, gather peer feedback, and document lessons learned. Duration: 2 hours.',
-            code: `# Key activities\n# · Compile all phase deliverables into a Figma portfolio page\n# · Present final design to the UI/UX team\n# · Gather and document structured feedback`,
-            language: 'bash',
+            title: 'Phase 6 — Typography & Color Theory',
+            description: 'Use font weight, size, and line height to establish clear visual hierarchy and guide users through content in logical order. Understand how kerning and letter-spacing affect readability and brand personality. Apply color psychology (trust from blue, energy from red) and the color wheel (monochromatic, analogous, complementary) to create harmony and meet accessibility contrast standards. Duration: 6 hours.',
           },
           {
-            title: 'Phase 7 — Assist in Creating N-Compass Web App Pages',
-            description: 'Work directly with the UI/UX lead to design production-ready pages for the N-Compass web platform. Real Jira tickets, real users, real impact. This is where your training transitions into active contribution. Duration: Ongoing.',
-            code: `# Key activities\n# · Pick up Jira design tasks from the active sprint\n# · Collaborate with Frontend and Backend teams on handoff\n# · Deliver annotated Figma screens via Dev Mode`,
-            language: 'bash',
+            title: 'Phase 7 — UI Design Principles & N-Compass Contribution',
+            description: 'Apply all learned principles to production work. Pick up real Jira design tasks from the active sprint. Collaborate with Frontend and Backend teams via Figma Dev Mode annotations. Deliver annotated, accessible, token-driven screens that reflect the full curriculum: hierarchy, consistency, wireframe-first discipline, responsive layouts, readable typography, and WCAG-compliant color. Duration: Ongoing.',
           },
         ],
-        codeBlock: {
-          language: 'bash',
-          code: `# 7-Phase UI/UX Onboarding — total ~42 hours
-# Phase 1  Introduction & User Research        4–6 hrs
-# Phase 2  Information Architecture & Wireframes  8 hrs
-# Phase 3  Prototyping & Usability Testing        8 hrs
-# Phase 4  Visual Design & Design Systems        12 hrs
-# Phase 5  Accessibility, Collaboration          6 hrs
-# Phase 6  Portfolio & Final Presentation        2 hrs
-# Phase 7  N-Compass Page Contribution       ongoing`,
-        },
+      },
+    },
+    {
+      id: 'ux-color-palette',
+      label: 'Color Palette',
+      num: '03',
+      content: {
+        type: 'color-palette',
+        groups: [
+          {
+            label: 'Primary Color',
+            main: [
+              { name: 'Midnight Blue', hex: '#091635' },
+            ],
+          },
+          {
+            label: 'Accent Color',
+            main: [
+              { name: 'Apple Green', hex: '#8DCB2C' },
+            ],
+          },
+          {
+            label: 'Semantic Colors',
+            main: [
+              { name: 'Danger / Error', hex: '#E73535' },
+              { name: 'Success', hex: '#3ADE30' },
+              { name: 'Information / Links', hex: '#095AF3' },
+              { name: 'Warning', hex: '#FFAA00' },
+              { name: 'Info Alert', hex: '#26A8BA' },
+            ],
+          },
+          {
+            label: 'Other Colors',
+            main: [
+              { name: 'Hot Pink', hex: '#BE0064' },
+              { name: 'Red Orange', hex: '#FF5800' },
+              { name: 'Purple', hex: '#3808A6' },
+            ],
+          },
+          {
+            label: 'Shades of Midnight Blue',
+            shades: [
+              { name: 'Stargazer Navy', hex: '#080F24' },
+              { name: 'Cosmic Ink', hex: '#081B37' },
+              { name: 'Twilight Armor', hex: '#1a2843' },
+              { name: 'Moonshot Slate', hex: '#384855' },
+              { name: 'Shadow Steel', hex: '#586176' },
+              { name: 'Fogbound Indigo', hex: '#777B95' },
+              { name: 'Dawn Mist', hex: '#98a0ae' },
+              { name: 'Blue Haze', hex: '#B9c1cl' },
+              { name: 'Clouded Pearl', hex: '#d8d9ef' },
+              { name: 'Lunar Frost', hex: '#f4e7e1' },
+              { name: 'Snowveil White', hex: '#F0F0F5' },
+            ],
+          },
+          {
+            label: 'Shades of Apple Green',
+            shades: [
+              { name: 'Black Green', hex: '#0c3104' },
+              { name: 'Gray Green', hex: '#143c08' },
+              { name: 'Evergreen', hex: '#1c2b09' },
+              { name: 'Deep Green', hex: '#234c11' },
+              { name: 'Avocado Green', hex: '#4e6b17' },
+              { name: 'Grass Green', hex: '#608cda' },
+              { name: 'Forest Green', hex: '#74af26' },
+              { name: 'Lime Green', hex: '#94cb88' },
+              { name: 'Apple Green', hex: '#8DCB2C' },
+              { name: 'Pistachio Green', hex: '#bcdc8c' },
+              { name: 'Tea Green', hex: '#ceef7df' },
+            ],
+          },
+          {
+            label: 'Semantic Color Shades',
+            shades: [
+              { name: 'Deep Wine', hex: '#6c080B' },
+              { name: 'Burnt Garnet', hex: '#453b0c' },
+              { name: 'Blood Maroon', hex: '#4c1111' },
+              { name: 'Dark Red', hex: '#881a1a' },
+              { name: 'Crimson Red', hex: '#8B2a2a' },
+              { name: 'Fire Engine Red', hex: '#c83b3b' },
+              { name: 'Light Coral', hex: '#f07c7c' },
+              { name: 'Rosa Blush', hex: '#f7b4bd' },
+              { name: 'Pink Petal', hex: '#ffb1e0' },
+              { name: 'Light Rose', hex: '#ffe1e1' },
+              { name: 'Misty Rose', hex: '#ffd7fl' },
+              { name: 'Black Forest', hex: '#051304' },
+              { name: 'Charcoal Green', hex: '#0b2c07' },
+              { name: 'Deep Forest', hex: '#f0c20a' },
+              { name: 'Evergreen', hex: '#135012' },
+              { name: 'Moss Green', hex: '#1a7019' },
+              { name: 'Forest Green', hex: '#279220' },
+              { name: 'Kelly Green', hex: '#31b828' },
+              { name: 'Fresh Leaf', hex: '#60e448' },
+              { name: 'Light Green', hex: '#90e698' },
+              { name: 'Pale Mint', hex: '#c3f4bf' },
+              { name: 'Honeydew', hex: '#4c7ec1' },
+            ],
+          },
+          {
+            label: 'Blues & Neutrals Shades',
+            shades: [
+              { name: 'Deep Space Blue', hex: '#010908' },
+              { name: 'Midnight Blue', hex: '#011731' },
+              { name: 'Navy Indigo', hex: '#8B2350' },
+              { name: 'Cobalt Blue', hex: '#1b63d4' },
+              { name: 'Strong Blue', hex: '#1084a3' },
+              { name: 'Royal Blue', hex: '#437785' },
+              { name: 'Cornflower Blue', hex: '#7099BB' },
+              { name: 'Baby Blue', hex: '#B8cbc9' },
+              { name: 'Periwinkle', hex: '#b59B81' },
+              { name: 'Powder Blue', hex: '#d3cBb0' },
+              { name: 'Alice Blue', hex: '#4a7ec1' },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      id: 'ux-typography',
+      label: 'Typography Scale',
+      num: '04',
+      content: {
+        type: 'typography-scale',
+        samples: [
+          { tag: 'H1', label: 'Hero-level Heading', useCase: 'Used for main page titles, dashboards, feature headers, or anything that needs a "Welcome" entrance.', size: '40px', weight: '700', font: 'Syne' },
+          { tag: 'H2', label: 'Section Titles', useCase: 'Perfect for major content sections, feature blocks, or page subsections.', size: '32px', weight: '700', font: 'Syne' },
+          { tag: 'H3', label: 'Subsection Titles', useCase: 'Use for card titles, content groups, or strong labels inside modules.', size: '24px', weight: '700', font: 'Syne' },
+          { tag: 'H4', label: 'Lower-level Headings', useCase: 'Ideal for form section titles, smaller card headers, or dividing content inside modals/sidebars.', size: '20px', weight: '600', font: 'Syne' },
+          { tag: 'H5', label: 'Small but still heading-ish', useCase: 'Use for supporting titles, filter headings, table section labels, or anywhere you need hierarchy without shouting.', size: '16px', weight: '600', font: 'Syne' },
+          { tag: 'H6', label: 'The quiet heading', useCase: 'Great for tiny sections, metadata labels, or places where the style says "heading," but visually close to body text.', size: '14px', weight: '600', font: 'Syne' },
+          { tag: 'P', label: 'Paragraph', useCase: 'Use for general text, descriptions, UI details, product copy, and anywhere someone needs to read without squinting.', size: '16px', weight: '400', font: 'DM Sans' },
+          { tag: 'P.S', label: 'Secondary Text', useCase: 'Perfect for helper texts, annotations, captions under charts, labels inside compact UI components, and subtle info.', size: '14px', weight: '400', font: 'DM Sans' },
+          { tag: 'P.XS', label: 'Micro Text', useCase: 'Used for badges, tags, chips, tiny labels, or cramped UI areas.', size: '12px', weight: '500', font: 'DM Sans' },
+          { tag: 'P.XXS', label: 'Ultra-extra Text', useCase: 'Use sparingly. Usually for system-level labels, watermark-like text, footnotes, and fine print in UI form.', size: '10px', weight: '400', font: 'DM Sans' },
+        ],
+      },
+    },
+    {
+      id: 'ux-component-spec',
+      label: 'Component Specs',
+      num: '05',
+      content: {
+        type: 'component-spec',
+        name: 'Accordion',
+        description: 'An Accordion is a UI component that expands and collapses sections to show or hide related content. All size variants share the same token-driven border, spacing, and alignment rules — only height and padding scale.',
+        variants: [
+          {
+            label: 'Small',
+            width: '700px (Fill)',
+            height: '36px',
+            cornerRadius: '10px',
+            paddingX: '20px',
+            paddingY: '8px',
+            gap: 'Space-Between',
+            align: 'Center',
+            borderSize: '0.5px',
+            borderPlacement: 'Inside',
+          },
+          {
+            label: 'Medium',
+            width: '700px (Fill)',
+            height: '40px',
+            cornerRadius: '10px',
+            paddingX: '20px',
+            paddingY: '8px',
+            gap: 'Space-Between',
+            align: 'Center',
+            borderSize: '0.5px',
+            borderPlacement: 'Inside',
+          },
+          {
+            label: 'Large',
+            width: '700px (Fill)',
+            height: '44px',
+            cornerRadius: '10px',
+            paddingX: '20px',
+            paddingY: '8px',
+            gap: 'Space-Between',
+            align: 'Center',
+            borderSize: '0.5px',
+            borderPlacement: 'Inside',
+          },
+          {
+            label: 'X Large',
+            width: '700px (Fill)',
+            height: '50px',
+            cornerRadius: '10px',
+            paddingX: '20px',
+            paddingY: '8px',
+            gap: 'Space-Between',
+            align: 'Center',
+            borderSize: '0.5px',
+            borderPlacement: 'Inside',
+          },
+        ],
       },
     },
     {
       id: 'ux-design-process',
       label: 'Design Process',
-      num: '03',
+      num: '06',
       content: {
         type: 'folder-arch',
         cards: [
           {
-            icon: '\uD83D\uDD0D',
+            icon: '🏗️',
             accent: '#8DCB2C',
-            title: 'Phase 1 \u00b7 Research & Discovery',
-            body: '4\u20136 hrs. Study UI vs UX fundamentals, survey methods, interviews, and usability testing. Deliver a user personas document and a mini research report.',
+            title: 'Phase 1 · Design Basics',
+            body: '4–6 hrs. Master the balance between aesthetic appeal and functional utility. Study visual hierarchy, consistency, standardized components, and how mental-model alignment reduces cognitive load. Deliver: design critique document.',
           },
           {
-            icon: '\uD83D\uDDC2\uFE0F',
+            icon: '🔬',
             accent: '#3B82F6',
-            title: 'Phase 2 \u00b7 Information Architecture',
-            body: '8 hrs. Define structure and navigation via sitemaps and user flows. Build 1\u20133 mobile wireframe screens in Figma, Sketch, or Adobe XD.',
+            title: 'Phase 2 · UX Design Fundamentals',
+            body: '8 hrs. Explore Golden Ratio, Design Aesthetics, Product Design, Design Ethics, and Constraints. Study Gestalt Principles, Visual Hierarchy, Design Thinking, UX Research Methods, and Inclusive Design. Deliver: design thinking worksheet.',
           },
           {
-            icon: '\uD83E\uDDEA',
+            icon: '📐',
             accent: '#F59E0B',
-            title: 'Phase 3 \u00b7 Prototyping & Testing',
-            body: '8 hrs. Build a lo-fi prototype from wireframes and run Maze usability tests. Document findings and improvement recommendations.',
+            title: 'Phase 3 · Wireframing',
+            body: '8 hrs. Use low-fidelity wireframes to map user flows and information architecture without visual distraction. Identify usability issues early. Deliver: 1–3 mobile wireframe screens with annotated user flow.',
           },
           {
-            icon: '\uD83C\uDFA8',
+            icon: '🎬',
             accent: '#EC4899',
-            title: 'Phase 4 \u00b7 Visual Design & Systems',
-            body: '12 hrs. Apply colour theory, typography, and layout principles. Create a Figma component and a full homepage design referencing the NCompassTV website.',
+            title: 'Phase 4 · Prototyping',
+            body: '8 hrs. Transform wireframes into interactive flows with transitions and functional interactions. Run usability tests, gather feedback, and iterate. Deliver: lo-fi prototype + findings report.',
           },
           {
-            icon: '\u267F',
+            icon: '🌐',
             accent: '#14B8A6',
-            title: 'Phase 5 \u00b7 Accessibility & Collaboration',
-            body: '6 hrs. Audit designs for WCAG 2.1 AA \u2014 contrast ratios, touch targets, focus states. Present work to cross-functional teams and incorporate feedback.',
+            title: 'Phase 5 · Web Design & Accessibility',
+            body: '8 hrs. Apply responsive grids, flexible layouts, and WCAG 2.1 AA accessibility standards. Balance aesthetic impact with performance. Deliver: responsive hi-fi web screen with accessibility audit.',
           },
           {
-            icon: '\uD83D\uDCC1',
+            icon: '🎨',
             accent: '#8B5CF6',
-            title: 'Phase 6 \u00b7 Portfolio & Presentation',
-            body: '2 hrs. Compile all phase deliverables into a Figma portfolio page. Present the final design to the UI/UX team and gather structured peer feedback.',
+            title: 'Phase 6 · Typography & Color Theory',
+            body: '6 hrs. Use font weight, size, and line height to establish hierarchy. Apply color psychology and the color wheel for harmony and accessibility. Minimum contrast ratio 4.5:1 for body text. Deliver: style guide page.',
           },
           {
-            icon: '\uD83D\uDE80',
+            icon: '🚀',
             accent: '#EF4444',
-            title: 'Phase 7 \u00b7 N-Compass Contribution',
-            body: 'Ongoing. Pick up real Jira design tasks from the active sprint. Collaborate with Frontend and Backend teams via Figma Dev Mode annotations.',
+            title: 'Phase 7 · UI Design Principles & Production',
+            body: 'Ongoing. Apply all curriculum phases to real sprint work. Pick up Jira design tasks and deliver annotated, accessible, token-driven Figma screens via Dev Mode for Frontend and Backend handoff.',
           },
         ],
-        codeBlock: {
-          language: 'bash',
-          code: `# UX Design Workflow — end to end
-# ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-# │  1 Research  │ →  │  2 IA + Wires │ →  │ 3 Prototype  │
-# └──────────────┘    └──────────────┘    └──────────────┘
-#                                                ↓
-# ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-# │ 6 Portfolio  │ ←  │5 Accessibility│ ←  │ 4 Visual Des.│
-# └──────────────┘    └──────────────┘    └──────────────┘
-#       ↓
-# ┌──────────────────────┐
-# │  7 Ship to Production  │
-# └──────────────────────┘`,
-        },
       },
     },
     {
       id: 'ux-folder-arch',
       label: 'Folder Architecture',
-      num: '04',
+      num: '07',
       content: {
         type: 'folder-arch',
         cards: [
@@ -327,7 +482,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-coding-patterns',
       label: 'Design Patterns',
-      num: '05',
+      num: '08',
       content: {
         type: 'coding-patterns',
         patterns: [
@@ -416,7 +571,7 @@ export class ButtonComponent {
     {
       id: 'ux-mistakes',
       label: 'Common Mistakes',
-      num: '06',
+      num: '09',
       content: {
         type: 'mistakes',
         table: {
@@ -439,7 +594,7 @@ export class ButtonComponent {
     {
       id: 'ux-projects',
       label: 'Projects',
-      num: '07',
+      num: '10',
       content: { type: 'projects' },
     },
   ],

@@ -1,0 +1,56 @@
+<!-- FILE: src/app/shared/components/component-spec/component-spec.component.html -->
+<div class="cspec">
+  <div class="cspec__desc">{{ description() }}</div>
+
+  <!-- Size variant grid -->
+  <div class="cspec__grid">
+    @for (variant of variants(); track variant.label) {
+      <div class="cspec__card">
+        <!-- Live preview -->
+        <div class="cspec__preview">
+          <div
+            class="cspec__accordion"
+            [style.height]="variant.height"
+            [style.border-radius]="variant.cornerRadius"
+            [style.padding]="variant.paddingY + ' ' + variant.paddingX"
+          >
+            <span class="cspec__accordion-label">{{ name() }} — {{ variant.label }}</span>
+            <span class="cspec__accordion-chevron">›</span>
+          </div>
+        </div>
+
+        <!-- Spec table -->
+        <div class="cspec__specs">
+          <div class="cspec__spec-row">
+            <span class="cspec__spec-key">Width</span>
+            <span class="cspec__spec-val">{{ variant.width }}</span>
+            <span class="cspec__spec-key">Gap</span>
+            <span class="cspec__spec-val">{{ variant.gap }}</span>
+          </div>
+          <div class="cspec__spec-row">
+            <span class="cspec__spec-key">Height</span>
+            <span class="cspec__spec-val">{{ variant.height }}</span>
+            <span class="cspec__spec-key">Align</span>
+            <span class="cspec__spec-val">{{ variant.align }}</span>
+          </div>
+          <div class="cspec__spec-row">
+            <span class="cspec__spec-key">Corner Radius</span>
+            <span class="cspec__spec-val">{{ variant.cornerRadius }}</span>
+            <span class="cspec__spec-key">Padding X</span>
+            <span class="cspec__spec-val">{{ variant.paddingX }}</span>
+          </div>
+          <div class="cspec__spec-row">
+            <span class="cspec__spec-key">Border Size</span>
+            <span class="cspec__spec-val">{{ variant.borderSize }}</span>
+            <span class="cspec__spec-key">Padding Y</span>
+            <span class="cspec__spec-val">{{ variant.paddingY }}</span>
+          </div>
+          <div class="cspec__spec-row">
+            <span class="cspec__spec-key">Border Placement</span>
+            <span class="cspec__spec-val">{{ variant.borderPlacement }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

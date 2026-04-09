@@ -26,9 +26,11 @@
           @case ('getting-started') {
             <div class="team-page__getting-started">
               <app-step-list [steps]="asGettingStarted(section.content).steps" />
-              <div class="team-page__code-block">
-                <app-code-block [data]="asGettingStarted(section.content).codeBlock" />
-              </div>
+              @if (asGettingStarted(section.content).codeBlock) {
+                <div class="team-page__code-block">
+                  <app-code-block [data]="asGettingStarted(section.content).codeBlock!" />
+                </div>
+              }
             </div>
           }
 
@@ -40,7 +42,9 @@
                   <app-info-card [data]="card" />
                 }
               </div>
-              <app-code-block [data]="asFolderArch(section.content).codeBlock" />
+              @if (asFolderArch(section.content).codeBlock) {
+                <app-code-block [data]="asFolderArch(section.content).codeBlock!" />
+              }
             </div>
           }
 
@@ -72,6 +76,25 @@
                 <app-project-doc [project]="project" />
               }
             </div>
+          }
+
+          <!-- Color Palette -->
+          @case ('color-palette') {
+            <app-color-palette [groups]="asColorPalette(section.content).groups" />
+          }
+
+          <!-- Typography Scale -->
+          @case ('typography-scale') {
+            <app-typography-scale [samples]="asTypographyScale(section.content).samples" />
+          }
+
+          <!-- Component Spec -->
+          @case ('component-spec') {
+            <app-component-spec
+              [name]="asComponentSpec(section.content).name"
+              [description]="asComponentSpec(section.content).description"
+              [variants]="asComponentSpec(section.content).variants"
+            />
           }
         }
       </section>

@@ -1,0 +1,34 @@
+<!-- FILE: src/app/shared/components/color-palette/color-palette.component.html -->
+<div class="cp">
+  @for (group of groups(); track group.label) {
+    <div class="cp__group">
+      <h3 class="cp__group-label">{{ group.label }}</h3>
+
+      @if (group.main && group.main.length > 0) {
+        <div class="cp__main-row">
+          @for (swatch of group.main; track swatch.hex) {
+            <div class="cp__main-swatch" [style.background]="swatch.hex">
+              <span class="cp__main-meta" [style.color]="textColor(swatch.hex)">
+                <span class="cp__main-name">{{ swatch.name }}</span>
+                <span class="cp__main-hex">{{ swatch.hex }}</span>
+              </span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (group.shades && group.shades.length > 0) {
+        <div class="cp__shades-grid">
+          @for (swatch of group.shades; track swatch.hex) {
+            <div class="cp__shade" [style.background]="swatch.hex" [title]="swatch.name + ' ' + swatch.hex">
+              <span class="cp__shade-meta" [style.color]="textColor(swatch.hex)">
+                <span class="cp__shade-name">{{ swatch.name }}</span>
+                <span class="cp__shade-hex">{{ swatch.hex }}</span>
+              </span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

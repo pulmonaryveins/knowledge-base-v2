@@ -1,0 +1,30 @@
+<!-- FILE: src/app/shared/components/typography-scale/typography-scale.component.html -->
+<div class="tscale">
+  <div class="tscale__header">
+    <span class="tscale__col tscale__col--tag">Tag</span>
+    <span class="tscale__col tscale__col--preview">Preview &amp; Use-case</span>
+    <span class="tscale__col tscale__col--spec">Size / Weight / Font</span>
+  </div>
+
+  @for (sample of samples(); track sample.tag) {
+    <div class="tscale__row">
+      <span class="tscale__tag">{{ sample.tag }}</span>
+
+      <div class="tscale__body">
+        <span
+          class="tscale__preview"
+          [style.font-size]="sample.size"
+          [style.font-weight]="sample.weight"
+          [style.font-family]="sample.font === 'Syne' ? '\'Syne\', sans-serif' : '\'DM Sans\', sans-serif'"
+        >{{ sample.label }}</span>
+        <span class="tscale__usecase">{{ sample.useCase }}</span>
+      </div>
+
+      <div class="tscale__spec">
+        <span class="tscale__spec-pill">{{ sample.size }}</span>
+        <span class="tscale__spec-pill">{{ sample.weight }}</span>
+        <span class="tscale__spec-pill tscale__spec-pill--font">{{ sample.font }}</span>
+      </div>
+    </div>
+  }
+</div>
