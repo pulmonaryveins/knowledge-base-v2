@@ -131,6 +131,30 @@
     </div>
   </section>
 
+  <!-- ── Stack logos strip ──────────────────────────────────────────────── -->
+  <div class="lp__stack-strip">
+    <div class="lp__stack-track" aria-hidden="true">
+      <!-- First set -->
+      <div class="lp__stack-logos">
+        @for (logo of stackLogos; track logo.name) {
+          <div class="lp__stack-logo" [title]="logo.name">
+            <img [src]="logo.src" [alt]="logo.name" width="24" height="24" loading="lazy" />
+            <span class="lp__stack-logo-name">{{ logo.name }}</span>
+          </div>
+        }
+      </div>
+      <!-- Duplicate for seamless loop -->
+      <div class="lp__stack-logos" aria-hidden="true">
+        @for (logo of stackLogos; track logo.name) {
+          <div class="lp__stack-logo" [title]="logo.name">
+            <img [src]="logo.src" [alt]="logo.name" width="24" height="24" loading="lazy" />
+            <span class="lp__stack-logo-name">{{ logo.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
   <!-- ── Teams ────────────────────────────────────────────────────────────── -->
   <section class="lp__section lp__section--dark" id="teams">
     <div class="lp__section-inner">
