@@ -1,0 +1,545 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/features/landing-page/landing-page.component.scss ──
+
+:host { @apply block; }
+
+// ── Shared tokens ────────────────────────────────────────────────────────────
+$dark:    #060e20;
+$dark-2:  #0b1730;
+$dark-3:  #0f1f3d;
+
+// ════════════════════════════════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__nav {
+  @apply fixed top-0 left-0 right-0 z-[200];
+  background: rgba(6, 14, 32, 0.72);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.3s ease;
+
+  &-inner {
+    @apply flex items-center gap-6 max-w-[1280px] mx-auto px-6 h-[64px];
+  }
+
+  // Brand
+  &-brand {
+    @apply flex items-center gap-3 no-underline cursor-pointer shrink-0;
+  }
+
+  &-logo {
+    @apply w-[30px] h-[30px] object-contain;
+  }
+
+  &-brand-text {
+    @apply flex flex-col;
+  }
+
+  &-brand-name {
+    @apply font-['Syne',_sans-serif] text-[13px] font-bold text-white leading-[1.2];
+  }
+
+  &-brand-sub {
+    @apply font-['DM_Mono',_monospace] text-[8.5px] text-[rgba(255,255,255,0.35)] tracking-[0.12em] uppercase;
+  }
+
+  // Links
+  &-links {
+    @apply flex items-center gap-1 ml-auto;
+
+    @media (max-width: 768px) { @apply hidden; }
+  }
+
+  &-link {
+    @apply font-['DM_Sans',_sans-serif] text-[13.5px] text-[rgba(255,255,255,0.6)] px-4 py-2 rounded-[8px] no-underline;
+    @apply transition-colors duration-[0.15s] hover:text-white hover:bg-[rgba(255,255,255,0.06)];
+  }
+
+  // CTA button
+  &-cta {
+    @apply flex items-center gap-2 ml-4 px-4 py-[9px] rounded-[9px] shrink-0;
+    @apply font-['DM_Sans',_sans-serif] text-[13px] font-semibold;
+    @apply bg-[var(--green)] text-[var(--navy)] border-0;
+    @apply transition-all duration-[0.2s] hover:brightness-110 hover:shadow-[0_0_20px_rgba(141,203,44,.35)];
+
+    &--drawer {
+      @apply ml-0 mt-2 w-full justify-center;
+    }
+
+    @media (max-width: 768px) { @apply hidden; }
+
+    &--drawer { @apply flex; }
+  }
+
+  // Hamburger
+  &-hamburger {
+    @apply hidden ml-auto flex-col justify-center gap-[5px] w-[36px] h-[36px] bg-transparent border-0 p-0 cursor-pointer;
+
+    @media (max-width: 768px) { @apply flex; }
+
+    &-bar {
+      @apply block w-[22px] h-[2px] bg-white rounded-[2px];
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+  }
+
+  // Mobile drawer
+  &-drawer {
+    @apply flex flex-col gap-1 px-6 pb-4 overflow-hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+
+    &--open {
+      max-height: 300px;
+      opacity: 1;
+    }
+
+    &-link {
+      @apply font-['DM_Sans',_sans-serif] text-[14px] text-[rgba(255,255,255,0.7)] py-3 no-underline border-b border-[rgba(255,255,255,0.07)];
+    }
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// HERO
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__hero {
+  @apply relative flex items-center min-h-screen overflow-hidden;
+  background: linear-gradient(160deg, $dark 0%, $dark-2 60%, $dark-3 100%);
+  padding: 96px 48px 80px;
+
+  @media (max-width: 1024px) { padding: 96px 32px 80px; }
+  @media (max-width: 768px)  { padding: 96px 20px 60px; @apply flex-col; }
+
+  // Background grid
+  &-grid {
+    @apply absolute inset-0 pointer-events-none;
+    background-image:
+      linear-gradient(rgba(141,203,44,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(141,203,44,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  // Glow orbs
+  &-orb {
+    @apply absolute rounded-full pointer-events-none;
+    filter: blur(80px);
+
+    &--1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(141,203,44,0.12), transparent 70%);
+      top: -120px; right: -80px;
+    }
+
+    &--2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.1), transparent 70%);
+      bottom: -100px; left: 10%;
+    }
+  }
+
+  &-content {
+    @apply relative flex flex-col gap-6 flex-1 max-w-[620px] z-[1];
+    @media (max-width: 768px) { @apply max-w-full; }
+  }
+
+  &-badge {
+    @apply flex items-center gap-2 self-start px-3 py-[6px] rounded-full text-[11.5px] font-['DM_Mono',_monospace] tracking-[0.08em] text-[rgba(255,255,255,0.6)];
+    background: rgba(141,203,44,0.1);
+    border: 1px solid rgba(141,203,44,0.25);
+
+    &-dot {
+      @apply w-[6px] h-[6px] rounded-full bg-[var(--green)];
+      box-shadow: 0 0 8px rgba(141,203,44,0.8);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+  }
+
+  &-title {
+    @apply font-['Syne',_sans-serif] font-extrabold leading-[1.05] text-white m-0;
+    font-size: clamp(40px, 6vw, 72px);
+
+    &-accent {
+      color: var(--green);
+      -webkit-text-stroke: 0px;
+    }
+  }
+
+  &-subtitle {
+    @apply text-[rgba(255,255,255,0.55)] leading-[1.7] m-0;
+    font-size: clamp(14px, 1.5vw, 16px);
+    max-width: 520px;
+  }
+
+  &-actions {
+    @apply flex items-center gap-3 flex-wrap;
+  }
+
+  // Stats row
+  &-stats {
+    @apply flex items-center gap-5 flex-wrap mt-2;
+  }
+
+  &-stat {
+    @apply flex flex-col;
+
+    &-val {
+      @apply font-['Syne',_sans-serif] font-extrabold text-white text-[22px] leading-[1.1];
+    }
+
+    &-label {
+      @apply font-['DM_Mono',_monospace] text-[9.5px] text-[rgba(255,255,255,0.35)] tracking-[0.1em] uppercase;
+    }
+  }
+
+  &-stat-divider {
+    @apply w-[1px] h-[32px] bg-[rgba(255,255,255,0.12)] self-center;
+  }
+
+  // Hero visual (terminal)
+  &-visual {
+    @apply relative flex-1 flex items-center justify-center z-[1];
+    @media (max-width: 768px) { @apply w-full mt-10; }
+  }
+}
+
+
+// ── Terminal mock ────────────────────────────────────────────────────────────
+
+.lp__terminal {
+  @apply rounded-[14px] overflow-hidden w-full max-w-[440px];
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(141,203,44,0.06);
+
+  &-bar {
+    @apply flex items-center gap-2 px-4 py-3;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  &-dot {
+    @apply w-[11px] h-[11px] rounded-full;
+    &--red    { background: #FF5F57; }
+    &--yellow { background: #FEBC2E; }
+    &--green  { background: #28C840; }
+  }
+
+  &-title {
+    @apply ml-2 font-['DM_Mono',_monospace] text-[11px] text-[rgba(255,255,255,0.3)];
+  }
+
+  &-body {
+    @apply flex flex-col gap-[6px] p-5;
+  }
+
+  &-line {
+    @apply font-['DM_Mono',_monospace] text-[12.5px] leading-[1.5] text-[rgba(255,255,255,0.75)] m-0;
+
+    &--blink .lp__t-cursor {
+      animation: blink-cursor 1s step-end infinite;
+    }
+  }
+}
+
+.lp__t-dim  { color: rgba(255,255,255,0.3); }
+.lp__t-cmd  { color: #8DCB2C; }
+.lp__t-ok   { color: #28C840; }
+.lp__t-url  { color: #60A5FA; text-decoration: underline; }
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTIONS (shared)
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__section {
+  @apply py-[100px] px-6;
+
+  @media (max-width: 768px) { @apply py-[64px] px-5; }
+
+  &--dark {
+    background: $dark-2;
+  }
+
+  &-inner {
+    @apply flex flex-col gap-14 max-w-[1280px] mx-auto;
+  }
+
+  &-header {
+    @apply flex flex-col gap-3 max-w-[560px];
+  }
+
+  &-eyebrow {
+    @apply font-['DM_Mono',_monospace] text-[11px] font-medium tracking-[0.14em] uppercase text-[var(--green)];
+
+    &--light { @apply text-[var(--green)]; }
+  }
+
+  &-title {
+    @apply font-['Syne',_sans-serif] font-extrabold text-white text-[36px] leading-[1.15] m-0;
+    @media (max-width: 768px) { @apply text-[28px]; }
+  }
+
+  &-desc {
+    @apply text-[rgba(255,255,255,0.45)] leading-[1.6] text-[14.5px] m-0;
+  }
+}
+
+// Light section overrides
+.lp__section:not(.lp__section--dark) {
+  background: var(--bg);
+
+  .lp__section-title { @apply text-[var(--navy)]; }
+  .lp__section-desc  { @apply text-[var(--muted)]; }
+  .lp__section-eyebrow { @apply text-[var(--green)]; }
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// TEAMS GRID
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__teams-grid {
+  @apply grid gap-5;
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 600px)  { grid-template-columns: 1fr; }
+}
+
+.lp__team-card {
+  @apply flex flex-col rounded-[16px] overflow-hidden border-0 text-left cursor-pointer;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition:
+    transform 0.25s cubic-bezier(0.4,0,0.2,1),
+    box-shadow 0.25s cubic-bezier(0.4,0,0.2,1),
+    border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(var(--tc), 0.25);
+    border-color: rgba(255,255,255,0.12);
+
+    .lp__team-card-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  &-header {
+    @apply relative flex items-end justify-between px-5 pt-5 pb-5;
+    min-height: 88px;
+  }
+
+  &-icon {
+    @apply flex items-center justify-center w-[44px] h-[44px] rounded-[12px];
+  }
+
+  &-arrow {
+    @apply flex items-center justify-center w-[28px] h-[28px] rounded-full text-[rgba(255,255,255,0.7)];
+    background: rgba(255,255,255,0.1);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  &-body {
+    @apply flex flex-col gap-2 p-5 pt-4;
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex: 1;
+  }
+
+  &-name {
+    @apply font-['Syne',_sans-serif] font-bold text-[15px] text-white m-0;
+  }
+
+  &-tagline {
+    @apply font-['DM_Mono',_monospace] text-[11.5px] text-[rgba(255,255,255,0.4)] m-0;
+  }
+
+  &-tags {
+    @apply flex flex-wrap gap-[6px] mt-1;
+  }
+}
+
+.lp__tag {
+  @apply font-['DM_Mono',_monospace] text-[10px] px-[8px] py-[3px] rounded-full;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  color: rgba(255,255,255,0.5);
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// FEATURES GRID
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__features-grid {
+  @apply grid gap-5;
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 600px)  { grid-template-columns: 1fr; }
+}
+
+.lp__feature-card {
+  @apply flex flex-col gap-3 p-6 rounded-[16px];
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    border-color: rgba(var(--fa), 0.3);
+  }
+}
+
+.lp__feature-icon {
+  @apply flex items-center justify-center w-[44px] h-[44px] rounded-[12px] shrink-0;
+}
+
+.lp__feature-title {
+  @apply font-['Syne',_sans-serif] font-bold text-[14px] text-[var(--navy)] m-0;
+}
+
+.lp__feature-body {
+  @apply text-[13px] text-[var(--muted)] leading-[1.6] m-0;
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// CTA SECTION
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__cta-section {
+  @apply relative flex items-center justify-center overflow-hidden text-center;
+  @apply py-[120px] px-6;
+  background: linear-gradient(160deg, $dark 0%, $dark-3 100%);
+
+  @media (max-width: 768px) { @apply py-[80px] px-5; }
+}
+
+.lp__cta-orb {
+  @apply absolute rounded-full pointer-events-none;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(141,203,44,0.1), transparent 65%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(40px);
+}
+
+.lp__cta-inner {
+  @apply relative flex flex-col items-center gap-5 z-[1] max-w-[600px];
+}
+
+.lp__cta-title {
+  @apply font-['Syne',_sans-serif] font-extrabold text-white leading-[1.1] m-0;
+  font-size: clamp(32px, 5vw, 56px);
+}
+
+.lp__cta-desc {
+  @apply text-[rgba(255,255,255,0.45)] leading-[1.7] text-[15px] m-0;
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// BUTTONS (shared)
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__btn {
+  @apply flex items-center gap-2 px-5 py-[11px] rounded-[10px] font-['DM_Sans',_sans-serif] font-semibold text-[14px] border-0 cursor-pointer no-underline;
+  transition: all 0.2s ease;
+
+  &--primary {
+    background: var(--green);
+    color: var(--navy);
+
+    &:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 0 24px rgba(141,203,44,0.4);
+    }
+  }
+
+  &--ghost {
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.1);
+
+    &:hover {
+      background: rgba(255,255,255,0.11);
+      color: white;
+    }
+  }
+
+  &--lg {
+    @apply px-7 py-[14px] text-[15px] rounded-[12px];
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// FOOTER
+// ════════════════════════════════════════════════════════════════════════════
+
+.lp__footer {
+  @apply py-6 px-6;
+  background: $dark;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.lp__footer-inner {
+  @apply flex items-center justify-between max-w-[1280px] mx-auto flex-wrap gap-4;
+}
+
+.lp__footer-brand {
+  @apply flex items-center gap-3;
+}
+
+.lp__footer-logo {
+  @apply w-[24px] h-[24px] object-contain opacity-70;
+}
+
+.lp__footer-brand-name {
+  @apply block font-['Syne',_sans-serif] text-[12px] font-bold text-[rgba(255,255,255,0.6)];
+}
+
+.lp__footer-brand-sub {
+  @apply block font-['DM_Mono',_monospace] text-[9px] text-[rgba(255,255,255,0.25)] tracking-[0.1em];
+}
+
+.lp__footer-links {
+  @apply flex items-center gap-2 flex-wrap;
+}
+
+.lp__footer-link {
+  @apply font-['DM_Sans',_sans-serif] text-[12.5px] text-[rgba(255,255,255,0.35)] no-underline px-3 py-1 rounded-[6px];
+  @apply hover:text-[rgba(255,255,255,0.7)] transition-colors duration-[0.15s];
+
+  &--btn {
+    @apply bg-transparent border-0 cursor-pointer;
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// ANIMATIONS
+// ════════════════════════════════════════════════════════════════════════════
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 8px rgba(141,203,44,0.8); }
+  50%       { box-shadow: 0 0 16px rgba(141,203,44,1); }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}

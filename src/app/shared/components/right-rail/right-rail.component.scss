@@ -5,13 +5,43 @@
 // Host fills the entire fixed shell__rail column (216px × 100vh).
 // Hovering anywhere in this column triggers the rail reveal.
 :host {
-  @apply block w-full;
+  @apply block w-full relative;
   height: 100vh;
 
   &:hover .rail {
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
+  }
+
+  &:hover .rail__peek {
+    opacity: 0;
+    transform: translateX(12px);
+    pointer-events: none;
+  }
+}
+
+// ── Peek / hover-hint tab ────────────────────────────────────────────────────
+// Visible when the rail is idle; fades out when the host is hovered.
+.rail__peek {
+  @apply absolute top-1/2 right-0 -translate-y-1/2;
+  @apply flex flex-col items-center justify-center gap-[6px];
+  @apply bg-white border border-[var(--border)] border-r-0;
+  @apply rounded-[8px_0_0_8px] cursor-default;
+  @apply py-[14px] px-[9px];
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.06);
+  transition:
+    opacity   0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &-icon {
+    @apply font-['Syne',_sans-serif] text-[16px] font-bold text-[var(--green)] leading-none;
+  }
+
+  &-label {
+    @apply font-['Syne',_sans-serif] text-[9px] font-extrabold uppercase tracking-[0.12em] text-[var(--navy)] opacity-40;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
   }
 }
 

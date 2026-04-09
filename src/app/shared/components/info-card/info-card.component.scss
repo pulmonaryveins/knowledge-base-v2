@@ -4,6 +4,22 @@
 
 .info-card {
   @apply rounded-xl p-4 bg-[var(--card)] border border-[var(--border)];
+  transition: border-color 0.2s ease;
+
+  // ── Accent variant (icon + colored left border) ────────────────────────
+  &--accented {
+    border-left-width: 3px;
+    border-left-color: var(--ic-accent, var(--border));
+  }
+
+  // ── Icon bubble ────────────────────────────────────────────────────────
+  &__icon-wrap {
+    @apply flex items-center justify-center w-[40px] h-[40px] rounded-[10px] mb-3 shrink-0;
+  }
+
+  &__icon {
+    @apply text-[20px] leading-none;
+  }
 
   &__title {
     @apply font-bold m-0 mb-2 font-['Syne',_sans-serif] text-[13px] text-[var(--navy)];

@@ -1,6 +1,7 @@
 // ── FILE: src/app/features/docs-shell/docs-shell.component.ts ──
 
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '../../core/services';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { RightRailComponent } from '../../shared/components/right-rail/right-rail.component';
@@ -12,7 +13,8 @@ import { AppsPageComponent } from '../apps-page/apps-page.component';
  * DocsShellComponent is the root layout shell of the portal.
  * It composes the fixed sidebar, the main content area, and the fixed right rail.
  * Switches between TeamPageComponent and AppsPageComponent based on active team key.
- * Smart component — injects NavigationService.
+ * Reads optional ?team= query param on init to deep-link from the landing page.
+ * Smart component — injects NavigationService and ActivatedRoute.
  */
 @Component({
   selector: 'app-docs-shell',
@@ -27,9 +29,10 @@ import { AppsPageComponent } from '../apps-page/apps-page.component';
   templateUrl: './docs-shell.component.html',
   styleUrl: './docs-shell.component.scss',
 })
-export class DocsShellComponent {
+export class DocsShellComponent implements OnInit {
   /** Navigation service for reading the active team key */
   private readonly _nav = inject(NavigationService);
+  private readonly _route = inject(ActivatedRoute);
 
   /** True when the Research & Development page should be rendered */
   protected readonly isAppsPage = computed<boolean>(
@@ -40,4 +43,12 @@ export class DocsShellComponent {
   protected readonly isTeamPage = computed<boolean>(
     () => this._nav.activeTeamKey() !== 'rd'
   );
+
+  /** Read ?team= query param and switch active team on entry */
+  public ngOnInit(): void {
+    const teamKey = this._route.snapshot.queryParamMap.get('team');
+    if (teamKey) {
+      this._nav.switchTeam(teamKey);
+    }
+  }
 }

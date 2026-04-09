@@ -22,6 +22,10 @@ export interface InfoCardData {
   readonly title: string;
   /** Card body paragraph text */
   readonly body: string;
+  /** Optional emoji icon displayed in a colored bubble above the title */
+  readonly icon?: string;
+  /** Optional hex accent color for the icon bubble background and left border */
+  readonly accent?: string;
 }
 
 /** A single step in a numbered step list */

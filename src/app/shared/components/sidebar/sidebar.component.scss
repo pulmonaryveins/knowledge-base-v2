@@ -15,6 +15,8 @@
   @apply hidden fixed top-[14px] left-[14px] z-[200] items-center justify-center w-[40px] h-[40px] rounded-[10px] bg-[var(--navy)] text-white border border-[rgba(255,255,255,0.1)] cursor-pointer transition-opacity duration-[0.15s];
 
   @media (max-width: 768px) { @apply flex; }
+
+  &--hidden { @apply opacity-0 pointer-events-none; }
 }
 
 // ── Mobile backdrop ───────────────────────────────────────────────────────────
@@ -157,10 +159,20 @@
   // ── Footer ─────────────────────────────────────────────────────────────
 
   &__footer {
-    @apply py-[16px] px-[18px] border-t border-[rgba(255,255,255,0.07)] mt-auto;
+    @apply flex flex-col gap-2 py-[16px] px-[18px] border-t border-[rgba(255,255,255,0.07)] mt-auto;
+  }
+
+  &__back-btn {
+    @apply flex items-center gap-2 w-full text-left bg-transparent border-0 cursor-pointer;
+    @apply py-[7px] px-[10px] rounded-[8px] text-[11.5px] font-['DM_Sans',_sans-serif];
+    @apply text-[rgba(255,255,255,0.35)] transition-all duration-[0.15s];
+
+    &:hover {
+      @apply bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.7)];
+    }
   }
 
   &__footer-text {
-    @apply text-[10px] text-[rgba(255,255,255,0.2)] font-['DM_Mono',_monospace];
+    @apply text-[10px] text-[rgba(255,255,255,0.2)] font-['DM_Mono',_monospace] px-[10px];
   }
 }

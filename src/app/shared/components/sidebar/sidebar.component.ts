@@ -7,8 +7,10 @@ import {
   ChevronDown,
   Menu,
   X,
+  ArrowLeft,
   LucideIconData,
 } from 'lucide-angular';
+import { Router } from '@angular/router';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { DocsDataService } from '../../../core/services/docs-data.service';
 import { StatusBadgeComponent } from '../status-badge/status-badge.component';
@@ -25,12 +27,14 @@ import { getTeamIcon, PROJECT_ICON } from '../../../core/utils/icons';
 export class SidebarComponent {
   private readonly _nav = inject(NavigationService);
   private readonly _docsData = inject(DocsDataService);
+  private readonly _router = inject(Router);
 
   // ── Lucide icon references exposed to template ──────────────────────────
   protected readonly SearchIcon = Search;
   protected readonly ChevronDownIcon = ChevronDown;
   protected readonly MenuIcon = Menu;
   protected readonly CloseIcon = X;
+  protected readonly ArrowLeftIcon = ArrowLeft;
   protected readonly ProjectIcon = PROJECT_ICON;
 
   // ── Mobile sidebar state ─────────────────────────────────────────────────
@@ -81,5 +85,10 @@ export class SidebarComponent {
 
   protected closeMobile(): void {
     this.mobileOpen.set(false);
+  }
+
+  /** Navigate back to the landing page */
+  protected goHome(): void {
+    this._router.navigate(['/']);
   }
 }

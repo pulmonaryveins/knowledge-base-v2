@@ -1,7 +1,7 @@
 <!-- FILE: src/app/shared/components/sidebar/sidebar.component.html -->
 
-<!-- Mobile hamburger trigger (visible only on small screens) -->
-<button class="sidebar__hamburger" (click)="toggleMobile()" aria-label="Open navigation">
+<!-- Mobile hamburger trigger (visible only on small screens, hidden when sidebar is open) -->
+<button class="sidebar__hamburger" [class.sidebar__hamburger--hidden]="mobileOpen()" (click)="toggleMobile()" aria-label="Open navigation">
   <lucide-icon [img]="MenuIcon" [size]="20" />
 </button>
 
@@ -83,6 +83,10 @@
 
   <!-- Footer -->
   <div class="sidebar__footer">
+    <button class="sidebar__back-btn" (click)="goHome()">
+      <lucide-icon [img]="ArrowLeftIcon" [size]="12" />
+      Back to Home
+    </button>
     <span class="sidebar__footer-text">NCompassTV · Dev Portal · 2025</span>
   </div>
 </aside>
