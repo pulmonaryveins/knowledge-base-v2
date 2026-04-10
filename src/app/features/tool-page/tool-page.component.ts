@@ -11,11 +11,12 @@ import { getToolIcon } from '../../core/utils/icons';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
 import { CodeBlockComponent } from '../../shared/components/code-block/code-block.component';
 import { StepListComponent } from '../../shared/components/step-list/step-list.component';
+import { RevealDirective } from '../../shared/directives/reveal.directive';
 
 @Component({
   selector: 'app-tool-page',
   standalone: true,
-  imports: [LucideAngularModule, SectionHeaderComponent, CodeBlockComponent, StepListComponent],
+  imports: [LucideAngularModule, SectionHeaderComponent, CodeBlockComponent, StepListComponent, RevealDirective],
   templateUrl: './tool-page.component.html',
   styleUrl: './tool-page.component.scss',
 })

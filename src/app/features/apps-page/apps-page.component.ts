@@ -10,6 +10,7 @@ import { SectionHeaderComponent } from '../../shared/components/section-header/s
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { InfoCardComponent } from '../../shared/components/info-card/info-card.component';
 import { getAppIcon, getTeamIcon } from '../../core/utils/icons';
+import { RevealDirective } from '../../shared/directives/reveal.directive';
 
 @Component({
   selector: 'app-apps-page',
@@ -20,6 +21,7 @@ import { getAppIcon, getTeamIcon } from '../../core/utils/icons';
     StatusBadgeComponent,
     InfoCardComponent,
     LucideAngularModule,
+    RevealDirective,
   ],
   templateUrl: './apps-page.component.html',
   styleUrl: './apps-page.component.scss',

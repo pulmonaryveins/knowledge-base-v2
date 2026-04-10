@@ -56,22 +56,27 @@ export class DocsDataService {
    */
   public getSearchIndex(): ReadonlyArray<SearchResult> {
     const results: SearchResult[] = [];
+
     for (const team of this._teams) {
       for (const section of team.sections) {
         results.push({
           id: `${team.key}-${section.id}`,
+          type: 'section',
           teamKey: team.key,
+          toolKey: '',
           teamColor: team.color,
           teamLabel: team.label,
           title: section.label,
-          snippet: `${team.label} documentation — ${section.label} (section ${section.num})`,
+          snippet: `${team.label} — ${section.label} (section ${section.num})`,
           sectionId: section.id,
         });
       }
       for (const project of team.projects) {
         results.push({
           id: `project-${project.id}`,
+          type: 'project',
           teamKey: team.key,
+          toolKey: '',
           teamColor: team.color,
           teamLabel: team.label,
           title: project.name,
@@ -80,6 +85,21 @@ export class DocsDataService {
         });
       }
     }
+
+    for (const tool of this._tools) {
+      results.push({
+        id: `tool-${tool.key}`,
+        type: 'tool',
+        teamKey: '',
+        toolKey: tool.key,
+        teamColor: tool.color,
+        teamLabel: tool.category,
+        title: tool.label,
+        snippet: tool.description,
+        sectionId: '',
+      });
+    }
+
     return results;
   }
 }

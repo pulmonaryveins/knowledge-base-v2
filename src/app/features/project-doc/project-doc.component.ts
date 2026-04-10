@@ -9,6 +9,7 @@ import { CodeBlockComponent } from '../../shared/components/code-block/code-bloc
 import { StepListComponent } from '../../shared/components/step-list/step-list.component';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { getAppIcon, ICONS } from '../../core/utils/icons';
+import { RevealDirective } from '../../shared/directives/reveal.directive';
 
 @Component({
   selector: 'app-project-doc',
@@ -19,6 +20,7 @@ import { getAppIcon, ICONS } from '../../core/utils/icons';
     StepListComponent,
     StatusBadgeComponent,
     LucideAngularModule,
+    RevealDirective,
   ],
   templateUrl: './project-doc.component.html',
   styleUrl: './project-doc.component.scss',

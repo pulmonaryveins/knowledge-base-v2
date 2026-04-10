@@ -13,7 +13,7 @@
   <!-- Sections -->
   <div class="team-page__content">
     @for (section of sections(); track section.id) {
-      <section class="team-page__section" [id]="section.id">
+      <section class="team-page__section" appReveal [id]="section.id">
         <app-section-header [num]="section.num" [label]="section.label" [subHeader]="section.subHeader" />
 
         @switch (section.content.type) {
@@ -27,7 +27,7 @@
             @if (asGettingStarted(section.content).layout === 'grid') {
               <div class="team-page__process-grid">
                 @for (step of asGettingStarted(section.content).steps; track step.title; let idx = $index) {
-                  <div class="team-page__process-card">
+                  <div class="team-page__process-card" appReveal>
                     <div class="team-page__process-card-top">
                       @if (step.icon) {
                         <div class="team-page__process-card-icon-box">
@@ -74,7 +74,7 @@
           @case ('coding-patterns') {
             <div class="team-page__patterns" [class.team-page__patterns--stack]="asCodingPatterns(section.content).layout === 'stack'">
               @for (pattern of asCodingPatterns(section.content).patterns; track pattern.title; let idx = $index) {
-                <div class="team-page__pattern">
+                <div class="team-page__pattern" appReveal>
                   <div class="team-page__pattern-header">
                     <span class="team-page__pattern-num">{{ (idx + 1).toString().padStart(2, '0') }}</span>
                     <h3 class="team-page__pattern-title">{{ pattern.title }}</h3>

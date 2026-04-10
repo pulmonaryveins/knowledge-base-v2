@@ -3,6 +3,8 @@
 import { Component, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
+import { BgRippleComponent } from '../../shared/components/bg-ripple/bg-ripple.component';
+import { RevealDirective } from '../../shared/directives/reveal.directive';
 import {
   Monitor, Server, Globe, TestTube, Microscope, Palette,
   ArrowRight, ChevronRight, Zap, Shield, BookOpen, Users, Code2, Layers,
@@ -17,7 +19,7 @@ import {
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, BgRippleComponent, RevealDirective],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss',
 })

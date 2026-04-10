@@ -47,13 +47,14 @@
 
   <!-- ── Hero ────────────────────────────────────────────────────────────── -->
   <section class="lp__hero">
-    <!-- Background grid lines -->
-    <div class="lp__hero-grid" aria-hidden="true"></div>
+    <!-- Background ripple grid -->
+    <app-bg-ripple aria-hidden="true" />
 
     <!-- Glow orbs -->
     <div class="lp__hero-orb lp__hero-orb--1" aria-hidden="true"></div>
     <div class="lp__hero-orb lp__hero-orb--2" aria-hidden="true"></div>
 
+    <div class="lp__hero-inner">
     <div class="lp__hero-content">
       <div class="lp__hero-badge">
         <span class="lp__hero-badge-dot"></span>
@@ -61,7 +62,7 @@
       </div>
 
       <h1 class="lp__hero-title">
-        One portal for<br />
+        One portal for<br>
         <span class="lp__hero-title-accent">every team.</span>
       </h1>
 
@@ -129,36 +130,29 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- ── Stack logos strip ──────────────────────────────────────────────── -->
   <div class="lp__stack-strip">
-    <div class="lp__stack-track" aria-hidden="true">
-      <!-- First set -->
-      <div class="lp__stack-logos">
-        @for (logo of stackLogos; track logo.name) {
-          <div class="lp__stack-logo" [title]="logo.name">
-            <img [src]="logo.src" [alt]="logo.name" width="24" height="24" loading="lazy" />
-            <span class="lp__stack-logo-name">{{ logo.name }}</span>
-          </div>
-        }
-      </div>
-      <!-- Duplicate for seamless loop -->
-      <div class="lp__stack-logos" aria-hidden="true">
-        @for (logo of stackLogos; track logo.name) {
-          <div class="lp__stack-logo" [title]="logo.name">
-            <img [src]="logo.src" [alt]="logo.name" width="24" height="24" loading="lazy" />
-            <span class="lp__stack-logo-name">{{ logo.name }}</span>
-          </div>
-        }
-      </div>
+    <div class="lp__stack-track">
+      @for (copy of [0,1,2,3]; track copy) {
+        <div class="lp__stack-logos" [attr.aria-hidden]="copy > 0 ? 'true' : null">
+          @for (logo of stackLogos; track logo.name) {
+            <div class="lp__stack-logo" [title]="logo.name">
+              <img [src]="logo.src" [alt]="logo.name" width="24" height="24" loading="lazy" />
+              <span class="lp__stack-logo-name">{{ logo.name }}</span>
+            </div>
+          }
+        </div>
+      }
     </div>
   </div>
 
   <!-- ── Teams ────────────────────────────────────────────────────────────── -->
   <section class="lp__section lp__section--dark" id="teams">
     <div class="lp__section-inner">
-      <div class="lp__section-header">
+      <div class="lp__section-header" appReveal>
         <span class="lp__section-eyebrow">Our Six Teams</span>
         <h2 class="lp__section-title">Every team. Every stack.</h2>
         <p class="lp__section-desc">Click any team card to jump directly to their documentation inside the portal.</p>
@@ -166,7 +160,7 @@
 
       <div class="lp__teams-grid">
         @for (team of teams; track team.key) {
-          <button class="lp__team-card" (click)="goToTeam(team.key)" [style.--tc]="team.color">
+          <button class="lp__team-card" appReveal (click)="goToTeam(team.key)" [style.--tc]="team.color">
             <div class="lp__team-card-header" [style.background]="team.gradient">
               <div class="lp__team-card-icon" [style.background]="team.color + '28'">
                 <lucide-icon [img]="team.icon" [size]="20" [style.color]="team.color" />
@@ -193,7 +187,7 @@
   <!-- ── Features ─────────────────────────────────────────────────────────── -->
   <section class="lp__section" id="features">
     <div class="lp__section-inner">
-      <div class="lp__section-header">
+      <div class="lp__section-header" appReveal>
         <span class="lp__section-eyebrow">What's Inside</span>
         <h2 class="lp__section-title">Everything a dev needs.</h2>
         <p class="lp__section-desc">From onboarding to production — one place for all the context that usually lives in people's heads.</p>
@@ -201,7 +195,7 @@
 
       <div class="lp__features-grid">
         @for (feat of features; track feat.title) {
-          <div class="lp__feature-card" [style.--fa]="feat.accent">
+          <div class="lp__feature-card" appReveal [style.--fa]="feat.accent">
             <div class="lp__feature-icon" [style.background]="feat.accent + '1a'">
               <lucide-icon [img]="feat.icon" [size]="20" [style.color]="feat.accent" />
             </div>
@@ -216,7 +210,7 @@
   <!-- ── About / CTA ──────────────────────────────────────────────────────── -->
   <section class="lp__cta-section" id="about">
     <div class="lp__cta-orb" aria-hidden="true"></div>
-    <div class="lp__cta-inner">
+    <div class="lp__cta-inner" appReveal>
       <span class="lp__section-eyebrow lp__section-eyebrow--light">Ready to explore?</span>
       <h2 class="lp__cta-title">Built by the team,<br />for the team.</h2>
       <p class="lp__cta-desc">
@@ -237,7 +231,7 @@
         <img class="lp__footer-logo" src="logo.png" alt="NCompassTV" />
         <div>
           <span class="lp__footer-brand-name">NCompassTV</span>
-          <span class="lp__footer-brand-sub">Dev Portal · 2025</span>
+          <span class="lp__footer-brand-sub">Dev Portal · 2026</span>
         </div>
       </div>
       <nav class="lp__footer-links">

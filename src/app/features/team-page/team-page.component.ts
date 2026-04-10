@@ -38,6 +38,7 @@ import { SpacingGuideComponent } from '../../shared/components/spacing-guide/spa
 import { GridGuideComponent } from '../../shared/components/grid-guide/grid-guide.component';
 import { IconographyGuideComponent } from '../../shared/components/iconography-guide/iconography-guide.component';
 import { ButtonShowcaseComponent } from '../../shared/components/button-showcase/button-showcase.component';
+import { RevealDirective } from '../../shared/directives/reveal.directive';
 
 /**
  * TeamPageComponent renders the full documentation page for the active team.
@@ -66,6 +67,7 @@ import { ButtonShowcaseComponent } from '../../shared/components/button-showcase
     GridGuideComponent,
     IconographyGuideComponent,
     ButtonShowcaseComponent,
+    RevealDirective,
   ],
   templateUrl: './team-page.component.html',
   styleUrl: './team-page.component.scss',

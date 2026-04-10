@@ -18,6 +18,7 @@ import { NavigationService } from '../../../core/services/navigation.service';
 import { SearchService } from '../../../core/services/search.service';
 import { SearchResult } from '../../../core/models';
 import { FormsModule } from '@angular/forms';
+import { LucideAngularModule, Search, FileText, FolderGit2, Wrench, ArrowRight } from 'lucide-angular';
 
 /**
  * SearchOverlayComponent renders the ⌘K global search modal.
@@ -27,7 +28,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-search-overlay',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, LucideAngularModule],
   templateUrl: './search-overlay.component.html',
   styleUrl: './search-overlay.component.scss',
 })
@@ -41,6 +42,12 @@ export class SearchOverlayComponent implements OnInit, AfterViewInit {
 
   /** The search input element for auto-focus */
   @ViewChild('searchInput') private readonly _searchInput!: ElementRef<HTMLInputElement>;
+
+  protected readonly SearchIcon   = Search;
+  protected readonly SectionIcon  = FileText;
+  protected readonly ProjectIcon  = FolderGit2;
+  protected readonly ToolIcon     = Wrench;
+  protected readonly ArrowIcon    = ArrowRight;
 
   /** Whether the overlay is currently visible */
   protected readonly isOpen = computed<boolean>(() => this._nav.searchOpen());
@@ -117,12 +124,17 @@ export class SearchOverlayComponent implements OnInit, AfterViewInit {
    * @param result - The search result to navigate to
    */
   protected selectResult(result: SearchResult): void {
-    this._nav.switchTeam(result.teamKey);
-    this.close();
-    setTimeout(() => {
-      const el = document.getElementById(result.sectionId);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+    if (result.type === 'tool') {
+      this._nav.switchToTool(result.toolKey);
+      this.close();
+    } else {
+      this._nav.switchTeam(result.teamKey);
+      this.close();
+      setTimeout(() => {
+        const el = document.getElementById(result.sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
   }
 
   /**

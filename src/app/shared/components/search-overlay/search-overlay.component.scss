@@ -2,69 +2,174 @@
 
 // ── FILE: src/app/shared/components/search-overlay/search-overlay.component.scss ──
 
+// Host must never be a flex/grid child — use display:contents so the host
+// element is invisible to layout, and only the fixed backdrop renders.
+:host { display: contents; }
+
 .search-overlay {
   &__backdrop {
-    @apply fixed inset-0 flex items-start justify-center z-[1000] bg-[rgba(9,22,53,0.65)] backdrop-blur-[5px] pt-[80px];
+    @apply fixed inset-0 flex items-start justify-center z-[1000] pt-[88px];
+    background: rgba(6, 14, 32, 0.7);
+    backdrop-filter: blur(8px);
   }
 
   &__modal {
-    @apply flex flex-col w-full max-w-[660px] bg-[var(--card)] rounded-[16px] shadow-[0_24px_64px_rgba(9,22,53,0.35)] border border-[var(--border)] overflow-hidden my-0 mx-[16px];
+    @apply flex flex-col w-full overflow-hidden;
+    max-width: 640px;
+    margin: 0 16px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(9, 22, 53, 0.1);
+    box-shadow: 0 32px 80px rgba(9, 22, 53, 0.28), 0 0 0 1px rgba(9,22,53,0.06);
   }
 
+  // ── Input row ──────────────────────────────────────────────────────────────
   &__input-row {
-    @apply flex items-center gap-3 py-[16px] px-[20px] border-b border-[var(--border)];
+    @apply flex items-center gap-3 px-[18px];
+    height: 58px;
+    border-bottom: 1px solid var(--border);
   }
 
-  &__input-icon { @apply text-[16px]; }
+  &__input-icon {
+    @apply shrink-0 text-[var(--light)] flex items-center;
+  }
 
   &__input {
-    @apply flex-1 bg-transparent border-0 outline-none font-['DM_Sans',_sans-serif] text-[16px] text-[var(--navy)];
+    @apply flex-1 bg-transparent border-0 outline-none font-['DM_Sans',_sans-serif] text-[15px] text-[var(--navy)];
+    &::placeholder { color: var(--light); }
+  }
 
-    &::placeholder { @apply text-[var(--light)]; }
+  &__result-count {
+    @apply font-['DM_Mono',_monospace] text-[10px] text-[var(--muted)] shrink-0 whitespace-nowrap;
   }
 
   &__esc-badge {
-    @apply cursor-pointer font-['DM_Mono',_monospace] text-[10px] py-[3px] px-[7px] rounded-[5px] bg-[var(--bg)] text-[var(--muted)] border border-[var(--border)];
+    @apply cursor-pointer font-['DM_Mono',_monospace] text-[10px] py-[3px] px-[8px] rounded-[6px] shrink-0;
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    transition: background 0.15s;
+    &:hover { background: var(--border); }
   }
 
+  // ── Results list ───────────────────────────────────────────────────────────
   &__results {
-    @apply list-none m-0 p-0 max-h-[360px] overflow-y-auto;
+    @apply list-none m-0 p-0 overflow-y-auto;
+    max-height: 380px;
+    padding: 6px 0;
   }
 
   &__result {
-    @apply flex items-start gap-3 cursor-pointer py-[12px] px-[20px] border-l-[3px] border-transparent border-b-[var(--border)] transition-colors duration-[0.1s] border-b last:border-b-0;
+    @apply flex items-center gap-3 cursor-pointer px-[16px] py-[10px];
+    border-left: 2px solid transparent;
+    transition: background 0.1s, border-color 0.1s;
 
     &:hover,
     &--focused {
-      @apply bg-[var(--bg)] border-l-[var(--green)];
+      background: var(--bg);
+      border-left-color: var(--green);
+
+      .search-overlay__result-arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
   }
 
-  &__result-badge {
-    @apply inline-flex items-center shrink-0 font-['Syne',_sans-serif] text-[10px] font-bold py-[2px] px-[8px] rounded-[8px] border border-solid mt-[2px] whitespace-nowrap;
+  // Type icon bubble
+  &__result-icon {
+    @apply flex items-center justify-center shrink-0 rounded-[8px] w-[30px] h-[30px];
+
+    &--section {
+      background: rgba(9, 22, 53, 0.07);
+      color: var(--navy);
+    }
+    &--project {
+      background: rgba(141, 203, 44, 0.12);
+      color: #4a7a00;
+    }
+    &--tool {
+      background: rgba(124, 58, 237, 0.1);
+      color: var(--be);
+    }
   }
 
   &__result-body {
-    @apply flex flex-col gap-1;
+    @apply flex flex-col gap-[3px] flex-1 min-w-0;
+  }
+
+  &__result-title-row {
+    @apply flex items-center gap-2;
   }
 
   &__result-title {
-    @apply text-[14px] font-semibold text-[var(--navy)] font-['DM_Sans',_sans-serif];
+    @apply font-semibold text-[13.5px] text-[var(--navy)] font-['DM_Sans',_sans-serif] truncate;
+  }
+
+  &__result-tag {
+    @apply shrink-0 inline-flex items-center font-['Syne',_sans-serif] text-[9.5px] font-bold py-[2px] px-[7px] rounded-[6px] border border-solid whitespace-nowrap;
   }
 
   &__result-snippet {
-    @apply text-[12px] text-[var(--muted)] leading-[1.4];
+    @apply text-[11.5px] text-[var(--muted)] leading-[1.45] truncate;
   }
 
+  &__result-arrow {
+    @apply shrink-0 text-[var(--light)];
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  // ── Empty state (with query) ───────────────────────────────────────────────
   &__empty {
-    @apply py-[24px] px-[20px] text-[13px] text-[var(--muted)] text-center;
+    @apply flex flex-col items-center gap-2 py-[36px] px-[24px] text-[var(--muted)];
+
+    lucide-icon { opacity: 0.3; }
+
+    span { @apply text-[13px]; }
+
+    strong { @apply text-[var(--navy)]; }
   }
 
+  &__empty-hint {
+    font-size: 11px;
+    color: var(--light);
+  }
+
+  // ── Default state (no query) ───────────────────────────────────────────────
+  &__empty-default {
+    @apply flex items-center justify-center gap-6 py-[20px] px-[24px];
+  }
+
+  &__empty-tip {
+    @apply flex items-center gap-[6px] text-[11px] text-[var(--muted)] font-['DM_Mono',_monospace];
+    lucide-icon { opacity: 0.5; }
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────────────────
   &__footer {
-    @apply flex items-center gap-4 py-[10px] px-[20px] bg-[var(--bg)] border-t border-[var(--border)];
+    @apply flex items-center gap-3 px-[18px] py-[10px];
+    border-top: 1px solid var(--border);
+    background: var(--bg);
   }
 
   &__hint {
-    @apply font-['DM_Mono',_monospace] text-[10px] text-[var(--light)];
+    @apply flex items-center gap-[5px] font-['DM_Sans',_sans-serif] text-[11px] text-[var(--light)];
+
+    kbd {
+      @apply font-['DM_Mono',_monospace] text-[10px] py-[1px] px-[5px] rounded-[4px];
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      box-shadow: 0 1px 0 var(--border);
+    }
+  }
+
+  &__footer-spacer { @apply flex-1; }
+
+  &__footer-brand {
+    @apply font-['DM_Mono',_monospace] text-[9.5px] text-[var(--light)] tracking-[0.05em];
   }
 }
+

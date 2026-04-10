@@ -111,19 +111,21 @@ $dark-3:  #0f1f3d;
 .lp__hero {
   @apply relative flex items-center min-h-screen overflow-hidden;
   background: linear-gradient(160deg, $dark 0%, $dark-2 60%, $dark-3 100%);
-  padding: 96px 48px 80px;
+  padding: 96px 0 80px;
 
-  @media (max-width: 1024px) { padding: 96px 32px 80px; }
-  @media (max-width: 768px)  { padding: 96px 20px 60px; @apply flex-col; }
+  @media (max-width: 768px) { padding: 80px 0 60px; }
 
-  // Background grid
-  &-grid {
-    @apply absolute inset-0 pointer-events-none;
-    background-image:
-      linear-gradient(rgba(141,203,44,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(141,203,44,0.04) 1px, transparent 1px);
-    background-size: 48px 48px;
+  &-inner {
+    @apply relative z-[1] w-full flex items-center;
+    gap: 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+
+    @media (max-width: 1024px) { gap: 32px; padding: 0 32px; }
+    @media (max-width: 768px)  { @apply flex-col; padding: 0 20px; gap: 40px; }
   }
+
 
   // Glow orbs
   &-orb {
@@ -144,8 +146,11 @@ $dark-3:  #0f1f3d;
   }
 
   &-content {
-    @apply relative flex flex-col gap-6 flex-1 max-w-[620px] z-[1];
-    @media (max-width: 768px) { @apply max-w-full; }
+    @apply flex flex-col gap-6;
+    flex: 0 0 50%;
+    min-width: 0;
+    animation: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+    @media (max-width: 768px)  { flex: none; @apply w-full; }
   }
 
   &-badge {
@@ -167,6 +172,7 @@ $dark-3:  #0f1f3d;
     &-accent {
       color: var(--green);
       -webkit-text-stroke: 0px;
+      white-space: nowrap;
     }
   }
 
@@ -203,8 +209,11 @@ $dark-3:  #0f1f3d;
 
   // Hero visual (terminal)
   &-visual {
-    @apply relative flex-1 flex items-center justify-center z-[1];
-    @media (max-width: 768px) { @apply w-full mt-10; }
+    flex: 0 0 50%;
+    min-width: 0;
+    @apply flex items-center justify-end;
+    animation: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+    @media (max-width: 768px) { flex: none; @apply w-full justify-center; }
   }
 }
 
@@ -212,36 +221,39 @@ $dark-3:  #0f1f3d;
 // ── Terminal mock ────────────────────────────────────────────────────────────
 
 .lp__terminal {
-  @apply rounded-[14px] overflow-hidden w-full max-w-[440px];
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.09);
+  @apply rounded-[16px] overflow-hidden w-full;
+  max-width: 560px;
+  background: rgba(15, 22, 40, 0.85);
+  border: 1px solid rgba(255,255,255,0.1);
   box-shadow:
-    0 24px 80px rgba(0,0,0,0.5),
-    0 0 0 1px rgba(141,203,44,0.06);
+    0 32px 100px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(141,203,44,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
 
   &-bar {
-    @apply flex items-center gap-2 px-4 py-3;
+    @apply flex items-center gap-[7px] px-5 py-[14px];
     background: rgba(255,255,255,0.04);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
   }
 
   &-dot {
-    @apply w-[11px] h-[11px] rounded-full;
+    @apply w-[13px] h-[13px] rounded-full;
     &--red    { background: #FF5F57; }
     &--yellow { background: #FEBC2E; }
     &--green  { background: #28C840; }
   }
 
   &-title {
-    @apply ml-2 font-['DM_Mono',_monospace] text-[11px] text-[rgba(255,255,255,0.3)];
+    @apply ml-2 font-['DM_Mono',_monospace] text-[12px] text-[rgba(255,255,255,0.3)];
   }
 
   &-body {
-    @apply flex flex-col gap-[6px] p-5;
+    @apply flex flex-col gap-[10px] p-7;
   }
 
   &-line {
-    @apply font-['DM_Mono',_monospace] text-[12.5px] leading-[1.5] text-[rgba(255,255,255,0.75)] m-0;
+    @apply font-['DM_Mono',_monospace] text-[14px] leading-[1.6] text-[rgba(255,255,255,0.8)] m-0;
 
     &--blink .lp__t-cursor {
       animation: blink-cursor 1s step-end infinite;
@@ -585,7 +597,8 @@ $dark-3:  #0f1f3d;
 }
 
 .lp__stack-logos {
-  @apply flex items-center gap-8 px-8;
+  @apply flex items-center gap-8;
+  padding-right: 32px; /* one gap-unit at the seam — matches within-set spacing */
 }
 
 .lp__stack-logo {
@@ -612,5 +625,5 @@ $dark-3:  #0f1f3d;
 
 @keyframes marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-25%); }
 }

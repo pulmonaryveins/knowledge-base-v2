@@ -1,5 +1,5 @@
 <!-- FILE: src/app/features/project-doc/project-doc.component.html -->
-<div class="proj-card" [class.proj-card--open]="isOpen()" [id]="'project-' + project().id">
+<div class="proj-card" appReveal [class.proj-card--open]="isOpen()" [id]="'project-' + project().id">
   <!-- Trigger Row -->
   <button class="proj-card__trigger" (click)="toggle()">
     <span class="proj-card__icon" [style.background]="project().teamColor + '22'" [style.color]="project().teamColor">
