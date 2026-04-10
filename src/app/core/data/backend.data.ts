@@ -245,71 +245,54 @@ npm run start:dev ntv360-api`,
       num: '04',
       content: {
         type: 'coding-patterns',
+        layout: 'stack',
         patterns: [
           {
             title: 'BaseMetadataEntity',
             description: 'All domain entities extend BaseMetadataEntity from libs/core, providing full audit columns and soft-delete. UUIDs are stored as BINARY(16) for storage efficiency.',
             codeBlock: {
               language: 'typescript',
-              code: `// libs/core/entities/base-metadata.entity.ts
-export abstract class BaseMetadataEntity {
-  @PrimaryColumn({ type: 'binary', length: 16 })
-  @Transform(({ value }) => UuidBinaryTransformer.from(value))
-  id: string;
+              code: `import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { BaseMetadataEntity, UuidBinaryTransformer } from 'libs/core';
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @Column({ name: 'created_by', nullable: true })
-  createdBy: string;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  @Column({ name: 'updated_by', nullable: true })
-  updatedBy: string;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt: Date | null;
-}
-
-// Domain entity usage
 @Entity('devices')
 export class DeviceEntity extends BaseMetadataEntity {
-  @Column({ name: 'display_name' })
-  displayName: string;
+
+  @PrimaryColumn({ type: 'binary', length: 16 })
+  id: Buffer;
+
+  @Column({ name: 'display_name', length: 255 })
+  name: string;
+
+  @Column({ name: 'group_id', type: 'binary', length: 16 })
+  groupId: Buffer;
+
+  // createdAt, updatedAt, createdBy, updatedBy, deletedAt
+  // are all inherited from BaseMetadataEntity — do not redeclare
 }`,
             },
-            callout: { type: 'info', title: 'UUID storage', body: 'UUIDs are stored as BINARY(16) to save 10 bytes per row vs. VARCHAR(36). Use UuidBinaryTransformer.to() when inserting and .from() when reading.' },
           },
           {
             title: 'Field Mapping with FieldMappingService',
             description: 'Use BASE_*_FIELDS constants and FieldMappingService to map camelCase DTO properties to snake_case database column names. Never hard-code column strings inline.',
             codeBlock: {
               language: 'typescript',
-              code: `// libs/core/services/field-mapping.service.ts
-export const BASE_DEVICE_FIELDS = {
-  displayName: 'display_name',
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
-  deletedAt: 'deleted_at',
-} as const;
+              code: `// libs/core/fields/device.fields.ts
+export const BASE_DEVICE_FIELDS: FieldMap = {
+  name:    'display_name',
+  groupId: 'group_id',
+  status:  'device_status',
+};
 
-// Usage in a service
-@Injectable()
-export class DevicesService {
-  constructor(private readonly fieldMapping: FieldMappingService) {}
-
-  async findAll(filters: DeviceFilterDto): Promise<DeviceEntity[]> {
-    const mapped = this.fieldMapping.map(filters, BASE_DEVICE_FIELDS);
-    return this.deviceRepo
-      .createQueryBuilder('device')
-      .where(mapped)
-      .getMany();
-  }
+// In DevicesService
+async getDevices(filters: DeviceFilterDto) {
+  const mapped = this._fieldMappingService.map(
+    filters,
+    BASE_DEVICE_FIELDS,
+  );
+  return this._repo.find({ where: mapped });
 }`,
             },
-            callout: { type: 'tip', title: 'Centralise field maps', body: 'Define BASE_*_FIELDS constants once in libs/core. Importing them in every module prevents typos in column name strings and makes renames a single-file change.' },
           },
           {
             title: 'DTO Serialisation with @Expose()',
@@ -319,26 +302,21 @@ export class DevicesService {
               code: `import { Expose } from 'class-transformer';
 import { IsString, IsUUID, IsEnum } from 'class-validator';
 
-export class CreateDeviceDto {
-  @Expose()
-  @IsString()
-  displayName: string;
-
+export class DeviceResponseDto {
   @Expose()
   @IsUUID()
-  locationId: string;
+  id: string;
+
+  @Expose()
+  @IsString()
+  name: string;
 
   @Expose()
   @IsEnum(DeviceStatus)
   status: DeviceStatus;
-}
 
-// In module — apply globally
-app.useGlobalInterceptors(
-  new ClassSerializerInterceptor(app.get(Reflector), {
-    excludeExtraneousValues: true,
-  }),
-);`,
+  // Un-decorated properties are stripped by excludeExtraneousValues
+}`,
             },
           },
           {
@@ -346,19 +324,20 @@ app.useGlobalInterceptors(
             description: 'All branches follow a prefix convention and commits use a typed sentence-case format. PRs must reference a Jira ticket.',
             codeBlock: {
               language: 'bash',
-              code: `# Branch naming
-feat/NTV-123-add-device-heartbeat
-fix/NTV-456-null-uuid-crash
-hotfix/NTV-789-auth-token-expiry
-release/v2.4.0
+              code: `# Branch naming — prefix + Jira ticket + short description
+git checkout -b feat/NTV-123-add-device-heartbeat
+git checkout -b fix/NTV-456-fix-token-expiry
+git checkout -b hotfix/NTV-789-critical-auth-bypass
+git checkout -b release/v2.4.0
 
-# Commit format: <type>: Sentence case description
-feat: Add device heartbeat ingestion endpoint
-fix: Correct null UUID crash in DevicesService
-chore: Upgrade TypeORM to 0.3.20
-refactor: Extract field mapping to FieldMappingService`,
+# Commit messages — sentence case, typed prefix
+git commit -m "feat: Add device heartbeat endpoint"
+git commit -m "fix: Correct token expiry calculation"
+git commit -m "refactor: Extract FieldMappingService to libs/core"
+
+# PR title must reference the Jira ticket
+# [NTV-123] feat: Add device heartbeat endpoint`,
             },
-            callout: { type: 'warning', title: 'No bare commits to main', body: 'All changes must go through a PR. Direct pushes to main and develop are branch-protected. Hotfixes branch from main and are merged back to both main and develop.' },
           },
         ],
       },

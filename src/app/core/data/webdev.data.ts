@@ -290,113 +290,62 @@ npm run dev   # http://localhost:5173`,
           {
             title: 'Recreate, Do Not Copy',
             description: 'Study reference websites to understand layout, structure, and interactions. Then rebuild using your own implementation. Never copy-paste source code from a reference site.',
-            codeBlock: {
-              language: 'bash',
-              code: `# The correct approach when given a reference design:
-# 1. Open the reference in the browser
-# 2. Inspect the layout using DevTools → identify grid/flex structure
-# 3. Note the spacing, typography, and color patterns
-# 4. Close the source — open your editor and implement from understanding
-# 5. Your output should match the visual result, not the source code`,
-            },
-            callout: { type: 'warning', title: 'This is a core principle', body: 'Copy-pasting source code bypasses the learning process and produces unmaintainable output. Study the what and why, then implement your own version.' },
+            rules: [
+              'Open the reference in the browser and inspect layout via DevTools — identify the grid/flex structure, spacing, and typography',
+              'Close the source before opening your editor — implement from understanding, not from copying',
+              'Your visual result must match the reference; your code must be entirely your own',
+              'Copy-pasting source code bypasses learning and produces unmaintainable output',
+            ],
           },
           {
             title: 'Component-Based Development',
             description: 'Break every UI into reusable components. If a block of markup appears more than once — or could appear on multiple pages — it belongs in a component file.',
-            codeBlock: {
-              language: 'html',
-              code: `---
-// ✅ Correct — src/components/FeatureCard.astro
-interface Props {
-  title: string;
-  body: string;
-  icon: string;
-}
-const { title, body, icon } = Astro.props;
----
-
-<div class="feature-card">
-  <span>{icon}</span>
-  <h3>{title}</h3>
-  <p>{body}</p>
-</div>
-
-<!-- Usage in page -->
-<FeatureCard title="Fast" body="Built with Astro." icon="⚡" />`,
-            },
-            callout: { type: 'tip', title: 'Avoid code duplication', body: 'If you find yourself writing the same HTML structure twice, stop and extract it into a component. Components are the foundation of maintainable projects.' },
+            rules: [
+              'Extract any block of markup that repeats or could be reused into a dedicated component file',
+              'Type all component props via an interface Props (Astro) or $props() rune (Svelte)',
+              'Each component has a single responsibility — do not bundle unrelated concerns into one file',
+              'If you find yourself writing the same HTML structure twice, stop and extract it into a component',
+            ],
           },
           {
             title: 'Reactive State with Svelte Stores',
             description: 'For Svelte internal tools, manage shared state with writable stores from svelte/store. Keep stores in lib/stores/ and import them into components — never manage state in page files directly.',
-            codeBlock: {
-              language: 'typescript',
-              code: `// lib/stores/projects.ts
-import { writable } from 'svelte/store';
-
-export interface Project {
-  id: string;
-  name: string;
-  stage: 'analyze' | 'plan' | 'build' | 'test' | 'refine';
-}
-
-export const projects = writable<Project[]>([]);
-
-// In a component — subscribe automatically via $
-// <script>
-import { projects } from '$lib/stores/projects';
-// </script>
-// {#each $projects as project}
-//   <ProjectCard {project} />
-// {/each}`,
-            },
+            rules: [
+              'All shared state lives in writable stores placed in lib/stores/ — never declare reactive state in page files',
+              'Access store values in templates using the $ prefix (e.g. $projects) — never call .subscribe() manually in markup',
+              'All store types must be defined with a TypeScript interface in the same file as the store',
+              'Use derived() from svelte/store for any value computed from another store — do not re-derive manually in components',
+            ],
           },
           {
             title: 'AI-Assisted Development',
             description: 'Use Claude Code, Codex, and Kiro throughout the workflow to accelerate development. AI tools are meant to support understanding, not replace it — always review and understand generated code before committing.',
-            codeBlock: {
-              language: 'bash',
-              code: `# How to use AI tools effectively in this team:
-
-# Claude Code (IDE) — best for:
-# - Refactoring existing components
-# - Debugging layout issues
-# - Writing repetitive boilerplate (JSON schemas, config files)
-
-# Codex — best for:
-# - Generating starter component code from a description
-# - Converting designs into initial markup
-
-# Kiro — best for:
-# - Inline suggestions while actively writing code
-# - Quick lookups without leaving the editor
-
-# Rule: AI tools reduce repetitive tasks and improve speed.
-# You are still responsible for understanding every line you ship.`,
-            },
-            callout: { type: 'info', title: 'AI supports, not replaces', body: 'AI tools are integrated across planning, development, testing, and deployment. The goal is faster, higher-quality output — not removing the developer from the process.' },
+            rules: [
+              'Use Claude Code (IDE) for refactoring existing components, debugging layout issues, and writing repetitive boilerplate',
+              'Use Codex for generating starter component code from a description or converting designs to initial markup',
+              'Use Kiro for inline suggestions while actively writing code and quick lookups without leaving the editor',
+              'Review and understand every line of AI-generated code before committing — you are responsible for everything you ship',
+            ],
           },
           {
             title: 'Debugging Practice',
             description: 'When layout or styling issues occur, follow a structured debugging process. Avoid rewriting entire sections — isolate the problem first.',
-            codeBlock: {
-              language: 'bash',
-              code: `# Structured debugging steps:
-# 1. Open browser DevTools (F12)
-# 2. Select the broken element with the Inspector
-# 3. Check the layout system — is it Flexbox or Grid?
-#    → Look for display: flex / display: grid in Styles panel
-# 4. Review applied classes and computed styles
-#    → Check for conflicting or overridden rules
-# 5. Fix one issue at a time — do not rewrite the whole section
-
-# Common Flexbox/Grid checks:
-# - Is the parent set to flex/grid? (not the child)
-# - Are gap / align-items / justify-content set correctly?
-# - Are width/height constraints causing overflow?`,
-            },
-            callout: { type: 'tip', title: 'Fix step by step', body: 'Avoid the temptation to rewrite entire components when debugging. Identify the root cause using DevTools, make the minimal fix, and verify before moving on.' },
+            rules: [
+              'Open browser DevTools (F12) first — select the broken element and inspect its applied and computed styles',
+              'Check the layout system on the parent element (display: flex / grid) before adjusting any child properties',
+              'Fix one issue at a time — verify the change before moving on to the next',
+              'Never rewrite entire sections as a debugging shortcut — always isolate the root cause first',
+            ],
+          },
+          {
+            title: 'Code Review & Deployment Checklist',
+            description: 'Every task submitted for review must include a working live deploy, a clean repository, and short documentation. Never submit incomplete or untested work.',
+            rules: [
+              'Push to a feature branch and open a PR — never push directly to main',
+              'Every task must include a live Vercel deploy URL linked in the Jira ticket before marking it done',
+              'Remove all console.log statements, commented-out blocks, and unused imports before opening a PR',
+              'Write a short README or PR description explaining what was built, how to run it, and any known limitations',
+            ],
           },
         ],
       },

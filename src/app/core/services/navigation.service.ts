@@ -16,6 +16,12 @@ export class NavigationService {
   /** Currently active team key */
   public readonly activeTeamKey = signal<string>('frontend');
 
+  /** Key of the currently active tool page ('') when on a team page */
+  public readonly activeToolKey = signal<string>('');
+
+  /** Whether the portal is showing a tool page or a team page */
+  public readonly activeView = signal<'team' | 'tool'>('team');
+
   /** ID of the currently expanded project card (null = all collapsed) */
   public readonly activeProjectId = signal<string | null>(null);
 
@@ -65,7 +71,21 @@ export class NavigationService {
    */
   public switchTeam(key: string): void {
     this.activeTeamKey.set(key);
+    this.activeToolKey.set('');
+    this.activeView.set('team');
     this.activeProjectId.set(null);
+    this.activeSectionId.set('');
+    this.scrollProgress.set(0);
+    this.heroVisible.set(true);
+  }
+
+  /**
+   * Switch the portal to a tool documentation page.
+   * @param key - The tool key to activate
+   */
+  public switchToTool(key: string): void {
+    this.activeToolKey.set(key);
+    this.activeView.set('tool');
     this.activeSectionId.set('');
     this.scrollProgress.set(0);
     this.heroVisible.set(true);

@@ -98,7 +98,7 @@
   // ── Teams Section ──────────────────────────────────────────────────────
 
   &__section {
-    @apply flex flex-col py-[14px] px-0 flex-[1_1_0%];
+    @apply flex flex-col py-[14px] px-0;
   }
 
   &__section-label {
@@ -129,11 +129,21 @@
   }
 
   &__team-chevron {
-    @apply text-[rgba(255,255,255,0.35)] flex items-center;
+    @apply text-[rgba(255,255,255,0.35)] flex items-center transition-transform duration-[0.2s];
+
+    &--open { @apply rotate-180; }
   }
 
   // ── Project Sub-links ──────────────────────────────────────────────────
+  &__team-projects-wrap {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
+    &--open {
+      max-height: 600px;
+    }
+  }
   &__projects {
     @apply list-none m-0 p-0 flex flex-col bg-[rgba(0,0,0,0.15)] border-y border-[rgba(255,255,255,0.05)];
   }
@@ -154,6 +164,35 @@
 
   &__project-name {
     @apply flex-1 text-[12px] text-[rgba(255,255,255,0.5)] font-['DM_Sans',_sans-serif];
+  }
+
+  // ── Tool Nav Items ──────────────────────────────────────────────────────
+
+  &__tool-btn {
+    @apply flex items-center gap-[9px] w-full text-left bg-transparent cursor-pointer;
+    @apply py-[9px] px-[18px] rounded-[0px] border-0 transition-colors duration-[0.15s];
+    @apply text-[rgba(255,255,255,0.5)];
+
+    &:hover {
+      @apply bg-[rgba(255,255,255,0.05)];
+
+      .sidebar__tool-name { @apply text-[rgba(255,255,255,0.8)]; }
+    }
+
+    &--active {
+      @apply bg-[rgba(255,255,255,0.09)];
+
+      .sidebar__tool-name { @apply text-[#ffffff]; }
+      .sidebar__tool-icon { @apply opacity-100; }
+    }
+  }
+
+  &__tool-icon {
+    @apply shrink-0 flex items-center opacity-70 transition-opacity duration-[0.15s];
+  }
+
+  &__tool-name {
+    @apply flex-1 text-[13.5px] text-[rgba(255,255,255,0.6)] font-['DM_Sans',_sans-serif] font-medium;
   }
 
   // ── Footer ─────────────────────────────────────────────────────────────

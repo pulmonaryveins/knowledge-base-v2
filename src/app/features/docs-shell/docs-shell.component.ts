@@ -8,6 +8,7 @@ import { RightRailComponent } from '../../shared/components/right-rail/right-rai
 import { SearchOverlayComponent } from '../../shared/components/search-overlay/search-overlay.component';
 import { TeamPageComponent } from '../team-page/team-page.component';
 import { AppsPageComponent } from '../apps-page/apps-page.component';
+import { ToolPageComponent } from '../tool-page/tool-page.component';
 
 /**
  * DocsShellComponent is the root layout shell of the portal.
@@ -25,6 +26,7 @@ import { AppsPageComponent } from '../apps-page/apps-page.component';
     SearchOverlayComponent,
     TeamPageComponent,
     AppsPageComponent,
+    ToolPageComponent,
   ],
   templateUrl: './docs-shell.component.html',
   styleUrl: './docs-shell.component.scss',
@@ -34,14 +36,19 @@ export class DocsShellComponent implements OnInit {
   private readonly _nav = inject(NavigationService);
   private readonly _route = inject(ActivatedRoute);
 
+  /** True when a tool page should be rendered */
+  protected readonly isToolPage = computed<boolean>(
+    () => this._nav.activeView() === 'tool'
+  );
+
   /** True when the Research & Development page should be rendered */
   protected readonly isAppsPage = computed<boolean>(
-    () => this._nav.activeTeamKey() === 'rd'
+    () => this._nav.activeView() === 'team' && this._nav.activeTeamKey() === 'rd'
   );
 
   /** True when a regular team documentation page should be rendered */
   protected readonly isTeamPage = computed<boolean>(
-    () => this._nav.activeTeamKey() !== 'rd'
+    () => this._nav.activeView() === 'team' && this._nav.activeTeamKey() !== 'rd'
   );
 
   /** Read ?team= query param and switch active team on entry */

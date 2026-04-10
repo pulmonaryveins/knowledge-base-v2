@@ -50,34 +50,55 @@
             <lucide-icon [img]="teamIcon(team.key)" [size]="15" />
           </span>
           <span class="sidebar__team-name">{{ team.label }}</span>
-          @if (team.key === activeKey()) {
-            <span class="sidebar__team-chevron">
-              <lucide-icon [img]="ChevronDownIcon" [size]="13" />
-            </span>
-          }
+          <span class="sidebar__team-chevron" [class.sidebar__team-chevron--open]="isExpanded(team.key)">
+            <lucide-icon [img]="ChevronDownIcon" [size]="13" />
+          </span>
         </button>
 
-        <!-- Project sub-links (only for active team) -->
-        @if (team.key === activeKey() && team.projects.length > 0) {
-          <ul class="sidebar__projects">
-            @for (project of team.projects; track project.id) {
-              <li class="sidebar__project">
-                <button
-                  class="sidebar__project-btn"
-                  [class.sidebar__project-btn--active]="project.id === activeProjectId()"
-                  (click)="toggleProject(project.id)"
-                >
-                  <span class="sidebar__project-icon">
-                    <lucide-icon [img]="ProjectIcon" [size]="12" />
-                  </span>
-                  <span class="sidebar__project-name">{{ project.name }}</span>
-                  <app-status-badge [status]="project.status" />
-                </button>
-              </li>
-            }
-          </ul>
+        <!-- Animated projects wrapper — always in DOM, toggled via CSS max-height -->
+        @if (team.projects.length > 0) {
+          <div
+            class="sidebar__team-projects-wrap"
+            [class.sidebar__team-projects-wrap--open]="isExpanded(team.key)"
+          >
+            <ul class="sidebar__projects">
+              @for (project of team.projects; track project.id) {
+                <li class="sidebar__project">
+                  <button
+                    class="sidebar__project-btn"
+                    [class.sidebar__project-btn--active]="project.id === activeProjectId()"
+                    (click)="toggleProject(project.id)"
+                  >
+                    <span class="sidebar__project-icon">
+                      <lucide-icon [img]="projectIcon(project.icon)" [size]="12" />
+                    </span>
+                    <span class="sidebar__project-name">{{ project.name }}</span>
+                    <app-status-badge [status]="project.status" />
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
         }
       </div>
+    }
+  </div>
+
+  <!-- Tools -->
+  <div class="sidebar__section">
+    <span class="sidebar__section-label">TOOLS</span>
+
+    @for (tool of toolsList(); track tool.key) {
+      <button
+        class="sidebar__tool-btn"
+        [class.sidebar__tool-btn--active]="tool.key === activeToolKey()"
+        (click)="switchToTool(tool.key)"
+      >
+        <span class="sidebar__tool-icon" [style.color]="tool.color">
+          <lucide-icon [img]="toolIcon(tool.iconKey)" [size]="15" />
+        </span>
+        <span class="sidebar__tool-name">{{ tool.label }}</span>
+      </button>
     }
   </div>
 

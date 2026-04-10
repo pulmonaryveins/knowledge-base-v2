@@ -278,38 +278,47 @@ npm start`,
       num: '04',
       content: {
         type: 'coding-patterns',
+        layout: 'stack',
         patterns: [
           {
             title: 'Signal-based State',
             description: 'All UI state is managed with signal(), computed(), and effect(). Never BehaviorSubject for local component state.',
             codeBlock: {
               language: 'typescript',
-              code: `/** Whether the panel is expanded */
-protected readonly isOpen = signal<boolean>(false);
+              code: `@Component({ ... })
+export class DeviceListComponent {
+  // ✅ Mutable state
+  readonly devices      = signal<Device[]>([]);
+  readonly searchQuery  = signal('');
 
-/** Derived label updates automatically */
-protected readonly toggleLabel = computed<string>(() =>
-  this.isOpen() ? 'Collapse' : 'Expand'
-);
+  // ✅ Derived state — no manual subscriptions
+  readonly filtered = computed(() =>
+    this.devices().filter(d =>
+      d.name.toLowerCase().includes(this.searchQuery().toLowerCase())
+    )
+  );
 
-/** Toggle the panel */
-public toggle(): void {
-  this.isOpen.update(v => !v);
+  addDevice(device: Device): void {
+    this.devices.update(list => [...list, device]);
+  }
 }`,
             },
-            callout: { type: 'tip', title: 'No zones needed', body: 'With provideZonelessChangeDetection(), Angular only re-renders when signals change — no NgZone.run() required.' },
           },
           {
             title: 'inject() Dependency Injection',
             description: 'Always use the inject() function in field declarations. Constructor injection is forbidden.',
             codeBlock: {
               language: 'typescript',
-              code: `// ✅ Correct
-private readonly _navService = inject(NavigationService);
-private readonly _destroyRef = inject(DestroyRef);
+              code: `@Component({ ... })
+export class DeviceListComponent {
+  // ✅ inject() at field declaration
+  private readonly _deviceService = inject(DeviceService);
+  private readonly _router        = inject(Router);
+  private readonly _destroyRef    = inject(DestroyRef);
 
-// ❌ Forbidden
-constructor(private navService: NavigationService) {}`,
+  // ❌ Constructor injection — strictly forbidden
+  // constructor(private _deviceService: DeviceService) {}
+}`,
             },
           },
           {
@@ -317,35 +326,39 @@ constructor(private navService: NavigationService) {}`,
             description: 'Use the new Angular template syntax. The old *ngIf and *ngFor directives are banned.',
             codeBlock: {
               language: 'html',
-              code: `<!-- ✅ Correct -->
-@if (isOpen()) {
-  <app-panel [data]="data()" />
+              code: `@if (isLoading()) {
+  <app-spinner />
+} @else if (devices().length === 0) {
+  <p class="device-list__empty">No devices found.</p>
+} @else {
+  @for (device of devices(); track device.id) {
+    <app-device-card [device]="device" />
+  }
 }
 
-@for (item of items(); track item.id) {
-  <app-item [item]="item" />
-}
-
-<!-- ❌ Forbidden -->
-<app-panel *ngIf="isOpen" [data]="data" />
-<app-item *ngFor="let item of items" />`,
+<!-- ❌ Banned — do not use structural directives -->
+<!-- <div *ngIf="isLoading()">...</div>          -->
+<!-- <div *ngFor="let d of devices()">...</div>  -->`,
             },
-            callout: { type: 'warning', title: 'Always add track', body: 'The @for block requires a track expression. Use track item.id for stable keys, or track $index only when items have no ID.' },
           },
           {
             title: 'BEM + SCSS @apply',
             description: 'Define BEM class names in SCSS using @apply for Tailwind utilities. Never put utility classes directly in HTML templates.',
             codeBlock: {
               language: 'scss',
-              code: `// ✅ Correct — in component.scss
-.card {
-  @apply rounded-xl border p-4;
-  background: var(--card);
-  border-color: var(--border);
+              code: `.device-card {
+  @apply flex flex-col gap-3 p-4 rounded-lg;
+  @apply bg-[var(--card)] border border-[var(--border)];
 
   &__title {
-    @apply text-sm font-semibold;
-    color: var(--navy);
+    @apply font-bold text-[var(--navy)] text-[15px];
+  }
+
+  &__status {
+    @apply text-[12px] text-[var(--muted)];
+
+    &--active  { @apply text-[var(--green)]; }
+    &--offline { @apply text-[var(--danger)]; }
   }
 }`,
             },

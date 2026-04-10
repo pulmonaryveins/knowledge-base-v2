@@ -26,6 +26,43 @@
     @apply mt-[4px];
   }
 
+  // ── Process Grid ─────────────────────────────────────────────────────────
+
+  &__process-grid {
+    @apply grid grid-cols-4 gap-4;
+    @media (max-width: 1280px) { @apply grid-cols-3; }
+    @media (max-width: 900px)  { @apply grid-cols-2; }
+    @media (max-width: 600px)  { @apply grid-cols-1; }
+  }
+
+  &__process-card {
+    @apply flex flex-col p-[20px] bg-[var(--card)] border border-[var(--border)] rounded-[12px];
+  }
+
+  &__process-card-top {
+    @apply flex items-start justify-between mb-[16px];
+  }
+
+  &__process-card-icon-box {
+    @apply w-[42px] h-[42px] flex items-center justify-center rounded-[10px] bg-[var(--navy)] text-white opacity-90;
+  }
+
+  &__process-card-num {
+    @apply w-[26px] h-[26px] flex items-center justify-center rounded-full bg-[var(--green-bg)] font-['DM_Mono',_monospace] text-[10px] font-bold text-[var(--green)] flex-shrink-0;
+  }
+
+  &__process-card-title {
+    @apply m-0 mb-[8px] font-bold font-['Syne',_sans-serif] text-[13.5px] text-[var(--navy)] leading-[1.4];
+  }
+
+  &__process-card-badge {
+    @apply inline-block mb-[10px] px-[8px] py-[3px] rounded-full bg-[var(--green-bg)] text-[var(--green)] font-['DM_Mono',_monospace] text-[10px] font-semibold tracking-[0.03em] self-start;
+  }
+
+  &__process-card-desc {
+    @apply m-0 text-[12.5px] text-[var(--muted)] leading-[1.55] mt-auto;
+  }
+
   // ── Folder Architecture ───────────────────────────────────────────────────
 
   &__folder-arch {
@@ -41,11 +78,25 @@
   // ── Coding Patterns ───────────────────────────────────────────────────────
 
   &__patterns {
-    @apply flex flex-col gap-8;
+    @apply grid grid-cols-3 gap-4;
+    @media (max-width: 1200px) { @apply grid-cols-2; }
+    @media (max-width: 1024px) { @apply grid-cols-1; }
+
+    &--stack {
+      @apply flex flex-col gap-6;
+    }
   }
 
   &__pattern {
-    @apply flex flex-col gap-4 p-[24px] bg-[var(--card)] border border-[var(--border)] rounded-[14px];
+    @apply flex flex-col gap-0 p-[20px] bg-[var(--card)] border border-[var(--border)] rounded-[12px];
+  }
+
+  &__pattern-header {
+    @apply flex items-center gap-3 mb-[10px];
+  }
+
+  &__pattern-num {
+    @apply flex-shrink-0 w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[var(--green-bg)] font-['DM_Mono',_monospace] text-[11px] font-bold text-[var(--green)];
   }
 
   &__pattern-title {
@@ -53,7 +104,19 @@
   }
 
   &__pattern-desc {
-    @apply m-0 text-[13.5px] text-[var(--muted)] leading-[1.55];
+    @apply m-0 mb-[12px] text-[13px] text-[var(--muted)] leading-[1.55];
+  }
+
+  &__pattern-rules {
+    @apply m-0 pl-0 flex flex-col gap-[8px] list-none;
+  }
+
+  &__pattern-rule {
+    @apply flex gap-[8px] items-start text-[12.5px] text-[var(--muted)] leading-[1.5];
+  }
+
+  &__pattern-rule-icon {
+    @apply text-[var(--green)] text-[10px] flex-shrink-0 mt-[3px];
   }
 
   // ── Projects ──────────────────────────────────────────────────────────────

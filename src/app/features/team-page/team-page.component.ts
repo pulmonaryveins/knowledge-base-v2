@@ -1,6 +1,8 @@
 // ── FILE: src/app/features/team-page/team-page.component.ts ──
 
 import { Component, computed, inject } from '@angular/core';
+import { LucideAngularModule, LucideIconData } from 'lucide-angular';
+import { getStepIcon } from '../../core/utils/icons';
 import { NavigationService } from '../../core/services';
 import {
   Team,
@@ -47,6 +49,7 @@ import { ButtonShowcaseComponent } from '../../shared/components/button-showcase
   selector: 'app-team-page',
   standalone: true,
   imports: [
+    LucideAngularModule,
     HeroComponent,
     SectionHeaderComponent,
     DataTableComponent,
@@ -78,6 +81,11 @@ export class TeamPageComponent {
   protected readonly sections = computed<ReadonlyArray<TeamSection>>(
     () => this._nav.activeSections()
   );
+
+  /** Resolves an icon name string to LucideIconData for process card rendering */
+  protected iconData(name: string): LucideIconData {
+    return getStepIcon(name);
+  }
 
   /**
    * Narrow a SectionContent to TechStackSection for template binding.

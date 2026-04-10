@@ -36,6 +36,8 @@ export interface Step {
   readonly description: string;
   /** Optional Lucide icon name shown alongside the number badge */
   readonly icon?: string;
+  /** Optional duration label shown as a badge on grid-layout cards */
+  readonly duration?: string;
   /** Optional inline code snippet shown below the description */
   readonly code?: string;
   /** Programming language label for the inline code snippet */
@@ -70,8 +72,10 @@ export interface CodingPattern {
   readonly title: string;
   /** Explanation of the pattern */
   readonly description: string;
-  /** Code block demonstrating the pattern */
-  readonly codeBlock: CodeBlockData;
+  /** Optional code block demonstrating the pattern */
+  readonly codeBlock?: CodeBlockData;
+  /** Optional bullet-point rules or checklist items */
+  readonly rules?: ReadonlyArray<string>;
   /** Optional tip/warning callout attached to this pattern */
   readonly callout?: CalloutData;
 }

@@ -24,14 +24,36 @@
 
           <!-- 02 Getting Started -->
           @case ('getting-started') {
-            <div class="team-page__getting-started">
-              <app-step-list [steps]="asGettingStarted(section.content).steps" />
-              @if (asGettingStarted(section.content).codeBlock) {
-                <div class="team-page__code-block">
-                  <app-code-block [data]="asGettingStarted(section.content).codeBlock!" />
-                </div>
-              }
-            </div>
+            @if (asGettingStarted(section.content).layout === 'grid') {
+              <div class="team-page__process-grid">
+                @for (step of asGettingStarted(section.content).steps; track step.title; let idx = $index) {
+                  <div class="team-page__process-card">
+                    <div class="team-page__process-card-top">
+                      @if (step.icon) {
+                        <div class="team-page__process-card-icon-box">
+                          <lucide-icon [img]="iconData(step.icon)" [size]="20" [strokeWidth]="1.75" />
+                        </div>
+                      }
+                      <span class="team-page__process-card-num">{{ (idx + 1).toString().padStart(2, '0') }}</span>
+                    </div>
+                    <h4 class="team-page__process-card-title">{{ step.title }}</h4>
+                    @if (step.duration) {
+                      <span class="team-page__process-card-badge">{{ step.duration }}</span>
+                    }
+                    <p class="team-page__process-card-desc">{{ step.description }}</p>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="team-page__getting-started">
+                <app-step-list [steps]="asGettingStarted(section.content).steps" />
+                @if (asGettingStarted(section.content).codeBlock) {
+                  <div class="team-page__code-block">
+                    <app-code-block [data]="asGettingStarted(section.content).codeBlock!" />
+                  </div>
+                }
+              </div>
+            }
           }
 
           <!-- 03 Folder Architecture -->
@@ -48,14 +70,26 @@
             </div>
           }
 
-          <!-- 04 Coding Patterns -->
+          <!-- 04 Design Patterns -->
           @case ('coding-patterns') {
-            <div class="team-page__patterns">
-              @for (pattern of asCodingPatterns(section.content).patterns; track pattern.title) {
+            <div class="team-page__patterns" [class.team-page__patterns--stack]="asCodingPatterns(section.content).layout === 'stack'">
+              @for (pattern of asCodingPatterns(section.content).patterns; track pattern.title; let idx = $index) {
                 <div class="team-page__pattern">
-                  <h3 class="team-page__pattern-title">{{ pattern.title }}</h3>
+                  <div class="team-page__pattern-header">
+                    <span class="team-page__pattern-num">{{ (idx + 1).toString().padStart(2, '0') }}</span>
+                    <h3 class="team-page__pattern-title">{{ pattern.title }}</h3>
+                  </div>
                   <p class="team-page__pattern-desc">{{ pattern.description }}</p>
-                  <app-code-block [data]="pattern.codeBlock" />
+                  @if (pattern.rules && pattern.rules.length) {
+                    <ul class="team-page__pattern-rules">
+                      @for (rule of pattern.rules; track rule) {
+                        <li class="team-page__pattern-rule"><i class="fa-solid fa-check team-page__pattern-rule-icon"></i>{{ rule }}</li>
+                      }
+                    </ul>
+                  }
+                  @if (pattern.codeBlock) {
+                    <app-code-block [data]="pattern.codeBlock" />
+                  }
                   @if (pattern.callout) {
                     <app-callout [data]="pattern.callout" />
                   }

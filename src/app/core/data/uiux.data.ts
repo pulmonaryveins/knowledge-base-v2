@@ -216,41 +216,55 @@ export const uiuxTeam: Team = {
       subHeader: 'A phase-by-phase overview of how designs move from initial research through usability testing to engineering handoff.',
       content: {
         type: 'getting-started',
+        layout: 'grid',
         steps: [
           {
             icon: 'layers',
             title: 'Phase 1 · Design Basics',
-            description: '4–6 hrs. Master the balance between aesthetic appeal and functional utility. Study visual hierarchy, consistency, standardized components, and how mental-model alignment reduces cognitive load. Deliver: design critique document.',
+            duration: '4–6 hrs',
+            description: 'Master the balance between aesthetic appeal and functional utility. Study visual hierarchy, consistency, standardized components, and how mental-model alignment reduces cognitive load. Deliver: design critique document.',
           },
           {
             icon: 'compass',
             title: 'Phase 2 · UX Design Fundamentals',
-            description: '8 hrs. Explore Golden Ratio, Design Aesthetics, Product Design, Design Ethics, and Constraints. Study Gestalt Principles, Visual Hierarchy, Design Thinking, UX Research Methods, and Inclusive Design. Deliver: design thinking worksheet.',
+            duration: '8 hrs',
+            description: 'Explore Golden Ratio, Design Aesthetics, Product Design, Design Ethics, and Constraints. Study Gestalt Principles, Visual Hierarchy, Design Thinking, UX Research Methods, and Inclusive Design. Deliver: design thinking worksheet.',
           },
           {
             icon: 'pen-tool',
             title: 'Phase 3 · Wireframing',
-            description: '8 hrs. Use low-fidelity wireframes to map user flows and information architecture without visual distraction. Identify usability issues early. Deliver: 1–3 mobile wireframe screens with annotated user flow.',
+            duration: '8 hrs',
+            description: 'Use low-fidelity wireframes to map user flows and information architecture without visual distraction. Identify usability issues early. Deliver: 1–3 mobile wireframe screens with annotated user flow.',
           },
           {
             icon: 'play-circle',
             title: 'Phase 4 · Prototyping',
-            description: '8 hrs. Transform wireframes into interactive flows with transitions and functional interactions. Run usability tests, gather feedback, and iterate. Deliver: lo-fi prototype + findings report.',
+            duration: '8 hrs',
+            description: 'Transform wireframes into interactive flows with transitions and functional interactions. Run usability tests, gather feedback, and iterate. Deliver: lo-fi prototype + findings report.',
           },
           {
             icon: 'globe-2',
             title: 'Phase 5 · Web Design & Accessibility',
-            description: '8 hrs. Apply responsive grids, flexible layouts, and WCAG 2.1 AA accessibility standards. Balance aesthetic impact with performance. Deliver: responsive hi-fi web screen with accessibility audit.',
+            duration: '8 hrs',
+            description: 'Apply responsive grids, flexible layouts, and WCAG 2.1 AA accessibility standards. Balance aesthetic impact with performance. Deliver: responsive hi-fi web screen with accessibility audit.',
           },
           {
             icon: 'type',
             title: 'Phase 6 · Typography & Color Theory',
-            description: '6 hrs. Use font weight, size, and line height to establish hierarchy. Apply color psychology and the color wheel for harmony and accessibility. Minimum contrast ratio 4.5:1 for body text. Deliver: style guide page.',
+            duration: '6 hrs',
+            description: 'Use font weight, size, and line height to establish hierarchy. Apply color psychology and the color wheel for harmony and accessibility. Minimum contrast ratio 4.5:1 for body text. Deliver: style guide page.',
           },
           {
             icon: 'rocket',
             title: 'Phase 7 · UI Design Principles & Production',
-            description: 'Ongoing. Apply all curriculum phases to real sprint work. Pick up Jira design tasks and deliver annotated, accessible, token-driven Figma screens via Dev Mode for Frontend and Backend handoff.',
+            duration: 'Ongoing',
+            description: 'Apply all curriculum phases to real sprint work. Pick up Jira design tasks and deliver annotated, accessible, token-driven Figma screens via Dev Mode for Frontend and Backend handoff.',
+          },
+          {
+            icon: 'award',
+            title: 'Phase 8 · Portfolio Review & Team Critique',
+            duration: 'Team Review',
+            description: 'Present your Phase 7 deliverables in a team design critique. Receive structured feedback on accessibility, token compliance, and handoff quality. Incorporate at least one round of revisions before archiving the work in Figma.',
           },
         ],
       },
@@ -265,82 +279,68 @@ export const uiuxTeam: Team = {
         patterns: [
           {
             title: 'Design Token Usage',
-            description: 'All colours, spacing, and typography must reference design tokens — never raw hex values or px sizes in Figma or code.',
-            codeBlock: {
-              language: 'scss',
-              code: `// ✅ Correct — use CSS variable tokens
-.button--primary {
-  background: var(--color-accent);
-  padding: var(--spacing-3) var(--spacing-5);
-  font-family: var(--font-heading);
-}
-
-// ❌ Forbidden — raw values
-.button--primary {
-  background: #8DCB2C;
-  padding: 12px 20px;
-}`,
-            },
-            callout: { type: 'info', title: 'Token sync', body: 'Tokens are synced from Figma via Tokens Studio. Run npm run tokens:build after any token update in Figma.' },
+            description: 'All colours, spacing, and typography must reference design tokens — never raw hex values or pixel sizes in Figma or code.',
+            rules: [
+              "Reference CSS variable tokens for every colour, spacing, and font value — e.g. var(--color-accent), var(--spacing-3)",
+              "Never hardcode hex values (#8DCB2C) or raw pixel sizes (12px) directly in components or Figma frames",
+              "Sync tokens from Figma via Tokens Studio and run npm run tokens:build after any Figma token update",
+              "Apply the same token names in both Figma variables and CSS custom properties for a consistent handoff",
+            ],
           },
           {
             title: 'Component Variant Naming',
-            description: 'Figma component variants must follow the same BEM naming used in code to enable automatic Figma-to-Code mapping.',
-            codeBlock: {
-              language: 'typescript',
-              code: `// Figma variant: Button / Primary / Large / Default
-// Maps to Angular component:
-
-@Component({ selector: 'app-button' })
-export class ButtonComponent {
-  public readonly variant = input<'primary' | 'secondary'>('primary');
-  public readonly size = input<'sm' | 'md' | 'lg'>('md');
-}`,
-            },
+            description: 'Figma component variants must follow the same naming used in code to enable automatic Figma-to-Code mapping and friction-free engineering handoff.',
+            rules: [
+              "Match Figma variant property names to Angular input() types exactly — e.g. 'primary' | 'secondary'",
+              "Use consistent size labels: Small / Medium / Large in Figma maps to 'sm' | 'md' | 'lg' in code",
+              "Name Figma components using slash notation: Button / Primary / Large / Default",
+              "Annotate all variant constraints in Figma Dev Mode so engineers can reference them without back-and-forth",
+            ],
           },
           {
-            title: 'Visual Hierarchy (Phase 4 Principle)',
-            description: 'Every screen must establish a clear visual hierarchy using size, weight, contrast, and spacing. Users should be able to identify the primary action within 3 seconds.',
-            codeBlock: {
-              language: 'bash',
-              code: `# Hierarchy checklist for every frame:
-# 1. One dominant H1 per screen — largest, highest contrast
-# 2. Supporting H2/H3 — 60–80% of H1 size
-# 3. Body text — min 16px, line-height 1.5
-# 4. Primary CTA — isolated, high-contrast, generous padding
-# 5. Secondary elements — muted colour, reduced weight`,
-            },
-            callout: { type: 'tip', title: 'Squint test', body: 'Squint at your design — the most important element should still be obvious. If it is not, increase size or contrast.' },
+            title: 'Visual Hierarchy',
+            description: 'Every screen must establish a clear visual hierarchy using size, weight, contrast, and spacing. Users should identify the primary action within 3 seconds.',
+            rules: [
+              "One dominant H1 per screen — largest text size with the highest contrast against the background",
+              "Supporting H2/H3 headings at 60–80% of the H1 size to create readable content tiering",
+              "Body text minimum 16px with line-height 1.5 for comfortable, accessible reading",
+              "Isolate the primary CTA with high contrast, generous padding, and clear whitespace separation from secondary elements",
+              "Secondary elements use muted colour and reduced font weight to remain visually recessive",
+            ],
           },
           {
-            title: 'Accessibility — WCAG 2.1 AA (Phase 5 Principle)',
+            title: 'Accessibility — WCAG 2.1 AA',
             description: 'Every design deliverable must be evaluated for WCAG 2.1 AA compliance before handoff. Inclusive design is not optional — it is a team standard.',
-            codeBlock: {
-              language: 'bash',
-              code: `# WCAG 2.1 AA checklist
-# · Contrast ratio ≥ 4.5:1 for body text (use Figma Contrast plugin)
-# · Contrast ratio ≥ 3:1 for large text (18px+ bold or 24px+ regular)
-# · Interactive targets ≥ 44×44 px touch area
-# · Focus states visible on all interactive elements
-# · No information conveyed by colour alone
-# · Alt text annotations on all images in Figma handoff`,
-            },
-            callout: { type: 'warning', title: 'PR blocker', body: 'Designs failing contrast or touch-target checks will be returned before engineering picks up the ticket.' },
+            rules: [
+              "Contrast ratio ≥ 4.5:1 for body text — verify with the Figma Contrast plugin before every handoff",
+              "Contrast ratio ≥ 3:1 for large text (18px+ bold or 24px+ regular)",
+              "All interactive elements must have a minimum 44×44 px touch target area",
+              "Focus states must be visible on every interactive element — never suppress the outline without a replacement",
+              "Never convey information by colour alone — always pair with an icon, label, or pattern",
+              "Include alt text annotations on all images in Figma Dev Mode for the engineering handoff",
+            ],
           },
           {
-            title: 'Usability Testing Protocol (Phase 3 Principle)',
+            title: 'Usability Testing Protocol',
             description: 'Every major UX flow must be validated through at least one round of remote usability testing via Maze before engineering begins implementation.',
-            codeBlock: {
-              language: 'bash',
-              code: `# Maze test setup
-# 1. Export Figma prototype link — set starting frame
-# 2. Create Maze project → "Usability Test" template
-# 3. Define 2–5 tasks aligned to user goals
-# 4. Set success criteria (task completion ≥ 80%)
-# 5. Recruit ≥ 5 participants from target personas
-# 6. Analyse heatmaps + misclick rate after 48 hrs`,
-            },
-            callout: { type: 'info', title: 'Minimum bar', body: 'A task completion rate below 70% signals a UX problem that must be resolved before high-fidelity production begins.' },
+            rules: [
+              "Export the Figma prototype link and set the correct starting frame before building the Maze study",
+              "Create a Maze project using the 'Usability Test' template",
+              "Define 2–5 tasks that directly map to real user goals; set success criteria at ≥ 80% task completion",
+              "Recruit ≥ 5 participants that match the target persona before launching the study",
+              "Analyse heatmaps and misclick rates after 48 hours before drawing conclusions",
+            ],
+          },
+          {
+            title: 'Handoff & Annotation Standards',
+            description: 'Every Figma file delivered to engineering must be fully annotated and review-ready — incomplete handoffs block sprint velocity.',
+            rules: [
+              "Use Figma Dev Mode to annotate all spacing, sizing, colour tokens, and interaction notes before marking a ticket design-complete",
+              "Group and name every layer logically — engineers should be able to navigate the file without a walkthrough",
+              "Include a dedicated Handoff Checklist frame in each file: contrast check, token check, responsive frames, and interaction spec",
+              "Link the Figma file, prototype, and Maze results directly in the Jira ticket before moving to the engineering queue",
+              "Never deliver a WIP file — all placeholder content, temp colours, and auto-layout breaks must be resolved first",
+            ],
           },
         ],
       },

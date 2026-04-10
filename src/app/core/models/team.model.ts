@@ -27,6 +27,8 @@ export interface GettingStartedSection {
   readonly steps: ReadonlyArray<Step>;
   /** Optional summary code block shown below the steps */
   readonly codeBlock?: CodeBlockData;
+  /** 'grid' renders steps as icon cards in a 4-col grid instead of a numbered list */
+  readonly layout?: 'grid';
 }
 
 /** Content for a Folder Architecture section */
@@ -45,6 +47,8 @@ export interface CodingPatternsSection {
   readonly type: 'coding-patterns';
   /** List of patterns, each with code and optional callout */
   readonly patterns: ReadonlyArray<CodingPattern>;
+  /** 'stack' renders patterns as a single column list instead of a grid */
+  readonly layout?: 'stack';
 }
 
 /** Content for a Common Mistakes section */

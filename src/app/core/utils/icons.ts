@@ -14,7 +14,9 @@ import {
   // Step list icons
   GitBranch, PackageOpen, KeyRound, Terminal, FlaskConical,
   Container, ArrowRightLeft, Rocket, ClipboardList, GitPullRequest,
-  ScanSearch, Layers, Compass, PenTool, PlayCircle, Globe2, Type,
+  ScanSearch, Layers, Compass, PenTool, PlayCircle, Globe2, Type, Award,
+  // Tools section icons
+  Wind, HardDrive, Figma, Code,
   LucideIconData,
 } from 'lucide-angular';
 
@@ -103,9 +105,65 @@ export const STEP_ICON_MAP: Record<string, LucideIconData> = {
   'play-circle'     : PlayCircle,
   'globe-2'         : Globe2,
   'type'            : Type,
+  'award'           : Award,
   'file-code'       : FileCode,
 };
 
 export function getStepIcon(name: string): LucideIconData {
   return STEP_ICON_MAP[name] ?? FileCode;
 }
+
+// ── Tool page icon name → Lucide data ───────────────────────────────────────────
+
+export const TOOL_ICON_MAP: Record<string, LucideIconData> = {
+  'atom'      : Atom,
+  'globe'     : Globe,
+  'database'  : Database,
+  'hard-drive': HardDrive,
+  'rocket'    : Rocket,
+  'wind'      : Wind,
+  'container' : Container,
+  'figma'     : Figma,
+  'code'      : Code,
+};
+
+export function getToolIcon(key: string): LucideIconData {
+  return TOOL_ICON_MAP[key] ?? FileCode;
+}
+
+// ── Team tools registry ───────────────────────────────────────────────────────
+
+export interface TeamTool {
+  readonly label: string;
+  readonly icon: LucideIconData;
+  readonly color: string;
+}
+
+export const TEAM_TOOLS_MAP: Record<string, ReadonlyArray<TeamTool>> = {
+  frontend: [
+    { label: 'Angular',      icon: Atom,      color: '#DD0031' },
+    { label: 'Tailwind CSS', icon: Wind,       color: '#38BDF8' },
+  ],
+  backend: [
+    { label: 'TypeORM',  icon: Database,  color: '#E4A44A' },
+    { label: 'MySQL',    icon: HardDrive, color: '#4479A1' },
+    { label: 'Docker',   icon: Container, color: '#2496ED' },
+  ],
+  webdev: [
+    { label: 'Next.js',      icon: Globe,     color: '#e2e8f0' },
+    { label: 'Astro',        icon: Rocket,    color: '#FF7E33' },
+    { label: 'Tailwind CSS', icon: Wind,      color: '#38BDF8' },
+  ],
+  qa: [
+    { label: 'Python', icon: Code,      color: '#3572A5' },
+    { label: 'Docker', icon: Container, color: '#2496ED' },
+  ],
+  rd: [
+    { label: 'Python', icon: Code,      color: '#3572A5' },
+    { label: 'Docker', icon: Container, color: '#2496ED' },
+  ],
+  uiux: [
+    { label: 'Figma',        icon: Figma,     color: '#F24E1E' },
+    { label: 'Tailwind CSS', icon: Wind,      color: '#38BDF8' },
+  ],
+};

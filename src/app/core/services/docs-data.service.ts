@@ -2,8 +2,9 @@
 
 import { Injectable } from '@angular/core';
 import { Team, AppEntry } from '../models/team.model';
+import { Tool } from '../models/tool.model';
 import { SearchResult } from '../models/search.model';
-import { frontendTeam, backendTeam, uiuxTeam, qaTeam, rdTeam, webdevTeam, appEntries } from '../data';
+import { frontendTeam, backendTeam, uiuxTeam, qaTeam, rdTeam, webdevTeam, appEntries, tools } from '../data';
 
 /**
  * DocsDataService is the single source of truth for all portal content.
@@ -22,6 +23,7 @@ export class DocsDataService {
   ];
 
   private readonly _appEntries: ReadonlyArray<AppEntry> = appEntries;
+  private readonly _tools: ReadonlyArray<Tool> = tools;
 
   /**
    * Return the full array of team objects including all sections and projects.
@@ -29,6 +31,14 @@ export class DocsDataService {
    */
   public getTeams(): ReadonlyArray<Team> {
     return this._teams;
+  }
+
+  /**
+   * Return all tool entries for the TOOLS navigation section.
+   * @returns All registered tools
+   */
+  public getTools(): ReadonlyArray<Tool> {
+    return this._tools;
   }
 
   /**

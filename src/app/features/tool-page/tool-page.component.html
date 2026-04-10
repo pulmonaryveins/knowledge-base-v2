@@ -1,0 +1,53 @@
+<!-- FILE: src/app/features/tool-page/tool-page.component.html -->
+
+@if (tool(); as t) {
+
+  <!-- ── Hero Banner (full-bleed, mirrors app-hero layout) ─────────────── -->
+  <section class="tool-page__hero" [style.background]="toolGradient(t.color)" [style.--tool-color]="t.color">
+    <div class="tool-page__hero-inner">
+      <div class="tool-page__hero-badge">
+        <span class="tool-page__hero-badge-icon">
+          <lucide-icon [img]="toolIcon(t.iconKey)" [size]="15" />
+        </span>
+        <span class="tool-page__hero-badge-label">{{ t.category }}</span>
+      </div>
+      <h1 class="tool-page__hero-title">{{ t.label }}</h1>
+      <p class="tool-page__hero-subtitle">{{ t.description }}</p>
+      <div class="tool-page__hero-meta">
+        <span class="tool-page__version-badge">v{{ t.version }}</span>
+        <div class="tool-page__used-by">
+          <span class="tool-page__used-by-label">Used by</span>
+          @for (team of t.usedBy; track team) {
+            <span class="tool-page__team-chip">{{ team }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Content Sections ──────────────────────────────────────────────── -->
+  <div class="tool-page__content">
+
+    <!-- Key Features -->
+    <section class="tool-page__section">
+      <app-section-header num="01" label="Key Features" subHeader="Core capabilities that make this tool integral to the NCompassTV tech stack." />
+      <div class="tool-page__features-grid">
+        @for (f of t.features; track f.title) {
+          <div class="tool-page__feature-card">
+            <h3 class="tool-page__feature-title">{{ f.title }}</h3>
+            <p class="tool-page__feature-body">{{ f.body }}</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Why We Use It -->
+    <section class="tool-page__section">
+      <app-section-header num="02" label="Why We Use It" subHeader="How this tool fits into the team's workflow and contributes to project quality." />
+      <div class="tool-page__why-card" [style.--tool-color]="t.color">
+        <p class="tool-page__why-text">{{ t.whyWeUseIt }}</p>
+      </div>
+    </section>
+
+  </div>
+}

@@ -397,6 +397,7 @@ flake8 . --max-line-length=100`,
       num: '04',
       content: {
         type: 'coding-patterns',
+        layout: 'stack',
         patterns: [
           {
             title: 'Ticket Information Header (Python)',
@@ -414,11 +415,6 @@ Updated by  : QA Lead
 Change log  :
     2024-01-20 - Updated locators after Dashboard v3.2 redesign
 """`,
-            },
-            callout: {
-              type: 'tip',
-              title: 'Keep the Change log updated',
-              body: 'Every time you modify a test file, add a dated entry to the Change log section. This creates an audit trail visible without reading git history.',
             },
           },
           {
@@ -476,11 +472,6 @@ class DevicesPage(BasePage):
             f"{DevicesLocators.DEVICE_ROW}[data-name='{name}']"
         )`,
             },
-            callout: {
-              type: 'warning',
-              title: 'No raw selectors in test scripts',
-              body: 'Test scripts must never use raw CSS strings or XPath. All selectors live in locators/ files and are accessed through page object methods only.',
-            },
           },
           {
             title: 'Page Object Model — Playwright (TypeScript)',
@@ -497,9 +488,9 @@ export class DevicesPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.addDeviceBtn = page.getByRole('button', { name: 'Add Device' });
+    this.addDeviceBtn    = page.getByRole('button', { name: 'Add Device' });
     this.deviceNameInput = page.getByRole('textbox', { name: 'Device Name' });
-    this.devicesTable = page.getByRole('table', { name: 'Devices' });
+    this.devicesTable    = page.getByRole('table',  { name: 'Devices' });
   }
 
   async addDevice(name: string): Promise<void> {
