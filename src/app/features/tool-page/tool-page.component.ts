@@ -9,11 +9,13 @@ import { DocsDataService } from '../../core/services/docs-data.service';
 import { Tool } from '../../core/models/tool.model';
 import { getToolIcon } from '../../core/utils/icons';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
+import { CodeBlockComponent } from '../../shared/components/code-block/code-block.component';
+import { StepListComponent } from '../../shared/components/step-list/step-list.component';
 
 @Component({
   selector: 'app-tool-page',
   standalone: true,
-  imports: [LucideAngularModule, SectionHeaderComponent],
+  imports: [LucideAngularModule, SectionHeaderComponent, CodeBlockComponent, StepListComponent],
   templateUrl: './tool-page.component.html',
   styleUrl: './tool-page.component.scss',
 })

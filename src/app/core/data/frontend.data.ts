@@ -58,11 +58,11 @@ export const frontendTeam: Team = {
           { title: 'Run Tests', description: 'Execute the full Vitest suite.', code: 'npm test', language: 'bash' },
         ],
         contacts: [
-          { name: 'Jeremy Cabrera', role: 'Lead Frontend Engineer', initials: 'JC', color: '#8DCB2C' },
-          { name: 'Sofia Park', role: 'Frontend Engineer', initials: 'SP', color: '#0891B2' },
+          { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Staging Deploy', url: '#', type: 'deploy' },
           { label: 'Jira Board', url: '#', type: 'jira' },
         ],
@@ -101,10 +101,11 @@ export const frontendTeam: Team = {
           { title: 'Start Dev Server', description: 'Launch with hot-reload.', code: 'npm start', language: 'bash' },
         ],
         contacts: [
-          { name: 'Marcus Lin', role: 'Frontend Engineer', initials: 'ML', color: '#7C3AED' },
+          { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Figma Design', url: '#', type: 'design' },
         ],
       },
@@ -141,10 +142,11 @@ export const frontendTeam: Team = {
           { title: 'Run Dev Server', description: 'Start with ng serve.', code: 'npm start', language: 'bash' },
         ],
         contacts: [
-          { name: 'Aisha Okonkwo', role: 'Senior Frontend Engineer', initials: 'AO', color: '#EC4899' },
+          { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Figma Design', url: '#', type: 'design' },
         ],
       },
@@ -184,11 +186,84 @@ export const frontendTeam: Team = {
           { title: 'Build Electron', description: 'Package for display hardware.', code: 'npm run electron:build', language: 'bash' },
         ],
         contacts: [
-          { name: 'Tomás Reyes', role: 'Frontend Engineer', initials: 'TR', color: '#D97706' },
+          { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Staging Deploy', url: '#', type: 'deploy' },
+        ],
+      },
+    },
+    {
+      id: 'fe-component-pantry',
+      name: 'Component Pantry',
+      description: 'NTV360 Angular component library with Storybook integration and live hosted docs.',
+      status: 'Live',
+      icon: 'package',
+      teamKey: 'frontend',
+      teamColor: '#8DCB2C',
+      doc: {
+        meta: { stack: 'Angular 20.3 · Storybook 10 · TypeScript 5.9', repo: 'nctv/component-pantry', deploy: 'Vercel', sprint: 'Sprint 41' },
+        purpose: 'Component Pantry is the NTV360 Angular component library. It provides a shared set of reusable UI components with interactive Storybook documentation hosted on Vercel, serving as the single source of truth for component behaviour across all NCompassTV frontend projects.',
+        features: [
+          { title: 'Storybook Integration', body: 'Every component ships with Stories covering all variants and states, viewable live at the hosted Storybook URL without cloning the repo.' },
+          { title: 'Library Build Pipeline', body: 'Separate npm scripts for dev and production library builds allow consumers to reference the compiled dist output or the raw source during development.' },
+          { title: 'Angular 20 + Storybook 10', body: 'Uses the official @storybook/angular builder with a dedicated .storybook/tsconfig.json to keep story compilation isolated from the app tsconfig.' },
+          { title: 'Zone.js Runtime', body: 'Storybook requires zone.js as an explicit runtime dependency alongside Angular; the setup is pre-configured so new contributors can onboard without manual changes.' },
+        ],
+        folderStructure: {
+          language: 'bash',
+          code: `component-pantry/
+├── projects/
+│   └── ntv360/
+│       └── component-pantry/   # Component library source
+├── .storybook/
+│   ├── main.ts                 # Storybook config
+│   ├── preview.ts              # Global decorators & parameters
+│   └── tsconfig.json           # TypeScript config for stories
+├── src/                        # Application source
+└── dist/                       # Build output`,
+        },
+        gettingStarted: [
+          {
+            title: 'Prerequisites',
+            description: 'Ensure Node.js 18+ and npm 9+ are installed.',
+            code: 'node --version   # >= 18.x\nnpm --version    # >= 9.x',
+            language: 'bash',
+          },
+          {
+            title: 'Install Dependencies',
+            description: 'Install all packages including zone.js required by Storybook.',
+            code: 'npm install',
+            language: 'bash',
+          },
+          {
+            title: 'Run Storybook',
+            description: 'Start the interactive component browser at http://localhost:6006.',
+            code: 'npm run storybook',
+            language: 'bash',
+          },
+          {
+            title: 'Run Angular Dev Server',
+            description: 'Launch the Angular app alongside the library at http://localhost:4200.',
+            code: 'npm start',
+            language: 'bash',
+          },
+          {
+            title: 'Build Component Library',
+            description: 'Compile the library to dist/ for consumption by other projects.',
+            code: 'npm run build:lib          # development\nnpm run build:lib:prod    # production (minified)',
+            language: 'bash',
+          },
+        ],
+        contacts: [
+          { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
+        ],
+        links: [
+          { label: 'Live Storybook', url: 'https://component-pantry-6gzti48wc-ntv360-live.vercel.app/', type: 'deploy' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
         ],
       },
     },

@@ -7,7 +7,7 @@
     <div class="tool-page__hero-inner">
       <div class="tool-page__hero-badge">
         <span class="tool-page__hero-badge-icon">
-          <lucide-icon [img]="toolIcon(t.iconKey)" [size]="15" />
+          <img class="tool-page__hero-badge-logo" [src]="t.logoUrl" [alt]="t.label" />
         </span>
         <span class="tool-page__hero-badge-label">{{ t.category }}</span>
       </div>
@@ -47,6 +47,24 @@
       <div class="tool-page__why-card" [style.--tool-color]="t.color">
         <p class="tool-page__why-text">{{ t.whyWeUseIt }}</p>
       </div>
+    </section>
+
+    <!-- Installation -->
+    <section class="tool-page__section">
+      <app-section-header num="03" label="Installation" subHeader="Step-by-step setup guide for getting this tool running in your environment." />
+      <app-step-list [steps]="t.install" />
+    </section>
+
+    <!-- Basic Usage -->
+    <section class="tool-page__section">
+      <app-section-header num="04" label="Basic Usage" subHeader="Common patterns and code examples to get you productive quickly." />
+      @for (example of t.basicUse; track example.title) {
+        <div class="tool-page__usage-item">
+          <h3 class="tool-page__usage-title">{{ example.title }}</h3>
+          <p class="tool-page__usage-desc">{{ example.description }}</p>
+          <app-code-block [data]="{ code: example.code, language: example.language }" />
+        </div>
+      }
     </section>
 
   </div>

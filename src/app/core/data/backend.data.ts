@@ -59,11 +59,11 @@ export const backendTeam: Team = {
           { title: 'Start REST API', description: 'Launch the ntv360-api app in watch mode.', code: 'npm run start:dev ntv360-api\n# API at http://localhost:3000\n# Swagger at http://localhost:3000/api', language: 'bash' },
         ],
         contacts: [
-          { name: 'Kwame Asante', role: 'Backend Lead', initials: 'KA', color: '#7C3AED' },
-          { name: 'Priya Sharma', role: 'Backend Engineer', initials: 'PS', color: '#0891B2' },
+          { name: 'Lester Vitor', role: 'Team Lead', initials: 'LV', color: '#7C3AED' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'API Docs (Swagger)', url: '#', type: 'docs' },
           { label: 'Jira Board', url: '#', type: 'jira' },
         ],
@@ -102,10 +102,11 @@ export const backendTeam: Team = {
           { title: 'Start GraphQL App', description: 'Run the GraphQL app from the monorepo root.', code: 'npm run start:dev graphql\n# GraphQL Playground at http://localhost:3001/graphql', language: 'bash' },
         ],
         contacts: [
-          { name: 'Kwame Asante', role: 'Backend Lead', initials: 'KA', color: '#7C3AED' },
+          { name: 'Lester Vitor', role: 'Team Lead', initials: 'LV', color: '#7C3AED' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'GraphQL Playground', url: '#', type: 'docs' },
         ],
       },
@@ -140,10 +141,11 @@ export const backendTeam: Team = {
           { title: 'Start WebSocket App', description: 'Run the WebSocket app from the monorepo root.', code: 'npm run start:dev ntv360-websocket\n# WS at ws://localhost:3002', language: 'bash' },
         ],
         contacts: [
-          { name: 'Priya Sharma', role: 'Backend Engineer', initials: 'PS', color: '#0891B2' },
+          { name: 'Lester Vitor', role: 'Team Lead', initials: 'LV', color: '#7C3AED' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'API Docs', url: '#', type: 'docs' },
         ],
       },

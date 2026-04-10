@@ -38,6 +38,10 @@
     @apply flex items-center;
   }
 
+  &__hero-badge-logo {
+    @apply w-[14px] h-[14px] object-contain block;
+  }
+
   &__hero-badge-label {
     @apply font-['Syne',_sans-serif] text-[11px] font-extrabold uppercase tracking-[0.1em];
   }
@@ -50,6 +54,7 @@
 
   &__hero-subtitle {
     @apply m-0 text-[17px] text-[rgba(255,255,255,0.7)] leading-[1.6] font-['DM_Sans',_sans-serif] max-w-[600px];
+    @media (max-width: 768px) { @apply text-[14px] max-w-full; }
   }
 
   &__hero-meta {
@@ -120,5 +125,25 @@
 
   &__why-text {
     @apply m-0 text-[13.5px] text-[var(--fg)] leading-[1.7];
+  }
+
+  // ── Installation (Section 03) rendered via <app-step-list> ─────────────
+
+  // ── Basic Usage (Section 04) ───────────────────────────────────────────
+
+  &__usage-item {
+    @apply flex flex-col gap-[10px] pt-[8px];
+
+    & + & {
+      @apply border-t border-[var(--border)] pt-[24px];
+    }
+  }
+
+  &__usage-title {
+    @apply m-0 font-['Syne',_sans-serif] text-[13.5px] font-bold text-[var(--navy)];
+  }
+
+  &__usage-desc {
+    @apply m-0 text-[12.5px] text-[var(--muted)] leading-[1.6];
   }
 }

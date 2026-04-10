@@ -41,6 +41,7 @@
 
   &__stats {
     @apply flex flex-wrap gap-10 mt-4;
+    @media (max-width: 768px) { @apply gap-6 mt-2; }
   }
 
   &__stat {
@@ -48,6 +49,7 @@
 
     &-value {
       @apply font-['Syne',_sans-serif] text-[28px] font-extrabold text-[#ffffff] leading-[1];
+      @media (max-width: 768px) { @apply text-[22px]; }
     }
 
     &-label {

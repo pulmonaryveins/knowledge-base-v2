@@ -51,8 +51,8 @@ export const uiuxTeam: Team = {
           { title: 'Run Storybook', description: 'Launch Storybook locally.', code: 'npm run storybook', language: 'bash' },
         ],
         contacts: [
-          { name: 'Lena Morozova', role: 'UI/UX Lead', initials: 'LM', color: '#EC4899' },
-          { name: 'Carlos Vega', role: 'UI Designer', initials: 'CV', color: '#8DCB2C' },
+          { name: 'Hazel Sellote', role: 'Team Lead', initials: 'HS', color: '#EC4899' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
           { label: 'Figma File', url: '#', type: 'design' },
@@ -91,7 +91,8 @@ export const uiuxTeam: Team = {
           { title: 'Access Figma', description: 'Open the Figma design file.', code: '# Request access from @lena-morozova', language: 'bash' },
         ],
         contacts: [
-          { name: 'Lena Morozova', role: 'UI/UX Lead', initials: 'LM', color: '#EC4899' },
+          { name: 'Hazel Sellote', role: 'Team Lead', initials: 'HS', color: '#EC4899' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
           { label: 'Figma File', url: '#', type: 'design' },
@@ -128,7 +129,8 @@ export const uiuxTeam: Team = {
           { title: 'Access Figma', description: 'Request access from the design lead.', code: '# Ask @lena-morozova', language: 'bash' },
         ],
         contacts: [
-          { name: 'Carlos Vega', role: 'UI Designer', initials: 'CV', color: '#8DCB2C' },
+          { name: 'Hazel Sellote', role: 'Team Lead', initials: 'HS', color: '#EC4899' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
           { label: 'Figma File', url: '#', type: 'design' },

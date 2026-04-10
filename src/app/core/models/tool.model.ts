@@ -6,14 +6,24 @@ export interface ToolFeature {
   readonly body: string;
 }
 
+/** A numbered install step or usage example with an inlined code block */
+export interface ToolCodeStep {
+  readonly title: string;
+  readonly description: string;
+  readonly code: string;
+  readonly language: string;
+}
+
 /** Full data record for a tool page */
 export interface Tool {
   /** Unique key used for routing and icon resolution */
   readonly key: string;
   /** Display label */
   readonly label: string;
-  /** Icon key mapped in TOOL_ICON_MAP */
+  /** Icon key mapped in TOOL_ICON_MAP (kept for fallback) */
   readonly iconKey: string;
+  /** URL to the actual software brand logo (Simple Icons CDN) */
+  readonly logoUrl: string;
   /** Brand color */
   readonly color: string;
   /** Category label, e.g. "Frontend Framework" */
@@ -30,4 +40,8 @@ export interface Tool {
   readonly features: ReadonlyArray<ToolFeature>;
   /** Why NCompassTV chose this tool */
   readonly whyWeUseIt: string;
+  /** Step-by-step installation guide */
+  readonly install: ReadonlyArray<ToolCodeStep>;
+  /** Basic usage code examples */
+  readonly basicUse: ReadonlyArray<ToolCodeStep>;
 }

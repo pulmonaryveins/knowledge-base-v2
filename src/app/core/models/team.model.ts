@@ -183,6 +183,8 @@ export interface Team {
   readonly gradient: string;
   /** Emoji icon representing the team */
   readonly icon: string;
+  /** Optional brand logo URL — when set, renders an <img> instead of a Lucide icon in the sidebar */
+  readonly logoUrl?: string;
   /** Hero subtitle text */
   readonly subtitle: string;
   /** Stat pills rendered in the hero banner */

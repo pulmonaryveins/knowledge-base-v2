@@ -90,10 +90,11 @@ export const qaTeam: Team = {
           },
         ],
         contacts: [
-          { name: 'QA Lead', role: 'QA Team Lead', initials: 'QL', color: '#0891B2' },
+          { name: 'Shawn Leif Recentes', role: 'Team Lead', initials: 'SL', color: '#0891B2' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Test Reports', url: '#', type: 'docs' },
         ],
       },
@@ -173,10 +174,11 @@ export const qaTeam: Team = {
           },
         ],
         contacts: [
-          { name: 'QA Engineer', role: 'Playwright Lead', initials: 'QE', color: '#0891B2' },
+          { name: 'Shawn Leif Recentes', role: 'Team Lead', initials: 'SL', color: '#0891B2' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
         ],
       },
     },
@@ -250,10 +252,11 @@ export const qaTeam: Team = {
           },
         ],
         contacts: [
-          { name: 'QA Engineer', role: 'Player Testing', initials: 'QE', color: '#D97706' },
+          { name: 'Shawn Leif Recentes', role: 'Team Lead', initials: 'SL', color: '#0891B2' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
         ],
       },
     },

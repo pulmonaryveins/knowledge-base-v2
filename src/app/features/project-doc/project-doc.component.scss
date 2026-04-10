@@ -72,6 +72,8 @@
 
   &__meta-grid {
     @apply grid gap-4 grid-cols-4;
+    @media (max-width: 900px) { @apply grid-cols-2; }
+    @media (max-width: 480px) { @apply grid-cols-1; }
   }
 
   &__meta-item {
@@ -96,12 +98,15 @@
 
   &__features-grid {
     @apply grid gap-3 grid-cols-3;
+    @media (max-width: 900px) { @apply grid-cols-2; }
+    @media (max-width: 600px) { @apply grid-cols-1; }
   }
 
   // ── Contacts + Links ─────────────────────────────────────────────────────
 
   &__contacts-row {
-    @apply flex gap-8;
+    @apply flex gap-8 flex-wrap;
+    @media (max-width: 600px) { @apply flex-col gap-4; }
   }
 
   &__contacts {

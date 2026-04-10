@@ -47,7 +47,11 @@
           (click)="switchTeam(team.key)"
         >
           <span class="sidebar__team-icon" [style.color]="team.color">
-            <lucide-icon [img]="teamIcon(team.key)" [size]="15" />
+            @if (team.logoUrl) {
+              <img class="sidebar__team-logo" [src]="team.logoUrl" [alt]="team.label" />
+            } @else {
+              <lucide-icon [img]="teamIcon(team.key)" [size]="15" />
+            }
           </span>
           <span class="sidebar__team-name">{{ team.label }}</span>
           <span class="sidebar__team-chevron" [class.sidebar__team-chevron--open]="isExpanded(team.key)">
@@ -94,8 +98,8 @@
         [class.sidebar__tool-btn--active]="tool.key === activeToolKey()"
         (click)="switchToTool(tool.key)"
       >
-        <span class="sidebar__tool-icon" [style.color]="tool.color">
-          <lucide-icon [img]="toolIcon(tool.iconKey)" [size]="15" />
+        <span class="sidebar__tool-icon">
+          <img class="sidebar__tool-logo" [src]="tool.logoUrl" [alt]="tool.label" />
         </span>
         <span class="sidebar__tool-name">{{ tool.label }}</span>
       </button>

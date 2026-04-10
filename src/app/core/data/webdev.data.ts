@@ -58,11 +58,11 @@ export const webdevTeam: Team = {
           { title: 'Build for Production', description: 'Generate the static output for deployment.', code: 'npm run build\n# Output in dist/', language: 'bash' },
         ],
         contacts: [
-          { name: 'Diana Reyes', role: 'Web Dev Lead', initials: 'DR', color: '#F97316' },
-          { name: 'Sam Nguyen', role: 'Web Developer', initials: 'SN', color: '#8DCB2C' },
+          { name: 'Efraim Gabuat', role: 'Team Lead', initials: 'EG', color: '#F97316' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Vercel Dashboard', url: '#', type: 'deploy' },
           { label: 'PageCMS', url: '#', type: 'docs' },
         ],
@@ -105,10 +105,11 @@ export const webdevTeam: Team = {
           { title: 'Build', description: 'Build the production version.', code: 'npm run build', language: 'bash' },
         ],
         contacts: [
-          { name: 'Sam Nguyen', role: 'Web Developer', initials: 'SN', color: '#8DCB2C' },
+          { name: 'Efraim Gabuat', role: 'Team Lead', initials: 'EG', color: '#F97316' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Internal Deploy', url: '#', type: 'deploy' },
         ],
       },
@@ -149,11 +150,11 @@ export const webdevTeam: Team = {
           { title: 'Follow the 5-step Workflow', description: 'Analyze requirements → Plan components → Build → Test responsiveness → Refine.', code: '# See the Development Workflow section for full details', language: 'bash' },
         ],
         contacts: [
-          { name: 'Diana Reyes', role: 'Web Dev Lead', initials: 'DR', color: '#F97316' },
-          { name: 'Sam Nguyen', role: 'Web Developer', initials: 'SN', color: '#8DCB2C' },
+          { name: 'Efraim Gabuat', role: 'Team Lead', initials: 'EG', color: '#F97316' },
+          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: '#', type: 'repo' },
+          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
           { label: 'Staging Deploy', url: '#', type: 'deploy' },
         ],
       },

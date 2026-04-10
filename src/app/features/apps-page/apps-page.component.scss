@@ -38,8 +38,8 @@
   // ── Shared Infra Grid ─────────────────────────────────────────────────────
 
   &__infra-grid {
-    @apply grid gap-4 grid-cols-3;
-  }
+    @apply grid gap-4 grid-cols-3;    @media (max-width: 900px) { @apply grid-cols-2; }
+    @media (max-width: 600px) { @apply grid-cols-1; }  }
 }
 
 // ── App Card ───────────────────────────────────────────────────────────────

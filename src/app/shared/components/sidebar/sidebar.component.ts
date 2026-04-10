@@ -94,7 +94,8 @@ export class SidebarComponent {
   }
 
   protected switchTeam(key: string): void {
-    // Toggle the expanded state for this team
+    // Toggle the expanded state for this team — do NOT close the mobile sidebar,
+    // the user is just expanding/collapsing the dropdown.
     this.expandedKeys.update(set => {
       const next = new Set(set);
       if (next.has(key)) {
@@ -105,7 +106,6 @@ export class SidebarComponent {
       return next;
     });
     this._nav.switchTeam(key);
-    this.mobileOpen.set(false);
   }
 
   protected openSearch(): void {

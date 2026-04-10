@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Team, AppEntry } from '../models/team.model';
 import { Tool } from '../models/tool.model';
 import { SearchResult } from '../models/search.model';
-import { frontendTeam, backendTeam, uiuxTeam, qaTeam, rdTeam, webdevTeam, appEntries, tools } from '../data';
+import { frontendTeam, backendTeam, uiuxTeam, qaTeam, rdTeam, webdevTeam, piPlayerTeam, appEntries, tools } from '../data';
 
 /**
  * DocsDataService is the single source of truth for all portal content.
@@ -20,6 +20,7 @@ export class DocsDataService {
     qaTeam,
     rdTeam,
     uiuxTeam,
+    piPlayerTeam,
   ];
 
   private readonly _appEntries: ReadonlyArray<AppEntry> = appEntries;
