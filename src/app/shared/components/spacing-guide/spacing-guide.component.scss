@@ -1,0 +1,112 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/spacing-guide/spacing-guide.component.scss ──
+
+:host { @apply block; }
+
+// ════════════════════════════════════════════════════════════════════════
+// TOP-LEVEL DESCRIPTION
+// ════════════════════════════════════════════════════════════════════════
+
+.sg__desc {
+  @apply m-0 mb-8 font-['DM_Sans',_sans-serif] text-[14px] text-[var(--muted)] leading-[1.7];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// GROUP BLOCK
+// ════════════════════════════════════════════════════════════════════════
+
+.sg__group {
+  @apply flex flex-col gap-0 mb-10 last:mb-0
+         rounded-[14px] border border-[var(--border)] overflow-hidden;
+}
+
+.sg__group-header {
+  @apply flex flex-col gap-1 px-6 py-4 bg-[var(--card)]
+         border-b border-[var(--border)];
+}
+
+.sg__group-label {
+  @apply m-0 font-['Syne',_sans-serif] text-[13px] font-bold uppercase
+         tracking-[0.09em] text-[var(--navy)];
+}
+
+.sg__group-desc {
+  @apply m-0 font-['DM_Sans',_sans-serif] text-[12px] text-[var(--muted)];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// TOKEN TABLE
+// ════════════════════════════════════════════════════════════════════════
+
+$cols: 80px 64px 88px 110px minmax(0, 220px) 1fr;
+
+.sg__table {
+  @apply flex flex-col;
+}
+
+.sg__table-head {
+  @apply grid px-6 py-[10px] bg-[var(--navy)] gap-4 items-center;
+  grid-template-columns: $cols;
+}
+
+.sg__th {
+  @apply font-['Syne',_sans-serif] text-[10px] font-bold uppercase
+         tracking-[0.1em] text-[rgba(255,255,255,0.5)];
+}
+
+.sg__row {
+  @apply grid px-6 py-[13px] gap-4 items-center
+         border-b border-[var(--border)] last:border-b-0;
+  grid-template-columns: $cols;
+  transition: background 0.1s ease;
+
+  &:hover { @apply bg-[var(--bg)]; }
+}
+
+// ── Cells ──────────────────────────────────────────────────────────────
+
+.sg__token-name {
+  @apply font-['DM_Mono',_monospace] text-[13px] font-bold text-[var(--navy)];
+}
+
+.sg__px {
+  @apply font-['DM_Mono',_monospace] text-[12px] text-[var(--navy)];
+}
+
+.sg__rem {
+  @apply font-['DM_Mono',_monospace] text-[12px] text-[var(--muted)];
+}
+
+.sg__tw {
+  @apply font-['DM_Mono',_monospace] text-[11px] text-[#8DCB2C]
+         bg-[rgba(141,203,44,0.08)] rounded-[5px] px-[6px] py-[2px];
+}
+
+.sg__bar-cell {
+  @apply flex items-center;
+  height: 24px;
+}
+
+.sg__bar {
+  height: 10px;
+  background: var(--navy);
+  border-radius: 4px;
+  min-width: 4px;
+  opacity: 0.85;
+  transition: width 0.2s ease;
+}
+
+.sg__usage {
+  @apply font-['DM_Sans',_sans-serif] text-[12px] text-[var(--muted)] leading-[1.5];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// BOTTOM NOTE
+// ════════════════════════════════════════════════════════════════════════
+
+.sg__note {
+  @apply m-0 mt-6 font-['DM_Sans',_sans-serif] text-[13px] text-[var(--muted)]
+         leading-[1.7] border border-[var(--border)] rounded-[10px] p-5
+         bg-[var(--card)];
+}

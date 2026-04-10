@@ -4,10 +4,219 @@
 
 :host { @apply block; }
 
+// ════════════════════════════════════════════════════════════════════════
+// TAB BAR
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-tabs {
+  @apply flex flex-col gap-0;
+
+  &__bar {
+    @apply flex flex-row border-b border-[var(--border)] mb-8;
+  }
+
+  &__tab {
+    @apply px-5 py-[10px] font-['Syne',_sans-serif] text-[13px] font-semibold
+           text-[var(--muted)] bg-transparent border-b-2 border-transparent
+           cursor-pointer transition-all duration-150 outline-none;
+
+    &--active {
+      @apply text-[var(--navy)] border-[var(--green)];
+    }
+
+    &:hover:not(.cp-tabs__tab--active) {
+      @apply text-[var(--navy)];
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// OVERVIEW TAB
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-overview {
+  @apply flex flex-col gap-8;
+
+  &__row {
+    @apply flex flex-row items-start gap-10 flex-wrap;
+  }
+
+  &__group {
+    @apply flex flex-col gap-3;
+  }
+
+  &__group-label {
+    @apply m-0 font-['Syne',_sans-serif] text-[13px] font-semibold text-[var(--navy)];
+  }
+
+  &__swatches {
+    @apply flex flex-row gap-3;
+  }
+
+  &__swatch {
+    @apply flex flex-col gap-[5px];
+  }
+
+  &__swatch-color {
+    @apply rounded-[10px];
+    width: 100px;
+    height: 64px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    &--bordered {
+      box-shadow: 0 0 0 1px var(--border);
+    }
+  }
+
+  &__swatch-name {
+    @apply m-0 font-['Syne',_sans-serif] text-[11px] font-semibold text-[var(--navy)];
+  }
+
+  &__swatch-hex {
+    @apply m-0 font-['DM_Mono',_monospace] text-[10px] text-[var(--muted)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// SHADES TAB
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-shades {
+  @apply flex flex-col gap-6;
+
+  &__meta {
+    @apply flex flex-col gap-1;
+  }
+
+  &__heading {
+    @apply m-0 font-['Syne',_sans-serif] text-[15px] font-bold uppercase
+           tracking-[0.1em] text-[var(--navy)];
+  }
+
+  &__note {
+    @apply m-0 font-['DM_Sans',_sans-serif] text-[12px] text-[var(--muted)];
+  }
+
+  &__grid {
+    @apply grid gap-6;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  &__col {
+    @apply flex flex-col gap-2;
+  }
+
+  &__col-label {
+    @apply m-0 font-['Syne',_sans-serif] text-[11px] font-bold text-[var(--navy)]
+           border-b border-[var(--border)] pb-2 mb-1 uppercase tracking-[0.06em];
+  }
+
+  &__swatches {
+    @apply flex flex-col gap-[6px];
+  }
+
+  &__shade {
+    @apply flex flex-row items-center gap-[10px];
+  }
+
+  &__shade-color {
+    @apply rounded-[6px] shrink-0;
+    width: 32px;
+    height: 32px;
+  }
+
+  &__shade-info {
+    @apply flex flex-col gap-0 min-w-0;
+  }
+
+  &__shade-name {
+    @apply font-['DM_Sans',_sans-serif] text-[11px] text-[var(--navy)] truncate;
+  }
+
+  &__shade-hex {
+    @apply font-['DM_Mono',_monospace] text-[10px] text-[var(--muted)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// WCAG TAB
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-wcag {
+  @apply flex flex-col gap-6;
+
+  &__heading {
+    @apply m-0 font-['Syne',_sans-serif] text-[18px] font-bold text-[var(--navy)];
+  }
+
+  &__table {
+    @apply rounded-[12px] border border-[var(--border)] overflow-hidden;
+  }
+
+  &__table-head {
+    @apply grid bg-[var(--navy)] px-5 py-3 gap-4;
+    grid-template-columns: 2fr 90px 90px 90px 100px 100px;
+  }
+
+  &__table-col {
+    @apply font-['Syne',_sans-serif] text-[10px] font-bold uppercase tracking-[0.1em]
+           text-[rgba(255,255,255,0.5)];
+  }
+
+  &__row {
+    @apply grid px-5 py-[14px] gap-4 border-b border-[var(--border)] last:border-b-0
+           items-center;
+    grid-template-columns: 2fr 90px 90px 90px 100px 100px;
+    transition: background 0.12s ease;
+
+    &:hover { @apply bg-[var(--bg)]; }
+  }
+
+  &__colors {
+    @apply flex flex-row items-center gap-2;
+  }
+
+  &__swatch {
+    @apply rounded-[5px] shrink-0;
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+  }
+
+  &__pair-label {
+    @apply font-['DM_Sans',_sans-serif] text-[12px] text-[var(--navy)] truncate;
+  }
+
+  &__ratio {
+    @apply font-['DM_Mono',_monospace] text-[14px] font-bold text-[var(--navy)];
+  }
+
+  &__pass {
+    @apply font-['DM_Sans',_sans-serif] text-[12px] font-semibold text-[#16a34a];
+  }
+
+  &__fail {
+    @apply font-['DM_Sans',_sans-serif] text-[12px] font-semibold text-[#dc2626];
+  }
+
+  &__note {
+    @apply m-0 font-['DM_Sans',_sans-serif] text-[13px] text-[var(--muted)] leading-[1.7]
+           border border-[var(--border)] rounded-[10px] p-5 bg-[var(--card)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// LEGACY FLAT LAYOUT (other teams)
+// ════════════════════════════════════════════════════════════════════════
+
 .cp {
   @apply flex flex-col gap-10;
 
-  // ── Group ──────────────────────────────────────────────────────────────
   &__group {
     @apply flex flex-col gap-4;
   }
@@ -17,7 +226,6 @@
            text-[var(--muted)] border-b border-[var(--border)] pb-2;
   }
 
-  // ── Large "main" swatches (primary / semantic row) ─────────────────────
   &__main-row {
     @apply flex flex-wrap gap-4;
   }
@@ -46,7 +254,6 @@
     @apply font-['DM_Mono',_monospace] text-[10px] opacity-80;
   }
 
-  // ── Shade grid (small tile swatches) ──────────────────────────────────
   &__shades-grid {
     @apply grid gap-2;
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));

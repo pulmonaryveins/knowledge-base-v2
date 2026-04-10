@@ -15,6 +15,10 @@ import {
   TypographyScaleSection,
   ComponentSpecSection,
   BrandingSection,
+  SpacingSection,
+  GridSection,
+  IconographySection,
+  ButtonShowcaseSection,
 } from '../../core/models';
 import { HeroComponent } from '../../shared/components/hero/hero.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -28,6 +32,10 @@ import { ColorPaletteComponent } from '../../shared/components/color-palette/col
 import { TypographyScaleComponent } from '../../shared/components/typography-scale/typography-scale.component';
 import { ComponentSpecComponent } from '../../shared/components/component-spec/component-spec.component';
 import { BrandGuideComponent } from '../../shared/components/brand-guide/brand-guide.component';
+import { SpacingGuideComponent } from '../../shared/components/spacing-guide/spacing-guide.component';
+import { GridGuideComponent } from '../../shared/components/grid-guide/grid-guide.component';
+import { IconographyGuideComponent } from '../../shared/components/iconography-guide/iconography-guide.component';
+import { ButtonShowcaseComponent } from '../../shared/components/button-showcase/button-showcase.component';
 
 /**
  * TeamPageComponent renders the full documentation page for the active team.
@@ -51,6 +59,10 @@ import { BrandGuideComponent } from '../../shared/components/brand-guide/brand-g
     TypographyScaleComponent,
     ComponentSpecComponent,
     BrandGuideComponent,
+    SpacingGuideComponent,
+    GridGuideComponent,
+    IconographyGuideComponent,
+    ButtonShowcaseComponent,
   ],
   templateUrl: './team-page.component.html',
   styleUrl: './team-page.component.scss',
@@ -126,5 +138,21 @@ export class TeamPageComponent {
 
   public asBranding(c: SectionContent): BrandingSection {
     return c as BrandingSection;
+  }
+
+  public asSpacing(c: SectionContent): SpacingSection {
+    return c as SpacingSection;
+  }
+
+  public asGrid(c: SectionContent): GridSection {
+    return c as GridSection;
+  }
+
+  public asIconography(c: SectionContent): IconographySection {
+    return c as IconographySection;
+  }
+
+  public asButtonShowcase(c: SectionContent): ButtonShowcaseSection {
+    return c as ButtonShowcaseSection;
   }
 }

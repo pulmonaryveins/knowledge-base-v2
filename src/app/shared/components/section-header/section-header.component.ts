@@ -19,4 +19,7 @@ export class SectionHeaderComponent {
 
   /** Section display label */
   public readonly label = input.required<string>();
+
+  /** Optional description rendered below the title */
+  public readonly subHeader = input<string | undefined>(undefined);
 }

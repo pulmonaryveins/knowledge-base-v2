@@ -1,0 +1,33 @@
+<!-- FILE: src/app/shared/components/grid-guide/grid-guide.component.html -->
+
+@if (description()) {
+  <p class="gg__desc">{{ description() }}</p>
+}
+
+@for (group of groups(); track group.tierLabel) {
+  <div class="gg__group">
+
+    <!-- Divider ruler -->
+    <div class="gg__ruler">
+      <div class="gg__ruler-fill"></div>
+    </div>
+
+    <!-- Tier label -->
+    <p class="gg__tier-label">{{ group.tierLabel }}</p>
+
+    <!-- Screen thumbnails -->
+    <div class="gg__screens">
+      @for (screen of group.screens; track screen.width + 'x' + screen.height) {
+        <div class="gg__screen-item">
+          <p class="gg__screen-dim">{{ screen.width }} × {{ screen.height }}</p>
+          <div
+            class="gg__screen-thumb"
+            [style.width.px]="thumbWidth(screen.width)"
+            [style.height.px]="thumbHeight(screen.width, screen.height)"
+          ></div>
+        </div>
+      }
+    </div>
+
+  </div>
+}

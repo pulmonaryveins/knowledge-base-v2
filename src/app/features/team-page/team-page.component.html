@@ -14,7 +14,7 @@
   <div class="team-page__content">
     @for (section of sections(); track section.id) {
       <section class="team-page__section" [id]="section.id">
-        <app-section-header [num]="section.num" [label]="section.label" />
+        <app-section-header [num]="section.num" [label]="section.label" [subHeader]="section.subHeader" />
 
         @switch (section.content.type) {
           <!-- 01 Tech Stack Table -->
@@ -80,12 +80,18 @@
 
           <!-- Color Palette -->
           @case ('color-palette') {
-            <app-color-palette [groups]="asColorPalette(section.content).groups" />
+            <app-color-palette
+              [groups]="asColorPalette(section.content).groups"
+              [tabs]="asColorPalette(section.content).tabs"
+            />
           }
 
           <!-- Typography Scale -->
           @case ('typography-scale') {
-            <app-typography-scale [samples]="asTypographyScale(section.content).samples" />
+            <app-typography-scale
+              [samples]="asTypographyScale(section.content).samples"
+              [tabs]="asTypographyScale(section.content).tabs"
+            />
           }
 
           <!-- Component Spec -->
@@ -104,6 +110,39 @@
               [favicon]="asBranding(section.content).favicon"
               [sidebarCollapsed]="asBranding(section.content).sidebarCollapsed"
               [sidebarExpanded]="asBranding(section.content).sidebarExpanded"
+            />
+          }
+
+          <!-- Spacing Guide -->
+          @case ('spacing') {
+            <app-spacing-guide
+              [groups]="asSpacing(section.content).groups"
+              [description]="asSpacing(section.content).description"
+              [note]="asSpacing(section.content).note"
+            />
+          }
+
+          <!-- Grid / Screen Sizes -->
+          @case ('grid') {
+            <app-grid-guide
+              [groups]="asGrid(section.content).groups"
+              [description]="asGrid(section.content).description"
+            />
+          }
+
+          <!-- Iconography -->
+          @case ('iconography') {
+            <app-iconography-guide
+              [description]="asIconography(section.content).description"
+              [sizes]="asIconography(section.content).sizes"
+              [icons]="asIconography(section.content).icons"
+            />
+          }
+
+          <!-- Button Showcase -->
+          @case ('button-showcase') {
+            <app-button-showcase
+              [tabs]="asButtonShowcase(section.content).tabs"
             />
           }
         }

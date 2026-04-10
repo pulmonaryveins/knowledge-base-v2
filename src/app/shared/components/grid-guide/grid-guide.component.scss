@@ -1,0 +1,61 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/grid-guide/grid-guide.component.scss ──
+
+:host { @apply block; }
+
+// ════════════════════════════════════════════════════════════════════════
+// DESCRIPTION
+// ════════════════════════════════════════════════════════════════════════
+
+.gg__desc {
+  @apply m-0 mb-8 font-['DM_Sans',_sans-serif] text-[14px]
+         text-[var(--muted)] leading-[1.7];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// GROUP
+// ════════════════════════════════════════════════════════════════════════
+
+.gg__group {
+  @apply flex flex-col gap-0 mb-12 last:mb-0;
+}
+
+// ── Divider ruler ──────────────────────────────────────────────────────
+
+.gg__ruler {
+  @apply w-full h-[6px] rounded-full bg-[var(--border)] overflow-hidden mb-4;
+}
+
+.gg__ruler-fill {
+  @apply h-full rounded-full bg-[var(--navy)];
+  width: 75%;
+}
+
+// ── Tier label ─────────────────────────────────────────────────────────
+
+.gg__tier-label {
+  @apply m-0 mb-4 font-['DM_Sans',_sans-serif] text-[11px] text-[var(--muted)]
+         uppercase tracking-[0.08em];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// SCREEN THUMBNAILS
+// ════════════════════════════════════════════════════════════════════════
+
+.gg__screens {
+  @apply flex flex-row flex-wrap items-end gap-6;
+}
+
+.gg__screen-item {
+  @apply flex flex-col gap-[6px];
+}
+
+.gg__screen-dim {
+  @apply m-0 font-['DM_Mono',_monospace] text-[10px] text-[var(--muted)];
+}
+
+.gg__screen-thumb {
+  @apply rounded-[6px] bg-[var(--card)] border border-[var(--border)];
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}

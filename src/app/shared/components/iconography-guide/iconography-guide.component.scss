@@ -1,0 +1,134 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/iconography-guide/iconography-guide.component.scss ──
+
+:host { @apply block; }
+
+// ════════════════════════════════════════════════════════════════════════
+// DESCRIPTION
+// ════════════════════════════════════════════════════════════════════════
+
+.ig__desc {
+  @apply m-0 mb-8 font-['DM_Sans',_sans-serif] text-[14px]
+         text-[var(--muted)] leading-[1.7];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// SHARED SECTION HEADING
+// ════════════════════════════════════════════════════════════════════════
+
+.ig__section-heading {
+  @apply m-0 mb-5 font-['Syne',_sans-serif] text-[15px] font-bold
+         text-[var(--navy)];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// PROPERTIES — SIZES BLOCK
+// ════════════════════════════════════════════════════════════════════════
+
+.ig__sizes-section {
+  @apply mb-10;
+}
+
+.ig__sizes-block {
+  @apply rounded-[14px] border border-[var(--border)] p-6 flex flex-col gap-4
+         bg-[var(--card)];
+}
+
+.ig__sizes-label {
+  @apply m-0 font-['Syne',_sans-serif] text-[13px] font-bold text-[var(--navy)];
+}
+
+.ig__sizes-note {
+  @apply m-0 font-['DM_Sans',_sans-serif] text-[13px] text-[var(--muted)]
+         leading-[1.6];
+}
+
+// Size preview strip ─────────────────────────────────────────────────────
+
+.ig__sizes-preview {
+  @apply flex flex-row flex-wrap items-end gap-5 pt-2;
+}
+
+.ig__size-chip {
+  @apply flex flex-col items-center gap-[6px];
+}
+
+.ig__size-px {
+  @apply font-['DM_Mono',_monospace] text-[10px] text-[var(--muted)];
+}
+
+.ig__preview-icon {
+  color: var(--green);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// CATALOG — ICON TABLE
+// ════════════════════════════════════════════════════════════════════════
+
+.ig__catalog-section {
+  @apply flex flex-col;
+}
+
+// Number of dynamic columns = sizes count; computed via CSS var trick
+// We use a fixed approach: 1 name column + auto repeat for size columns
+
+.ig__catalog-grid {
+  @apply rounded-[14px] border border-[var(--border)] overflow-hidden;
+}
+
+// ── HEADER ROW ─────────────────────────────────────────────────────────
+
+.ig__catalog-header {
+  @apply grid bg-[var(--navy)] px-5 py-[10px] gap-3 items-center;
+  // name + 7 size columns
+  grid-template-columns: 160px repeat(7, minmax(60px, 1fr));
+}
+
+.ig__col-size {
+  @apply font-['Syne',_sans-serif] text-[11px] font-bold text-center
+         text-[rgba(255,255,255,0.6)] uppercase tracking-[0.08em];
+}
+
+// ── ICON ROWS ──────────────────────────────────────────────────────────
+
+.ig__catalog-row {
+  @apply grid px-5 py-3 gap-3 items-center
+         border-b border-[var(--border)] last:border-b-0;
+  grid-template-columns: 160px repeat(7, minmax(60px, 1fr));
+  transition: background 0.1s ease;
+
+  &:hover { @apply bg-[var(--bg)]; }
+}
+
+.ig__catalog-name {
+  @apply flex flex-col gap-[3px] min-w-0;
+}
+
+.ig__icon-name {
+  @apply font-['DM_Mono',_monospace] text-[11px] font-bold text-[var(--navy)] truncate;
+}
+
+.ig__icon-desc {
+  @apply font-['DM_Sans',_sans-serif] text-[10px] text-[var(--muted)] truncate;
+}
+
+// ── CATALOG CELL ───────────────────────────────────────────────────────
+
+.ig__catalog-cell {
+  @apply flex flex-col items-center gap-[6px];
+}
+
+.ig__icon-preview-box {
+  @apply flex items-center justify-center;
+  width: 48px;
+  height: 40px;
+}
+
+.ig__catalog-icon {
+  color: var(--green);
+}
+
+.ig__cell-meta {
+  @apply font-['DM_Mono',_monospace] text-[9px] text-[var(--muted)] text-center;
+}

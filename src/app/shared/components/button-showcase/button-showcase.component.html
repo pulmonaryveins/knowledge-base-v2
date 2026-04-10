@@ -1,0 +1,47 @@
+<!-- FILE: src/app/shared/components/button-showcase/button-showcase.component.html -->
+
+<!-- ── Tab bar ────────────────────────────────────────────────────── -->
+<div class="bs__bar" role="tablist">
+  @for (tab of tabs(); track tab.label; let i = $index) {
+    <button
+      class="bs__tab"
+      [class.bs__tab--active]="activeTabIndex() === i"
+      (click)="selectTab(i)"
+      role="tab"
+      [attr.aria-selected]="activeTabIndex() === i"
+    >{{ tab.label }}</button>
+  }
+</div>
+
+@if (activeTab(); as tab) {
+  <!-- ── Title ──────────────────────────────────────────────────── -->
+  <h2 class="bs__title">{{ tab.label }}</h2>
+
+  <div class="bs__grid-wrapper">
+
+    <!-- Column size headers -->
+    <div class="bs__col-row">
+      <span></span>
+      @for (size of SIZES; track size) {
+        <span class="bs__col-label">{{ size }}</span>
+      }
+    </div>
+
+    <!-- State rows -->
+    <div class="bs__rows">
+      @for (state of STATES; track state.key) {
+        <div class="bs__row">
+          <span class="bs__row-label">{{ state.label }}</span>
+          @for (size of SIZES; track size) {
+            <div class="bs__cell">
+              <button type="button" [class]="btnClass(tab.variant, state.key, size)">
+                Button&nbsp;<i class="fa-solid fa-chevron-right bs__chevron"></i>
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+}

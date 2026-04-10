@@ -3,3 +3,6 @@
   <span class="sec-header__num">{{ num() }}</span>
   <h2 class="sec-header__title">{{ label() }}</h2>
 </div>
+@if (subHeader()) {
+  <p class="sec-header__sub">{{ subHeader() }}</p>
+}

@@ -1,7 +1,7 @@
 // ── FILE: src/app/core/models/team.model.ts ──
 
 import { Project } from './project.model';
-import { DataTable, Step, CodeBlockData, InfoCardData, CodingPattern, ColorGroup, TypographySample, ComponentVariant, BrandingLogoItem } from './ui.models';
+import { DataTable, Step, CodeBlockData, InfoCardData, CodingPattern, ColorGroup, ColorTab, TypographySample, TypographyTab, ComponentVariant, BrandingLogoItem, SpacingGroup, GridBreakpointGroup, FaIconEntry, IconSizeSpec, ButtonShowcaseTab } from './ui.models';
 
 /** A stat pill shown in the hero banner */
 export interface HeroStat {
@@ -65,16 +65,20 @@ export interface ProjectsSection {
 export interface ColorPaletteSection {
   /** Discriminant for @switch rendering */
   readonly type: 'color-palette';
-  /** Grouped color swatches (primary, accent, semantic, other, shades) */
-  readonly groups: ReadonlyArray<ColorGroup>;
+  /** Legacy flat groups (kept for other teams) */
+  readonly groups?: ReadonlyArray<ColorGroup>;
+  /** Tabbed layout: Overview / Shades / WCAG */
+  readonly tabs?: ReadonlyArray<ColorTab>;
 }
 
 /** Visual typography scale section */
 export interface TypographyScaleSection {
   /** Discriminant for @switch rendering */
   readonly type: 'typography-scale';
-  /** Ordered list of type samples from H1 to P.XXS */
-  readonly samples: ReadonlyArray<TypographySample>;
+  /** Legacy flat samples (kept for non-uiux teams) */
+  readonly samples?: ReadonlyArray<TypographySample>;
+  /** Tabbed layout: Web / Web(Button) / Mobile */
+  readonly tabs?: ReadonlyArray<TypographyTab>;
 }
 
 /** Visual component specification section */
@@ -103,6 +107,35 @@ export interface BrandingSection {
   readonly sidebarExpanded?: ReadonlyArray<BrandingLogoItem>;
 }
 
+/** Spacing / padding / margin guide section */
+export interface SpacingSection {
+  readonly type: 'spacing';
+  readonly description?: string;
+  readonly groups: ReadonlyArray<SpacingGroup>;
+  readonly note?: string;
+}
+
+/** Button styles showcase section — Primary / Secondary / Soft Rounded */
+export interface ButtonShowcaseSection {
+  readonly type: 'button-showcase';
+  readonly tabs: ReadonlyArray<ButtonShowcaseTab>;
+}
+
+/** Responsive grid breakpoints / screen sizes section */
+export interface GridSection {
+  readonly type: 'grid';
+  readonly description?: string;
+  readonly groups: ReadonlyArray<GridBreakpointGroup>;
+}
+
+/** Iconography catalog section (Font Awesome) */
+export interface IconographySection {
+  readonly type: 'iconography';
+  readonly description?: string;
+  readonly sizes: ReadonlyArray<IconSizeSpec>;
+  readonly icons: ReadonlyArray<FaIconEntry>;
+}
+
 /** Discriminated union of all possible section content types */
 export type SectionContent =
   | TechStackSection
@@ -114,7 +147,11 @@ export type SectionContent =
   | ColorPaletteSection
   | TypographyScaleSection
   | ComponentSpecSection
-  | BrandingSection;
+  | BrandingSection
+  | SpacingSection
+  | GridSection
+  | IconographySection
+  | ButtonShowcaseSection;
 
 /** A single documentation section within a team page */
 export interface TeamSection {
@@ -124,6 +161,8 @@ export interface TeamSection {
   readonly label: string;
   /** Zero-padded display number, e.g. "01" */
   readonly num: string;
+  /** Optional one-line description shown beneath the section title */
+  readonly subHeader?: string;
   /** Typed content payload for this section */
   readonly content: SectionContent;
 }
