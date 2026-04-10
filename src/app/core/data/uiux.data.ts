@@ -170,30 +170,37 @@ export const uiuxTeam: Team = {
         type: 'getting-started',
         steps: [
           {
+            icon: 'layers',
             title: 'Phase 1 — Design Basics: Core Structure & Consistency',
             description: 'Study the foundational balance between aesthetic appeal and functional utility. Understand how visual hierarchy, consistent standardized components, and mental-model alignment reduce cognitive load. Explore simplicity as a design virtue — stripping decorative clutter empowers users to achieve goals efficiently. Duration: 4–6 hours.',
           },
           {
+            icon: 'compass',
             title: 'Phase 2 — UX Design Fundamentals',
             description: 'Explore core UX concepts including the Golden Ratio, Design Aesthetics, Centered Design, Product Design, and Design Ethics. Learn Research Methods, Lateral Thinking, and Design Thinking frameworks. Study Gestalt Principles, Skeuomorphism, Visual Hierarchy, and how Human–Computer Interaction shapes inclusive, accessible design. Duration: 8 hours.',
           },
           {
+            icon: 'pen-tool',
             title: 'Phase 3 — Wireframing: The Foundation of Blueprinting',
             description: 'Master wireframing as the architectural phase of design. Using low-fidelity skeletons, map user flows and information architecture without the distraction of typography or color. This stage is critical for identifying usability issues early and ensuring the interface hierarchy supports user objectives before any high-fidelity assets are created. Duration: 8 hours.',
           },
           {
+            icon: 'play-circle',
             title: 'Phase 4 — Prototyping: Validation Through Motion',
             description: 'Transform static wireframes into interactive experiences, bridging the gap between design concept and finished product. Add transitions and functional interactions to simulate actual user flows. This iterative process allows teams to validate the interface, gather meaningful feedback, and ensure the final developer handoff is a tested, refined flow. Duration: 8 hours.',
           },
           {
+            icon: 'globe-2',
             title: 'Phase 5 — Web Design: Responsive Architecture & Accessibility',
             description: 'Apply responsive grids and flexible layouts to ensure seamless experiences across all devices. Incorporate accessibility standards — high color contrast, keyboard navigability, WCAG 2.1 AA compliance — so the digital environment is inclusive and usable regardless of physical or technical constraints. Balance aesthetic impact with technical performance and strategic whitespace. Duration: 8 hours.',
           },
           {
+            icon: 'type',
             title: 'Phase 6 — Typography & Color Theory',
             description: 'Use font weight, size, and line height to establish clear visual hierarchy and guide users through content in logical order. Understand how kerning and letter-spacing affect readability and brand personality. Apply color psychology (trust from blue, energy from red) and the color wheel (monochromatic, analogous, complementary) to create harmony and meet accessibility contrast standards. Duration: 6 hours.',
           },
           {
+            icon: 'rocket',
             title: 'Phase 7 — UI Design Principles & N-Compass Contribution',
             description: 'Apply all learned principles to production work. Pick up real Jira design tasks from the active sprint. Collaborate with Frontend and Backend teams via Figma Dev Mode annotations. Deliver annotated, accessible, token-driven screens that reflect the full curriculum: hierarchy, consistency, wireframe-first discipline, responsive layouts, readable typography, and WCAG-compliant color. Duration: Ongoing.',
           },
@@ -201,9 +208,166 @@ export const uiuxTeam: Team = {
       },
     },
     {
+      id: 'ux-design-process',
+      label: 'Design Process',
+      num: '03',
+      content: {
+        type: 'getting-started',
+        steps: [
+          {
+            icon: 'layers',
+            title: 'Phase 1 · Design Basics',
+            description: '4–6 hrs. Master the balance between aesthetic appeal and functional utility. Study visual hierarchy, consistency, standardized components, and how mental-model alignment reduces cognitive load. Deliver: design critique document.',
+          },
+          {
+            icon: 'compass',
+            title: 'Phase 2 · UX Design Fundamentals',
+            description: '8 hrs. Explore Golden Ratio, Design Aesthetics, Product Design, Design Ethics, and Constraints. Study Gestalt Principles, Visual Hierarchy, Design Thinking, UX Research Methods, and Inclusive Design. Deliver: design thinking worksheet.',
+          },
+          {
+            icon: 'pen-tool',
+            title: 'Phase 3 · Wireframing',
+            description: '8 hrs. Use low-fidelity wireframes to map user flows and information architecture without visual distraction. Identify usability issues early. Deliver: 1–3 mobile wireframe screens with annotated user flow.',
+          },
+          {
+            icon: 'play-circle',
+            title: 'Phase 4 · Prototyping',
+            description: '8 hrs. Transform wireframes into interactive flows with transitions and functional interactions. Run usability tests, gather feedback, and iterate. Deliver: lo-fi prototype + findings report.',
+          },
+          {
+            icon: 'globe-2',
+            title: 'Phase 5 · Web Design & Accessibility',
+            description: '8 hrs. Apply responsive grids, flexible layouts, and WCAG 2.1 AA accessibility standards. Balance aesthetic impact with performance. Deliver: responsive hi-fi web screen with accessibility audit.',
+          },
+          {
+            icon: 'type',
+            title: 'Phase 6 · Typography & Color Theory',
+            description: '6 hrs. Use font weight, size, and line height to establish hierarchy. Apply color psychology and the color wheel for harmony and accessibility. Minimum contrast ratio 4.5:1 for body text. Deliver: style guide page.',
+          },
+          {
+            icon: 'rocket',
+            title: 'Phase 7 · UI Design Principles & Production',
+            description: 'Ongoing. Apply all curriculum phases to real sprint work. Pick up Jira design tasks and deliver annotated, accessible, token-driven Figma screens via Dev Mode for Frontend and Backend handoff.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'ux-coding-patterns',
+      label: 'Design Patterns',
+      num: '04',
+      content: {
+        type: 'coding-patterns',
+        patterns: [
+          {
+            title: 'Design Token Usage',
+            description: 'All colours, spacing, and typography must reference design tokens — never raw hex values or px sizes in Figma or code.',
+            codeBlock: {
+              language: 'scss',
+              code: `// ✅ Correct — use CSS variable tokens
+.button--primary {
+  background: var(--color-accent);
+  padding: var(--spacing-3) var(--spacing-5);
+  font-family: var(--font-heading);
+}
+
+// ❌ Forbidden — raw values
+.button--primary {
+  background: #8DCB2C;
+  padding: 12px 20px;
+}`,
+            },
+            callout: { type: 'info', title: 'Token sync', body: 'Tokens are synced from Figma via Tokens Studio. Run npm run tokens:build after any token update in Figma.' },
+          },
+          {
+            title: 'Component Variant Naming',
+            description: 'Figma component variants must follow the same BEM naming used in code to enable automatic Figma-to-Code mapping.',
+            codeBlock: {
+              language: 'typescript',
+              code: `// Figma variant: Button / Primary / Large / Default
+// Maps to Angular component:
+
+@Component({ selector: 'app-button' })
+export class ButtonComponent {
+  public readonly variant = input<'primary' | 'secondary'>('primary');
+  public readonly size = input<'sm' | 'md' | 'lg'>('md');
+}`,
+            },
+          },
+          {
+            title: 'Visual Hierarchy (Phase 4 Principle)',
+            description: 'Every screen must establish a clear visual hierarchy using size, weight, contrast, and spacing. Users should be able to identify the primary action within 3 seconds.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Hierarchy checklist for every frame:
+# 1. One dominant H1 per screen — largest, highest contrast
+# 2. Supporting H2/H3 — 60–80% of H1 size
+# 3. Body text — min 16px, line-height 1.5
+# 4. Primary CTA — isolated, high-contrast, generous padding
+# 5. Secondary elements — muted colour, reduced weight`,
+            },
+            callout: { type: 'tip', title: 'Squint test', body: 'Squint at your design — the most important element should still be obvious. If it is not, increase size or contrast.' },
+          },
+          {
+            title: 'Accessibility — WCAG 2.1 AA (Phase 5 Principle)',
+            description: 'Every design deliverable must be evaluated for WCAG 2.1 AA compliance before handoff. Inclusive design is not optional — it is a team standard.',
+            codeBlock: {
+              language: 'bash',
+              code: `# WCAG 2.1 AA checklist
+# · Contrast ratio ≥ 4.5:1 for body text (use Figma Contrast plugin)
+# · Contrast ratio ≥ 3:1 for large text (18px+ bold or 24px+ regular)
+# · Interactive targets ≥ 44×44 px touch area
+# · Focus states visible on all interactive elements
+# · No information conveyed by colour alone
+# · Alt text annotations on all images in Figma handoff`,
+            },
+            callout: { type: 'warning', title: 'PR blocker', body: 'Designs failing contrast or touch-target checks will be returned before engineering picks up the ticket.' },
+          },
+          {
+            title: 'Usability Testing Protocol (Phase 3 Principle)',
+            description: 'Every major UX flow must be validated through at least one round of remote usability testing via Maze before engineering begins implementation.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Maze test setup
+# 1. Export Figma prototype link — set starting frame
+# 2. Create Maze project → "Usability Test" template
+# 3. Define 2–5 tasks aligned to user goals
+# 4. Set success criteria (task completion ≥ 80%)
+# 5. Recruit ≥ 5 participants from target personas
+# 6. Analyse heatmaps + misclick rate after 48 hrs`,
+            },
+            callout: { type: 'info', title: 'Minimum bar', body: 'A task completion rate below 70% signals a UX problem that must be resolved before high-fidelity production begins.' },
+          },
+        ],
+      },
+    },
+    {
+      id: 'ux-branding',
+      label: 'Company Branding',
+      num: '05',
+      content: {
+        type: 'branding',
+        mainLogos: [
+          { label: 'Lime Green', src: '/LOGO-GREEN.png', background: '#091635', width: '124.8px', height: '123.8px', color: '#8DC63F' },
+          { label: 'Midnight Blue', src: '/LOGO-BLUE.png', background: '#ffffff', bordered: true, width: '124.8px', height: '123.8px', color: '#091635' },
+          { label: 'White', src: '/LOGO-WHITE.png', background: '#091635', bordered: true, width: '124.8px', height: '123.8px', color: '#ffffff' },
+        ],
+        favicon: { label: 'Favicon', src: '/GREEN-SINGLE.png', background: 'transparent', width: '16px', height: '16px', color: '#8DC63F' },
+        sidebarCollapsed: [
+          { label: 'Dark', src: '/BLUE-SINGLE.png', background: '#ffffff', bordered: true },
+          { label: 'Light', src: '/WHITE%20SINGLE.png', background: '#8DC63F', bordered: true },
+          { label: 'Light', src: '/GREEN-SINGLE.png', background: '#ffffff', bordered: true },
+        ],
+        sidebarExpanded: [
+          { label: 'Dark', src: '/LOGO-BLUE.png', background: '#ffffff', bordered: true  },
+          { label: 'Light', src: '/LOGO-WHITE.png', background: '#091635', bordered: true },
+        ],
+      },
+    },
+    {
       id: 'ux-color-palette',
       label: 'Color Palette',
-      num: '03',
+      num: '06',
       content: {
         type: 'color-palette',
         groups: [
@@ -318,7 +482,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-typography',
       label: 'Typography Scale',
-      num: '04',
+      num: '07',
       content: {
         type: 'typography-scale',
         samples: [
@@ -338,7 +502,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-component-spec',
       label: 'Component Specs',
-      num: '05',
+      num: '08',
       content: {
         type: 'component-spec',
         name: 'Accordion',
@@ -391,179 +555,6 @@ export const uiuxTeam: Team = {
             align: 'Center',
             borderSize: '0.5px',
             borderPlacement: 'Inside',
-          },
-        ],
-      },
-    },
-    {
-      id: 'ux-design-process',
-      label: 'Design Process',
-      num: '06',
-      content: {
-        type: 'folder-arch',
-        cards: [
-          {
-            icon: '🏗️',
-            accent: '#8DCB2C',
-            title: 'Phase 1 · Design Basics',
-            body: '4–6 hrs. Master the balance between aesthetic appeal and functional utility. Study visual hierarchy, consistency, standardized components, and how mental-model alignment reduces cognitive load. Deliver: design critique document.',
-          },
-          {
-            icon: '🔬',
-            accent: '#3B82F6',
-            title: 'Phase 2 · UX Design Fundamentals',
-            body: '8 hrs. Explore Golden Ratio, Design Aesthetics, Product Design, Design Ethics, and Constraints. Study Gestalt Principles, Visual Hierarchy, Design Thinking, UX Research Methods, and Inclusive Design. Deliver: design thinking worksheet.',
-          },
-          {
-            icon: '📐',
-            accent: '#F59E0B',
-            title: 'Phase 3 · Wireframing',
-            body: '8 hrs. Use low-fidelity wireframes to map user flows and information architecture without visual distraction. Identify usability issues early. Deliver: 1–3 mobile wireframe screens with annotated user flow.',
-          },
-          {
-            icon: '🎬',
-            accent: '#EC4899',
-            title: 'Phase 4 · Prototyping',
-            body: '8 hrs. Transform wireframes into interactive flows with transitions and functional interactions. Run usability tests, gather feedback, and iterate. Deliver: lo-fi prototype + findings report.',
-          },
-          {
-            icon: '🌐',
-            accent: '#14B8A6',
-            title: 'Phase 5 · Web Design & Accessibility',
-            body: '8 hrs. Apply responsive grids, flexible layouts, and WCAG 2.1 AA accessibility standards. Balance aesthetic impact with performance. Deliver: responsive hi-fi web screen with accessibility audit.',
-          },
-          {
-            icon: '🎨',
-            accent: '#8B5CF6',
-            title: 'Phase 6 · Typography & Color Theory',
-            body: '6 hrs. Use font weight, size, and line height to establish hierarchy. Apply color psychology and the color wheel for harmony and accessibility. Minimum contrast ratio 4.5:1 for body text. Deliver: style guide page.',
-          },
-          {
-            icon: '🚀',
-            accent: '#EF4444',
-            title: 'Phase 7 · UI Design Principles & Production',
-            body: 'Ongoing. Apply all curriculum phases to real sprint work. Pick up Jira design tasks and deliver annotated, accessible, token-driven Figma screens via Dev Mode for Frontend and Backend handoff.',
-          },
-        ],
-      },
-    },
-    {
-      id: 'ux-folder-arch',
-      label: 'Folder Architecture',
-      num: '07',
-      content: {
-        type: 'folder-arch',
-        cards: [
-          { title: 'tokens/', body: 'Raw JSON design token files exported from Figma Tokens Studio. Each file maps to a token category: color, spacing, typography, radius.' },
-          { title: 'storybook/', body: 'Storybook stories for every component in the design system, with args-table and accessibility panel enabled.' },
-          { title: 'dist/', body: 'Build output from the Style Dictionary transform pipeline — CSS variables, SCSS map, and JSON for cross-platform consumption.' },
-          { title: 'docs/', body: 'Markdown documentation for design decisions, naming conventions, and handoff procedures for engineering.' },
-        ],
-        codeBlock: {
-          language: 'bash',
-          code: `design-tokens/
-├── tokens/
-│   ├── colors.json
-│   ├── spacing.json
-│   ├── typography.json
-│   └── radius.json
-├── storybook/
-│   ├── stories/
-│   └── .storybook/
-├── dist/
-│   ├── css-variables.css
-│   ├── tokens.scss
-│   └── tokens.json
-└── docs/
-    └── handoff-guide.md`,
-        },
-      },
-    },
-    {
-      id: 'ux-coding-patterns',
-      label: 'Design Patterns',
-      num: '08',
-      content: {
-        type: 'coding-patterns',
-        patterns: [
-          {
-            title: 'Design Token Usage',
-            description: 'All colours, spacing, and typography must reference design tokens — never raw hex values or px sizes in Figma or code.',
-            codeBlock: {
-              language: 'scss',
-              code: `// ✅ Correct — use CSS variable tokens
-.button--primary {
-  background: var(--color-accent);
-  padding: var(--spacing-3) var(--spacing-5);
-  font-family: var(--font-heading);
-}
-
-// ❌ Forbidden — raw values
-.button--primary {
-  background: #8DCB2C;
-  padding: 12px 20px;
-}`,
-            },
-            callout: { type: 'info', title: 'Token sync', body: 'Tokens are synced from Figma via Tokens Studio. Run npm run tokens:build after any token update in Figma.' },
-          },
-          {
-            title: 'Component Variant Naming',
-            description: 'Figma component variants must follow the same BEM naming used in code to enable automatic Figma-to-Code mapping.',
-            codeBlock: {
-              language: 'typescript',
-              code: `// Figma variant: Button / Primary / Large / Default
-// Maps to Angular component:
-
-@Component({ selector: 'app-button' })
-export class ButtonComponent {
-  public readonly variant = input<'primary' | 'secondary'>('primary');
-  public readonly size = input<'sm' | 'md' | 'lg'>('md');
-}`,
-            },
-          },
-          {
-            title: 'Visual Hierarchy (Phase 4 Principle)',
-            description: 'Every screen must establish a clear visual hierarchy using size, weight, contrast, and spacing. Users should be able to identify the primary action within 3 seconds.',
-            codeBlock: {
-              language: 'bash',
-              code: `# Hierarchy checklist for every frame:
-# 1. One dominant H1 per screen — largest, highest contrast
-# 2. Supporting H2/H3 — 60–80% of H1 size
-# 3. Body text — min 16px, line-height 1.5
-# 4. Primary CTA — isolated, high-contrast, generous padding
-# 5. Secondary elements — muted colour, reduced weight`,
-            },
-            callout: { type: 'tip', title: 'Squint test', body: 'Squint at your design — the most important element should still be obvious. If it is not, increase size or contrast.' },
-          },
-          {
-            title: 'Accessibility — WCAG 2.1 AA (Phase 5 Principle)',
-            description: 'Every design deliverable must be evaluated for WCAG 2.1 AA compliance before handoff. Inclusive design is not optional — it is a team standard.',
-            codeBlock: {
-              language: 'bash',
-              code: `# WCAG 2.1 AA checklist
-# · Contrast ratio ≥ 4.5:1 for body text (use Figma Contrast plugin)
-# · Contrast ratio ≥ 3:1 for large text (18px+ bold or 24px+ regular)
-# · Interactive targets ≥ 44×44 px touch area
-# · Focus states visible on all interactive elements
-# · No information conveyed by colour alone
-# · Alt text annotations on all images in Figma handoff`,
-            },
-            callout: { type: 'warning', title: 'PR blocker', body: 'Designs failing contrast or touch-target checks will be returned before engineering picks up the ticket.' },
-          },
-          {
-            title: 'Usability Testing Protocol (Phase 3 Principle)',
-            description: 'Every major UX flow must be validated through at least one round of remote usability testing via Maze before engineering begins implementation.',
-            codeBlock: {
-              language: 'bash',
-              code: `# Maze test setup
-# 1. Export Figma prototype link — set starting frame
-# 2. Create Maze project → "Usability Test" template
-# 3. Define 2–5 tasks aligned to user goals
-# 4. Set success criteria (task completion ≥ 80%)
-# 5. Recruit ≥ 5 participants from target personas
-# 6. Analyse heatmaps + misclick rate after 48 hrs`,
-            },
-            callout: { type: 'info', title: 'Minimum bar', body: 'A task completion rate below 70% signals a UX problem that must be resolved before high-fidelity production begins.' },
           },
         ],
       },

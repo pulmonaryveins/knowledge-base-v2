@@ -221,11 +221,11 @@ export const frontendTeam: Team = {
       content: {
         type: 'getting-started',
         steps: [
-          { title: 'Clone the Repository', description: 'Clone the target repo to your local machine using SSH.', code: 'git clone git@github.com:nctv/<repo>.git\ncd <repo>', language: 'bash' },
-          { title: 'Install Dependencies', description: 'Use the exact Node version in .nvmrc, then install packages.', code: 'nvm use\nnpm install', language: 'bash' },
-          { title: 'Configure Environment', description: 'Copy the example environment file and fill in required API values.', code: 'cp .env.example .env.local\n# Edit VITE_API_URL and VITE_WS_URL', language: 'bash' },
-          { title: 'Start the Dev Server', description: 'Launch the Angular development server with hot-reload.', code: 'npm start\n# App runs at http://localhost:4200', language: 'bash' },
-          { title: 'Run Tests', description: 'Run unit tests with Vitest and E2E tests with Playwright.', code: 'npm test          # unit\nnpm run test:e2e  # E2E', language: 'bash' },
+          { icon: 'git-branch',   title: 'Clone the Repository', description: 'Clone the target repo to your local machine using SSH.', code: 'git clone git@github.com:nctv/<repo>.git\ncd <repo>', language: 'bash' },
+          { icon: 'package-open', title: 'Install Dependencies', description: 'Use the exact Node version in .nvmrc, then install packages.', code: 'nvm use\nnpm install', language: 'bash' },
+          { icon: 'key-round',    title: 'Configure Environment', description: 'Copy the example environment file and fill in required API values.', code: 'cp .env.example .env.local\n# Edit VITE_API_URL and VITE_WS_URL', language: 'bash' },
+          { icon: 'terminal',     title: 'Start the Dev Server', description: 'Launch the Angular development server with hot-reload.', code: 'npm start\n# App runs at http://localhost:4200', language: 'bash' },
+          { icon: 'flask-conical',title: 'Run Tests', description: 'Run unit tests with Vitest and E2E tests with Playwright.', code: 'npm test          # unit\nnpm run test:e2e  # E2E', language: 'bash' },
         ],
         codeBlock: {
           language: 'bash',

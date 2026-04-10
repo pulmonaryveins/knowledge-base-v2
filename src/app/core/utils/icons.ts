@@ -11,6 +11,10 @@ import {
   Eye, Database, Gauge,
   // UI chrome icons
   FileCode, Search, ChevronDown, ChevronRight, Menu, X,
+  // Step list icons
+  GitBranch, PackageOpen, KeyRound, Terminal, FlaskConical,
+  Container, ArrowRightLeft, Rocket, ClipboardList, GitPullRequest,
+  ScanSearch, Layers, Compass, PenTool, PlayCircle, Globe2, Type,
   LucideIconData,
 } from 'lucide-angular';
 
@@ -78,3 +82,30 @@ export const ICONS = {
 
 /** Generic icon used for project entries where a specific icon isn't mapped */
 export const PROJECT_ICON: LucideIconData = FileCode;
+
+// ── Step list icon name → Lucide data ────────────────────────────────────────────────────
+
+export const STEP_ICON_MAP: Record<string, LucideIconData> = {
+  'git-branch'      : GitBranch,
+  'package-open'    : PackageOpen,
+  'key-round'       : KeyRound,
+  'terminal'        : Terminal,
+  'flask-conical'   : FlaskConical,
+  'container'       : Container,
+  'arrow-right-left': ArrowRightLeft,
+  'rocket'          : Rocket,
+  'clipboard-list'  : ClipboardList,
+  'git-pull-request': GitPullRequest,
+  'scan-search'     : ScanSearch,
+  'layers'          : Layers,
+  'compass'         : Compass,
+  'pen-tool'        : PenTool,
+  'play-circle'     : PlayCircle,
+  'globe-2'         : Globe2,
+  'type'            : Type,
+  'file-code'       : FileCode,
+};
+
+export function getStepIcon(name: string): LucideIconData {
+  return STEP_ICON_MAP[name] ?? FileCode;
+}

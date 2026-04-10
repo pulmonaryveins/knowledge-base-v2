@@ -14,6 +14,7 @@ import {
   ColorPaletteSection,
   TypographyScaleSection,
   ComponentSpecSection,
+  BrandingSection,
 } from '../../core/models';
 import { HeroComponent } from '../../shared/components/hero/hero.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -26,6 +27,7 @@ import { ProjectDocComponent } from '../project-doc/project-doc.component';
 import { ColorPaletteComponent } from '../../shared/components/color-palette/color-palette.component';
 import { TypographyScaleComponent } from '../../shared/components/typography-scale/typography-scale.component';
 import { ComponentSpecComponent } from '../../shared/components/component-spec/component-spec.component';
+import { BrandGuideComponent } from '../../shared/components/brand-guide/brand-guide.component';
 
 /**
  * TeamPageComponent renders the full documentation page for the active team.
@@ -48,6 +50,7 @@ import { ComponentSpecComponent } from '../../shared/components/component-spec/c
     ColorPaletteComponent,
     TypographyScaleComponent,
     ComponentSpecComponent,
+    BrandGuideComponent,
   ],
   templateUrl: './team-page.component.html',
   styleUrl: './team-page.component.scss',
@@ -119,5 +122,9 @@ export class TeamPageComponent {
 
   public asComponentSpec(c: SectionContent): ComponentSpecSection {
     return c as ComponentSpecSection;
+  }
+
+  public asBranding(c: SectionContent): BrandingSection {
+    return c as BrandingSection;
   }
 }

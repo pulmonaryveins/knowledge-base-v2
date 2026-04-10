@@ -192,30 +192,35 @@ export const webdevTeam: Team = {
         type: 'getting-started',
         steps: [
           {
+            icon: 'scan-search',
             title: 'Step 1 — Analyze',
             description: 'Understand the requirements and study all reference materials before writing a single line of code. Identify the correct framework for the project type.',
             code: '# Questions to answer before starting:\n# - What framework fits this project? (Astro / Svelte / Next.js / WordPress)\n# - Is content static (JSON) or dynamic (PageCMS)?\n# - What are the responsiveness requirements?\n# - Are there reference designs or existing sites to study?',
             language: 'bash',
           },
           {
+            icon: 'layers',
             title: 'Step 2 — Plan',
             description: 'Break the layout into components before building. Identify reusable pieces, define the folder structure following the existing project convention, and plan the page hierarchy.',
             code: '# Component planning checklist:\n# - List all unique UI components needed\n# - Identify which components are reusable across pages\n# - Sketch the folder structure: components/, pages/, layouts/, data/\n# - Plan responsiveness breakpoints: mobile / tablet / desktop',
             language: 'bash',
           },
           {
+            icon: 'terminal',
             title: 'Step 3 — Build',
             description: 'Develop in order: layout shell first, then shared components, then individual pages. Use AI tools (Claude Code, Codex, Kiro) to accelerate boilerplate and catch issues early.',
             code: '# Build order:\n# 1. Base layout / shell (layout.astro or +layout.svelte)\n# 2. Shared components (Nav, Footer, Button, Card)\n# 3. Page-level composition\n# 4. Wire up content (JSON / CMS)\nnpm run dev   # Keep dev server running throughout',
             language: 'bash',
           },
           {
+            icon: 'flask-conical',
             title: 'Step 4 — Test',
             description: 'Check responsiveness across all three breakpoints (mobile 375px, tablet 768px, desktop 1440px). Verify all links work, interactions are clear, and there are no console errors.',
             code: '# Testing checklist:\n# - Resize to 375px (mobile), 768px (tablet), 1440px (desktop)\n# - Open browser DevTools → check for console errors\n# - Test all navigation links and buttons\n# - Verify hover states and interactive elements\n# - Run Lighthouse for performance and SEO score',
             language: 'bash',
           },
           {
+            icon: 'rocket',
             title: 'Step 5 — Refine',
             description: 'Improve code structure and UI quality. Extract repeated code into reusable components. Ensure code is clean, readable, and follows consistent patterns before submitting.',
             code: '# Refine checklist:\n# - Extract any duplicated markup into components\n# - Remove unused code and commented-out blocks\n# - Ensure consistent spacing and visual clarity\n# - Verify Definition of Done criteria are all met\nnpm run build   # Confirm production build passes with no errors',

@@ -1,7 +1,7 @@
 // ── FILE: src/app/core/models/team.model.ts ──
 
 import { Project } from './project.model';
-import { DataTable, Step, CodeBlockData, InfoCardData, CodingPattern, ColorGroup, TypographySample, ComponentVariant } from './ui.models';
+import { DataTable, Step, CodeBlockData, InfoCardData, CodingPattern, ColorGroup, TypographySample, ComponentVariant, BrandingLogoItem } from './ui.models';
 
 /** A stat pill shown in the hero banner */
 export interface HeroStat {
@@ -89,6 +89,20 @@ export interface ComponentSpecSection {
   readonly variants: ReadonlyArray<ComponentVariant>;
 }
 
+/** Company brand guide section — logos, favicon, sidebar variants */
+export interface BrandingSection {
+  /** Discriminant for @switch rendering */
+  readonly type: 'branding';
+  /** Primary logo variants (dark bg, green bg, white bg) */
+  readonly mainLogos: ReadonlyArray<BrandingLogoItem>;
+  /** Favicon entry */
+  readonly favicon?: BrandingLogoItem;
+  /** Collapsed sidebar icon variants */
+  readonly sidebarCollapsed?: ReadonlyArray<BrandingLogoItem>;
+  /** Expanded sidebar logo variants */
+  readonly sidebarExpanded?: ReadonlyArray<BrandingLogoItem>;
+}
+
 /** Discriminated union of all possible section content types */
 export type SectionContent =
   | TechStackSection
@@ -99,7 +113,8 @@ export type SectionContent =
   | ProjectsSection
   | ColorPaletteSection
   | TypographyScaleSection
-  | ComponentSpecSection;
+  | ComponentSpecSection
+  | BrandingSection;
 
 /** A single documentation section within a team page */
 export interface TeamSection {

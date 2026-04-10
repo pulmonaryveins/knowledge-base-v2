@@ -1,5 +1,6 @@
 // ── FILE: src/app/shared/index.ts ──
 
+export * from './components/brand-guide/brand-guide.component';
 export * from './components/callout/callout.component';
 export * from './components/code-block/code-block.component';
 export * from './components/color-palette/color-palette.component';

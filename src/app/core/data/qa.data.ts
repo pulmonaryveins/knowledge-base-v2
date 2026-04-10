@@ -287,30 +287,35 @@ export const qaTeam: Team = {
         type: 'getting-started',
         steps: [
           {
+            icon: 'clipboard-list',
             title: 'Pick a Task from the QA Board',
             description: 'All work flows through the QA board stages: To-dos → In Progress → Integration → Ready for Execution → Executing Scripts → Code Review → Changes Requested → Done. Pick an unassigned item from To-dos and move it to In Progress.',
             code: '# QA Board Stages\n# To-dos → In Progress → Integration → Ready for Execution\n# → Executing Scripts → Code Review → Changes Requested → Done',
             language: 'bash',
           },
           {
+            icon: 'git-branch',
             title: 'Branch from Development',
             description: 'Always create your branch from the development branch. Use the ticket number in the branch name.',
             code: 'git checkout development\ngit pull origin development\ngit checkout -b nsp-<ticket-number>/<short-description>',
             language: 'bash',
           },
           {
+            icon: 'pen-tool',
             title: 'Write Tests Using POM',
             description: 'Create or update a Page class in helpers/ or pages/. Write your test script importing the page object. Follow Ticket Information header and Test Arrangements format in every test file.',
             code: '# Python: create page class\n# File: helpers/my_module_page.py\nfrom helpers.base_page import BasePage\n\nclass MyModulePage(BasePage):\n    LOCATOR = "css=.my-element"\n\n    def click_element(self):\n        self.click(self.LOCATOR)',
             language: 'python',
           },
           {
+            icon: 'terminal',
             title: 'Commit & Push',
             description: 'Use the ticket number in the commit message. Push and set upstream on first push.',
             code: 'git status\ngit add <files>\ngit commit -m "nsp-<ticket>/initial commit containing test data"\ngit push --set-upstream origin nsp-<ticket>/<description>',
             language: 'bash',
           },
           {
+            icon: 'git-pull-request',
             title: 'Open a Pull Request',
             description: 'Create a PR targeting the development branch. Move the board ticket to Code Review. Address any Changes Requested feedback before merge.',
             code: 'gh pr create --base development --title "nsp-<ticket>: <description>"',

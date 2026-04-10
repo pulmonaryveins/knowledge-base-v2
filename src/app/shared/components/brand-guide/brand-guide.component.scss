@@ -1,0 +1,114 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/brand-guide/brand-guide.component.scss ──
+
+:host { @apply block; }
+
+.brand-guide {
+  @apply flex flex-col gap-10;
+
+  // ── Top row: logo items + favicon ─────────────────────────────────────
+  &__top-row {
+    @apply flex flex-row items-start gap-6 flex-wrap;
+  }
+
+  // Each logo item = card stacked above its meta text
+  &__logo-item {
+    @apply flex flex-col gap-2;
+    width: 280px;
+
+    &--favicon {
+      width: auto;
+      min-width: 80px;
+    }
+  }
+
+  &__logo-card {
+    @apply rounded-[14px] flex items-center justify-center overflow-hidden;
+    width: 280px;
+    height: 170px;
+
+    &--bordered {
+      box-shadow: 0 0 0 1px var(--border);
+    }
+  }
+
+  &__logo-img {
+    @apply object-contain;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  // ── Favicon ────────────────────────────────────────────────────────────
+  &__favicon-wrap {
+    @apply w-[44px] h-[44px] rounded-[8px] flex items-center justify-center
+           border border-[var(--border)] bg-[var(--card)];
+  }
+
+  &__favicon-img {
+    @apply w-[24px] h-[24px] object-contain;
+  }
+
+  // ── Shared meta text (used under logo cards and favicon) ──────────────
+  &__meta {
+    @apply flex flex-col gap-[2px];
+  }
+
+  &__meta-name {
+    @apply font-['Syne',_sans-serif] text-[13px] font-semibold text-[var(--navy)] mb-[2px];
+  }
+
+  &__meta-detail {
+    @apply font-['DM_Mono',_monospace] text-[11px] text-[var(--muted)];
+  }
+
+  // ── Bottom row: Collapse + Expanded side by side ───────────────────────
+  &__bottom-row {
+    @apply flex flex-row items-start gap-12 border-t border-[var(--border)] pt-8;
+  }
+
+  &__sidebar-group {
+    @apply flex flex-col gap-3;
+  }
+
+  &__sidebar-label {
+    @apply m-0 font-['Syne',_sans-serif] text-[13px] font-semibold text-[var(--navy)];
+  }
+
+  &__sidebar-icons {
+    @apply flex flex-row items-center gap-4;
+  }
+
+  // ── Small square icon cards (Collapse) ────────────────────────────────
+  &__icon-card {
+    @apply rounded-[10px] flex items-center justify-center overflow-hidden;
+    width: 58px;
+    height: 58px;
+
+    &--bordered {
+      box-shadow: 0 0 0 1px var(--border);
+    }
+  }
+
+  &__icon-img {
+    @apply w-[34px] h-[34px] object-contain;
+  }
+
+  // ── Wide expanded sidebar cards ───────────────────────────────────────
+  &__wide-card {
+    @apply rounded-[12px] flex items-center justify-center overflow-hidden;
+    width: 320px;
+    height: 90px;
+
+    &--bordered {
+      box-shadow: 0 0 0 1px var(--border);
+    }
+  }
+
+  &__wide-img {
+    @apply object-contain;
+    max-height: 70px;
+    max-width: 90%;
+    padding: 0 20px;
+  }
+}

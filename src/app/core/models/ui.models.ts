@@ -34,6 +34,8 @@ export interface Step {
   readonly title: string;
   /** Longer description of what to do */
   readonly description: string;
+  /** Optional Lucide icon name shown alongside the number badge */
+  readonly icon?: string;
   /** Optional inline code snippet shown below the description */
   readonly code?: string;
   /** Programming language label for the inline code snippet */
@@ -113,4 +115,21 @@ export interface ComponentVariant {
   readonly borderPlacement: string;
   readonly gap: string;
   readonly align: string;
+}
+
+/** A single logo asset entry for the brand guide section */
+export interface BrandingLogoItem {
+  /** Display label shown below the logo card */
+  readonly label: string;
+  /** Image src path relative to the public/ folder, e.g. '/COMPASS-BLUE.png' */
+  readonly src: string;
+  /** CSS background value for the logo card (color, gradient) */
+  readonly background: string;
+  /** Whether to draw a border around the card (for light/white backgrounds) */
+  readonly bordered?: boolean;
+  /** Pixel dimensions shown in the caption */
+  readonly width?: string;
+  readonly height?: string;
+  /** Hex color shown in the caption */
+  readonly color?: string;
 }

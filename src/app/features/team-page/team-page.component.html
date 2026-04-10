@@ -96,6 +96,16 @@
               [variants]="asComponentSpec(section.content).variants"
             />
           }
+
+          <!-- Company Branding -->
+          @case ('branding') {
+            <app-brand-guide
+              [mainLogos]="asBranding(section.content).mainLogos"
+              [favicon]="asBranding(section.content).favicon"
+              [sidebarCollapsed]="asBranding(section.content).sidebarCollapsed"
+              [sidebarExpanded]="asBranding(section.content).sidebarExpanded"
+            />
+          }
         }
       </section>
     }

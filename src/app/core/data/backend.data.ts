@@ -179,11 +179,11 @@ export const backendTeam: Team = {
       content: {
         type: 'getting-started',
         steps: [
-          { title: 'Clone the Monorepo', description: 'Clone the NTV360 monorepo and install all dependencies.', code: 'git clone git@github.com:nctv/ntv360-monorepo.git\ncd ntv360-monorepo && npm install', language: 'bash' },
-          { title: 'Start MySQL', description: 'Spin up the local MySQL database with Docker Compose.', code: 'docker-compose up -d mysql', language: 'bash' },
-          { title: 'Configure Environment', description: 'Copy the env template and set your local database URL and secrets.', code: 'cp .env.example .env\n# Set DATABASE_URL, JWT_SECRET, AWS_REGION', language: 'bash' },
-          { title: 'Run Migrations', description: 'Apply all pending TypeORM migrations to create the schema.', code: 'npm run migration:run', language: 'bash' },
-          { title: 'Start an App', description: 'Launch any of the three apps in watch mode.', code: 'npm run start:dev ntv360-api       # REST API → :3000\nnpm run start:dev graphql          # GraphQL  → :3001\nnpm run start:dev ntv360-websocket # WebSocket → :3002', language: 'bash' },
+          { icon: 'git-branch',        title: 'Clone the Monorepo', description: 'Clone the NTV360 monorepo and install all dependencies.', code: 'git clone git@github.com:nctv/ntv360-monorepo.git\ncd ntv360-monorepo && npm install', language: 'bash' },
+          { icon: 'container',         title: 'Start MySQL', description: 'Spin up the local MySQL database with Docker Compose.', code: 'docker-compose up -d mysql', language: 'bash' },
+          { icon: 'key-round',         title: 'Configure Environment', description: 'Copy the env template and set your local database URL and secrets.', code: 'cp .env.example .env\n# Set DATABASE_URL, JWT_SECRET, AWS_REGION', language: 'bash' },
+          { icon: 'arrow-right-left',  title: 'Run Migrations', description: 'Apply all pending TypeORM migrations to create the schema.', code: 'npm run migration:run', language: 'bash' },
+          { icon: 'terminal',          title: 'Start an App', description: 'Launch any of the three apps in watch mode.', code: 'npm run start:dev ntv360-api       # REST API → :3000\nnpm run start:dev graphql          # GraphQL  → :3001\nnpm run start:dev ntv360-websocket # WebSocket → :3002', language: 'bash' },
         ],
         codeBlock: {
           language: 'bash',
