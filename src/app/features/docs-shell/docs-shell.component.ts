@@ -1,6 +1,6 @@
 // ── FILE: src/app/features/docs-shell/docs-shell.component.ts ──
 
-import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '../../core/services';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
@@ -9,6 +9,7 @@ import { SearchOverlayComponent } from '../../shared/components/search-overlay/s
 import { TeamPageComponent } from '../team-page/team-page.component';
 import { AppsPageComponent } from '../apps-page/apps-page.component';
 import { ToolPageComponent } from '../tool-page/tool-page.component';
+import { SkeletonComponent } from '../../shared/components/skeleton/skeleton.component';
 
 /**
  * DocsShellComponent is the root layout shell of the portal.
@@ -27,6 +28,7 @@ import { ToolPageComponent } from '../tool-page/tool-page.component';
     TeamPageComponent,
     AppsPageComponent,
     ToolPageComponent,
+    SkeletonComponent,
   ],
   templateUrl: './docs-shell.component.html',
   styleUrl: './docs-shell.component.scss',
@@ -36,13 +38,21 @@ export class DocsShellComponent implements OnInit {
   private readonly _nav = inject(NavigationService);
   private readonly _route = inject(ActivatedRoute);
 
+  /** True while the skeleton should be shown (initial load + every navigation change). */
+  protected readonly isLoading = signal(true);
+  private _loadTimer = 0;
+
   constructor() {
-    // Scroll to top whenever the user switches team or tool.
-    // Runs in injection context so effect() is valid here.
+    // On every team / tool switch: show skeleton briefly, then reveal content.
+    // Also scrolls to top on navigation.
     effect(() => {
       this._nav.activeTeamKey();
       this._nav.activeToolKey();
+
       window.scrollTo({ top: 0, behavior: 'instant' });
+      this.isLoading.set(true);
+      clearTimeout(this._loadTimer);
+      this._loadTimer = window.setTimeout(() => this.isLoading.set(false), 420);
     });
   }
 

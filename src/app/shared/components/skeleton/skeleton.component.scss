@@ -1,0 +1,256 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/skeleton/skeleton.component.scss ──
+
+// ── Shimmer keyframe ─────────────────────────────────────────────────────────
+@keyframes sk-shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+// ── Shared shimmer mixin ──────────────────────────────────────────────────────
+// Applied to every "bone" element.
+%shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(9, 22, 53, 0.065) 0%,
+    rgba(9, 22, 53, 0.035) 45%,
+    rgba(9, 22, 53, 0.065) 100%
+  );
+  background-size: 300% 100%;
+  animation: sk-shimmer 1.8s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+// ── Root ─────────────────────────────────────────────────────────────────────
+
+.sk {
+  display: block;
+  width: 100%;
+  animation: sk-fadein 0.18s ease both;
+
+  @keyframes sk-fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  // ── Hero ───────────────────────────────────────────────────────────────────
+
+  &__hero {
+    width: 100%;
+    min-height: 240px;
+    padding: 64px 48px;
+    background: linear-gradient(135deg, rgba(9, 22, 53, 0.055) 0%, rgba(9, 22, 53, 0.025) 100%);
+    border-bottom: 1px solid var(--border);
+
+    @media (max-width: 768px) { padding: 40px 20px; }
+  }
+
+  &__hero-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 520px;
+  }
+
+  &__hero-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  // ── Content area ───────────────────────────────────────────────────────────
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    padding: 40px 240px 80px 48px;
+
+    @media (max-width: 1024px) { padding: 40px 32px 80px; }
+    @media (max-width: 768px)  { padding: 24px 16px 60px; }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__section-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  // ── Bar shapes (generic text lines) ───────────────────────────────────────
+
+  &__bar {
+    @extend %shimmer;
+    height: 12px;
+    width: 100%;
+    border-radius: 4px;
+
+    // Variants
+    &--h1     { height: 40px; width: 55%; border-radius: 8px; }
+    &--sub    { height: 14px; width: 80%; }
+    &--label  { height: 18px; width: 200px; border-radius: 5px; }
+    &--name   { height: 14px; width: 140px; border-radius: 4px; }
+    &--caption { height: 11px; }
+
+    // Width modifiers
+    &--40  { width: 40%; }
+    &--50  { width: 50%; }
+    &--60  { width: 60%; }
+    &--70  { width: 70%; }
+    &--80  { width: 80%; }
+  }
+
+  // ── Pills / chips ──────────────────────────────────────────────────────────
+
+  &__pill {
+    @extend %shimmer;
+    height: 26px;
+    width: 110px;
+    border-radius: 20px;
+  }
+
+  &__chip {
+    @extend %shimmer;
+    height: 24px;
+    width: 56px;
+    border-radius: 20px;
+    flex-shrink: 0;
+
+    &--wide   { width: 90px; }
+    &--status { width: 52px; height: 22px; border-radius: 20px; margin-left: auto; flex-shrink: 0; }
+  }
+
+  // ── Number badge ───────────────────────────────────────────────────────────
+
+  &__num-badge {
+    @extend %shimmer;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  // ── List rows (tech-stack style) ───────────────────────────────────────────
+
+  &__list-block {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  &__list-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__list-icon {
+    @extend %shimmer;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  &__list-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  // ── Step rows (getting-started style) ─────────────────────────────────────
+
+  &__steps-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__step-circle {
+    @extend %shimmer;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-top: 2px;
+  }
+
+  &__step-line {
+    position: absolute;
+    left: 18px;
+    top: 56px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+    transform: translateX(-50%);
+
+    .sk__step-row:last-child & { display: none; }
+  }
+
+  &__step-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 6px;
+  }
+
+  // ── Code block (folder-arch style) ────────────────────────────────────────
+
+  &__code-block {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0f1c38;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 0 0 16px;
+  }
+
+  &__code-bar {
+    height: 36px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 16px;
+  }
+
+  &__code-line {
+    height: 10px;
+    border-radius: 4px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.04) 45%,
+      rgba(255, 255, 255, 0.07) 100%
+    );
+    background-size: 300% 100%;
+    animation: sk-shimmer 1.8s ease-in-out infinite;
+    margin: 0 20px 10px 56px; // mimic gutter offset
+
+    &:last-child { margin-bottom: 0; }
+  }
+}

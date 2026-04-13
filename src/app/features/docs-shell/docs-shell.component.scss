@@ -14,6 +14,17 @@
     @media (max-width: 768px) { @apply w-full; }
   }
 
+  // Page content fades in after the skeleton is dismissed.
+  &__page {
+    display: block;
+    animation: shell-page-in 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  @keyframes shell-page-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   // ── Right Rail ──────────────────────────────────────────────────────────
   // Fixed to the viewport right edge — always follows the user while scrolling.
   // The inner right-rail component handles the hover-reveal animation.
