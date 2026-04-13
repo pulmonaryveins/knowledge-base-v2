@@ -130,16 +130,20 @@
             <span class="lp__terminal-title">nctv-portal ~ dev</span>
           </div>
           <div class="lp__terminal-body">
-            <p class="lp__terminal-line"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">git clone</span> git&#64;nctv/dev-portal</p>
-            <p class="lp__terminal-line lp__terminal-line--delay-1"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Cloned</span> knowledge-base-v2</p>
-            <p class="lp__terminal-line lp__terminal-line--delay-2"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">npm install</span></p>
-            <p class="lp__terminal-line lp__terminal-line--delay-3"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Added</span> 412 packages in 4.1s</p>
-            <p class="lp__terminal-line lp__terminal-line--delay-4"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">ng serve</span></p>
-            <p class="lp__terminal-line lp__terminal-line--delay-5"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Compiled</span> successfully in 1.2s</p>
-            <p class="lp__terminal-line lp__terminal-line--delay-6"><span class="lp__t-dim">➜</span> <span class="lp__t-url">http://localhost:4200</span></p>
-            <p class="lp__terminal-line lp__terminal-line--delay-7 lp__terminal-line--blink">
-              <span class="lp__t-dim">$</span> <span class="lp__t-cursor">▋</span>
-            </p>
+            @for (line of termLines(); track line.id) {
+              <p class="lp__terminal-line lp__terminal-line--in">
+                <span [class]="line.prefixCls">{{ line.prefix }}</span>
+                <span [class]="line.contentCls"> {{ line.content }}</span>
+                @if (line.isTyping) {
+                  <span class="lp__t-cursor lp__t-cursor--active">▋</span>
+                }
+              </p>
+            }
+            @if (termDone()) {
+              <p class="lp__terminal-line lp__terminal-line--in lp__terminal-line--blink">
+                <span class="lp__t-dim">$ </span><span class="lp__t-cursor">▋</span>
+              </p>
+            }
           </div>
           <!-- Floating stat badges -->
           <div class="lp__terminal-badge lp__terminal-badge--top">
@@ -186,24 +190,36 @@
 
       <div class="lp__teams-grid">
         @for (team of teams; track team.key; let i = $index) {
-          <button class="lp__team-card" [appReveal]="'zoom'" [appRevealDelay]="i * 60" (click)="goToTeam(team.key)" [style.--tc]="team.color">
-            <div class="lp__team-card-header" [style.background]="team.gradient">
-              <div class="lp__team-card-icon" [style.background]="team.color + '28'">
-                <lucide-icon [img]="team.icon" [size]="20" [style.color]="team.color" />
+          <button class="lp__team-card" [appReveal]="'zoom'" [appRevealDelay]="i * 60" (click)="goToTeam(team.key)" [style.--tc]="team.color" [style.--tg]="team.gradient">
+            <!-- Decorative number -->
+            <span class="lp__team-card-num">{{ (i + 1).toString().padStart(2, '0') }}</span>
+
+            <!-- Gradient fill + glow layer -->
+            <div class="lp__team-card-glow" [style.background]="team.color" aria-hidden="true"></div>
+
+            <!-- Icon row -->
+            <div class="lp__team-card-top">
+              <div class="lp__team-card-icon" [style.background]="team.color + '22'" [style.border-color]="team.color + '44'">
+                <lucide-icon [img]="team.icon" [size]="22" [style.color]="team.color" />
               </div>
               <div class="lp__team-card-arrow">
-                <lucide-icon [img]="ArrowRightIcon" [size]="14" />
+                <lucide-icon [img]="ArrowRightIcon" [size]="13" />
               </div>
             </div>
+
+            <!-- Body -->
             <div class="lp__team-card-body">
               <h3 class="lp__team-card-name">{{ team.label }}</h3>
               <p class="lp__team-card-tagline">{{ team.tagline }}</p>
               <div class="lp__team-card-tags">
                 @for (tag of team.tags; track tag) {
-                  <span class="lp__tag">{{ tag }}</span>
+                  <span class="lp__tag" [style.border-color]="team.color + '30'" [style.color]="team.color + 'cc'">{{ tag }}</span>
                 }
               </div>
             </div>
+
+            <!-- Bottom color accent bar -->
+            <div class="lp__team-card-bar" [style.background]="team.color" aria-hidden="true"></div>
           </button>
         }
       </div>

@@ -1,0 +1,77 @@
+$navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc;
+
+.db-showcase { display: flex; flex-direction: column; gap: 40px; }
+
+.db-section {
+  display: flex; flex-direction: column; gap: 14px;
+  &--row { flex-direction: row; gap: 32px; flex-wrap: wrap; }
+  &__label { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: $muted; margin: 0; }
+  &__desc  { font-family: 'Inter', sans-serif; font-size: 14px; color: $muted; margin: 0; line-height: 1.6; }
+}
+.db-subsection { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 12px; }
+
+// Visual Hierarchy
+.db-hierarchy {
+  display: flex; flex-direction: column; gap: 6px;
+  background: $bg; border: 1px solid $border; border-radius: 10px; padding: 24px 28px; max-width: 560px;
+  &__h1      { font-family: 'Inter', sans-serif; font-size: 30px; font-weight: 800; color: $navy; line-height: 1.2; }
+  &__h2      { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 700; color: $navy; }
+  &__h3      { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; color: $navy; }
+  &__body    { font-family: 'Inter', sans-serif; font-size: 14px; color: $muted; line-height: 1.6; }
+  &__caption { font-family: 'Inter', sans-serif; font-size: 11px; color: lighten($muted, 15%); letter-spacing: .04em; }
+}
+
+// Gestalt
+.db-gestalt { display: flex; gap: 20px; flex-wrap: wrap; }
+.db-gestalt__block {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  background: $bg; border: 1px solid $border; border-radius: 10px; padding: 16px 20px; min-width: 130px;
+}
+.db-gestalt__shapes { display: flex; gap: 6px; align-items: center; }
+.db-gestalt__shapes--arc { gap: 6px; }
+.db-gestalt__name { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: $navy; }
+.db-dot {
+  width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0;
+  &--blue  { background: #3B82F6; } &--pink  { background: #EC4899; }
+  &--green { background: $green; } &--amber { background: #F59E0B; }
+  &--gap   { margin-left: 12px; }
+  &--up1   { transform: translateY(-4px); } &--up2 { transform: translateY(-8px); }
+}
+
+// Design Thinking
+.db-dt-flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.db-dt-step {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 14px 12px; border-radius: 10px; min-width: 72px;
+  &--1 { background: #EFF6FF; color: #3B82F6; } &--2 { background: #F0FDF4; color: #16A34A; }
+  &--3 { background: #FFF7ED; color: #EA580C; } &--4 { background: #FAF5FF; color: #7C3AED; }
+  &--5 { background: #F0FDF4; color: #059669; }
+  &__icon { display: flex; align-items: center; justify-content: center; }
+  &__label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; text-align: center; }
+}
+.db-dt-arrow { font-size: 18px; color: $muted; flex-shrink: 0; }
+
+// Golden Ratio
+.db-golden {
+  display: flex; align-items: stretch; height: 72px; max-width: 320px;
+  &__large { flex: 1.618; background: $navy; border-radius: 8px 0 0 8px; display: flex; align-items: center; justify-content: center; }
+  &__small { flex: 1; background: $green; border-radius: 0 8px 8px 0; display: flex; align-items: center; justify-content: center; }
+  &__val   { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; color: white; }
+}
+
+// Grid
+.db-grid-demo {
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; max-width: 400px;
+}
+.db-grid-col {
+  height: 18px; background: rgba($green, .28); border: 1px solid rgba($green, .45); border-radius: 3px;
+}
+.db-grid-blocks {
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; max-width: 400px; margin-top: 4px;
+}
+.db-grid-block {
+  height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: white;
+  &--4 { grid-column: span 4; background: $navy; }
+  &--8 { grid-column: span 8; background: $green; color: $navy; }
+}

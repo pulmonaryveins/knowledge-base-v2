@@ -1,0 +1,79 @@
+$navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc;
+
+.proto-showcase { display: flex; flex-direction: column; gap: 40px; }
+.proto-section {
+  display: flex; flex-direction: column; gap: 14px;
+  &__label { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: $muted; margin: 0; }
+  &__desc  { font-family: 'Inter', sans-serif; font-size: 14px; color: $muted; margin: 0; line-height: 1.6; }
+}
+
+// User Flow
+.proto-flow {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  background: $bg; border: 1px solid $border; border-radius: 10px; padding: 20px 24px;
+}
+.proto-flow__node {
+  padding: 7px 14px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+  background: white; border: 1.5px solid $border; color: $navy; white-space: nowrap;
+  &--start    { background: #EFF6FF; border-color: #3B82F6; color: #1D4ED8; }
+  &--end      { background: #F0FDF4; border-color: $green;  color: #15803D; }
+  &--error    { background: #FEF2F2; border-color: #EF4444; color: #DC2626; }
+  &--decision {
+    background: #FFF7ED; border-color: #F59E0B; color: #B45309;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    width: 68px; height: 50px; display: flex; align-items: center; justify-content: center; padding: 0;
+  }
+}
+.proto-flow__arrow { font-size: 18px; color: $muted; }
+.proto-flow__branches { display: flex; flex-direction: column; gap: 8px; margin-left: 6px; }
+.proto-flow__branch { display: flex; align-items: center; gap: 8px; }
+.proto-flow__branch-label {
+  font-family: 'Inter', sans-serif; font-size: 11px; color: $muted; min-width: 24px;
+  &--yes { color: #16A34A; } &--no { color: #DC2626; }
+}
+
+// Fidelity Spectrum
+.proto-fidelity {
+  max-width: 500px; display: flex; flex-direction: column; gap: 8px;
+  &__track  { height: 8px; background: $border; border-radius: 4px; overflow: hidden; }
+  &__fill   { height: 100%; background: linear-gradient(90deg, #CBD5E1, $navy); border-radius: 4px; }
+  &__labels { display: flex; justify-content: space-between; }
+  &__point  { display: flex; flex-direction: column; align-items: center; gap: 4px;
+    span { font-family: 'Inter', sans-serif; font-size: 11px; color: $muted; } }
+  &__marker {
+    width: 10px; height: 10px; border-radius: 50%;
+    &--1 { background: #CBD5E1; } &--2 { background: #94A3B8; }
+    &--3 { background: #64748B; } &--4 { background: $navy; }
+  }
+}
+
+// Wireframe Compare
+.proto-compare { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.proto-compare__arrow { font-size: 24px; color: $muted; align-self: center; }
+.proto-frame {
+  flex: 1; min-width: 200px; max-width: 280px; display: flex; flex-direction: column; gap: 8px;
+  &__badge  { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; color: $muted; letter-spacing: .06em; text-transform: uppercase; }
+  &__screen { background: white; border: 2px solid $border; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 7px; min-height: 160px; }
+  &__screen--hifi { border-color: $navy; background: #F8FAFF; }
+}
+// Lo-Fi mocks
+.proto-wf__nav  { height: 10px; background: #CBD5E1; border-radius: 3px; }
+.proto-wf__hero { height: 36px; background: #E2E8F0; border-radius: 4px; }
+.proto-wf__row  { display: flex; gap: 5px; }
+.proto-wf__block { flex: 1; height: 28px; background: #E2E8F0; border-radius: 3px; }
+.proto-wf__line { height: 7px; background: #E2E8F0; border-radius: 3px; &--short { width: 60%; } }
+.proto-wf__btn  { height: 18px; width: 60px; background: #CBD5E1; border-radius: 4px; }
+// Hi-Fi mocks
+.proto-hf__nav  { display: flex; align-items: center; justify-content: space-between; padding-bottom: 6px; border-bottom: 1px solid $border; }
+.proto-hf__logo { width: 36px; height: 7px; background: $navy; border-radius: 2px; }
+.proto-hf__links { width: 70px; height: 5px; background: $border; border-radius: 2px; }
+.proto-hf__hero { background: $navy; border-radius: 6px; padding: 10px; margin: 4px 0; }
+.proto-hf__hero-h { height: 9px; background: white; border-radius: 2px; width: 80%; margin-bottom: 5px; }
+.proto-hf__hero-p { height: 5px; background: rgba(white, .5); border-radius: 2px; width: 55%; }
+.proto-hf__cards { display: flex; gap: 4px; }
+.proto-hf__card  { flex: 1; height: 26px; background: white; border: 1px solid $border; border-radius: 4px; }
+.proto-hf__btn   {
+  height: 18px; background: $green; border-radius: 4px; width: 72px;
+  font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700; color: $navy;
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}

@@ -315,15 +315,10 @@ $dark-3:  #0f1f3d;
 
   &-line {
     @apply font-['DM_Mono',_monospace] text-[14px] leading-[1.6] text-[rgba(255,255,255,0.8)] m-0;
-    animation: fade-in-up 0.4s ease both;
 
-    &--delay-1 { animation-delay: 0.6s; }
-    &--delay-2 { animation-delay: 0.9s; }
-    &--delay-3 { animation-delay: 1.2s; }
-    &--delay-4 { animation-delay: 1.5s; }
-    &--delay-5 { animation-delay: 1.8s; }
-    &--delay-6 { animation-delay: 2.1s; }
-    &--delay-7 { animation-delay: 2.4s; }
+    &--in {
+      animation: term-appear 0.15s ease both;
+    }
 
     &--blink .lp__t-cursor {
       animation: blink-cursor 1s step-end infinite;
@@ -369,6 +364,12 @@ $dark-3:  #0f1f3d;
 .lp__t-cmd  { color: #8DCB2C; }
 .lp__t-ok   { color: #28C840; }
 .lp__t-url  { color: #60A5FA; text-decoration: underline; }
+
+// Active typing cursor — green, fast blink while a command is being typed
+.lp__t-cursor--active {
+  color: #8DCB2C;
+  animation: blink-cursor 0.55s step-end infinite;
+}
 
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -419,83 +420,236 @@ $dark-3:  #0f1f3d;
 // ════════════════════════════════════════════════════════════════════════════
 
 .lp__teams-grid {
-  @apply grid gap-5;
-  grid-template-columns: repeat(4, 1fr);
-
-  @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 900px)  { grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 600px)  { grid-template-columns: 1fr; }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
+// ── Team Card ────────────────────────────────────────────────────────────────
+
 .lp__team-card {
-  @apply flex flex-col rounded-[16px] overflow-hidden border-0 text-left cursor-pointer;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+  flex: 0 0 calc(25% - 15px);
+  max-width: calc(25% - 15px);
+  min-width: 220px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+
+  // Base: dark glass panel with the team gradient baked in
+  background: var(--tg);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.05) inset,
+    0 8px 32px rgba(0,0,0,0.4);
+
+  // Inner border
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  // Mesh dot pattern overlay
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 18px 18px;
+    opacity: 0.7;
+    z-index: 0;
+    pointer-events: none;
+  }
+
   transition:
-    transform 0.25s cubic-bezier(0.4,0,0.2,1),
-    box-shadow 0.25s cubic-bezier(0.4,0,0.2,1),
-    border-color 0.25s ease;
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.28s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255,255,255,0.14);
+    transform: translateY(-8px) scale(1.01);
     box-shadow:
-      0 16px 48px rgba(0,0,0,0.5),
-      0 0 0 1px rgba(255,255,255,0.08);
+      0 24px 60px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(255,255,255,0.14),
+      0 0 40px -8px var(--tc);
 
     .lp__team-card-arrow {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateX(0) rotate(0deg);
+    }
+
+    .lp__team-card-glow {
+      opacity: 0.18;
     }
 
     .lp__team-card-name {
       color: white;
     }
+
+    .lp__team-card-bar {
+      height: 4px;
+    }
   }
 
-  &-header {
-    @apply relative flex items-end justify-between px-5 pt-5 pb-5;
-    min-height: 88px;
+  // ── Number watermark ───────────────────────────────────────────
+  &-num {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-family: 'Syne', sans-serif;
+    font-size: 52px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.07);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  // ── Bottom glow blob ───────────────────────────────────────────
+  &-glow {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140%;
+    height: 80px;
+    border-radius: 50%;
+    filter: blur(32px);
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  // ── Top row: icon + arrow ──────────────────────────────────────
+  &-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 20px 20px 0;
   }
 
   &-icon {
-    @apply flex items-center justify-center w-[44px] h-[44px] rounded-[12px];
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    border: 1px solid transparent;
+    backdrop-filter: blur(8px);
+    flex-shrink: 0;
   }
 
   &-arrow {
-    @apply flex items-center justify-center w-[28px] h-[28px] rounded-full text-[rgba(255,255,255,0.7)];
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
     background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
     opacity: 0;
-    transform: translateX(-6px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateX(-8px) rotate(-45deg);
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 
+  // ── Body ───────────────────────────────────────────────────────
   &-body {
-    @apply flex flex-col gap-2 p-5 pt-4;
-    background: rgba(255,255,255,0.02);
-    border-top: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 20px 20px;
     flex: 1;
   }
 
   &-name {
-    @apply font-['Syne',_sans-serif] font-bold text-[15px] text-[rgba(255,255,255,0.88)] m-0;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: rgba(255,255,255,0.92);
+    margin: 0;
+    line-height: 1.25;
     transition: color 0.2s ease;
   }
 
   &-tagline {
-    @apply font-['DM_Mono',_monospace] text-[11.5px] text-[rgba(255,255,255,0.4)] m-0;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.38);
+    margin: 0 0 4px;
+    line-height: 1.5;
   }
 
   &-tags {
-    @apply flex flex-wrap gap-[6px] mt-1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+  }
+
+  // ── Bottom accent bar ──────────────────────────────────────────
+  &-bar {
+    position: relative;
+    z-index: 2;
+    height: 3px;
+    width: 100%;
+    opacity: 0.75;
+    transition: height 0.22s ease, opacity 0.22s ease;
+    border-radius: 0 0 18px 18px;
   }
 }
 
 .lp__tag {
-  @apply font-['DM_Mono',_monospace] text-[10px] px-[8px] py-[3px] rounded-full;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 20px;
   background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.1);
   color: rgba(255,255,255,0.5);
+  backdrop-filter: blur(4px);
+}
+
+// ── Responsive breakpoints ───────────────────────────────────────
+@media (max-width: 1200px) {
+  .lp__team-card {
+    flex: 0 0 calc(33.33% - 14px);
+    max-width: calc(33.33% - 14px);
+  }
+}
+@media (max-width: 900px) {
+  .lp__team-card {
+    flex: 0 0 calc(50% - 10px);
+    max-width: calc(50% - 10px);
+  }
+}
+@media (max-width: 560px) {
+  .lp__team-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 
@@ -886,6 +1040,12 @@ $dark-3:  #0f1f3d;
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
+}
+
+// Terminal line slide-in when inserted
+@keyframes term-appear {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes scroll-pulse {

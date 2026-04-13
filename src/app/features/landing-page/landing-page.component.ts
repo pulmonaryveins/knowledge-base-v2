@@ -1,6 +1,6 @@
 // ── FILE: src/app/features/landing-page/landing-page.component.ts ──
 
-import { Component, HostListener, signal, inject } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { BgRippleComponent } from '../../shared/components/bg-ripple/bg-ripple.component';
@@ -11,6 +11,13 @@ import {
   MapPin, Building2, Tv2, Wifi,
   LucideIconData,
 } from 'lucide-angular';
+
+interface TermLine {
+  id: number;
+  prefix: string; prefixCls: string;
+  content: string; contentCls: string;
+  isTyping: boolean;
+}
 
 /**
  * LandingPageComponent — the public entry point for the NCompassTV Dev Portal.
@@ -24,7 +31,7 @@ import {
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss',
 })
-export class LandingPageComponent {
+export class LandingPageComponent implements OnInit, OnDestroy {
   private readonly _router = inject(Router);
 
   // ── Icons ────────────────────────────────────────────────────────────────
@@ -42,10 +49,70 @@ export class LandingPageComponent {
   protected readonly Code2Icon        = Code2;
   protected readonly LayersIcon       = Layers;
 
+  // ── Terminal ─────────────────────────────────────────────────────────────
+  protected readonly termLines = signal<TermLine[]>([]);
+  protected readonly termDone  = signal(false);
+  private readonly _tt: ReturnType<typeof setTimeout>[] = [];
+
+  private readonly _seq = [
+    { prefix: '$', pCls: 'lp__t-dim', text: 'git clone git@nctv/dev-portal', tCls: 'lp__t-cmd', cmd: true  },
+    { prefix: '✓', pCls: 'lp__t-ok',  text: 'Cloned knowledge-base-v2',      tCls: 'lp__t-ok',  cmd: false },
+    { prefix: '$', pCls: 'lp__t-dim', text: 'npm install',                    tCls: 'lp__t-cmd', cmd: true  },
+    { prefix: '✓', pCls: 'lp__t-ok',  text: 'Added 412 packages in 4.1s',    tCls: '',          cmd: false },
+    { prefix: '$', pCls: 'lp__t-dim', text: 'ng serve',                       tCls: 'lp__t-cmd', cmd: true  },
+    { prefix: '✓', pCls: 'lp__t-ok',  text: 'Compiled successfully in 1.2s', tCls: '',          cmd: false },
+    { prefix: '➜', pCls: 'lp__t-dim', text: 'http://localhost:4200',          tCls: 'lp__t-url', cmd: false },
+  ] as const;
+
   // ── Nav / scroll state ───────────────────────────────────────────────────
   protected readonly navOpen       = signal(false);
   protected readonly scrolled      = signal(false);
   protected readonly scrollProgress = signal(0);
+
+  ngOnInit(): void { this._runTerminal(); }
+  ngOnDestroy(): void { this._tt.forEach(clearTimeout); }
+
+  private _run(ms: number, fn: () => void) { this._tt.push(setTimeout(fn, ms)); }
+
+  private _runTerminal(): void {
+    const CH = 52, CP = 400, OP = 300;
+    let t = 500;
+
+    for (let i = 0; i < this._seq.length; i++) {
+      const s = this._seq[i], id = i;
+
+      if (s.cmd) {
+        this._run(t, () =>
+          this.termLines.update(ls => [...ls,
+            { id, prefix: s.prefix, prefixCls: s.pCls, content: '', contentCls: s.tCls, isTyping: true }
+          ])
+        );
+        t += CH;
+        for (let j = 0; j < s.text.length; j++) {
+          const ci = j;
+          this._run(t, () =>
+            this.termLines.update(ls => ls.map(l => l.id !== id ? l : {
+              ...l,
+              content: s.text.slice(0, ci + 1),
+              isTyping: ci + 1 < s.text.length,
+            }))
+          );
+          t += CH;
+        }
+        t += CP;
+      } else {
+        t += 100;
+        this._run(t, () =>
+          this.termLines.update(ls => [...ls,
+            { id, prefix: s.prefix, prefixCls: s.pCls, content: s.text, contentCls: s.tCls, isTyping: false }
+          ])
+        );
+        t += OP;
+      }
+    }
+
+    this._run(t + 150, () => this.termDone.set(true));
+  }
 
   @HostListener('window:scroll')
   onScroll(): void {
