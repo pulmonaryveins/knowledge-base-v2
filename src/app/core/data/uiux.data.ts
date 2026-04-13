@@ -212,69 +212,51 @@ export const uiuxTeam: Team = {
       },
     },
     {
-      id: 'ux-design-process',
-      label: 'Design Process',
+      id: 'ux-design-basics-showcase',
+      label: 'Phase 1 — Design Basics',
       num: '03',
-      subHeader: 'A phase-by-phase overview of how designs move from initial research through usability testing to engineering handoff.',
-      content: {
-        type: 'getting-started',
-        layout: 'grid',
-        steps: [
-          {
-            icon: 'layers',
-            title: 'Phase 1 · Design Basics',
-            duration: '4–6 hrs',
-            description: 'Master the balance between aesthetic appeal and functional utility. Study visual hierarchy, consistency, standardized components, and how mental-model alignment reduces cognitive load. Deliver: design critique document.',
-          },
-          {
-            icon: 'compass',
-            title: 'Phase 2 · UX Design Fundamentals',
-            duration: '8 hrs',
-            description: 'Explore Golden Ratio, Design Aesthetics, Product Design, Design Ethics, and Constraints. Study Gestalt Principles, Visual Hierarchy, Design Thinking, UX Research Methods, and Inclusive Design. Deliver: design thinking worksheet.',
-          },
-          {
-            icon: 'pen-tool',
-            title: 'Phase 3 · Wireframing',
-            duration: '8 hrs',
-            description: 'Use low-fidelity wireframes to map user flows and information architecture without visual distraction. Identify usability issues early. Deliver: 1–3 mobile wireframe screens with annotated user flow.',
-          },
-          {
-            icon: 'play-circle',
-            title: 'Phase 4 · Prototyping',
-            duration: '8 hrs',
-            description: 'Transform wireframes into interactive flows with transitions and functional interactions. Run usability tests, gather feedback, and iterate. Deliver: lo-fi prototype + findings report.',
-          },
-          {
-            icon: 'globe-2',
-            title: 'Phase 5 · Web Design & Accessibility',
-            duration: '8 hrs',
-            description: 'Apply responsive grids, flexible layouts, and WCAG 2.1 AA accessibility standards. Balance aesthetic impact with performance. Deliver: responsive hi-fi web screen with accessibility audit.',
-          },
-          {
-            icon: 'type',
-            title: 'Phase 6 · Typography & Color Theory',
-            duration: '6 hrs',
-            description: 'Use font weight, size, and line height to establish hierarchy. Apply color psychology and the color wheel for harmony and accessibility. Minimum contrast ratio 4.5:1 for body text. Deliver: style guide page.',
-          },
-          {
-            icon: 'rocket',
-            title: 'Phase 7 · UI Design Principles & Production',
-            duration: 'Ongoing',
-            description: 'Apply all curriculum phases to real sprint work. Pick up Jira design tasks and deliver annotated, accessible, token-driven Figma screens via Dev Mode for Frontend and Backend handoff.',
-          },
-          {
-            icon: 'award',
-            title: 'Phase 8 · Portfolio Review & Team Critique',
-            duration: 'Team Review',
-            description: 'Present your Phase 7 deliverables in a team design critique. Receive structured feedback on accessibility, token compliance, and handoff quality. Incorporate at least one round of revisions before archiving the work in Figma.',
-          },
-        ],
-      },
+      subHeader: 'Part of the 8-phase design process · Visual hierarchy, Gestalt principles, Design Thinking, the Golden Ratio, and grid structure — the foundations every designer at NCompassTV must master.',
+      content: { type: 'nc-design-basics' },
+    },
+    {
+      id: 'ux-ux-design-showcase',
+      label: 'Phase 2 — UX Design',
+      num: '04',
+      subHeader: 'The Double Diamond process, core research methods, and the user journey — turning insights into validated design decisions.',
+      content: { type: 'nc-ux-design' },
+    },
+    {
+      id: 'ux-prototype-showcase',
+      label: 'Phase 3 — Prototype',
+      num: '05',
+      subHeader: 'From user flows to lo-fi wireframes to hi-fi interactive prototypes — validating experiences before a single line of code is written.',
+      content: { type: 'nc-prototype' },
+    },
+    {
+      id: 'ux-web-design-showcase',
+      label: 'Phase 5 — Web Design',
+      num: '06',
+      subHeader: 'Responsive layouts across every device, 12-column grid usage, and performance benchmarks — designing for the real web.',
+      content: { type: 'nc-web-design' },
+    },
+    {
+      id: 'ux-print-showcase',
+      label: 'Phase 6 — Print Design',
+      num: '07',
+      subHeader: 'Bleed, trim, and safe zones; CMYK vs RGB colour models; and the pre-press checklist for production-ready print assets.',
+      content: { type: 'nc-print-design' },
+    },
+    {
+      id: 'ux-brand-showcase',
+      label: 'Phase 7 — Brand & Storytelling',
+      num: '08',
+      subHeader: 'The NCompassTV logo system, brand colour palette, typography variants, and the narrative arc that ties every design to the company story.',
+      content: { type: 'nc-brand-storytelling' },
     },
     {
       id: 'ux-coding-patterns',
       label: 'Design Patterns',
-      num: '04',
+      num: '09',
       subHeader: 'Reusable approaches for design tokens, component variants, visual hierarchy, accessibility, and usability testing that all designers on the team follow.',
       content: {
         type: 'coding-patterns',
@@ -350,7 +332,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-branding',
       label: 'Company Branding',
-      num: '05',
+      num: '10',
       subHeader: 'Official NCompassTV logo assets, favicon, and sidebar variants — use these files for all digital touchpoints and never alter the brand colours or proportions.',
       content: {
         type: 'branding',
@@ -374,7 +356,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-color-palette',
       label: 'Color Palette',
-      num: '06',
+      num: '11',
       subHeader: 'The NCompassTV color system — primary, accent, and semantic swatches with full tint/shade scales and WCAG 2.1 contrast compliance ratios.',
       content: {
         type: 'color-palette',
@@ -526,7 +508,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-typography',
       label: 'Typography Scale',
-      num: '07',
+      num: '12',
       subHeader: 'Nunito type scale for Web, Web (Button), and Mobile contexts, showing Regular and Medium weight specimens at every heading and body level.',
       content: {
         type: 'typography-scale',
@@ -641,7 +623,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-button-showcase',
       label: 'Button Styles',
-      num: '08',
+      num: '13',
       subHeader: 'All interactive button variants — Primary, Secondary, and Soft Rounded — across six states (Default, Hover, Active, Disabled, Ghost, Danger) and five sizes.',
       content: {
         type: 'button-showcase',
@@ -668,7 +650,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-grid',
       label: 'Grid & Screen Sizes',
-      num: '09',
+      num: '14',
       subHeader: 'Supported viewport dimensions across Desktop, Tablet, and Mobile — every Figma frame must cover each listed size before moving to handoff.',
       content: {
         type: 'grid',
@@ -710,7 +692,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-iconography',
       label: 'Iconography',
-      num: '10',
+      num: '15',
       subHeader: 'Font Awesome icon catalog used across all NCompassTV interfaces, displayed at every supported size from 32px down to 8px.',
       content: {
         type: 'iconography',
@@ -750,7 +732,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-spacing',
       label: 'Spacing & Layout Guide',
-      num: '11',
+      num: '16',
       subHeader: 'The 4px-base spacing scale — Micro (2–12px), Component (16–40px), and Layout (48–128px) tokens for consistent padding, margin, and gap across all screens.',
       content: {
         type: 'spacing',
@@ -801,7 +783,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-mistakes',
       label: 'Common Mistakes',
-      num: '12',
+      num: '17',
       subHeader: 'Frequent design errors seen during review — paired with the correct approach to fix them before tickets reach engineering.',
       content: {
         type: 'mistakes',
@@ -825,7 +807,7 @@ export const uiuxTeam: Team = {
     {
       id: 'ux-projects',
       label: 'Projects',
-      num: '13',
+      num: '18',
       subHeader: 'Active and completed design projects owned by the UI/UX team, with links to Figma files, prototypes, and Maze research results.',
       content: { type: 'projects' },
     },

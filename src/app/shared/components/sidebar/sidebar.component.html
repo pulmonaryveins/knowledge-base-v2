@@ -44,9 +44,10 @@
         <button
           class="sidebar__team-btn"
           [class.sidebar__team-btn--active]="team.key === activeKey()"
+          [style.--team-color]="team.color"
           (click)="switchTeam(team.key)"
         >
-          <span class="sidebar__team-icon" [style.color]="team.color">
+          <span class="sidebar__team-icon">
             @if (team.logoUrl) {
               <img class="sidebar__team-logo" [src]="team.logoUrl" [alt]="team.label" />
             } @else {
@@ -96,6 +97,7 @@
       <button
         class="sidebar__tool-btn"
         [class.sidebar__tool-btn--active]="tool.key === activeToolKey()"
+        [style.--tool-color]="tool.color"
         (click)="switchToTool(tool.key)"
       >
         <span class="sidebar__tool-icon">

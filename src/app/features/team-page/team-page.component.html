@@ -179,6 +179,36 @@
               [tabs]="asButtonShowcase(section.content).tabs"
             />
           }
+
+          <!-- Phase 1: Design Basics Showcase -->
+          @case ('nc-design-basics') {
+            <app-nc-design-basics-showcase />
+          }
+
+          <!-- Phase 2: UX Design Showcase -->
+          @case ('nc-ux-design') {
+            <app-nc-ux-design-showcase />
+          }
+
+          <!-- Phase 3: Prototype Showcase -->
+          @case ('nc-prototype') {
+            <app-nc-prototype-showcase />
+          }
+
+          <!-- Phase 5: Web Design Showcase -->
+          @case ('nc-web-design') {
+            <app-nc-web-design-showcase />
+          }
+
+          <!-- Phase 6: Print Design Showcase -->
+          @case ('nc-print-design') {
+            <app-nc-print-showcase />
+          }
+
+          <!-- Phase 7: Brand & Storytelling Showcase -->
+          @case ('nc-brand-storytelling') {
+            <app-nc-brand-showcase />
+          }
         }
       </section>
     }

@@ -115,21 +115,38 @@
     &--active {
       @apply bg-[rgba(255,255,255,0.09)];
 
-      .sidebar__team-name { @apply text-[#ffffff]; }
-      .sidebar__team-icon { @apply opacity-100; }
+      .sidebar__team-name { color: var(--team-color); }
+
+      // Lucide icon — restore team colour
+      .sidebar__team-icon {
+        color: var(--team-color);
+        opacity: 1;
+      }
+
+      // Logo image (e.g. Pi Player) — restore full colour
+      .sidebar__team-logo {
+        filter: none;
+        opacity: 1;
+      }
     }
   }
 
   &__team-icon {
-    @apply shrink-0 flex items-center opacity-70 transition-opacity duration-[0.15s];
+    @apply shrink-0 flex items-center transition-all duration-[0.2s];
+    color: rgba(255, 255, 255, 0.3);
+    opacity: 1;
   }
 
   &__team-logo {
     @apply w-[15px] h-[15px] object-contain block;
+    filter: grayscale(1) brightness(1.8);
+    opacity: 0.45;
+    transition: filter 0.2s ease, opacity 0.2s ease;
   }
 
   &__team-name {
     @apply flex-1 text-[13.5px] text-[rgba(255,255,255,0.6)] font-['DM_Sans',_sans-serif] font-medium;
+    transition: color 0.15s ease;
   }
 
   &__team-chevron {
@@ -186,23 +203,29 @@
     &--active {
       @apply bg-[rgba(255,255,255,0.09)];
 
-      .sidebar__tool-name { @apply text-[#ffffff]; }
-      .sidebar__tool-icon { @apply opacity-100; }
+      .sidebar__tool-name { color: var(--tool-color); }
+
+      .sidebar__tool-logo {
+        filter: none;
+        opacity: 1;
+      }
     }
   }
 
   &__tool-icon {
-    @apply shrink-0 flex items-center justify-center w-[18px] h-[18px] opacity-70 transition-opacity duration-[0.15s];
+    @apply shrink-0 flex items-center justify-center w-[18px] h-[18px] transition-opacity duration-[0.15s];
   }
 
   &__tool-logo {
     @apply w-full h-full object-contain block;
+    filter: grayscale(1) brightness(1.8);
+    opacity: 0.45;
+    transition: filter 0.2s ease, opacity 0.2s ease;
   }
-
-  &__tool-btn--active .sidebar__tool-icon { @apply opacity-100; }
 
   &__tool-name {
     @apply flex-1 text-[13.5px] text-[rgba(255,255,255,0.6)] font-['DM_Sans',_sans-serif] font-medium;
+    transition: color 0.15s ease;
   }
 
   // ── Footer ─────────────────────────────────────────────────────────────

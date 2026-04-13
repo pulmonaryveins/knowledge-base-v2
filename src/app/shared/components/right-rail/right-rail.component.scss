@@ -47,7 +47,7 @@
 
 .rail {
   // Positioned at the top of the fixed column with padding
-  @apply flex flex-col gap-5 mt-[80px] py-[24px] px-[20px];
+  @apply flex flex-col gap-4 mt-[80px] py-[20px] px-[16px];
   @apply bg-white border border-[var(--border)] border-r-0;
   @apply rounded-[12px_0_0_12px];
   box-shadow: -2px 0 20px rgba(0, 0, 0, 0.07);
@@ -85,6 +85,17 @@
 
   &__list {
     @apply list-none m-0 p-0 flex flex-col relative;
+    // Cap the list so it never pushes below the viewport.
+    // 80px top margin + 40px top/bottom padding + ~90px header+footer = ~210px
+    max-height: calc(100vh - 260px);
+    overflow-y: auto;
+
+    // thin scrollbar
+    &::-webkit-scrollbar { width: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
 
     &::before {
       @apply content-[''] absolute left-0 top-0 bottom-0 w-[1px] bg-[var(--border)];
@@ -115,7 +126,7 @@
 
   &__btn {
     @apply flex items-center gap-3 w-full text-left bg-transparent border-0 cursor-pointer;
-    @apply py-[10px] px-[12px] rounded-[0_8px_8px_0];
+    @apply py-[7px] px-[10px] rounded-[0_8px_8px_0];
     @apply transition-all duration-[0.15s] ease-in-out;
 
     &:hover:not(.rail__item--active &) {
@@ -125,12 +136,12 @@
   }
 
   &__num {
-    @apply font-['DM_Mono',_monospace] text-[10px] font-semibold text-[var(--navy)] opacity-25 shrink-0 w-[20px];
+    @apply font-['DM_Mono',_monospace] text-[9.5px] font-semibold text-[var(--navy)] opacity-25 shrink-0 w-[18px];
     @apply transition-all duration-[0.15s] ease-in-out;
   }
 
   &__label {
-    @apply text-[13px] text-[var(--muted)] leading-[1.4] transition-all duration-[0.15s] ease-in-out;
+    @apply text-[11.5px] text-[var(--muted)] leading-[1.35] transition-all duration-[0.15s] ease-in-out;
   }
 
   // ── Footer ───────────────────────────────────────────────────────────────

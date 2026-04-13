@@ -140,6 +140,36 @@ export interface IconographySection {
   readonly icons: ReadonlyArray<FaIconEntry>;
 }
 
+/** Visual showcase — Phase 1: Design Basics */
+export interface NcDesignBasicsSection {
+  readonly type: 'nc-design-basics';
+}
+
+/** Visual showcase — Phase 2: UX Design Fundamentals */
+export interface NcUxDesignSection {
+  readonly type: 'nc-ux-design';
+}
+
+/** Visual showcase — Phase 3: Wireframing & Prototyping */
+export interface NcPrototypeSection {
+  readonly type: 'nc-prototype';
+}
+
+/** Visual showcase — Phase 5: Web Design & Accessibility */
+export interface NcWebDesignSection {
+  readonly type: 'nc-web-design';
+}
+
+/** Visual showcase — Phase 6: Print Design & Typography/Color */
+export interface NcPrintSection {
+  readonly type: 'nc-print-design';
+}
+
+/** Visual showcase — Phase 7: Brand & Storytelling */
+export interface NcBrandSection {
+  readonly type: 'nc-brand-storytelling';
+}
+
 /** Discriminated union of all possible section content types */
 export type SectionContent =
   | TechStackSection
@@ -155,7 +185,13 @@ export type SectionContent =
   | SpacingSection
   | GridSection
   | IconographySection
-  | ButtonShowcaseSection;
+  | ButtonShowcaseSection
+  | NcDesignBasicsSection
+  | NcUxDesignSection
+  | NcPrototypeSection
+  | NcWebDesignSection
+  | NcPrintSection
+  | NcBrandSection;
 
 /** A single documentation section within a team page */
 export interface TeamSection {
