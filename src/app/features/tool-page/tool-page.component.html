@@ -33,7 +33,8 @@
       <app-section-header num="01" label="Key Features" subHeader="Core capabilities that make this tool integral to the NCompassTV tech stack." />
       <div class="tool-page__features-grid">
         @for (f of t.features; track f.title; let i = $index) {
-          <div class="tool-page__feature-card" [appReveal]="'up'" [appRevealDelay]="i * 75">
+          <div class="tool-page__feature-card" [style.--tc]="t.color" [appReveal]="'up'" [appRevealDelay]="i * 75">
+            <span class="tool-page__feature-num">{{ (i + 1).toString().padStart(2, '0') }}</span>
             <h3 class="tool-page__feature-title">{{ f.title }}</h3>
             <p class="tool-page__feature-body">{{ f.body }}</p>
           </div>
@@ -45,7 +46,16 @@
     <section class="tool-page__section" [appReveal]="'left'">
       <app-section-header num="02" label="Why We Use It" subHeader="How this tool fits into the team's workflow and contributes to project quality." />
       <div class="tool-page__why-card" [style.--tool-color]="t.color">
-        <p class="tool-page__why-text">{{ t.whyWeUseIt }}</p>
+        <div class="tool-page__why-body">
+          <div class="tool-page__why-icon">
+            <img [src]="t.logoUrl" [alt]="t.label" class="tool-page__why-logo" />
+          </div>
+          <p class="tool-page__why-text">{{ t.whyWeUseIt }}</p>
+        </div>
+        <div class="tool-page__why-footer">
+          <span class="tool-page__why-label">{{ t.label }}</span>
+          <span class="tool-page__why-tag">{{ t.category }}</span>
+        </div>
       </div>
     </section>
 

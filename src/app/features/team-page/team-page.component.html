@@ -19,7 +19,7 @@
         @switch (section.content.type) {
           <!-- 01 Tech Stack Table -->
           @case ('tech-stack') {
-            <app-data-table [table]="asTechStack(section.content).table" />
+            <app-tech-stack [table]="asTechStack(section.content).table" />
           }
 
           <!-- 02 Getting Started -->
@@ -100,7 +100,7 @@
 
           <!-- 05 Common Mistakes -->
           @case ('mistakes') {
-            <app-data-table [table]="asMistakes(section.content).table" />
+            <app-mistakes-table [table]="asMistakes(section.content).table" />
           }
 
           <!-- 06 Projects -->

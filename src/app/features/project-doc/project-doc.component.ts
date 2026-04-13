@@ -4,7 +4,6 @@ import { Component, computed, inject, input } from '@angular/core';
 import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 import { Project } from '../../core/models';
 import { NavigationService } from '../../core/services';
-import { InfoCardComponent } from '../../shared/components/info-card/info-card.component';
 import { CodeBlockComponent } from '../../shared/components/code-block/code-block.component';
 import { StepListComponent } from '../../shared/components/step-list/step-list.component';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
@@ -15,7 +14,6 @@ import { RevealDirective } from '../../shared/directives/reveal.directive';
   selector: 'app-project-doc',
   standalone: true,
   imports: [
-    InfoCardComponent,
     CodeBlockComponent,
     StepListComponent,
     StatusBadgeComponent,

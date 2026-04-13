@@ -24,7 +24,7 @@ import {
 } from '../../core/models';
 import { HeroComponent } from '../../shared/components/hero/hero.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
-import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
+import { TechStackComponent } from '../../shared/components/tech-stack/tech-stack.component';
 import { StepListComponent } from '../../shared/components/step-list/step-list.component';
 import { CodeBlockComponent } from '../../shared/components/code-block/code-block.component';
 import { InfoCardComponent } from '../../shared/components/info-card/info-card.component';
@@ -38,6 +38,7 @@ import { SpacingGuideComponent } from '../../shared/components/spacing-guide/spa
 import { GridGuideComponent } from '../../shared/components/grid-guide/grid-guide.component';
 import { IconographyGuideComponent } from '../../shared/components/iconography-guide/iconography-guide.component';
 import { ButtonShowcaseComponent } from '../../shared/components/button-showcase/button-showcase.component';
+import { MistakesTableComponent } from '../../shared/components/mistakes-table/mistakes-table.component';
 import { NcDesignBasicsShowcaseComponent } from '../../shared/components/nc-design-basics-showcase/nc-design-basics-showcase.component';
 import { NcUxDesignShowcaseComponent } from '../../shared/components/nc-ux-design-showcase/nc-ux-design-showcase.component';
 import { NcPrototypeShowcaseComponent } from '../../shared/components/nc-prototype-showcase/nc-prototype-showcase.component';
@@ -59,7 +60,7 @@ import { RevealDirective } from '../../shared/directives/reveal.directive';
     LucideAngularModule,
     HeroComponent,
     SectionHeaderComponent,
-    DataTableComponent,
+    TechStackComponent,
     StepListComponent,
     CodeBlockComponent,
     InfoCardComponent,
@@ -73,6 +74,7 @@ import { RevealDirective } from '../../shared/directives/reveal.directive';
     GridGuideComponent,
     IconographyGuideComponent,
     ButtonShowcaseComponent,
+    MistakesTableComponent,
     NcDesignBasicsShowcaseComponent,
     NcUxDesignShowcaseComponent,
     NcPrototypeShowcaseComponent,

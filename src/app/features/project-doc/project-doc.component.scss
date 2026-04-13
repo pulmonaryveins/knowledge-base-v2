@@ -2,142 +2,319 @@
 
 // ── FILE: src/app/features/project-doc/project-doc.component.scss ──
 
-.proj-card {
-  @apply rounded-2xl border overflow-hidden bg-[var(--card)] border-[var(--border)] transition-shadow duration-[0.2s] hover:shadow-[0_2px_12px_rgba(0,0,0,0.07)];
+.proj {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 
-  &--open { @apply shadow-[0_4px_20px_rgba(0,0,0,0.1)]; }
+  &:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  &--open {
+    box-shadow: 0 6px 28px rgba(0,0,0,0.1);
+  }
 
-  // ── Trigger Row ──────────────────────────────────────────────────────────
+  // ── Trigger row ──────────────────────────────────────────────────────────
 
   &__trigger {
-    @apply flex items-center gap-3 w-full cursor-pointer py-[14px] px-[18px] bg-transparent border-0 text-left transition-colors duration-[0.15s] hover:bg-[#fafbfc];
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 16px 20px;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease;
 
-    .proj-card--open & {
-      @apply bg-[#f8fafc] border-b border-[var(--border)];
+    &:hover { background: rgba(0, 0, 0, 0.018); }
+
+    .proj--open & {
+      background: rgba(0, 0, 0, 0.025);
+      border-bottom: 1px solid var(--border);
     }
   }
 
   &__icon {
-    @apply flex items-center justify-center shrink-0 rounded-xl w-[40px] h-[40px] text-[20px];
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--tc) 14%, transparent);
+    color: var(--tc);
+    margin-left: 6px;
+    border: 1px solid color-mix(in srgb, var(--tc) 20%, transparent);
   }
 
   &__info {
-    @apply flex flex-col flex-1 gap-0.5 overflow-hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   &__name {
-    @apply font-['Syne',_sans-serif] text-[14px] font-bold text-[var(--navy)] whitespace-nowrap overflow-hidden text-ellipsis;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__desc {
-    @apply text-[12px] text-[var(--muted)] whitespace-nowrap overflow-hidden text-ellipsis;
+    font-size: 12.5px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__chevron {
-    @apply text-[10px] text-[var(--light)] shrink-0 transition-transform duration-[0.2s];
+    flex-shrink: 0;
+    color: var(--light);
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 
-    &--open { @apply rotate-90; }
+    &--open { transform: rotate(90deg); }
   }
 
-  // ── Doc Panel ────────────────────────────────────────────────────────────
+  // ── Expanded panel ───────────────────────────────────────────────────────
 
   &__panel {
-    @apply flex flex-col animate-[slideDown_0.2s_ease];
+    display: flex;
+    flex-direction: column;
+    animation: proj-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-6px); }
+  @keyframes proj-in {
+    from { opacity: 0; transform: translateY(-8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  &__section {
-    @apply flex border-b border-[var(--border)];
+  // ── Block (section inside panel) ─────────────────────────────────────────
 
-    &--last { @apply border-b-0; }
+  &__block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--border);
+
+    &--last { border-bottom: none; }
   }
 
-  &__section-bar {
-    @apply w-[3px] shrink-0;
+  &__block-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tc);
+    opacity: 0.9;
+    margin: 0;
   }
 
-  &__section-body {
-    @apply flex flex-col gap-4 flex-1 py-[20px] px-[24px];
-  }
-
-  &__section-label {
-    @apply font-['Syne',_sans-serif] text-[10px] font-bold tracking-[0.1em] uppercase text-[var(--muted)];
-  }
-
-  // ── Meta Grid ────────────────────────────────────────────────────────────
+  // ── Meta grid ────────────────────────────────────────────────────────────
 
   &__meta-grid {
-    @apply grid gap-4 grid-cols-4;
-    @media (max-width: 900px) { @apply grid-cols-2; }
-    @media (max-width: 480px) { @apply grid-cols-1; }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+
+    @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 480px) { grid-template-columns: 1fr; }
   }
 
   &__meta-item {
-    @apply flex flex-col gap-1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px 14px;
+    background: rgba(9, 22, 53, 0.04);
+    border-radius: 10px;
+    border: 1px solid var(--border);
   }
 
   &__meta-key {
-    @apply text-[10px] uppercase tracking-[0.06em] text-[var(--light)] font-['DM_Mono',_monospace];
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--light);
   }
 
   &__meta-val {
-    @apply text-[12.5px] text-[var(--navy)] font-medium font-['DM_Mono',_monospace];
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.4;
   }
 
   // ── Purpose ──────────────────────────────────────────────────────────────
 
   &__purpose {
-    @apply m-0 text-[14px] text-[var(--muted)] leading-[1.6];
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    padding-left: 2px;
   }
 
-  // ── Features Grid ────────────────────────────────────────────────────────
+  // ── Features grid ─────────────────────────────────────────────────────────
 
   &__features-grid {
-    @apply grid gap-3 grid-cols-3;
-    @media (max-width: 900px) { @apply grid-cols-2; }
-    @media (max-width: 600px) { @apply grid-cols-1; }
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
   }
 
-  // ── Contacts + Links ─────────────────────────────────────────────────────
+  &__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s ease;
 
-  &__contacts-row {
-    @apply flex gap-8 flex-wrap;
-    @media (max-width: 600px) { @apply flex-col gap-4; }
+    &:last-child { border-bottom: none; }
+    &:hover { background: rgba(0,0,0,0.018); }
+  }
+
+  &__feature-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--tc);
+    opacity: 0.7;
+    margin-top: 6px;
+  }
+
+  &__feature-title {
+    margin: 0 0 3px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    font-family: 'Syne', sans-serif;
+  }
+
+  &__feature-body {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  // ── Footer row (contacts + links) ─────────────────────────────────────────
+
+  &__footer-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+    @media (max-width: 600px) { flex-direction: column; gap: 20px; }
   }
 
   &__contacts {
-    @apply flex flex-col gap-3 flex-1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-width: 200px;
   }
 
   &__contact {
-    @apply flex items-center gap-3;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  &__contact-avatar {
-    @apply flex items-center justify-center shrink-0 rounded-full w-[32px] h-[32px] text-[11px] font-bold text-white font-['Syne',_sans-serif];
+  &__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
 
   &__contact-info {
-    @apply flex flex-col gap-0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
 
   &__contact-name {
-    @apply text-[13px] font-semibold text-[var(--navy)];
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
   }
 
   &__contact-role {
-    @apply text-[11px] text-[var(--muted)];
+    font-size: 11px;
+    color: var(--muted);
   }
 
+  // ── Links ─────────────────────────────────────────────────────────────────
+
   &__links {
-    @apply flex flex-col gap-2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   &__link {
-    @apply text-[12.5px] text-[var(--info)] no-underline font-['DM_Mono',_monospace] hover:underline;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(9, 22, 53, 0.03);
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: color-mix(in srgb, var(--tc) 8%, transparent);
+      border-color: color-mix(in srgb, var(--tc) 35%, transparent);
+      color: var(--tc);
+    }
+  }
+
+  &__link-arrow {
+    font-size: 13px;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+
+    .proj__link:hover & { opacity: 1; }
   }
 }

@@ -104,26 +104,152 @@
   }
 
   &__feature-card {
-    @apply flex flex-col gap-[8px] p-[20px] rounded-[12px] bg-[var(--card)] border border-[var(--border)];
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 22px 20px;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+
+    // Top accent bar (always visible, tool color)
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--tc);
+      opacity: 0.6;
+      transition: opacity 0.18s ease;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+      border-color: color-mix(in srgb, var(--tc) 28%, var(--border));
+
+      &::before { opacity: 1; }
+    }
+  }
+
+  &__feature-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--tc);
+    opacity: 0.85;
   }
 
   &__feature-title {
-    @apply m-0 font-['Syne',_sans-serif] text-[13.5px] font-bold text-[var(--navy)];
+    margin: 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.3;
   }
 
   &__feature-body {
-    @apply m-0 text-[13px] text-[var(--muted)] leading-[1.65];
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    flex: 1;
   }
 
   // ── Why We Use It ──────────────────────────────────────────────────────
 
   &__why-card {
-    @apply p-[24px] rounded-[12px] bg-[var(--card)] border border-[var(--border)];
-    border-left: 3px solid var(--tool-color, var(--green));
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--tool-color) 22%, var(--border));
+    background: color-mix(in srgb, var(--tool-color) 4%, var(--card));
+
+    // Decorative large quote mark
+    &::before {
+      content: '"';
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      font-size: 140px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--tool-color);
+      opacity: 0.07;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  &__why-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 28px 20px;
+  }
+
+  &__why-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--tool-color) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tool-color) 22%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  &__why-logo {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
   }
 
   &__why-text {
-    @apply m-0 text-[13.5px] text-[var(--fg)] leading-[1.7];
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--navy);
+    line-height: 1.75;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__why-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-top: 1px solid color-mix(in srgb, var(--tool-color) 14%, var(--border));
+    background: color-mix(in srgb, var(--tool-color) 3%, transparent);
+  }
+
+  &__why-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--tool-color);
+  }
+
+  &__why-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--light);
+    background: rgba(9, 22, 53, 0.05);
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
   }
 
   // ── Installation (Section 03) rendered via <app-step-list> ─────────────

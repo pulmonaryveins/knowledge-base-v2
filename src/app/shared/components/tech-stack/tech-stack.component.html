@@ -1,0 +1,33 @@
+<!-- FILE: src/app/shared/components/tech-stack/tech-stack.component.html -->
+<div class="ts">
+  @for (row of table().rows; track $index) {
+    <div class="ts__card">
+
+      <!-- Logo / initials -->
+      <div class="ts__logo" [style.background]="logoColor(row.cells[0]) + '15'">
+        @if (logoUrl(row.cells[0]) && !failedImages().has($index)) {
+          <img class="ts__logo-img"
+               [src]="logoUrl(row.cells[0])"
+               [alt]="row.cells[0]"
+               width="22" height="22"
+               (error)="onImgError($index)" />
+        } @else {
+          <span class="ts__initials" [style.color]="logoColor(row.cells[0])">{{ initials(row.cells[0]) }}</span>
+        }
+      </div>
+
+      <!-- Card body -->
+      <div class="ts__body">
+        <div class="ts__header">
+          <div class="ts__name-group">
+            <span class="ts__name">{{ row.cells[0] }}</span>
+            <span class="ts__version">{{ row.cells[1] }}</span>
+          </div>
+          <span class="ts__badge" [class]="badgeClass(row.cells[3])">{{ row.cells[3] }}</span>
+        </div>
+        <p class="ts__purpose">{{ row.cells[2] }}</p>
+      </div>
+
+    </div>
+  }
+</div>

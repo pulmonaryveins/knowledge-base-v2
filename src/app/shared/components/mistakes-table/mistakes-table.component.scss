@@ -1,0 +1,165 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/mistakes-table/mistakes-table.component.scss ──
+
+.mk {
+  @apply flex flex-col;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+  // ── Column headers ──────────────────────────────────────────────────────
+
+  &__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    // offset right so it aligns with the cards (past the num column)
+    margin-left: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__header-cell {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    &--wrong {
+      color: #dc2626;
+      background: rgba(254, 226, 226, 0.45);
+      border-right: 1px solid var(--border);
+    }
+
+    &--right {
+      color: #16a34a;
+      background: rgba(220, 252, 231, 0.45);
+    }
+  }
+
+  &__header-icon {
+    font-size: 11px;
+    font-weight: 900;
+  }
+
+  // ── Individual comparison row ───────────────────────────────────────────
+
+  &__row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s ease;
+
+    &:last-child { border-bottom: none; }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.015);
+    }
+  }
+
+  // Row number
+  &__num {
+    flex-shrink: 0;
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(9, 22, 53, 0.2);
+    background: rgba(0, 0, 0, 0.02);
+    border-right: 1px solid var(--border);
+  }
+
+  // ── ❌ wrong card ───────────────────────────────────────────────────────
+
+  &__wrong {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: rgba(254, 226, 226, 0.2);
+    border-right: 1px solid rgba(220, 38, 38, 0.12);
+    min-width: 0;
+  }
+
+  // ── Arrow divider ───────────────────────────────────────────────────────
+
+  &__arrow {
+    flex-shrink: 0;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: rgba(9, 22, 53, 0.2);
+    background: rgba(0, 0, 0, 0.015);
+    border-right: 1px solid var(--border);
+  }
+
+  // ── ✅ right card ───────────────────────────────────────────────────────
+
+  &__right {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: rgba(220, 252, 231, 0.2);
+    min-width: 0;
+  }
+
+  // Icon badges
+  &__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 900;
+    margin-top: 1px;
+
+    &--wrong {
+      background: rgba(220, 38, 38, 0.1);
+      color: #dc2626;
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+
+    &--right {
+      background: rgba(22, 163, 74, 0.1);
+      color: #16a34a;
+      border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #374151;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  // ── Responsive: stack columns on narrow screens ─────────────────────────
+
+  @media (max-width: 640px) {
+    &__header { margin-left: 0; grid-template-columns: 1fr; }
+    &__header-cell--wrong { border-right: none; border-bottom: 1px solid var(--border); }
+
+    &__row { flex-wrap: wrap; }
+    &__num { width: 100%; height: 36px; border-right: none; border-bottom: 1px solid var(--border); }
+    &__wrong { border-right: none; border-bottom: 1px solid rgba(220, 38, 38, 0.12); width: 100%; }
+    &__arrow { display: none; }
+    &__right { width: 100%; }
+  }
+}
