@@ -1,13 +1,14 @@
 // ── FILE: src/app/features/landing-page/landing-page.component.ts ──
 
-import { Component, signal, inject } from '@angular/core';
+import { Component, HostListener, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { BgRippleComponent } from '../../shared/components/bg-ripple/bg-ripple.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import {
-  Monitor, Server, Globe, TestTube, Microscope, Palette,
-  ArrowRight, ChevronRight, Zap, Shield, BookOpen, Users, Code2, Layers,
+  Monitor, Server, Globe, TestTube, Microscope, Palette, Tv,
+  ArrowRight, ChevronRight, Zap, Shield, BookOpen, Users, Code2, Layers, ExternalLink,
+  MapPin, Building2, Tv2, Wifi,
   LucideIconData,
 } from 'lucide-angular';
 
@@ -27,17 +28,32 @@ export class LandingPageComponent {
   private readonly _router = inject(Router);
 
   // ── Icons ────────────────────────────────────────────────────────────────
-  protected readonly ArrowRightIcon  = ArrowRight;
-  protected readonly ChevronRightIcon = ChevronRight;
-  protected readonly ZapIcon         = Zap;
-  protected readonly ShieldIcon      = Shield;
-  protected readonly BookOpenIcon    = BookOpen;
-  protected readonly UsersIcon       = Users;
-  protected readonly Code2Icon       = Code2;
-  protected readonly LayersIcon      = Layers;
+  protected readonly ArrowRightIcon    = ArrowRight;
+  protected readonly ChevronRightIcon  = ChevronRight;
+  protected readonly ExternalLinkIcon  = ExternalLink;
+  protected readonly MapPinIcon        = MapPin;
+  protected readonly Building2Icon     = Building2;
+  protected readonly Tv2Icon           = Tv2;
+  protected readonly WifiIcon          = Wifi;
+  protected readonly ZapIcon          = Zap;
+  protected readonly ShieldIcon       = Shield;
+  protected readonly BookOpenIcon     = BookOpen;
+  protected readonly UsersIcon        = Users;
+  protected readonly Code2Icon        = Code2;
+  protected readonly LayersIcon       = Layers;
 
-  // ── Nav open state (mobile) ──────────────────────────────────────────────
-  protected readonly navOpen = signal(false);
+  // ── Nav / scroll state ───────────────────────────────────────────────────
+  protected readonly navOpen       = signal(false);
+  protected readonly scrolled      = signal(false);
+  protected readonly scrollProgress = signal(0);
+
+  @HostListener('window:scroll')
+  onScroll(): void {
+    const y = window.scrollY;
+    this.scrolled.set(y > 40);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    this.scrollProgress.set(max > 0 ? Math.round((y / max) * 100) : 0);
+  }
 
   // ── Teams data ───────────────────────────────────────────────────────────
   protected readonly teams: ReadonlyArray<{
@@ -64,8 +80,8 @@ export class LandingPageComponent {
       color: '#7C3AED',
       gradient: 'linear-gradient(135deg, #1e0a4a, #3b0f8c)',
       icon: Server,
-      tagline: 'NestJS · PostgreSQL · GraphQL',
-      tags: ['NestJS', 'PostgreSQL', 'GraphQL', 'Docker'],
+      tagline: 'NestJS · MySQL · TypeORM',
+      tags: ['NestJS', 'MySQL', 'TypeORM', 'Docker'],
     },
     {
       key: 'webdev',
@@ -73,8 +89,8 @@ export class LandingPageComponent {
       color: '#3B82F6',
       gradient: 'linear-gradient(135deg, #0a1e4a, #0f3b8c)',
       icon: Globe,
-      tagline: 'Astro · Svelte · Edge Functions',
-      tags: ['Astro', 'Svelte', 'Cloudflare', 'SCSS'],
+      tagline: 'Astro · Next.js · Edge Functions',
+      tags: ['Astro', 'Next.js', 'Cloudflare', 'SCSS'],
     },
     {
       key: 'qa',
@@ -103,6 +119,15 @@ export class LandingPageComponent {
       tagline: 'Figma · WCAG 2.1 · Design Tokens',
       tags: ['Figma', 'Storybook', 'WCAG', 'Maze'],
     },
+    {
+      key: 'pi-player',
+      label: 'Pi Player',
+      color: '#C51A4A',
+      gradient: 'linear-gradient(135deg, #3a0515, #7a0f2e)',
+      icon: Tv,
+      tagline: 'Raspberry Pi · Digital Signage · CMS',
+      tags: ['Raspberry Pi', 'Node.js', 'HDMI', 'Linux'],
+    },
   ];
 
   // ── Feature highlights ────────────────────────────────────────────────────
@@ -126,7 +151,7 @@ export class LandingPageComponent {
     },
     {
       icon: Layers,
-      accent: '#0891B2',
+      accent: '#3B82F6',
       title: 'Project Registry',
       body: 'Live project cards with status, stack, contacts, and getting-started steps for every app owned by each team.',
     },
@@ -150,6 +175,32 @@ export class LandingPageComponent {
     },
   ];
 
+  // ── Company facts ─────────────────────────────────────────────────────────
+  protected readonly companyFacts: ReadonlyArray<{
+    icon: LucideIconData;
+    label: string;
+    value: string;
+  }> = [
+    { icon: Building2, label: 'Industry',  value: 'Digital Advertising'        },
+    { icon: Tv2,       label: 'Format',    value: 'Indoor Digital Billboards'  },
+    { icon: MapPin,    label: 'HQ',        value: 'Lakewood, CO, USA'          },
+    { icon: Wifi,      label: 'Network',   value: 'High-traffic venues'        },
+    { icon: Monitor,   label: 'Placement', value: 'Community-wide coverage'    },
+    { icon: Users,     label: 'Model',     value: 'Dealership franchise'       },
+  ];
+
+  protected readonly companySectors: ReadonlyArray<string> = [
+    'Restaurants', 'Fitness & Gyms', 'Medical Offices', 'Auto Repair', 'Retail', 'Local Business',
+  ];
+
+  protected readonly companyHighlights: ReadonlyArray<string> = [
+    'Indoor digital billboards placed in high-traffic community venues across the US',
+    'Reach customers where they already spend time — restaurants, gyms, and clinics',
+    'Business-to-business marketing network connecting local advertisers to audiences',
+    'Franchise dealership model with high revenue potential and low startup costs',
+    'Community-focused coverage putting brands in front of local customers daily',
+  ];
+
   /** Navigate into the portal docs shell */
   public enterPortal(): void {
     this._router.navigate(['/portal']);
@@ -170,13 +221,13 @@ export class LandingPageComponent {
     { name: 'TypeScript', src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
     { name: 'Tailwind',   src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
     { name: 'NestJS',     src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nestjs/nestjs-original.svg' },
-    { name: 'PostgreSQL', src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
+    { name: 'MySQL',      src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg' },
     { name: 'Docker',     src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg' },
     { name: 'Figma',      src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg' },
     { name: 'Python',     src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
     { name: 'Playwright', src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg' },
     { name: 'Astro',      src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/astro/astro-original.svg' },
-    { name: 'Svelte',     src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/svelte/svelte-original.svg' },
+    { name: 'Linux',      src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg' },
     { name: 'Git',        src: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg' },
   ];
 }

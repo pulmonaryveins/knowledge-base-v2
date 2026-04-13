@@ -36,11 +36,13 @@
 
   &__subtitle {
     @apply m-0 text-[17px] text-[rgba(255,255,255,0.7)] leading-[1.6] font-['DM_Sans',_sans-serif] max-w-[600px];
+    @media (max-width: 768px) { @apply text-[14px]; }
   }
 
   &__stats {
     @apply flex flex-wrap gap-10 mt-4;
-    @media (max-width: 768px) { @apply gap-6 mt-2; }
+    @media (max-width: 768px) { @apply gap-5 mt-2; }
+    @media (max-width: 480px) { @apply gap-4; }
   }
 
   &__stat {

@@ -361,13 +361,13 @@ export const uiuxTeam: Team = {
         ],
         favicon: { label: 'Favicon', src: '/GREEN-SINGLE.png', background: 'transparent', width: '16px', height: '16px', color: '#8DC63F' },
         sidebarCollapsed: [
-          { label: 'Dark', src: '/BLUE-SINGLE.png', background: '#ffffff', bordered: true },
-          { label: 'Light', src: '/WHITE%20SINGLE.png', background: '#8DC63F', bordered: true },
-          { label: 'Light', src: '/GREEN-SINGLE.png', background: '#ffffff', bordered: true },
+          { label: 'Dark',  src: '/BLUE-SINGLE.png',    background: '#ffffff', bordered: true, width: '32px', height: '32px', color: '#091635' },
+          { label: 'Light', src: '/WHITE%20SINGLE.png', background: '#8DC63F', bordered: true, width: '32px', height: '32px', color: '#ffffff' },
+          { label: 'Green', src: '/GREEN-SINGLE.png',   background: '#ffffff', bordered: true, width: '32px', height: '32px', color: '#8DC63F' },
         ],
         sidebarExpanded: [
-          { label: 'Dark', src: '/LOGO-BLUE.png', background: '#ffffff', bordered: true  },
-          { label: 'Light', src: '/LOGO-WHITE.png', background: '#091635', bordered: true },
+          { label: 'Dark',  src: '/LOGO-BLUE.png',  background: '#ffffff', bordered: true, width: '160px', height: '40px', color: '#091635' },
+          { label: 'Light', src: '/LOGO-WHITE.png', background: '#091635', bordered: true, width: '160px', height: '40px', color: '#ffffff' },
         ],
       },
     },

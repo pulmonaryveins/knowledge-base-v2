@@ -1,6 +1,6 @@
 // ── FILE: src/app/features/docs-shell/docs-shell.component.ts ──
 
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '../../core/services';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
@@ -35,6 +35,16 @@ export class DocsShellComponent implements OnInit {
   /** Navigation service for reading the active team key */
   private readonly _nav = inject(NavigationService);
   private readonly _route = inject(ActivatedRoute);
+
+  constructor() {
+    // Scroll to top whenever the user switches team or tool.
+    // Runs in injection context so effect() is valid here.
+    effect(() => {
+      this._nav.activeTeamKey();
+      this._nav.activeToolKey();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+  }
 
   /** True when a tool page should be rendered */
   protected readonly isToolPage = computed<boolean>(

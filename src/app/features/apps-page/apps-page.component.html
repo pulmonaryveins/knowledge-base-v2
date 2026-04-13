@@ -12,11 +12,11 @@
 
   <div class="apps-page__content">
     <!-- 01 All Apps -->
-    <section class="apps-page__section" appReveal id="apps-all">
+    <section class="apps-page__section" [appReveal]="'up'" id="apps-all">
       <app-section-header num="01" label="All Apps" />
       <div class="apps-page__apps-grid">
-        @for (app of apps(); track app.name) {
-          <div class="app-card" appReveal>
+        @for (app of apps(); track app.name; let i = $index) {
+          <div class="app-card" [appReveal]="'zoom'" [appRevealDelay]="i * 45">
             <div class="app-card__header">
               <span class="app-card__icon">
                 <lucide-icon [img]="appIcon(app.icon)" [size]="22" />
@@ -39,7 +39,7 @@
     </section>
 
     <!-- 02 Projects by Team -->
-    <section class="apps-page__section" appReveal id="apps-by-team">
+    <section class="apps-page__section" [appReveal]="'left'" id="apps-by-team">
       <app-section-header num="02" label="Projects by Team" />
       <div class="apps-page__by-team">
         @for (team of teams(); track team.key) {
@@ -70,7 +70,7 @@
     </section>
 
     <!-- 03 Ownership Matrix -->
-    <section class="apps-page__section" appReveal id="apps-ownership">
+    <section class="apps-page__section" [appReveal]="'up'" id="apps-ownership">
       <app-section-header num="03" label="Ownership Matrix" />
       <div class="apps-page__matrix-wrap">
         <table class="matrix">
@@ -108,7 +108,7 @@
     </section>
 
     <!-- 04 Shared Infrastructure -->
-    <section class="apps-page__section" appReveal id="apps-infra">
+    <section class="apps-page__section" [appReveal]="'left'" id="apps-infra">
       <app-section-header num="04" label="Shared Infrastructure" />
       <div class="apps-page__infra-grid">
         <app-info-card

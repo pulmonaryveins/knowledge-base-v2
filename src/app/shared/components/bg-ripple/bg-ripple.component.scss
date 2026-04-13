@@ -24,19 +24,10 @@
     border-bottom: 1px solid var(--border-color, rgba(141, 203, 44, 0.06));
     pointer-events: auto;
     cursor: pointer;
+    transition: background 0.4s ease;
 
     &:hover {
-      background: rgba(141, 203, 44, 0.04);
-    }
-
-    &--lit {
-      animation: cell-ripple 900ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) forwards;
+      background: rgba(141, 203, 44, 0.05);
     }
   }
-}
-
-@keyframes cell-ripple {
-  0%   { background: transparent; }
-  18%  { background: rgba(141, 203, 44, calc(0.22 * var(--alpha, 1))); }
-  100% { background: transparent; }
 }

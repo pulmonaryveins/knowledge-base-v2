@@ -14,12 +14,16 @@
   // ── Tab bar ────────────────────────────────────────────────────
   &__bar {
     @apply flex flex-row gap-0 border-b border-[var(--border)] mb-8;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
   }
 
   &__tab {
     @apply px-5 py-[10px] font-['Syne',_sans-serif] text-[13px] font-semibold
            text-[var(--muted)] bg-transparent border-b-2 border-transparent
-           cursor-pointer transition-all duration-150;
+           cursor-pointer transition-all duration-150 whitespace-nowrap;
 
     &--active {
       @apply text-[var(--navy)] border-[var(--green)];
@@ -57,6 +61,8 @@
   &__columns {
     @apply grid gap-10;
     grid-template-columns: 1fr 1fr;
+
+    @media (max-width: 640px) { grid-template-columns: 1fr; gap: 6px; }
   }
 
   &__column {
@@ -86,7 +92,9 @@
 // ════════════════════════════════════════════════════════════════
 
 .tscale {
-  @apply flex flex-col rounded-[14px] border border-[var(--border)] overflow-hidden bg-[var(--card)];
+  @apply flex flex-col rounded-[14px] border border-[var(--border)] bg-[var(--card)];
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 
   &__header {
     @apply flex items-center gap-4 px-5 py-3 bg-[var(--navy)] border-b border-[var(--border)];

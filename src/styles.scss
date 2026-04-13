@@ -103,15 +103,23 @@ a {
 }
 
 // ─── Scroll Reveal ─────────────────────────────────────────────────────────
-// Used by RevealDirective. Elements start hidden and transition in when
-// .reveal--in is added by the IntersectionObserver.
+// Used by RevealDirective. The directive adds a variant class (reveal--up etc.)
+// and optionally sets --reveal-delay for stagger. .reveal--in fires on scroll.
 .reveal {
   opacity: 0;
-  transform: translateY(20px);
+  will-change: transform, opacity;
   transition:
-    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity    0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform  0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
 
+  // ── Starting positions per variant ──────────────────────────────────────
+  &--up    { transform: translateY(32px); }
+  &--left  { transform: translateX(-36px); }
+  &--right { transform: translateX(36px); }
+  &--zoom  { transform: scale(0.92) translateY(14px); }
+  &--fade  { /* opacity-only — no initial transform */ }
+
+  // ── Revealed state (all variants resolve to the same natural position) ──
   &--in {
     opacity: 1;
     transform: none;

@@ -4,18 +4,71 @@
 
 :host { @apply block; }
 
-.brand-guide {
-  @apply flex flex-col gap-10;
+// ════════════════════════════════════════════════════════════════════════
+// TAB BAR
+// ════════════════════════════════════════════════════════════════════════
 
-  // ── Top row: logo items + favicon ─────────────────────────────────────
-  &__top-row {
-    @apply flex flex-row items-start gap-6 flex-wrap;
+.bg__tab-bar {
+  @apply flex flex-row border-b border-[var(--border)] mb-8;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.bg__tab {
+  @apply px-5 py-[10px] font-['Syne',_sans-serif] text-[13px] font-semibold
+         text-[var(--muted)] bg-transparent border-b-2 border-transparent
+         cursor-pointer transition-all duration-150 outline-none whitespace-nowrap;
+
+  &--active {
+    @apply text-[var(--navy)] border-[var(--green)];
   }
+
+  &:hover:not(.bg__tab--active) {
+    @apply text-[var(--navy)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// PANELS
+// ════════════════════════════════════════════════════════════════════════
+
+.bg__panel {
+  @apply flex flex-col gap-6;
+
+  &--logos {
+    @apply flex-row flex-wrap items-start;
+  }
+}
+
+.bg__expanded-row {
+  @apply flex flex-row flex-wrap gap-5;
+}
+
+// Icon item = card + meta stacked vertically
+.bg__icon-item {
+  @apply flex flex-col gap-2;
+}
+
+// Wide item = wide card + meta stacked vertically
+.bg__wide-item {
+  @apply flex flex-col gap-2;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// BRAND GUIDE BLOCK
+// ════════════════════════════════════════════════════════════════════════
+
+.brand-guide {
+  @apply flex flex-col;
 
   // Each logo item = card stacked above its meta text
   &__logo-item {
     @apply flex flex-col gap-2;
     width: 280px;
+
+    @media (max-width: 640px) { width: 100%; }
 
     &--favicon {
       width: auto;
@@ -27,6 +80,11 @@
     @apply rounded-[14px] flex items-center justify-center overflow-hidden;
     width: 280px;
     height: 170px;
+
+    @media (max-width: 640px) {
+      width: 100%;
+      height: 140px;
+    }
 
     &--bordered {
       box-shadow: 0 0 0 1px var(--border);
@@ -62,21 +120,12 @@
     @apply font-['DM_Mono',_monospace] text-[11px] text-[var(--muted)];
   }
 
-  // ── Bottom row: Collapse + Expanded side by side ───────────────────────
-  &__bottom-row {
-    @apply flex flex-row items-start gap-12 border-t border-[var(--border)] pt-8;
-  }
-
-  &__sidebar-group {
-    @apply flex flex-col gap-3;
-  }
-
   &__sidebar-label {
     @apply m-0 font-['Syne',_sans-serif] text-[13px] font-semibold text-[var(--navy)];
   }
 
   &__sidebar-icons {
-    @apply flex flex-row items-center gap-4;
+    @apply flex flex-row items-center gap-4 flex-wrap;
   }
 
   // ── Small square icon cards (Collapse) ────────────────────────────────
@@ -99,6 +148,11 @@
     @apply rounded-[12px] flex items-center justify-center overflow-hidden;
     width: 320px;
     height: 90px;
+
+    @media (max-width: 640px) {
+      width: 100%;
+      max-width: 320px;
+    }
 
     &--bordered {
       box-shadow: 0 0 0 1px var(--border);

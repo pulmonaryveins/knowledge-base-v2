@@ -1,8 +1,13 @@
 <!-- FILE: src/app/features/landing-page/landing-page.component.html -->
 <div class="lp">
 
+  <!-- ── Scroll progress bar ────────────────────────────────────────────── -->
+  <div class="lp__scroll-bar">
+    <div class="lp__scroll-bar-fill" [style.width.%]="scrollProgress()"></div>
+  </div>
+
   <!-- ── Navigation ──────────────────────────────────────────────────────── -->
-  <header class="lp__nav" [class.lp__nav--open]="navOpen()">
+  <header class="lp__nav" [class.lp__nav--scrolled]="scrolled()" [class.lp__nav--open]="navOpen()">
     <div class="lp__nav-inner">
       <!-- Brand -->
       <a class="lp__nav-brand" (click)="navOpen.set(false)">
@@ -18,6 +23,10 @@
         <a class="lp__nav-link" href="#teams">Teams</a>
         <a class="lp__nav-link" href="#features">Features</a>
         <a class="lp__nav-link" href="#about">About</a>
+        <a class="lp__nav-link lp__nav-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+          Official Site
+          <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+        </a>
       </nav>
 
       <!-- CTA -->
@@ -39,6 +48,9 @@
       <a class="lp__nav-drawer-link" href="#teams" (click)="navOpen.set(false)">Teams</a>
       <a class="lp__nav-drawer-link" href="#features" (click)="navOpen.set(false)">Features</a>
       <a class="lp__nav-drawer-link" href="#about" (click)="navOpen.set(false)">About</a>
+      <a class="lp__nav-drawer-link lp__nav-drawer-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+        Official Site <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+      </a>
       <button class="lp__nav-cta lp__nav-cta--drawer" (click)="enterPortal()">
         Enter Portal <lucide-icon [img]="ArrowRightIcon" [size]="14" />
       </button>
@@ -53,83 +65,97 @@
     <!-- Glow orbs -->
     <div class="lp__hero-orb lp__hero-orb--1" aria-hidden="true"></div>
     <div class="lp__hero-orb lp__hero-orb--2" aria-hidden="true"></div>
+    <div class="lp__hero-orb lp__hero-orb--3" aria-hidden="true"></div>
 
     <div class="lp__hero-inner">
-    <div class="lp__hero-content">
-      <div class="lp__hero-badge">
-        <span class="lp__hero-badge-dot"></span>
-        Internal Developer Platform
+      <div class="lp__hero-content">
+        <div class="lp__hero-badge">
+          <span class="lp__hero-badge-dot"></span>
+          Internal Developer Platform
+        </div>
+
+        <h1 class="lp__hero-title">
+          One portal for<br>
+          <span class="lp__hero-title-accent">every team.</span>
+        </h1>
+
+        <p class="lp__hero-subtitle">
+          The NCompassTV Dev Portal centralises documentation, project registries,
+          coding standards, and onboarding guides for all engineering and design teams —
+          so everyone ships faster.
+        </p>
+
+        <div class="lp__hero-actions">
+          <button class="lp__btn lp__btn--primary" (click)="enterPortal()">
+            Enter the Portal
+            <lucide-icon [img]="ArrowRightIcon" [size]="16" />
+          </button>
+          <a class="lp__btn lp__btn--ghost" href="#teams">
+            Explore Teams
+            <lucide-icon [img]="ChevronRightIcon" [size]="16" />
+          </a>
+        </div>
+
+        <!-- Stats row -->
+        <div class="lp__hero-stats">
+          <div class="lp__hero-stat">
+            <span class="lp__hero-stat-val">7</span>
+            <span class="lp__hero-stat-label">Teams</span>
+          </div>
+          <div class="lp__hero-stat-divider" aria-hidden="true"></div>
+          <div class="lp__hero-stat">
+            <span class="lp__hero-stat-val">20+</span>
+            <span class="lp__hero-stat-label">Projects</span>
+          </div>
+          <div class="lp__hero-stat-divider" aria-hidden="true"></div>
+          <div class="lp__hero-stat">
+            <span class="lp__hero-stat-val">8</span>
+            <span class="lp__hero-stat-label">Tools</span>
+          </div>
+          <div class="lp__hero-stat-divider" aria-hidden="true"></div>
+          <div class="lp__hero-stat">
+            <span class="lp__hero-stat-val">Angular 21</span>
+            <span class="lp__hero-stat-label">Core Stack</span>
+          </div>
+        </div>
       </div>
 
-      <h1 class="lp__hero-title">
-        One portal for<br>
-        <span class="lp__hero-title-accent">every team.</span>
-      </h1>
-
-      <p class="lp__hero-subtitle">
-        The NCompassTV Dev Portal centralises documentation, project registries,
-        coding standards, and onboarding guides for all engineering and design teams —
-        so everyone ships faster.
-      </p>
-
-      <div class="lp__hero-actions">
-        <button class="lp__btn lp__btn--primary" (click)="enterPortal()">
-          Enter the Portal
-          <lucide-icon [img]="ArrowRightIcon" [size]="16" />
-        </button>
-        <a class="lp__btn lp__btn--ghost" href="#teams">
-          Explore Teams
-          <lucide-icon [img]="ChevronRightIcon" [size]="16" />
-        </a>
-      </div>
-
-      <!-- Stats row -->
-      <div class="lp__hero-stats">
-        <div class="lp__hero-stat">
-          <span class="lp__hero-stat-val">6</span>
-          <span class="lp__hero-stat-label">Teams</span>
-        </div>
-        <div class="lp__hero-stat-divider" aria-hidden="true"></div>
-        <div class="lp__hero-stat">
-          <span class="lp__hero-stat-val">20+</span>
-          <span class="lp__hero-stat-label">Projects</span>
-        </div>
-        <div class="lp__hero-stat-divider" aria-hidden="true"></div>
-        <div class="lp__hero-stat">
-          <span class="lp__hero-stat-val">84</span>
-          <span class="lp__hero-stat-label">Components</span>
-        </div>
-        <div class="lp__hero-stat-divider" aria-hidden="true"></div>
-        <div class="lp__hero-stat">
-          <span class="lp__hero-stat-val">Angular 21</span>
-          <span class="lp__hero-stat-label">Core Stack</span>
+      <!-- Hero visual — terminal window mock -->
+      <div class="lp__hero-visual" aria-hidden="true">
+        <div class="lp__terminal">
+          <div class="lp__terminal-bar">
+            <span class="lp__terminal-dot lp__terminal-dot--red"></span>
+            <span class="lp__terminal-dot lp__terminal-dot--yellow"></span>
+            <span class="lp__terminal-dot lp__terminal-dot--green"></span>
+            <span class="lp__terminal-title">nctv-portal ~ dev</span>
+          </div>
+          <div class="lp__terminal-body">
+            <p class="lp__terminal-line"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">git clone</span> git&#64;nctv/dev-portal</p>
+            <p class="lp__terminal-line lp__terminal-line--delay-1"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Cloned</span> knowledge-base-v2</p>
+            <p class="lp__terminal-line lp__terminal-line--delay-2"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">npm install</span></p>
+            <p class="lp__terminal-line lp__terminal-line--delay-3"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Added</span> 412 packages in 4.1s</p>
+            <p class="lp__terminal-line lp__terminal-line--delay-4"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">ng serve</span></p>
+            <p class="lp__terminal-line lp__terminal-line--delay-5"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Compiled</span> successfully in 1.2s</p>
+            <p class="lp__terminal-line lp__terminal-line--delay-6"><span class="lp__t-dim">➜</span> <span class="lp__t-url">http://localhost:4200</span></p>
+            <p class="lp__terminal-line lp__terminal-line--delay-7 lp__terminal-line--blink">
+              <span class="lp__t-dim">$</span> <span class="lp__t-cursor">▋</span>
+            </p>
+          </div>
+          <!-- Floating stat badges -->
+          <div class="lp__terminal-badge lp__terminal-badge--top">
+            <span class="lp__terminal-badge-dot"></span>7 teams online
+          </div>
+          <div class="lp__terminal-badge lp__terminal-badge--bottom">
+            <span class="lp__terminal-badge-dot lp__terminal-badge-dot--blue"></span>Angular 21
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Hero visual — terminal window mock -->
-    <div class="lp__hero-visual" aria-hidden="true">
-      <div class="lp__terminal">
-        <div class="lp__terminal-bar">
-          <span class="lp__terminal-dot lp__terminal-dot--red"></span>
-          <span class="lp__terminal-dot lp__terminal-dot--yellow"></span>
-          <span class="lp__terminal-dot lp__terminal-dot--green"></span>
-          <span class="lp__terminal-title">nctv-portal ~ dev</span>
-        </div>
-        <div class="lp__terminal-body">
-          <p class="lp__terminal-line"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">git clone</span> git&#64;nctv/dev-portal</p>
-          <p class="lp__terminal-line"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Cloned</span> knowledge-base-v2</p>
-          <p class="lp__terminal-line"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">npm install</span></p>
-          <p class="lp__terminal-line"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Added</span> 412 packages</p>
-          <p class="lp__terminal-line"><span class="lp__t-dim">$</span> <span class="lp__t-cmd">ng serve</span></p>
-          <p class="lp__terminal-line"><span class="lp__t-dim">✓</span> <span class="lp__t-ok">Built</span> in 1.2s</p>
-          <p class="lp__terminal-line"><span class="lp__t-dim">➜</span> <span class="lp__t-url">http://localhost:4200</span></p>
-          <p class="lp__terminal-line lp__terminal-line--blink">
-            <span class="lp__t-dim">$</span> <span class="lp__t-cursor">▋</span>
-          </p>
-        </div>
-      </div>
-    </div>
+    <!-- Scroll hint -->
+    <div class="lp__hero-scroll-hint" aria-hidden="true">
+      <span class="lp__hero-scroll-line"></span>
+      <span class="lp__hero-scroll-text">Scroll</span>
     </div>
   </section>
 
@@ -152,15 +178,15 @@
   <!-- ── Teams ────────────────────────────────────────────────────────────── -->
   <section class="lp__section lp__section--dark" id="teams">
     <div class="lp__section-inner">
-      <div class="lp__section-header" appReveal>
-        <span class="lp__section-eyebrow">Our Six Teams</span>
+      <div class="lp__section-header" [appReveal]="'left'">
+        <span class="lp__section-eyebrow">Our Seven Teams</span>
         <h2 class="lp__section-title">Every team. Every stack.</h2>
         <p class="lp__section-desc">Click any team card to jump directly to their documentation inside the portal.</p>
       </div>
 
       <div class="lp__teams-grid">
-        @for (team of teams; track team.key) {
-          <button class="lp__team-card" appReveal (click)="goToTeam(team.key)" [style.--tc]="team.color">
+        @for (team of teams; track team.key; let i = $index) {
+          <button class="lp__team-card" [appReveal]="'zoom'" [appRevealDelay]="i * 60" (click)="goToTeam(team.key)" [style.--tc]="team.color">
             <div class="lp__team-card-header" [style.background]="team.gradient">
               <div class="lp__team-card-icon" [style.background]="team.color + '28'">
                 <lucide-icon [img]="team.icon" [size]="20" [style.color]="team.color" />
@@ -185,17 +211,17 @@
   </section>
 
   <!-- ── Features ─────────────────────────────────────────────────────────── -->
-  <section class="lp__section" id="features">
+  <section class="lp__section lp__section--dark lp__section--features" id="features">
     <div class="lp__section-inner">
-      <div class="lp__section-header" appReveal>
+      <div class="lp__section-header" [appReveal]="'left'">
         <span class="lp__section-eyebrow">What's Inside</span>
         <h2 class="lp__section-title">Everything a dev needs.</h2>
         <p class="lp__section-desc">From onboarding to production — one place for all the context that usually lives in people's heads.</p>
       </div>
 
       <div class="lp__features-grid">
-        @for (feat of features; track feat.title) {
-          <div class="lp__feature-card" appReveal [style.--fa]="feat.accent">
+        @for (feat of features; track feat.title; let i = $index) {
+          <div class="lp__feature-card" [appReveal]="'up'" [appRevealDelay]="i * 65" [style.--fa]="feat.accent">
             <div class="lp__feature-icon" [style.background]="feat.accent + '1a'">
               <lucide-icon [img]="feat.icon" [size]="20" [style.color]="feat.accent" />
             </div>
@@ -207,39 +233,139 @@
     </div>
   </section>
 
+  <!-- ── Company info ─────────────────────────────────────────────────────── -->
+  <section class="lp__company">
+
+    <!-- top: logo bar -->
+    <div class="lp__company-logo-bar" [appReveal]="'fade'">
+      <img src="logo.png" alt="NCompassTV" class="lp__company-logo" />
+      <div class="lp__company-logo-text">
+        <span class="lp__company-logo-name">NCompassTV</span>
+        <span class="lp__company-logo-url">n-compass.tv</span>
+      </div>
+      <div class="lp__company-logo-divider" aria-hidden="true"></div>
+      <span class="lp__company-logo-tagline">Indoor Digital Billboards · Community Advertising · Franchise Network</span>
+    </div>
+
+    <!-- main grid: left bio | right facts -->
+    <div class="lp__company-inner">
+
+      <!-- Left: description + highlights + sectors -->
+      <div class="lp__company-left" [appReveal]="'left'">
+        <span class="lp__section-eyebrow">About the Company</span>
+        <h2 class="lp__company-title">Your brand, seen<br>where it matters.</h2>
+        <p class="lp__company-desc">
+          N-Compass TV is a US-based indoor digital billboard company placing
+          high-impact advertising screens in the high-traffic venues your customers
+          already visit — restaurants, gyms, medical offices, and auto shops.
+          Headquartered in Lakewood, Colorado, the company connects local
+          businesses to their communities through a nationwide franchise dealership network.
+        </p>
+
+        <!-- Highlight list -->
+        <ul class="lp__company-highlights">
+          @for (h of companyHighlights; track h) {
+            <li class="lp__company-highlight">
+              <span class="lp__company-highlight-dot" aria-hidden="true"></span>
+              {{ h }}
+            </li>
+          }
+        </ul>
+
+        <!-- Sectors served -->
+        <div class="lp__company-sectors">
+          <span class="lp__company-sectors-label">Venues & industries</span>
+          <div class="lp__company-sector-chips">
+            @for (s of companySectors; track s) {
+              <span class="lp__company-sector-chip">{{ s }}</span>
+            }
+          </div>
+        </div>
+
+        <a class="lp__company-link" href="https://n-compass.tv/" target="_blank" rel="noopener">
+          Visit n-compass.tv
+          <lucide-icon [img]="ExternalLinkIcon" [size]="13" />
+        </a>
+      </div>
+
+      <!-- Right: fact cards grid -->
+      <div class="lp__company-right">
+        <div class="lp__company-facts">
+          @for (fact of companyFacts; track fact.label; let i = $index) {
+            <div class="lp__company-fact" [appReveal]="'up'" [appRevealDelay]="i * 60">
+              <div class="lp__company-fact-icon">
+                <lucide-icon [img]="fact.icon" [size]="17" />
+              </div>
+              <div class="lp__company-fact-body">
+                <span class="lp__company-fact-label">{{ fact.label }}</span>
+                <span class="lp__company-fact-value">{{ fact.value }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ── About / CTA ──────────────────────────────────────────────────────── -->
   <section class="lp__cta-section" id="about">
     <div class="lp__cta-orb" aria-hidden="true"></div>
-    <div class="lp__cta-inner" appReveal>
+    <div class="lp__cta-orb lp__cta-orb--2" aria-hidden="true"></div>
+
+    <div class="lp__cta-inner" [appReveal]="'zoom'">
       <span class="lp__section-eyebrow lp__section-eyebrow--light">Ready to explore?</span>
       <h2 class="lp__cta-title">Built by the team,<br />for the team.</h2>
       <p class="lp__cta-desc">
-        The NCompassTV Dev Portal is maintained by all six engineering and design teams.
+        The NCompassTV Dev Portal is maintained by all seven engineering and design teams.
         Documentation is updated every sprint — if something is missing, raise a ticket and own it.
       </p>
-      <button class="lp__btn lp__btn--primary lp__btn--lg" (click)="enterPortal()">
-        Enter the Portal
-        <lucide-icon [img]="ArrowRightIcon" [size]="18" />
-      </button>
+      <div class="lp__cta-actions">
+        <button class="lp__btn lp__btn--primary lp__btn--lg" (click)="enterPortal()">
+          Enter the Portal
+          <lucide-icon [img]="ArrowRightIcon" [size]="18" />
+        </button>
+        <a class="lp__btn lp__btn--ghost lp__btn--lg" href="#teams">
+          View Teams
+          <lucide-icon [img]="ChevronRightIcon" [size]="18" />
+        </a>
+      </div>
+
+      <!-- Decorative team color dots -->
+      <div class="lp__cta-dots" aria-hidden="true">
+        @for (team of teams; track team.key) {
+          <span class="lp__cta-dot" [style.background]="team.color"></span>
+        }
+      </div>
     </div>
   </section>
 
   <!-- ── Footer ─────────────────────────────────────────────────────────── -->
   <footer class="lp__footer">
     <div class="lp__footer-inner">
-      <div class="lp__footer-brand">
-        <img class="lp__footer-logo" src="logo.png" alt="NCompassTV" />
-        <div>
-          <span class="lp__footer-brand-name">NCompassTV</span>
-          <span class="lp__footer-brand-sub">Dev Portal · 2026</span>
+
+      <!-- Brand + official site -->
+      <div class="lp__footer-left">
+        <div class="lp__footer-brand">
+          <img class="lp__footer-logo" src="logo.png" alt="NCompassTV" />
+          <div>
+            <span class="lp__footer-brand-name">NCompassTV</span>
+            <span class="lp__footer-brand-sub">Dev Portal · 2026 · Angular 21</span>
+          </div>
         </div>
+        <a class="lp__footer-official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+          <lucide-icon [img]="ExternalLinkIcon" [size]="10" />
+          n-compass.tv
+        </a>
       </div>
+
       <nav class="lp__footer-links">
         <a class="lp__footer-link" href="#teams">Teams</a>
         <a class="lp__footer-link" href="#features">Features</a>
         <a class="lp__footer-link" href="#about">About</a>
         <button class="lp__footer-link lp__footer-link--btn" (click)="enterPortal()">Open Portal</button>
       </nav>
+
     </div>
   </footer>
 

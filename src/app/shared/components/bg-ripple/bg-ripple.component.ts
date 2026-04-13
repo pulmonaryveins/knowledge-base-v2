@@ -43,15 +43,14 @@ export class BgRippleComponent implements OnInit, OnDestroy {
     this._resizeObserver?.disconnect();
   }
 
-  /** Runs fully outside Angular — no change detection, proper reflow restart. */
+  /** Runs fully outside Angular — uses Web Animations API for smooth, jank-free ripples. */
   protected _onGridClick(event: MouseEvent): void {
     const host = this._el.nativeElement as HTMLElement;
     const rect = host.getBoundingClientRect();
     const size = this.cellSize();
-    const clickedCol = Math.floor((event.clientX - rect.left)  / size);
-    const clickedRow = Math.floor((event.clientY - rect.top)   / size);
-    const maxDist = 4;
-    const animDuration = 900;
+    const clickedCol = Math.floor((event.clientX - rect.left) / size);
+    const clickedRow = Math.floor((event.clientY - rect.top)  / size);
+    const maxDist = 5;
 
     this._zone.runOutsideAngular(() => {
       const rowEls = host.querySelectorAll<HTMLElement>('.bg-ripple__row');
@@ -65,18 +64,26 @@ export class BgRippleComponent implements OnInit, OnDestroy {
           const dist = Math.abs(r - clickedRow) + Math.abs(c - clickedCol);
           if (dist > maxDist) continue;
 
-          const cell  = cellEls[c];
-          const delay = dist * 45;
-          const alpha = Math.max(0.12, 1 - dist * 0.22);
+          const cell      = cellEls[c];
+          const delay     = dist * 60;
+          const peakAlpha = Math.max(0.05, 0.20 - dist * 0.035);
 
-          // Remove → force reflow → re-add: guarantees animation restarts on rapid clicks
-          cell.classList.remove('bg-ripple__cell--lit');
-          cell.style.setProperty('--delay', `${delay}ms`);
-          cell.style.setProperty('--alpha', String(alpha));
-          void cell.offsetHeight;                          // force reflow
-          cell.classList.add('bg-ripple__cell--lit');
+          // Cancel any in-progress animation on this cell cleanly — no reflow needed
+          cell.getAnimations().forEach(a => a.cancel());
 
-          setTimeout(() => cell.classList.remove('bg-ripple__cell--lit'), animDuration + delay);
+          cell.animate(
+            [
+              { background: 'transparent'                             },
+              { background: `rgba(141,203,44,${peakAlpha})`, offset: 0.25 },
+              { background: 'transparent'                             },
+            ],
+            {
+              duration: 1400,
+              delay,
+              easing: 'ease-in-out',
+              fill: 'none',
+            },
+          );
         }
       }
     });

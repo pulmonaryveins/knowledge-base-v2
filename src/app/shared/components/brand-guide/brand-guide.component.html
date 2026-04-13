@@ -2,84 +2,119 @@
 
 <div class="brand-guide">
 
-  <!-- ── Top row: 3 logo cards + favicon ────────────────────────────────── -->
-  <div class="brand-guide__top-row">
-
-    @for (logo of mainLogos(); track logo.label) {
-      <div class="brand-guide__logo-item">
-        <div class="brand-guide__logo-card"
-             [class.brand-guide__logo-card--bordered]="logo.bordered"
-             [style.background]="logo.background">
-          <img [src]="logo.src" [alt]="logo.label + ' logo'" class="brand-guide__logo-img" />
-        </div>
-        <div class="brand-guide__meta">
-          <span class="brand-guide__meta-name">{{ logo.label }}</span>
-          @if (logo.width) {
-            <span class="brand-guide__meta-detail">W – {{ logo.width }}</span>
-            <span class="brand-guide__meta-detail">H – {{ logo.height }}</span>
-          }
-          @if (logo.color) {
-            <span class="brand-guide__meta-detail">Color – {{ logo.color }}</span>
-          }
-        </div>
-      </div>
+  <!-- ── Tab bar ─────────────────────────────────────────────────────────── -->
+  <div class="bg__tab-bar">
+    @for (tab of tabs(); track tab.label; let i = $index) {
+      <button
+        type="button"
+        class="bg__tab"
+        [class.bg__tab--active]="activeTab() === i"
+        (click)="setTab(i)">
+        {{ tab.label }}
+      </button>
     }
-
-    <!-- Favicon as 4th column -->
-    @if (favicon()) {
-      <div class="brand-guide__logo-item brand-guide__logo-item--favicon">
-        <div class="brand-guide__favicon-wrap">
-          <img [src]="favicon()!.src" alt="Favicon" class="brand-guide__favicon-img" />
-        </div>
-        <div class="brand-guide__meta">
-          <span class="brand-guide__meta-name">Favicon</span>
-          @if (favicon()!.width) {
-            <span class="brand-guide__meta-detail">W – {{ favicon()!.width }}</span>
-            <span class="brand-guide__meta-detail">H – {{ favicon()!.height }}</span>
-          }
-          @if (favicon()!.color) {
-            <span class="brand-guide__meta-detail">Color – {{ favicon()!.color }}</span>
-          }
-        </div>
-      </div>
-    }
-
   </div>
 
-  <!-- ── Bottom row: Collapse + Expanded side by side ───────────────────── -->
-  @if (sidebarCollapsed() || sidebarExpanded()) {
-    <div class="brand-guide__bottom-row">
+  <!-- ── Panel: Main Logos ──────────────────────────────────────────────── -->
+  @if (activeTab() === 0) {
+    <div class="bg__panel bg__panel--logos">
 
-      @if (sidebarCollapsed()) {
-        <div class="brand-guide__sidebar-group">
-          <p class="brand-guide__sidebar-label">Side Bar Logo (Collapse)</p>
-          <div class="brand-guide__sidebar-icons">
-            @for (logo of sidebarCollapsed()!; track logo.label) {
-              <div class="brand-guide__icon-card"
-                   [class.brand-guide__icon-card--bordered]="logo.bordered"
-                   [style.background]="logo.background">
-                <img [src]="logo.src" [alt]="logo.label" class="brand-guide__icon-img" />
-              </div>
+      @for (logo of mainLogos(); track logo.label; let i = $index) {
+        <div class="brand-guide__logo-item" [appReveal]="'up'" [appRevealDelay]="i * 80">
+          <div class="brand-guide__logo-card"
+               [class.brand-guide__logo-card--bordered]="logo.bordered"
+               [style.background]="logo.background">
+            <img [src]="logo.src" [alt]="logo.label + ' logo'" class="brand-guide__logo-img" />
+          </div>
+          <div class="brand-guide__meta">
+            <span class="brand-guide__meta-name">{{ logo.label }}</span>
+            @if (logo.width) {
+              <span class="brand-guide__meta-detail">W – {{ logo.width }}</span>
+              <span class="brand-guide__meta-detail">H – {{ logo.height }}</span>
+            }
+            @if (logo.color) {
+              <span class="brand-guide__meta-detail">Color – {{ logo.color }}</span>
             }
           </div>
         </div>
       }
 
-      @if (sidebarExpanded()) {
-        <div class="brand-guide__sidebar-group">
-          <p class="brand-guide__sidebar-label">Side Bar Logo (Expanded)</p>
-          <div class="brand-guide__sidebar-icons">
-            @for (logo of sidebarExpanded()!; track logo.label) {
-              <div class="brand-guide__wide-card"
-                   [class.brand-guide__wide-card--bordered]="logo.bordered"
-                   [style.background]="logo.background">
-                <img [src]="logo.src" [alt]="logo.label" class="brand-guide__wide-img" />
-              </div>
+      <!-- Favicon -->
+      @if (favicon()) {
+        <div class="brand-guide__logo-item brand-guide__logo-item--favicon"
+             [appReveal]="'up'" [appRevealDelay]="mainLogos().length * 80">
+          <div class="brand-guide__favicon-wrap">
+            <img [src]="favicon()!.src" alt="Favicon" class="brand-guide__favicon-img" />
+          </div>
+          <div class="brand-guide__meta">
+            <span class="brand-guide__meta-name">Favicon</span>
+            @if (favicon()!.width) {
+              <span class="brand-guide__meta-detail">W – {{ favicon()!.width }}</span>
+              <span class="brand-guide__meta-detail">H – {{ favicon()!.height }}</span>
+            }
+            @if (favicon()!.color) {
+              <span class="brand-guide__meta-detail">Color – {{ favicon()!.color }}</span>
             }
           </div>
         </div>
       }
 
+    </div>
+  }
+
+  <!-- ── Panel: Sidebar Icons (Collapsed) ──────────────────────────────── -->
+  @if (activeTab() === 1 && sidebarCollapsed()) {
+    <div class="bg__panel">
+      <p class="brand-guide__sidebar-label" [appReveal]="'fade'">Side Bar Logo (Collapse)</p>
+      <div class="brand-guide__sidebar-icons">
+        @for (logo of sidebarCollapsed()!; track logo.label; let i = $index) {
+          <div class="bg__icon-item" [appReveal]="'zoom'" [appRevealDelay]="i * 70">
+            <div class="brand-guide__icon-card"
+                 [class.brand-guide__icon-card--bordered]="logo.bordered"
+                 [style.background]="logo.background">
+              <img [src]="logo.src" [alt]="logo.label" class="brand-guide__icon-img" />
+            </div>
+            <div class="brand-guide__meta">
+              <span class="brand-guide__meta-name">{{ logo.label }}</span>
+              @if (logo.width) {
+                <span class="brand-guide__meta-detail">W – {{ logo.width }}</span>
+                <span class="brand-guide__meta-detail">H – {{ logo.height }}</span>
+              }
+              @if (logo.color) {
+                <span class="brand-guide__meta-detail">Color – {{ logo.color }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ── Panel: Sidebar Expanded ───────────────────────────────────────── -->
+  @if (activeTab() === 2 && sidebarExpanded()) {
+    <div class="bg__panel">
+      <p class="brand-guide__sidebar-label" [appReveal]="'fade'">Side Bar Logo (Expanded)</p>
+      <div class="bg__expanded-row">
+        @for (logo of sidebarExpanded()!; track logo.label; let i = $index) {
+          <div class="bg__wide-item" [appReveal]="'left'" [appRevealDelay]="i * 80">
+            <div class="brand-guide__wide-card"
+                 [class.brand-guide__wide-card--bordered]="logo.bordered"
+                 [style.background]="logo.background">
+              <img [src]="logo.src" [alt]="logo.label" class="brand-guide__wide-img" />
+            </div>
+            <div class="brand-guide__meta">
+              <span class="brand-guide__meta-name">{{ logo.label }}</span>
+              @if (logo.width) {
+                <span class="brand-guide__meta-detail">W – {{ logo.width }}</span>
+                <span class="brand-guide__meta-detail">H – {{ logo.height }}</span>
+              }
+              @if (logo.color) {
+                <span class="brand-guide__meta-detail">Color – {{ logo.color }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
     </div>
   }
 

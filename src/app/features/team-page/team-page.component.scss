@@ -8,8 +8,9 @@
   &__content {
     @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px];
 
-    @media (max-width: 1024px) { @apply pr-[48px]; }
-    @media (max-width: 768px)  { @apply pt-[24px] pr-[20px] pb-[60px] pl-[20px]; }
+    @media (max-width: 1024px) { @apply pr-[32px] pl-[32px]; }
+    @media (max-width: 768px)  { @apply pt-[24px] pr-[16px] pb-[60px] pl-[16px] gap-10; }
+    @media (max-width: 480px)  { @apply pr-[14px] pl-[14px] gap-8; }
   }
 
   &__section {

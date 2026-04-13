@@ -76,14 +76,12 @@ export class SidebarComponent {
     this._nav.activeToolKey()
   );
 
-  /** Track which team groups are expanded (independent of active team) */
-  protected readonly expandedKeys = signal<Set<string>>(
-    new Set<string>([this._nav.activeTeamKey()])
-  );
+  /** Key of the single currently expanded team group ('' = all collapsed) */
+  protected readonly expandedKey = signal<string>(this._nav.activeTeamKey());
 
   /** Whether the given team is currently expanded */
   protected isExpanded(key: string): boolean {
-    return this.expandedKeys().has(key);
+    return this.expandedKey() === key;
   }
 
   /** Returns the tools list for a given team key — removed; tools are now a separate section */
@@ -94,17 +92,8 @@ export class SidebarComponent {
   }
 
   protected switchTeam(key: string): void {
-    // Toggle the expanded state for this team — do NOT close the mobile sidebar,
-    // the user is just expanding/collapsing the dropdown.
-    this.expandedKeys.update(set => {
-      const next = new Set(set);
-      if (next.has(key)) {
-        next.delete(key);
-      } else {
-        next.add(key);
-      }
-      return next;
-    });
+    // Collapse if already open; otherwise open this one and close all others.
+    this.expandedKey.update(current => (current === key ? '' : key));
     this._nav.switchTeam(key);
   }
 

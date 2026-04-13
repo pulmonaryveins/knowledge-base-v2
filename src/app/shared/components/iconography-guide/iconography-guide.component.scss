@@ -74,7 +74,9 @@
 // We use a fixed approach: 1 name column + auto repeat for size columns
 
 .ig__catalog-grid {
-  @apply rounded-[14px] border border-[var(--border)] overflow-hidden;
+  @apply rounded-[14px] border border-[var(--border)];
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 // ── HEADER ROW ─────────────────────────────────────────────────────────
@@ -83,6 +85,7 @@
   @apply grid bg-[var(--navy)] px-5 py-[10px] gap-3 items-center;
   // name + 7 size columns
   grid-template-columns: 160px repeat(7, minmax(60px, 1fr));
+  min-width: 620px;
 }
 
 .ig__col-size {
@@ -96,6 +99,7 @@
   @apply grid px-5 py-3 gap-3 items-center
          border-b border-[var(--border)] last:border-b-0;
   grid-template-columns: 160px repeat(7, minmax(60px, 1fr));
+  min-width: 620px;
   transition: background 0.1s ease;
 
   &:hover { @apply bg-[var(--bg)]; }

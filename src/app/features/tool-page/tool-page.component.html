@@ -29,11 +29,11 @@
   <div class="tool-page__content">
 
     <!-- Key Features -->
-    <section class="tool-page__section" appReveal>
+    <section class="tool-page__section" [appReveal]="'up'">
       <app-section-header num="01" label="Key Features" subHeader="Core capabilities that make this tool integral to the NCompassTV tech stack." />
       <div class="tool-page__features-grid">
-        @for (f of t.features; track f.title) {
-          <div class="tool-page__feature-card" appReveal>
+        @for (f of t.features; track f.title; let i = $index) {
+          <div class="tool-page__feature-card" [appReveal]="'up'" [appRevealDelay]="i * 75">
             <h3 class="tool-page__feature-title">{{ f.title }}</h3>
             <p class="tool-page__feature-body">{{ f.body }}</p>
           </div>
@@ -42,7 +42,7 @@
     </section>
 
     <!-- Why We Use It -->
-    <section class="tool-page__section" appReveal>
+    <section class="tool-page__section" [appReveal]="'left'">
       <app-section-header num="02" label="Why We Use It" subHeader="How this tool fits into the team's workflow and contributes to project quality." />
       <div class="tool-page__why-card" [style.--tool-color]="t.color">
         <p class="tool-page__why-text">{{ t.whyWeUseIt }}</p>
@@ -50,13 +50,13 @@
     </section>
 
     <!-- Installation -->
-    <section class="tool-page__section" appReveal>
+    <section class="tool-page__section" [appReveal]="'up'">
       <app-section-header num="03" label="Installation" subHeader="Step-by-step setup guide for getting this tool running in your environment." />
       <app-step-list [steps]="t.install" />
     </section>
 
     <!-- Basic Usage -->
-    <section class="tool-page__section" appReveal>
+    <section class="tool-page__section" [appReveal]="'left'">
       <app-section-header num="04" label="Basic Usage" subHeader="Common patterns and code examples to get you productive quickly." />
       @for (example of t.basicUse; track example.title) {
         <div class="tool-page__usage-item">
