@@ -1,4 +1,7 @@
 <!-- FILE: src/app/features/landing-page/landing-page.component.html -->
+@if (isLoading()) {
+  <app-landing-skeleton />
+} @else {
 <div class="lp">
 
   <!-- ── Scroll progress bar ────────────────────────────────────────────── -->
@@ -66,6 +69,28 @@
     <div class="lp__hero-orb lp__hero-orb--1" aria-hidden="true"></div>
     <div class="lp__hero-orb lp__hero-orb--2" aria-hidden="true"></div>
     <div class="lp__hero-orb lp__hero-orb--3" aria-hidden="true"></div>
+
+    <!-- Floating tech logos -->
+    <div class="lp__hero-floats" aria-hidden="true">
+      <div class="lp__hero-float lp__hero-float--1" style="--fc: #8DCB2C">
+        <img src="https://cdn.simpleicons.org/angular/8DCB2C" alt="" width="28" height="28" draggable="false" />
+      </div>
+      <div class="lp__hero-float lp__hero-float--2" style="--fc: #8DCB2C">
+        <img src="https://cdn.simpleicons.org/typescript/8DCB2C" alt="" width="28" height="28" draggable="false" />
+      </div>
+      <div class="lp__hero-float lp__hero-float--3" style="--fc: #8DCB2C">
+        <img src="https://cdn.simpleicons.org/nestjs/8DCB2C" alt="" width="28" height="28" draggable="false" />
+      </div>
+      <div class="lp__hero-float lp__hero-float--5" style="--fc: #8DCB2C">
+        <img src="https://cdn.simpleicons.org/docker/8DCB2C" alt="" width="28" height="28" draggable="false" />
+      </div>
+      <div class="lp__hero-float lp__hero-float--6" style="--fc: #8DCB2C">
+        <img src="https://cdn.simpleicons.org/redis/8DCB2C" alt="" width="28" height="28" draggable="false" />
+      </div>
+      <div class="lp__hero-float lp__hero-float--7" style="--fc: #8DCB2C">
+        <img src="https://cdn.simpleicons.org/tailwindcss/8DCB2C" alt="" width="28" height="28" draggable="false" />
+      </div>
+    </div>
 
     <div class="lp__hero-inner">
       <div class="lp__hero-content">
@@ -386,3 +411,4 @@
   </footer>
 
 </div>
+}

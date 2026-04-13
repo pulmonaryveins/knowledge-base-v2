@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { BgRippleComponent } from '../../shared/components/bg-ripple/bg-ripple.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
+import { LandingSkeleton } from '../../shared/components/landing-skeleton/landing-skeleton';
 import {
   Monitor, Server, Globe, TestTube, Microscope, Palette, Tv,
   ArrowRight, ChevronRight, Zap, Shield, BookOpen, Users, Code2, Layers, ExternalLink,
@@ -27,7 +28,7 @@ interface TermLine {
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [LucideAngularModule, BgRippleComponent, RevealDirective],
+  imports: [LucideAngularModule, BgRippleComponent, RevealDirective, LandingSkeleton],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss',
 })
@@ -49,6 +50,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   protected readonly Code2Icon        = Code2;
   protected readonly LayersIcon       = Layers;
 
+  protected readonly isLoading     = signal(true);
+
   // ── Terminal ─────────────────────────────────────────────────────────────
   protected readonly termLines = signal<TermLine[]>([]);
   protected readonly termDone  = signal(false);
@@ -61,7 +64,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     { prefix: '✓', pCls: 'lp__t-ok',  text: 'Added 412 packages in 4.1s',    tCls: '',          cmd: false },
     { prefix: '$', pCls: 'lp__t-dim', text: 'ng serve',                       tCls: 'lp__t-cmd', cmd: true  },
     { prefix: '✓', pCls: 'lp__t-ok',  text: 'Compiled successfully in 1.2s', tCls: '',          cmd: false },
-    { prefix: '➜', pCls: 'lp__t-dim', text: 'http://localhost:4200',          tCls: 'lp__t-url', cmd: false },
+    { prefix: '➜', pCls: 'lp__t-dim', text: 'Server is running', tCls: 'lp__t-ok', cmd: false },
   ] as const;
 
   // ── Nav / scroll state ───────────────────────────────────────────────────
@@ -69,7 +72,10 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   protected readonly scrolled      = signal(false);
   protected readonly scrollProgress = signal(0);
 
-  ngOnInit(): void { this._runTerminal(); }
+  ngOnInit(): void {
+    this._tt.push(setTimeout(() => this.isLoading.set(false), 500));
+    this._runTerminal();
+  }
   ngOnDestroy(): void { this._tt.forEach(clearTimeout); }
 
   private _run(ms: number, fn: () => void) { this._tt.push(setTimeout(fn, ms)); }

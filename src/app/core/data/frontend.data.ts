@@ -54,7 +54,7 @@ export const frontendTeam: Team = {
         gettingStarted: [
           { title: 'Clone & Install', description: 'Clone the repo and install dependencies.', code: 'git clone git@github.com:nctv/dashboard-fe.git\ncd dashboard-fe && npm install', language: 'bash' },
           { title: 'Configure Environment', description: 'Copy the example env file and fill in your API endpoint.', code: 'cp .env.example .env.local\n# Set VITE_API_URL=http://localhost:3000', language: 'bash' },
-          { title: 'Start Dev Server', description: 'Run the Angular dev server with hot-reload.', code: 'npm start\n# Opens at http://localhost:4200', language: 'bash' },
+          { title: 'Start Dev Server', description: 'Run the Angular dev server with hot-reload.', code: 'npm start\n# Opens at server', language: 'bash' },
           { title: 'Run Tests', description: 'Execute the full Vitest suite.', code: 'npm test', language: 'bash' },
         ],
         contacts: [
