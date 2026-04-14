@@ -1,97 +1,207 @@
 <div class="login">
 
-  <!-- Background orbs -->
+  <!-- ── Full-viewport background ───────────────────────────────────────────── -->
+  <div class="login__bg">
+    <app-bg-ripple />
+  </div>
+
+  <!-- Glow orbs -->
   <div class="login__orb login__orb--1" aria-hidden="true"></div>
   <div class="login__orb login__orb--2" aria-hidden="true"></div>
+  <div class="login__orb login__orb--3" aria-hidden="true"></div>
 
-  <div class="login__card">
-
-    <!-- Brand -->
-    <div class="login__brand">
-      <img src="logo.png" alt="NCompassTV" class="login__logo" />
-      <div class="login__brand-text">
-        <span class="login__brand-name">NCompassTV</span>
-        <span class="login__brand-sub">DEV PORTAL</span>
-      </div>
+  <!-- ── Floating logos — fixed, full-viewport spread ──────────────────────── -->
+  <div class="login__floats" aria-hidden="true">
+    <!-- Top band -->
+    <div class="login__float login__float--1" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/angular/8DCB2C"     alt="" width="28" height="28" draggable="false" />
     </div>
+    <div class="login__float login__float--2" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/typescript/8DCB2C"  alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--3" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/nestjs/8DCB2C"      alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--4" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/docker/8DCB2C"      alt="" width="28" height="28" draggable="false" />
+    </div>
+    <!-- Left band -->
+    <div class="login__float login__float--5" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/figma/8DCB2C"       alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--6" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/python/8DCB2C"      alt="" width="28" height="28" draggable="false" />
+    </div>
+    <!-- Right band -->
+    <div class="login__float login__float--7" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/tailwindcss/8DCB2C" alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--8" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/redis/8DCB2C"       alt="" width="28" height="28" draggable="false" />
+    </div>
+    <!-- Bottom band -->
+    <div class="login__float login__float--9" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/git/8DCB2C"         alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--10" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/postgresql/8DCB2C"  alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--11" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/github/8DCB2C"      alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--12" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/supabase/8DCB2C"    alt="" width="28" height="28" draggable="false" />
+    </div>
+    <!-- Near-card orbit -->
+    <div class="login__float login__float--13" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/mysql/8DCB2C"       alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--14" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/linux/8DCB2C"       alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--15" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/jest/8DCB2C"        alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--16" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/kubernetes/8DCB2C"  alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--17" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/vite/8DCB2C"        alt="" width="28" height="28" draggable="false" />
+    </div>
+    <div class="login__float login__float--18" style="--fc: #8DCB2C">
+      <img src="https://cdn.simpleicons.org/graphql/8DCB2C"     alt="" width="28" height="28" draggable="false" />
+    </div>
+  </div>
 
-    <h1 class="login__title">Welcome back</h1>
-    <p class="login__subtitle">Sign in to access the developer portal.</p>
+  <!-- ── Navigation ─────────────────────────────────────────────────────────── -->
+  <header class="login__nav" [class.login__nav--open]="mobileNavOpen()">
+    <div class="login__nav-inner">
 
-    <!-- Error banner -->
-    @if (errorMessage()) {
-      <div class="login__error" role="alert">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        {{ errorMessage() }}
-      </div>
-    }
-
-    <!-- Form -->
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login__form" novalidate>
-
-      <div class="login__field">
-        <label class="login__label" for="email">Email address</label>
-        <input
-          id="email"
-          type="email"
-          class="login__input"
-          [class.login__input--error]="form.controls.email.invalid && form.controls.email.touched"
-          formControlName="email"
-          placeholder="you@ncompasstv.com"
-          autocomplete="email"
-        />
-        @if (form.controls.email.invalid && form.controls.email.touched) {
-          <span class="login__field-error">Enter a valid email address.</span>
-        }
-      </div>
-
-      <div class="login__field">
-        <label class="login__label" for="password">Password</label>
-        <div class="login__input-wrap">
-          <input
-            id="password"
-            [type]="showPassword() ? 'text' : 'password'"
-            class="login__input"
-            [class.login__input--error]="form.controls.password.invalid && form.controls.password.touched"
-            formControlName="password"
-            placeholder="••••••••"
-            autocomplete="current-password"
-          />
-          <button
-            type="button"
-            class="login__eye"
-            (click)="showPassword.set(!showPassword())"
-            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
-          >
-            @if (showPassword()) {
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-            } @else {
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            }
-          </button>
+      <a class="login__nav-brand" (click)="goToLanding(); mobileNavOpen.set(false)">
+        <img class="login__nav-logo" src="logo.png" alt="NCompassTV" />
+        <div class="login__nav-brand-text">
+          <span class="login__nav-brand-name">NCompassTV</span>
+          <span class="login__nav-brand-sub">DEV PORTAL</span>
         </div>
-        @if (form.controls.password.invalid && form.controls.password.touched) {
-          <span class="login__field-error">Password must be at least 6 characters.</span>
-        }
-      </div>
+      </a>
 
-      <button
-        type="submit"
-        class="login__btn"
-        [disabled]="isSubmitting()"
-      >
-        @if (isSubmitting()) {
-          <span class="login__spinner" aria-hidden="true"></span>
-          Signing in…
-        } @else {
-          Sign in
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        }
+      <nav class="login__nav-links">
+        <a class="login__nav-link" (click)="goToLanding()">Teams</a>
+        <a class="login__nav-link" (click)="goToLanding()">Features</a>
+        <a class="login__nav-link" (click)="goToLanding()">About</a>
+        <a class="login__nav-link login__nav-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+          Official Site <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+        </a>
+      </nav>
+
+      <button class="login__nav-back" (click)="goToLanding()">
+        <lucide-icon [img]="ArrowLeftIcon" [size]="13" />
+        Back to Home
       </button>
 
-    </form>
+      <button
+        class="login__nav-hamburger"
+        [class.login__nav-hamburger--open]="mobileNavOpen()"
+        (click)="mobileNavOpen.update(v => !v)"
+        aria-label="Toggle navigation"
+      >
+        <span class="login__nav-hamburger-bar"></span>
+        <span class="login__nav-hamburger-bar"></span>
+        <span class="login__nav-hamburger-bar"></span>
+      </button>
+    </div>
 
-    <p class="login__note">No self-registration. Contact an administrator to get access.</p>
+    <div class="login__nav-drawer" [class.login__nav-drawer--open]="mobileNavOpen()">
+      <a class="login__nav-drawer-link" (click)="goToLanding(); mobileNavOpen.set(false)">Teams</a>
+      <a class="login__nav-drawer-link" (click)="goToLanding(); mobileNavOpen.set(false)">Features</a>
+      <a class="login__nav-drawer-link" (click)="goToLanding(); mobileNavOpen.set(false)">About</a>
+      <a class="login__nav-drawer-link login__nav-drawer-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+        Official Site <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+      </a>
+      <button class="login__nav-back login__nav-back--drawer" (click)="goToLanding(); mobileNavOpen.set(false)">
+        <lucide-icon [img]="ArrowLeftIcon" [size]="13" />
+        Back to Home
+      </button>
+    </div>
+  </header>
 
+  <!-- ── Centered card — pointer-events:none lets bg-ripple stay interactive ── -->
+  <div class="login__center">
+    <div class="login__card">
+
+      <div class="login__card-brand">
+        <img src="logo.png" alt="NCompassTV" class="login__card-logo" />
+        <div class="login__card-brand-text">
+          <span class="login__card-brand-name">NCompassTV</span>
+          <span class="login__card-brand-sub">DEV PORTAL</span>
+        </div>
+      </div>
+
+      <h1 class="login__title">Welcome back</h1>
+      <p class="login__subtitle">Sign in to access the developer portal.</p>
+
+      @if (errorMessage()) {
+        <div class="login__error" role="alert">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login__form" novalidate>
+
+        <div class="login__field">
+          <label class="login__label" for="email">Email address</label>
+          <div class="login__input-wrap">
+            <svg class="login__input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <input
+              id="email" type="email" class="login__input"
+              [class.login__input--error]="form.controls.email.invalid && form.controls.email.touched"
+              formControlName="email" placeholder="you@ncompasstv.com" autocomplete="email"
+            />
+          </div>
+          @if (form.controls.email.invalid && form.controls.email.touched) {
+            <span class="login__field-error">Enter a valid email address.</span>
+          }
+        </div>
+
+        <div class="login__field">
+          <label class="login__label" for="password">Password</label>
+          <div class="login__input-wrap">
+            <svg class="login__input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input
+              id="password" [type]="showPassword() ? 'text' : 'password'" class="login__input"
+              [class.login__input--error]="form.controls.password.invalid && form.controls.password.touched"
+              formControlName="password" placeholder="••••••••" autocomplete="current-password"
+            />
+            <button type="button" class="login__eye" (click)="showPassword.set(!showPassword())"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+              @if (showPassword()) {
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              } @else {
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              }
+            </button>
+          </div>
+          @if (form.controls.password.invalid && form.controls.password.touched) {
+            <span class="login__field-error">Password must be at least 6 characters.</span>
+          }
+        </div>
+
+        <button type="submit" class="login__btn" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="login__spinner" aria-hidden="true"></span>
+            Signing in…
+          } @else {
+            Sign in
+            <lucide-icon [img]="ArrowRightIcon" [size]="14" />
+          }
+        </button>
+
+      </form>
+
+      <p class="login__note">No self-registration. Contact an administrator to get access.</p>
+
+    </div>
   </div>
+
 </div>

@@ -5,14 +5,23 @@
     <div class="adm__header-inner">
       <div class="adm__brand">
         <img src="logo.png" alt="NCompassTV" class="adm__logo" />
-        <div>
-          <span class="adm__brand-name">NCompassTV</span>
-          <span class="adm__brand-sub">Admin Panel</span>
+        <div class="adm__brand-text">
+          <div class="adm__brand-row">
+            <span class="adm__brand-name">NCompassTV</span>
+            <span class="adm__brand-sep" aria-hidden="true">/</span>
+            <span class="adm__brand-panel">Admin Panel</span>
+          </div>
+          <span class="adm__brand-sub">DEV PORTAL</span>
         </div>
       </div>
       <div class="adm__header-actions">
-        <button class="adm__btn adm__btn--ghost" (click)="goToPortal()">← Portal</button>
-        <button class="adm__btn adm__btn--ghost" (click)="signOut()">Sign out</button>
+        <button class="adm__btn adm__btn--ghost" (click)="goToPortal()">
+          <lucide-icon [img]="ArrowLeftIcon" [size]="13" />
+          Portal
+        </button>
+        <button class="adm__btn adm__btn--ghost adm__btn--icon-only" (click)="signOut()" title="Sign out" aria-label="Sign out">
+          <lucide-icon [img]="LogOutIcon" [size]="15" />
+        </button>
       </div>
     </div>
   </header>
@@ -27,30 +36,110 @@
         <p class="adm__page-sub">Create, edit, and remove portal users.</p>
       </div>
       <button class="adm__btn adm__btn--primary" (click)="openCreateModal()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        <lucide-icon [img]="UserPlusIcon" [size]="14" />
         New User
       </button>
     </div>
+
+    <!-- Stats bar -->
+    @if (!isLoading() && users().length > 0) {
+      <div class="adm__stats">
+        <div class="adm__stat">
+          <div class="adm__stat-icon adm__stat-icon--neutral">
+            <lucide-icon [img]="UsersIcon" [size]="16" />
+          </div>
+          <div class="adm__stat-content">
+            <span class="adm__stat-val">{{ users().length }}</span>
+            <span class="adm__stat-label">Total Users</span>
+          </div>
+        </div>
+        <div class="adm__stat">
+          <div class="adm__stat-icon adm__stat-icon--green">
+            <lucide-icon [img]="ShieldIcon" [size]="16" />
+          </div>
+          <div class="adm__stat-content">
+            <span class="adm__stat-val adm__stat-val--green">{{ adminCount() }}</span>
+            <span class="adm__stat-label">Admins</span>
+          </div>
+        </div>
+        <div class="adm__stat">
+          <div class="adm__stat-icon adm__stat-icon--neutral">
+            <lucide-icon [img]="UserIcon" [size]="16" />
+          </div>
+          <div class="adm__stat-content">
+            <span class="adm__stat-val">{{ memberCount() }}</span>
+            <span class="adm__stat-label">Members</span>
+          </div>
+        </div>
+      </div>
+    }
 
     <!-- Error banner -->
     @if (tableError()) {
       <div class="adm__banner adm__banner--error">{{ tableError() }}</div>
     }
 
+    <!-- Search / filter toolbar -->
+    @if (!isLoading() && users().length > 0) {
+      <div class="adm__toolbar">
+        <div class="adm__search-wrap">
+          <lucide-icon [img]="SearchIcon" [size]="14" class="adm__search-icon" />
+          <input
+            type="search"
+            class="adm__search-input"
+            placeholder="Search users…"
+            [value]="searchQuery()"
+            (input)="searchQuery.set($any($event.target).value)" />
+        </div>
+        <div class="adm__filter-pills">
+          <button class="adm__filter-pill" [class.adm__filter-pill--active]="roleFilter() === 'all'"    (click)="roleFilter.set('all')">
+            All <span class="adm__filter-count">{{ users().length }}</span>
+          </button>
+          <button class="adm__filter-pill" [class.adm__filter-pill--active]="roleFilter() === 'member'" (click)="roleFilter.set('member')">
+            Members <span class="adm__filter-count">{{ memberCount() }}</span>
+          </button>
+          <button class="adm__filter-pill" [class.adm__filter-pill--active]="roleFilter() === 'admin'"  (click)="roleFilter.set('admin')">
+            Admins <span class="adm__filter-count">{{ adminCount() }}</span>
+          </button>
+        </div>
+      </div>
+    }
+
     <!-- Table -->
     <div class="adm__table-wrap">
       @if (isLoading()) {
-        <div class="adm__loading">
-          <span class="adm__spinner"></span> Loading users…
+        <div class="adm__skeleton-table">
+          @for (_ of [1,2,3,4,5]; track $index) {
+            <div class="adm__skeleton-row">
+              <div class="adm__skeleton-cell--user">
+                <div class="adm__skel adm__skel--circle"></div>
+                <div class="adm__skel-wrap">
+                  <div class="adm__skel adm__skel--name"></div>
+                  <div class="adm__skel adm__skel--email"></div>
+                </div>
+              </div>
+              <div class="adm__skel adm__skel--badge"></div>
+              <div class="adm__skel adm__skel--date"></div>
+              <div class="adm__skel adm__skel--date"></div>
+              <div class="adm__skel adm__skel--actions"></div>
+            </div>
+          }
         </div>
       } @else if (users().length === 0) {
-        <div class="adm__empty">No users found. Create one to get started.</div>
+        <div class="adm__empty">
+          <lucide-icon [img]="UsersIcon" [size]="28" />
+          <span>No users found. Create one to get started.</span>
+        </div>
+      } @else if (filteredUsers().length === 0) {
+        <div class="adm__empty">
+          <lucide-icon [img]="SearchIcon" [size]="28" />
+          <span>No users match your search.</span>
+        </div>
       } @else {
         <table class="adm__table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
+              <th>User</th>
               <th>Role</th>
               <th>Created</th>
               <th>Last Sign In</th>
@@ -58,27 +147,37 @@
             </tr>
           </thead>
           <tbody>
-            @for (user of users(); track user.id) {
-              <tr class="adm__row">
-                <td class="adm__cell--name">
-                  <div class="adm__avatar">{{ (user.full_name || user.email)[0].toUpperCase() }}</div>
-                  {{ user.full_name || '—' }}
+            @for (user of paginatedUsers(); track user.id) {
+              <tr class="adm__row" [class.adm__row--current]="user.id === currentUserId()">
+                <td class="adm__cell--user">
+                  <div class="adm__avatar" [class.adm__avatar--admin]="user.role === 'admin'">
+                    {{ (user.full_name || user.email)[0].toUpperCase() }}
+                  </div>
+                  <div class="adm__user-info">
+                    <span class="adm__user-name">
+                      {{ user.full_name || '—' }}
+                      @if (user.id === currentUserId()) {
+                        <span class="adm__you-tag">you</span>
+                      }
+                    </span>
+                    <span class="adm__user-email">{{ user.email }}</span>
+                  </div>
                 </td>
-                <td>{{ user.email }}</td>
                 <td>
                   <span class="adm__role-badge" [class.adm__role-badge--admin]="user.role === 'admin'">
+                    <span class="adm__role-badge-dot" aria-hidden="true"></span>
                     {{ user.role }}
                   </span>
                 </td>
                 <td class="adm__cell--dim">{{ formatDate(user.created_at) }}</td>
                 <td class="adm__cell--dim">{{ formatDate(user.last_sign_in_at) }}</td>
                 <td class="adm__cell--actions">
-                  <button class="adm__action adm__action--edit" (click)="openEditModal(user)" title="Edit user">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  <button class="adm__action adm__action--edit" (click)="openEditModal(user)" title="Edit user" aria-label="Edit user">
+                    <lucide-icon [img]="PencilIcon" [size]="13" />
                   </button>
                   @if (user.id !== currentUserId()) {
-                    <button class="adm__action adm__action--delete" (click)="confirmDelete(user)" title="Delete user">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    <button class="adm__action adm__action--delete" (click)="confirmDelete(user)" title="Delete user" aria-label="Delete user">
+                      <lucide-icon [img]="Trash2Icon" [size]="13" />
                     </button>
                   }
                 </td>
@@ -86,6 +185,20 @@
             }
           </tbody>
         </table>
+        @if (totalPages() > 1) {
+          <div class="adm__pagination">
+            <span class="adm__page-showing">Showing {{ pageStart() }}–{{ pageEnd() }} of {{ filteredUsers().length }}</span>
+            <div class="adm__page-controls">
+              <button class="adm__page-btn" [disabled]="pageIndex() === 0" (click)="prevPage()" aria-label="Previous page">
+                <lucide-icon [img]="ChevronLeftIcon" [size]="14" />
+              </button>
+              <span class="adm__page-info">{{ pageIndex() + 1 }} / {{ totalPages() }}</span>
+              <button class="adm__page-btn" [disabled]="pageIndex() === totalPages() - 1" (click)="nextPage()" aria-label="Next page">
+                <lucide-icon [img]="ChevronRightIcon" [size]="14" />
+              </button>
+            </div>
+          </div>
+        }
       }
     </div>
 
@@ -97,11 +210,16 @@
       <div class="adm__modal" (click)="$event.stopPropagation()">
 
         <div class="adm__modal-header">
-          <h2 class="adm__modal-title">
-            {{ modalMode() === 'create' ? 'Create user' : 'Edit user' }}
-          </h2>
+          <div class="adm__modal-title-row">
+            <div class="adm__modal-icon">
+              <lucide-icon [img]="modalMode() === 'create' ? UserPlusIcon : PencilIcon" [size]="16" />
+            </div>
+            <h2 class="adm__modal-title">
+              {{ modalMode() === 'create' ? 'Create user' : 'Edit user' }}
+            </h2>
+          </div>
           <button class="adm__modal-close" (click)="closeModal()" aria-label="Close">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <lucide-icon [img]="XIcon" [size]="16" />
           </button>
         </div>
 
@@ -112,34 +230,66 @@
         <form [formGroup]="form" (ngSubmit)="onSave()" class="adm__modal-form" novalidate>
 
           <div class="adm__field">
-            <label class="adm__label">Full name</label>
-            <input type="text" class="adm__input" formControlName="fullName" placeholder="Jane Smith"
+            <label class="adm__label" for="adm-fullName">Full name</label>
+            <input id="adm-fullName" type="text" class="adm__input" formControlName="fullName" placeholder="Jane Smith"
               [class.adm__input--error]="form.controls.fullName.invalid && form.controls.fullName.touched" />
           </div>
 
           <div class="adm__field">
-            <label class="adm__label">Email address</label>
-            <input type="email" class="adm__input" formControlName="email" placeholder="jane@ncompasstv.com"
+            <label class="adm__label" for="adm-email">Email address</label>
+            <input id="adm-email" type="email" class="adm__input" formControlName="email" placeholder="jane@ncompasstv.com"
               [class.adm__input--error]="form.controls.email.invalid && form.controls.email.touched" />
           </div>
 
           <div class="adm__field">
-            <label class="adm__label">
+            <label class="adm__label" for="adm-password">
               Password
               @if (modalMode() === 'edit') {
                 <span class="adm__label-hint">(leave blank to keep current)</span>
               }
             </label>
-            <input type="password" class="adm__input" formControlName="password" placeholder="Min. 8 characters"
+            <input id="adm-password" type="password" class="adm__input" formControlName="password" placeholder="Min. 8 characters"
               [class.adm__input--error]="form.controls.password.invalid && form.controls.password.touched" />
           </div>
 
+          <!-- Role picker -->
           <div class="adm__field">
             <label class="adm__label">Role</label>
-            <select class="adm__input adm__select" formControlName="role">
-              <option value="member">member — read-only access</option>
-              <option value="admin">admin — full access</option>
-            </select>
+            <div class="adm__role-picker">
+
+              <label class="adm__role-opt" [class.adm__role-opt--active]="form.controls.role.value === 'member'">
+                <input class="adm__role-opt-radio" type="radio" formControlName="role" value="member" />
+                <div class="adm__role-opt-icon adm__role-opt-icon--member">
+                  <lucide-icon [img]="UserIcon" [size]="15" />
+                </div>
+                <div class="adm__role-opt-body">
+                  <span class="adm__role-opt-name">Member</span>
+                  <span class="adm__role-opt-desc">Read-only access</span>
+                </div>
+                @if (form.controls.role.value === 'member') {
+                  <div class="adm__role-opt-check">
+                    <lucide-icon [img]="CheckIcon" [size]="11" />
+                  </div>
+                }
+              </label>
+
+              <label class="adm__role-opt adm__role-opt--admin-variant" [class.adm__role-opt--active]="form.controls.role.value === 'admin'">
+                <input class="adm__role-opt-radio" type="radio" formControlName="role" value="admin" />
+                <div class="adm__role-opt-icon adm__role-opt-icon--admin">
+                  <lucide-icon [img]="ShieldIcon" [size]="15" />
+                </div>
+                <div class="adm__role-opt-body">
+                  <span class="adm__role-opt-name">Admin</span>
+                  <span class="adm__role-opt-desc">Full access</span>
+                </div>
+                @if (form.controls.role.value === 'admin') {
+                  <div class="adm__role-opt-check adm__role-opt-check--admin">
+                    <lucide-icon [img]="CheckIcon" [size]="11" />
+                  </div>
+                }
+              </label>
+
+            </div>
           </div>
 
           <div class="adm__modal-footer">
@@ -162,7 +312,17 @@
   @if (deleteTarget()) {
     <div class="adm__overlay" (click)="cancelDelete()">
       <div class="adm__modal adm__modal--sm" (click)="$event.stopPropagation()">
-        <h2 class="adm__modal-title">Delete user?</h2>
+        <div class="adm__modal-header">
+          <div class="adm__modal-title-row">
+            <div class="adm__modal-icon adm__modal-icon--danger">
+              <lucide-icon [img]="Trash2Icon" [size]="16" />
+            </div>
+            <h2 class="adm__modal-title">Delete user?</h2>
+          </div>
+          <button class="adm__modal-close" (click)="cancelDelete()" aria-label="Close">
+            <lucide-icon [img]="XIcon" [size]="16" />
+          </button>
+        </div>
         <p class="adm__modal-body">
           <strong>{{ deleteTarget()!.email }}</strong> will lose all access immediately.
           This cannot be undone.
@@ -173,7 +333,7 @@
             @if (isDeleting()) {
               <span class="adm__spinner adm__spinner--sm"></span> Deleting…
             } @else {
-              Delete
+              Delete user
             }
           </button>
         </div>

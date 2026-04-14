@@ -39,6 +39,12 @@
     &--open { transform: translateX(0); }
   }
 
+  // ── Pinned top (brand + search) ────────────────────────────────────────
+
+  &__top {
+    @apply flex flex-col shrink-0 border-b border-[rgba(255,255,255,0.07)];
+  }
+
   // ── Scrollable nav section ─────────────────────────────────────────────
 
   &__scroll {
@@ -88,7 +94,7 @@
   // ── Search ─────────────────────────────────────────────────────────────
 
   &__search-wrap {
-    @apply py-[12px] px-[14px] border-b border-[rgba(255,255,255,0.07)];
+    @apply py-[12px] px-[14px];
   }
 
   &__search-btn {

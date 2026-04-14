@@ -1,6 +1,11 @@
-import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { Component, effect, inject, signal, computed, untracked, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import {
+  LucideAngularModule,
+  UserPlus, Pencil, Trash2, Shield, User, ArrowLeft, LogOut, X, Check, Users, Search,
+  ChevronLeft, ChevronRight,
+} from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import type { AdminUserRecord, UserRole } from '../../core/models/profile.model';
 
@@ -8,7 +13,7 @@ type ModalMode = 'create' | 'edit';
 
 @Component({
   selector: 'app-admin',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LucideAngularModule],
   templateUrl: './admin.html',
   styleUrl: './admin.scss',
 })
@@ -36,6 +41,55 @@ export class Admin implements OnInit {
   // Current user (so we can't delete ourselves)
   protected readonly currentUserId = computed(() => this._auth.user()?.id);
 
+  // Stats
+  protected readonly adminCount  = computed(() => this.users().filter(u => u.role === 'admin').length);
+  protected readonly memberCount = computed(() => this.users().filter(u => u.role === 'member').length);
+
+  // Search / Filter
+  protected readonly searchQuery   = signal('');
+  protected readonly roleFilter    = signal<'all' | 'admin' | 'member'>('all');
+  protected readonly filteredUsers = computed(() => {
+    const q    = this.searchQuery().toLowerCase().trim();
+    const role = this.roleFilter();
+    return this.users().filter(u => {
+      const matchesRole   = role === 'all' || u.role === role;
+      const matchesSearch = !q ||
+        (u.full_name?.toLowerCase().includes(q) ?? false) ||
+        u.email.toLowerCase().includes(q);
+      return matchesRole && matchesSearch;
+    });
+  });
+
+  // Pagination
+  protected readonly pageSize       = signal(10);
+  protected readonly pageIndex      = signal(0);
+  protected readonly totalPages     = computed(() =>
+    Math.max(1, Math.ceil(this.filteredUsers().length / this.pageSize()))
+  );
+  protected readonly paginatedUsers = computed(() => {
+    const start = this.pageIndex() * this.pageSize();
+    return this.filteredUsers().slice(start, start + this.pageSize());
+  });
+  protected readonly pageStart      = computed(() => this.pageIndex() * this.pageSize() + 1);
+  protected readonly pageEnd        = computed(() =>
+    Math.min(this.filteredUsers().length, (this.pageIndex() + 1) * this.pageSize())
+  );
+
+  // ── Icons ──────────────────────────────────────────────────────────────────
+  protected readonly UserPlusIcon  = UserPlus;
+  protected readonly PencilIcon    = Pencil;
+  protected readonly Trash2Icon    = Trash2;
+  protected readonly ShieldIcon    = Shield;
+  protected readonly UserIcon      = User;
+  protected readonly ArrowLeftIcon = ArrowLeft;
+  protected readonly LogOutIcon    = LogOut;
+  protected readonly XIcon         = X;
+  protected readonly CheckIcon     = Check;
+  protected readonly UsersIcon     = Users;
+  protected readonly SearchIcon       = Search;
+  protected readonly ChevronLeftIcon  = ChevronLeft;
+  protected readonly ChevronRightIcon = ChevronRight;
+
   // ── Form ───────────────────────────────────────────────────────────────────
   protected readonly form = this._fb.nonNullable.group({
     fullName: ['', Validators.required],
@@ -43,6 +97,15 @@ export class Admin implements OnInit {
     password: ['', Validators.minLength(8)],
     role:     ['member' as UserRole, Validators.required],
   });
+
+  constructor() {
+    // Reset to first page when search query or role filter changes
+    effect(() => {
+      this.searchQuery();
+      this.roleFilter();
+      untracked(() => this.pageIndex.set(0));
+    });
+  }
 
   async ngOnInit() {
     await this._loadUsers();
@@ -135,8 +198,11 @@ export class Admin implements OnInit {
     }
   }
 
+  protected prevPage() { if (this.pageIndex() > 0) this.pageIndex.update(p => p - 1); }
+  protected nextPage() { if (this.pageIndex() < this.totalPages() - 1) this.pageIndex.update(p => p + 1); }
+
   protected goToPortal() {
-    this._router.navigate(['/']);
+    this._router.navigate(['/portal']);
   }
 
   protected async signOut() {

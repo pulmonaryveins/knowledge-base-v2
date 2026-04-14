@@ -2,10 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { LucideAngularModule, ArrowLeft, ArrowRight, ExternalLink } from 'lucide-angular';
+import { BgRippleComponent } from '../../shared/components/bg-ripple/bg-ripple.component';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LucideAngularModule, BgRippleComponent],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -20,9 +22,18 @@ export class Login {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  protected readonly isSubmitting = signal(false);
-  protected readonly errorMessage = signal<string | null>(null);
-  protected readonly showPassword = signal(false);
+  protected readonly isSubmitting  = signal(false);
+  protected readonly errorMessage  = signal<string | null>(null);
+  protected readonly showPassword  = signal(false);
+  protected readonly mobileNavOpen = signal(false);
+
+  protected readonly ArrowLeftIcon    = ArrowLeft;
+  protected readonly ArrowRightIcon   = ArrowRight;
+  protected readonly ExternalLinkIcon = ExternalLink;
+
+  protected goToLanding() {
+    this._router.navigate(['/']);
+  }
 
   protected async onSubmit() {
     if (this.form.invalid || this.isSubmitting()) return;

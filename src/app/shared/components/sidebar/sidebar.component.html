@@ -12,8 +12,8 @@
 
 <aside class="sidebar" [class.sidebar--open]="mobileOpen()">
 
-  <!-- ── Scrollable nav area ────────────────────────────────────────────── -->
-  <div class="sidebar__scroll">
+  <!-- ── Pinned top: brand + search ───────────────────────────────────── -->
+  <div class="sidebar__top">
 
     <!-- Brand -->
     <div class="sidebar__brand">
@@ -38,6 +38,11 @@
         <kbd class="sidebar__search-kbd">⌘K</kbd>
       </button>
     </div>
+
+  </div>
+
+  <!-- ── Scrollable nav area ────────────────────────────────────────────── -->
+  <div class="sidebar__scroll">
 
     <!-- Teams -->
     <div class="sidebar__section">
