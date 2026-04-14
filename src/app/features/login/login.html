@@ -1,0 +1,97 @@
+<div class="login">
+
+  <!-- Background orbs -->
+  <div class="login__orb login__orb--1" aria-hidden="true"></div>
+  <div class="login__orb login__orb--2" aria-hidden="true"></div>
+
+  <div class="login__card">
+
+    <!-- Brand -->
+    <div class="login__brand">
+      <img src="logo.png" alt="NCompassTV" class="login__logo" />
+      <div class="login__brand-text">
+        <span class="login__brand-name">NCompassTV</span>
+        <span class="login__brand-sub">DEV PORTAL</span>
+      </div>
+    </div>
+
+    <h1 class="login__title">Welcome back</h1>
+    <p class="login__subtitle">Sign in to access the developer portal.</p>
+
+    <!-- Error banner -->
+    @if (errorMessage()) {
+      <div class="login__error" role="alert">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login__form" novalidate>
+
+      <div class="login__field">
+        <label class="login__label" for="email">Email address</label>
+        <input
+          id="email"
+          type="email"
+          class="login__input"
+          [class.login__input--error]="form.controls.email.invalid && form.controls.email.touched"
+          formControlName="email"
+          placeholder="you@ncompasstv.com"
+          autocomplete="email"
+        />
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+          <span class="login__field-error">Enter a valid email address.</span>
+        }
+      </div>
+
+      <div class="login__field">
+        <label class="login__label" for="password">Password</label>
+        <div class="login__input-wrap">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="login__input"
+            [class.login__input--error]="form.controls.password.invalid && form.controls.password.touched"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="login__eye"
+            (click)="showPassword.set(!showPassword())"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+          >
+            @if (showPassword()) {
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </button>
+        </div>
+        @if (form.controls.password.invalid && form.controls.password.touched) {
+          <span class="login__field-error">Password must be at least 6 characters.</span>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="login__btn"
+        [disabled]="isSubmitting()"
+      >
+        @if (isSubmitting()) {
+          <span class="login__spinner" aria-hidden="true"></span>
+          Signing in…
+        } @else {
+          Sign in
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        }
+      </button>
+
+    </form>
+
+    <p class="login__note">No self-registration. Contact an administrator to get access.</p>
+
+  </div>
+</div>

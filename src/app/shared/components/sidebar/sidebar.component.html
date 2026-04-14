@@ -11,109 +11,156 @@
 }
 
 <aside class="sidebar" [class.sidebar--open]="mobileOpen()">
-  <!-- Brand -->
-  <div class="sidebar__brand">
-    <div class="sidebar__logo">
-      <img class="sidebar__logo-img" src="logo.png" alt="NCompassTV logo" />
-    </div>
-    <div class="sidebar__brand-text">
-      <span class="sidebar__brand-name">NCompassTV</span>
-      <span class="sidebar__brand-sub">DEV PORTAL</span>
-    </div>
-    <!-- Close button (mobile only) -->
-    <button class="sidebar__close" (click)="closeMobile()" aria-label="Close navigation">
-      <lucide-icon [img]="CloseIcon" [size]="16" />
-    </button>
-  </div>
 
-  <!-- Search Button -->
-  <div class="sidebar__search-wrap">
-    <button class="sidebar__search-btn" (click)="openSearch()">
-      <lucide-icon class="sidebar__search-icon" [img]="SearchIcon" [size]="13" />
-      <span class="sidebar__search-placeholder">Search the portal…</span>
-      <kbd class="sidebar__search-kbd">⌘K</kbd>
-    </button>
-  </div>
+  <!-- ── Scrollable nav area ────────────────────────────────────────────── -->
+  <div class="sidebar__scroll">
 
-  <!-- Teams -->
-  <div class="sidebar__section">
-    <span class="sidebar__section-label">TEAMS</span>
-
-    @for (team of teams(); track team.key) {
-      <div class="sidebar__team-group">
-        <button
-          class="sidebar__team-btn"
-          [class.sidebar__team-btn--active]="team.key === activeKey()"
-          [style.--team-color]="team.color"
-          (click)="switchTeam(team.key)"
-        >
-          <span class="sidebar__team-icon">
-            @if (team.logoUrl) {
-              <img class="sidebar__team-logo" [src]="team.logoUrl" [alt]="team.label" />
-            } @else {
-              <lucide-icon [img]="teamIcon(team.key)" [size]="15" />
-            }
-          </span>
-          <span class="sidebar__team-name">{{ team.label }}</span>
-          <span class="sidebar__team-chevron" [class.sidebar__team-chevron--open]="isExpanded(team.key)">
-            <lucide-icon [img]="ChevronDownIcon" [size]="13" />
-          </span>
-        </button>
-
-        <!-- Animated projects wrapper — always in DOM, toggled via CSS max-height -->
-        @if (team.projects.length > 0) {
-          <div
-            class="sidebar__team-projects-wrap"
-            [class.sidebar__team-projects-wrap--open]="isExpanded(team.key)"
-          >
-            <ul class="sidebar__projects">
-              @for (project of team.projects; track project.id) {
-                <li class="sidebar__project">
-                  <button
-                    class="sidebar__project-btn"
-                    [class.sidebar__project-btn--active]="project.id === activeProjectId()"
-                    (click)="toggleProject(project.id)"
-                  >
-                    <span class="sidebar__project-icon">
-                      <lucide-icon [img]="projectIcon(project.icon)" [size]="12" />
-                    </span>
-                    <span class="sidebar__project-name">{{ project.name }}</span>
-                    <app-status-badge [status]="project.status" />
-                  </button>
-                </li>
-              }
-            </ul>
-          </div>
-        }
+    <!-- Brand -->
+    <div class="sidebar__brand">
+      <div class="sidebar__logo">
+        <img class="sidebar__logo-img" src="logo.png" alt="NCompassTV logo" />
       </div>
-    }
-  </div>
-
-  <!-- Tools -->
-  <div class="sidebar__section">
-    <span class="sidebar__section-label">TOOLS</span>
-
-    @for (tool of toolsList(); track tool.key) {
-      <button
-        class="sidebar__tool-btn"
-        [class.sidebar__tool-btn--active]="tool.key === activeToolKey()"
-        [style.--tool-color]="tool.color"
-        (click)="switchToTool(tool.key)"
-      >
-        <span class="sidebar__tool-icon">
-          <img class="sidebar__tool-logo" [src]="tool.logoUrl" [alt]="tool.label" />
-        </span>
-        <span class="sidebar__tool-name">{{ tool.label }}</span>
+      <div class="sidebar__brand-text">
+        <span class="sidebar__brand-name">NCompassTV</span>
+        <span class="sidebar__brand-sub">DEV PORTAL</span>
+      </div>
+      <!-- Close button (mobile only) -->
+      <button class="sidebar__close" (click)="closeMobile()" aria-label="Close navigation">
+        <lucide-icon [img]="CloseIcon" [size]="16" />
       </button>
-    }
-  </div>
+    </div>
 
-  <!-- Footer -->
-  <div class="sidebar__footer">
-    <button class="sidebar__back-btn" (click)="goHome()">
-      <lucide-icon [img]="ArrowLeftIcon" [size]="12" />
-      Back to Home
-    </button>
-    <span class="sidebar__footer-text">NCompassTV · Dev Portal · 2026</span>
+    <!-- Search Button -->
+    <div class="sidebar__search-wrap">
+      <button class="sidebar__search-btn" (click)="openSearch()">
+        <lucide-icon class="sidebar__search-icon" [img]="SearchIcon" [size]="13" />
+        <span class="sidebar__search-placeholder">Search the portal…</span>
+        <kbd class="sidebar__search-kbd">⌘K</kbd>
+      </button>
+    </div>
+
+    <!-- Teams -->
+    <div class="sidebar__section">
+      <span class="sidebar__section-label">TEAMS</span>
+
+      @for (team of teams(); track team.key) {
+        <div class="sidebar__team-group">
+          <button
+            class="sidebar__team-btn"
+            [class.sidebar__team-btn--active]="team.key === activeKey()"
+            [style.--team-color]="team.color"
+            (click)="switchTeam(team.key)"
+          >
+            <span class="sidebar__team-icon">
+              @if (team.logoUrl) {
+                <img class="sidebar__team-logo" [src]="team.logoUrl" [alt]="team.label" />
+              } @else {
+                <lucide-icon [img]="teamIcon(team.key)" [size]="15" />
+              }
+            </span>
+            <span class="sidebar__team-name">{{ team.label }}</span>
+            <span class="sidebar__team-chevron" [class.sidebar__team-chevron--open]="isExpanded(team.key)">
+              <lucide-icon [img]="ChevronDownIcon" [size]="13" />
+            </span>
+          </button>
+
+          <!-- Animated projects wrapper — always in DOM, toggled via CSS max-height -->
+          @if (team.projects.length > 0) {
+            <div
+              class="sidebar__team-projects-wrap"
+              [class.sidebar__team-projects-wrap--open]="isExpanded(team.key)"
+            >
+              <ul class="sidebar__projects">
+                @for (project of team.projects; track project.id) {
+                  <li class="sidebar__project">
+                    <button
+                      class="sidebar__project-btn"
+                      [class.sidebar__project-btn--active]="project.id === activeProjectId()"
+                      (click)="toggleProject(project.id)"
+                    >
+                      <span class="sidebar__project-icon">
+                        <lucide-icon [img]="projectIcon(project.icon)" [size]="12" />
+                      </span>
+                      <span class="sidebar__project-name">{{ project.name }}</span>
+                      <app-status-badge [status]="project.status" />
+                    </button>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Tools -->
+    <div class="sidebar__section">
+      <span class="sidebar__section-label">TOOLS</span>
+
+      @for (tool of toolsList(); track tool.key) {
+        <button
+          class="sidebar__tool-btn"
+          [class.sidebar__tool-btn--active]="tool.key === activeToolKey()"
+          [style.--tool-color]="tool.color"
+          (click)="switchToTool(tool.key)"
+        >
+          <span class="sidebar__tool-icon">
+            <img class="sidebar__tool-logo" [src]="tool.logoUrl" [alt]="tool.label" />
+          </span>
+          <span class="sidebar__tool-name">{{ tool.label }}</span>
+        </button>
+      }
+    </div>
+
   </div>
+  <!-- end sidebar__scroll -->
+
+  <!-- ── Pinned bottom area (always visible) ───────────────────────────── -->
+  <div class="sidebar__bottom">
+
+    @if (isAuthenticated()) {
+
+      <!-- Profile card with hover popover -->
+      <div class="sidebar__profile-wrap">
+
+        <!-- Popover (appears above on hover) -->
+        <div class="sidebar__profile-popover">
+          @if (isAdmin()) {
+            <button class="sidebar__popover-item sidebar__popover-item--admin" (click)="goAdmin()">
+              <lucide-icon [img]="LayoutDashboardIcon" [size]="13" />
+              Admin Panel
+            </button>
+          }
+          <button class="sidebar__popover-item sidebar__popover-item--signout" (click)="signOut()">
+            <lucide-icon [img]="LogOutIcon" [size]="13" />
+            Sign Out
+          </button>
+        </div>
+
+        <!-- Profile card -->
+        <div class="sidebar__profile">
+          <div class="sidebar__profile-avatar">{{ initials() }}</div>
+          <div class="sidebar__profile-info">
+            <div class="sidebar__profile-top">
+              <span class="sidebar__profile-name">{{ displayName() }}</span>
+              <span class="sidebar__profile-role" [class.sidebar__profile-role--admin]="isAdmin()">
+                {{ isAdmin() ? 'ADMIN' : 'MEMBER' }}
+              </span>
+            </div>
+            <span class="sidebar__profile-email">{{ displayEmail() }}</span>
+          </div>
+        </div>
+
+      </div>
+
+    }
+
+    <!-- Footer -->
+    <div class="sidebar__footer">
+      <span class="sidebar__footer-text">NCompassTV · Dev Portal · 2026</span>
+    </div>
+
+  </div>
+  <!-- end sidebar__bottom -->
+
 </aside>

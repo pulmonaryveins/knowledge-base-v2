@@ -1,0 +1,167 @@
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
+import type { AdminUserRecord, UserRole } from '../../core/models/profile.model';
+
+type ModalMode = 'create' | 'edit';
+
+@Component({
+  selector: 'app-admin',
+  imports: [ReactiveFormsModule],
+  templateUrl: './admin.html',
+  styleUrl: './admin.scss',
+})
+export class Admin implements OnInit {
+  private readonly _auth   = inject(AuthService);
+  private readonly _router = inject(Router);
+  private readonly _fb     = inject(FormBuilder);
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  protected readonly users        = signal<AdminUserRecord[]>([]);
+  protected readonly isLoading    = signal(true);
+  protected readonly tableError   = signal<string | null>(null);
+
+  // Modal
+  protected readonly modalOpen    = signal(false);
+  protected readonly modalMode    = signal<ModalMode>('create');
+  protected readonly modalError   = signal<string | null>(null);
+  protected readonly isSaving     = signal(false);
+  protected readonly editingId    = signal<string | null>(null);
+
+  // Delete confirmation
+  protected readonly deleteTarget = signal<AdminUserRecord | null>(null);
+  protected readonly isDeleting   = signal(false);
+
+  // Current user (so we can't delete ourselves)
+  protected readonly currentUserId = computed(() => this._auth.user()?.id);
+
+  // ── Form ───────────────────────────────────────────────────────────────────
+  protected readonly form = this._fb.nonNullable.group({
+    fullName: ['', Validators.required],
+    email:    ['', [Validators.required, Validators.email]],
+    password: ['', Validators.minLength(8)],
+    role:     ['member' as UserRole, Validators.required],
+  });
+
+  async ngOnInit() {
+    await this._loadUsers();
+  }
+
+  // ── Actions ────────────────────────────────────────────────────────────────
+
+  protected openCreateModal() {
+    this.form.reset({ role: 'member' });
+    this.form.controls.password.setValidators([Validators.required, Validators.minLength(8)]);
+    this.form.controls.password.updateValueAndValidity();
+    this.modalMode.set('create');
+    this.editingId.set(null);
+    this.modalError.set(null);
+    this.modalOpen.set(true);
+  }
+
+  protected openEditModal(user: AdminUserRecord) {
+    this.form.reset({
+      fullName: user.full_name ?? '',
+      email:    user.email,
+      password: '',
+      role:     user.role,
+    });
+    // Password optional on edit
+    this.form.controls.password.setValidators(
+      (v) => v.value ? Validators.minLength(8)(v) : null
+    );
+    this.form.controls.password.updateValueAndValidity();
+    this.modalMode.set('edit');
+    this.editingId.set(user.id);
+    this.modalError.set(null);
+    this.modalOpen.set(true);
+  }
+
+  protected closeModal() {
+    this.modalOpen.set(false);
+  }
+
+  protected async onSave() {
+    if (this.form.invalid || this.isSaving()) return;
+
+    this.isSaving.set(true);
+    this.modalError.set(null);
+
+    const { fullName, email, password, role } = this.form.getRawValue();
+
+    try {
+      if (this.modalMode() === 'create') {
+        await this._auth.adminCreateUser({ fullName, email, password, role });
+      } else {
+        await this._auth.adminUpdateUser({
+          userId: this.editingId()!,
+          fullName,
+          email,
+          role,
+          ...(password ? { password } : {}),
+        });
+      }
+      this.modalOpen.set(false);
+      await this._loadUsers();
+    } catch (err: unknown) {
+      this.modalError.set(err instanceof Error ? err.message : 'An error occurred.');
+    } finally {
+      this.isSaving.set(false);
+    }
+  }
+
+  protected confirmDelete(user: AdminUserRecord) {
+    this.deleteTarget.set(user);
+  }
+
+  protected cancelDelete() {
+    this.deleteTarget.set(null);
+  }
+
+  protected async executeDelete() {
+    const target = this.deleteTarget();
+    if (!target || this.isDeleting()) return;
+
+    this.isDeleting.set(true);
+    try {
+      await this._auth.adminDeleteUser(target.id);
+      this.deleteTarget.set(null);
+      await this._loadUsers();
+    } catch (err: unknown) {
+      this.tableError.set(err instanceof Error ? err.message : 'Delete failed.');
+    } finally {
+      this.isDeleting.set(false);
+    }
+  }
+
+  protected goToPortal() {
+    this._router.navigate(['/']);
+  }
+
+  protected async signOut() {
+    await this._auth.signOut();
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
+  private async _loadUsers() {
+    this.isLoading.set(true);
+    this.tableError.set(null);
+    try {
+      const list = await this._auth.adminListUsers();
+      this.users.set(list);
+    } catch (err: unknown) {
+      this.tableError.set(err instanceof Error ? err.message : 'Failed to load users.');
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  protected formatDate(iso: string | null): string {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric',
+    });
+  }
+}

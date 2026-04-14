@@ -8,11 +8,14 @@ import {
   Menu,
   X,
   ArrowLeft,
+  LogOut,
+  LayoutDashboard,
   LucideIconData,
 } from 'lucide-angular';
 import { Router } from '@angular/router';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { DocsDataService } from '../../../core/services/docs-data.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { StatusBadgeComponent } from '../status-badge/status-badge.component';
 import { Team, Tool } from '../../../core/models';
 import { getTeamIcon, getAppIcon, getToolIcon } from '../../../core/utils/icons';
@@ -28,6 +31,7 @@ export class SidebarComponent {
   private readonly _nav = inject(NavigationService);
   private readonly _docsData = inject(DocsDataService);
   private readonly _router = inject(Router);
+  private readonly _auth = inject(AuthService);
 
   // ── Lucide icon references exposed to template ──────────────────────────
   protected readonly SearchIcon = Search;
@@ -35,6 +39,31 @@ export class SidebarComponent {
   protected readonly MenuIcon = Menu;
   protected readonly CloseIcon = X;
   protected readonly ArrowLeftIcon = ArrowLeft;
+  protected readonly LogOutIcon = LogOut;
+  protected readonly LayoutDashboardIcon = LayoutDashboard;
+
+  // ── Auth state ───────────────────────────────────────────────────────────
+  protected readonly profile         = this._auth.profile;
+  protected readonly isAdmin         = this._auth.isAdmin;
+  protected readonly isAuthenticated = this._auth.isAuthenticated;
+
+  /** Display name: full_name → email prefix → fallback */
+  protected readonly displayName = computed(() => {
+    const p = this._auth.profile();
+    if (p?.full_name) return p.full_name;
+    const email = p?.email ?? this._auth.user()?.email ?? '';
+    return email.split('@')[0] ?? 'User';
+  });
+
+  /** Email from profile or user object */
+  protected readonly displayEmail = computed(() =>
+    this._auth.profile()?.email ?? this._auth.user()?.email ?? ''
+  );
+
+  protected readonly initials = computed(() => {
+    const name = this.displayName();
+    return name.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase() || '?';
+  });
 
   // ── Mobile sidebar state ─────────────────────────────────────────────────
   protected readonly mobileOpen = signal(false);
@@ -123,5 +152,17 @@ export class SidebarComponent {
   /** Navigate back to the landing page */
   protected goHome(): void {
     this._router.navigate(['/']);
+  }
+
+  /** Navigate to the admin panel (admin only) */
+  protected goAdmin(): void {
+    this._router.navigate(['/admin']);
+    this.mobileOpen.set(false);
+  }
+
+  /** Sign out and redirect to login */
+  protected signOut(): void {
+    this._auth.signOut();
+    this.mobileOpen.set(false);
   }
 }

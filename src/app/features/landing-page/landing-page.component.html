@@ -33,8 +33,8 @@
       </nav>
 
       <!-- CTA -->
-      <button class="lp__nav-cta" (click)="enterPortal()">
-        Enter Portal
+      <button class="lp__nav-cta" (click)="navigateToLogin()">
+        Login
         <lucide-icon [img]="ArrowRightIcon" [size]="14" />
       </button>
 
@@ -54,8 +54,8 @@
       <a class="lp__nav-drawer-link lp__nav-drawer-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
         Official Site <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
       </a>
-      <button class="lp__nav-cta lp__nav-cta--drawer" (click)="enterPortal()">
-        Enter Portal <lucide-icon [img]="ArrowRightIcon" [size]="14" />
+      <button class="lp__nav-cta lp__nav-cta--drawer" (click)="navigateToLogin()">
+        Login <lucide-icon [img]="ArrowRightIcon" [size]="14" />
       </button>
     </div>
   </header>
@@ -111,8 +111,8 @@
         </p>
 
         <div class="lp__hero-actions">
-          <button class="lp__btn lp__btn--primary" (click)="enterPortal()">
-            Enter the Portal
+          <button class="lp__btn lp__btn--primary" (click)="navigateToLogin()">
+            Login to Portal
             <lucide-icon [img]="ArrowRightIcon" [size]="16" />
           </button>
           <a class="lp__btn lp__btn--ghost" href="#teams">
@@ -293,8 +293,10 @@
 
       <!-- Left: description + highlights + sectors -->
       <div class="lp__company-left" [appReveal]="'left'">
-        <span class="lp__section-eyebrow">About the Company</span>
-        <h2 class="lp__company-title">Your brand, seen<br>where it matters.</h2>
+        <div class="lp__company-header">
+          <span class="lp__section-eyebrow">About the Company</span>
+          <h2 class="lp__company-title">Your brand, seen<br>where it matters.</h2>
+        </div>
         <p class="lp__company-desc">
           N-Compass TV is a US-based indoor digital billboard company placing
           high-impact advertising screens in the high-traffic venues your customers

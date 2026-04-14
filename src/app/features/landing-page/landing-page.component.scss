@@ -901,10 +901,14 @@ $dark-3:  #0f1f3d;
   @apply flex flex-col gap-6 flex-1 min-w-0;
 }
 
-.lp__company-title {
-  @apply m-0 font-['Syne',_sans-serif] text-[32px] font-bold text-[var(--navy)] leading-[1.15];
+.lp__company-header {
+  @apply flex flex-col gap-3;
+}
 
-  @media (max-width: 480px) { @apply text-[24px]; }
+.lp__company-title {
+  @apply m-0 font-['Syne',_sans-serif] text-[36px] font-extrabold text-[var(--navy)] leading-[1.15];
+
+  @media (max-width: 768px) { @apply text-[28px]; }
 }
 
 .lp__company-desc {

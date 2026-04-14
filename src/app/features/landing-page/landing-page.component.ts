@@ -2,6 +2,7 @@
 
 import { Component, HostListener, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 import { LucideAngularModule } from 'lucide-angular';
 import { BgRippleComponent } from '../../shared/components/bg-ripple/bg-ripple.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
@@ -34,6 +35,7 @@ interface TermLine {
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
   private readonly _router = inject(Router);
+  private readonly _auth   = inject(AuthService);
 
   // ── Icons ────────────────────────────────────────────────────────────────
   protected readonly ArrowRightIcon    = ArrowRight;
@@ -50,8 +52,6 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   protected readonly Code2Icon        = Code2;
   protected readonly LayersIcon       = Layers;
 
-  protected readonly isLoading     = signal(true);
-
   // ── Terminal ─────────────────────────────────────────────────────────────
   protected readonly termLines = signal<TermLine[]>([]);
   protected readonly termDone  = signal(false);
@@ -64,18 +64,16 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     { prefix: '✓', pCls: 'lp__t-ok',  text: 'Added 412 packages in 4.1s',    tCls: '',          cmd: false },
     { prefix: '$', pCls: 'lp__t-dim', text: 'ng serve',                       tCls: 'lp__t-cmd', cmd: true  },
     { prefix: '✓', pCls: 'lp__t-ok',  text: 'Compiled successfully in 1.2s', tCls: '',          cmd: false },
-    { prefix: '➜', pCls: 'lp__t-dim', text: 'Server is running', tCls: 'lp__t-ok', cmd: false },
+    { prefix: '➜', pCls: 'lp__t-dim', text: 'http://localhost:4200',          tCls: 'lp__t-url', cmd: false },
   ] as const;
 
-  // ── Nav / scroll state ───────────────────────────────────────────────────
+  // ── Nav / scroll state ─────────────────────────────────────────────────── 
+  protected readonly isLoading     = signal(false);
   protected readonly navOpen       = signal(false);
   protected readonly scrolled      = signal(false);
   protected readonly scrollProgress = signal(0);
 
-  ngOnInit(): void {
-    this._tt.push(setTimeout(() => this.isLoading.set(false), 500));
-    this._runTerminal();
-  }
+  ngOnInit(): void { this._runTerminal(); }
   ngOnDestroy(): void { this._tt.forEach(clearTimeout); }
 
   private _run(ms: number, fn: () => void) { this._tt.push(setTimeout(fn, ms)); }
@@ -274,14 +272,28 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     'Community-focused coverage putting brands in front of local customers daily',
   ];
 
-  /** Navigate into the portal docs shell */
-  public enterPortal(): void {
-    this._router.navigate(['/portal']);
+  /** Navigate to the login page */
+  public navigateToLogin(): void {
+    this._router.navigate(['/login']);
   }
 
-  /** Navigate into the portal docs shell to a specific team */
+  /** Navigate into the portal — requires login */
+  public enterPortal(): void {
+    if (this._auth.isAuthenticated()) {
+      this._router.navigate(['/portal']);
+    } else {
+      this._router.navigate(['/login'], { queryParams: { returnUrl: '/portal' } });
+    }
+  }
+
+  /** Navigate into the portal to a specific team — requires login */
   public goToTeam(key: string): void {
-    this._router.navigate(['/portal'], { queryParams: { team: key } });
+    const dest = `/portal?team=${key}`;
+    if (this._auth.isAuthenticated()) {
+      this._router.navigate(['/portal'], { queryParams: { team: key } });
+    } else {
+      this._router.navigate(['/login'], { queryParams: { returnUrl: dest } });
+    }
   }
 
   protected toggleNav(): void {
