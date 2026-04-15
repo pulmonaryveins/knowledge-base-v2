@@ -4,14 +4,27 @@ import { Router } from '@angular/router';
 import {
   LucideAngularModule,
   UserPlus, Pencil, Trash2, Shield, User, ArrowLeft, LogOut, X, Check, Users, Search,
-  ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight, FileText, Link, Upload, ExternalLink, FolderPlus, Folder, Plus, GripVertical,
 } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
+import { RdDocumentsService } from '../../core/services/rd-documents.service';
+import { RdSectionsService } from '../../core/services/rd-sections.service';
 import type { AdminUserRecord, UserRole } from '../../core/models/profile.model';
+import type { RdDocument } from '../../core/models/rd-document.model';
+import type { RdSection } from '../../core/models/rd-section.model';
 
 /** Modal can be in create-new or edit-existing mode. */
 type ModalMode = 'create' | 'edit';
+
+/** Active tab in the admin panel. */
+type AdminTab = 'users' | 'documents';
+
+/** Document modal can be in create-new or edit-existing mode. */
+type DocModalMode = 'create' | 'edit';
+
+/** How the document URL is provided — upload a file or paste an external link. */
+type DocLinkType = 'upload' | 'url';
 
 /**
  * Stricter email validator than Angular's built-in `Validators.email`.
@@ -48,10 +61,12 @@ function strictEmail(ctrl: AbstractControl): ValidationErrors | null {
   styleUrl: './admin.scss',
 })
 export class Admin implements OnInit {
-  private readonly _auth   = inject(AuthService);
-  private readonly _router = inject(Router);
-  private readonly _fb     = inject(FormBuilder);
-  private readonly _toast  = inject(ToastService);
+  private readonly _auth      = inject(AuthService);
+  private readonly _router    = inject(Router);
+  private readonly _fb        = inject(FormBuilder);
+  private readonly _toast     = inject(ToastService);
+  private readonly _rdDocs    = inject(RdDocumentsService);
+  private readonly _rdSections = inject(RdSectionsService);
 
   // ── Table state ────────────────────────────────────────────────────────────
 
@@ -144,25 +159,128 @@ export class Admin implements OnInit {
     Math.min(this.filteredUsers().length, (this.pageIndex() + 1) * this.pageSize())
   );
 
+  // ── Tab state ──────────────────────────────────────────────────────────────
+
+  /** Active top-level tab in the admin panel (`'users'` | `'documents'`). */
+  protected readonly activeTab = signal<AdminTab>('users');
+
+  // ── R&D Documents state ────────────────────────────────────────────────────
+
+  /** Full list of R&D documents returned by the Edge Function. */
+  protected readonly documents      = signal<RdDocument[]>([]);
+  /** True while the documents fetch is in-flight. */
+  protected readonly docsLoading    = signal(false);
+  /** Error message shown in the documents table-level error banner. */
+  protected readonly docsError      = signal<string | null>(null);
+
+  /** Controls document create/edit modal visibility. */
+  protected readonly docModalOpen   = signal(false);
+  /** Distinguishes create vs. edit doc flows. */
+  protected readonly docModalMode   = signal<DocModalMode>('create');
+  /** Error message shown inside the document modal. */
+  protected readonly docModalError  = signal<string | null>(null);
+  /** True while the document save request is in-flight. */
+  protected readonly docSaving      = signal(false);
+  /** UUID of the document being edited; `null` in create mode. */
+  protected readonly editingDocId   = signal<string | null>(null);
+
+  /** Tracks whether the user has attempted to submit, to show section validation errors. */
+  protected readonly docSectionTouched = signal(false);
+  /** Whether the user wants to upload a file or paste a URL. */
+  protected readonly docLinkType    = signal<DocLinkType>('url');
+  /** The `File` object staged for upload (only set when `docLinkType === 'upload'`). */
+  protected readonly stagedFile     = signal<File | null>(null);
+
+  /** Display name of the staged file for the UI. */
+  protected readonly stagedFileName = signal<string>('');
+  /** R&D document staged for deletion. */
+  protected readonly deleteDocTarget = signal<RdDocument | null>(null);
+  /** True while the document delete request is in-flight. */
+  protected readonly docDeleting     = signal(false);
+
+  /** Error shown inside the document delete confirmation. */
+  protected readonly deleteDocError  = signal<string | null>(null);
+
+  // ── Section management state ───────────────────────────────────────────────
+
+  /** Full list of sections (with subsections) loaded from rd_sections table. */
+  protected readonly sections         = signal<RdSection[]>([]);
+  /** True while sections are being loaded or saved. */
+  protected readonly sectionsLoading  = signal(false);
+  /** Controls the section management modal visibility. */
+  protected readonly secMgmtOpen      = signal(false);
+  /** Inline error inside the section management modal. */
+  protected readonly secMgmtError     = signal<string | null>(null);
+  /** Input value for the new section name field. */
+  protected readonly newSectionInput  = signal('');
+  /** ID of the section currently being renamed; null when none. */
+  protected readonly editingSecId     = signal<string | null>(null);
+  /** Current value inside the rename input field. */
+  protected readonly editingSecInput  = signal('');
+  /** ID of the section being dragged. */
+  protected readonly dragSectionId   = signal<string | null>(null);
+  /** ID of the section currently hovered during drag (drop target). */
+  protected readonly dragOverSecId   = signal<string | null>(null);
+  /** True while a section mutation (create / rename / delete / reorder) is in flight. */
+  protected readonly secMgmtSaving   = signal(false);
+
+  /**
+   * The section dropdown value in the doc modal.
+   * `''` = no section, any other string = existing section name.
+   */
+  protected readonly docSectionSelect    = signal<string>('');
+
+  /** Unique section names sourced exclusively from the rd_sections table. */
+  protected readonly availableSections = computed<string[]>(() =>
+    this.sections().map(s => s.name)
+  );
+
+  /**
+   * Per-section document counts shown in the Documents tab overview.
+   * Sections with no label are grouped under `'(No section)'`.
+   */
+  protected readonly sectionStats = computed(() => {
+    const map = new Map<string, number>();
+    for (const doc of this.documents()) {
+      const key = doc.section?.trim() || '(No section)';
+      map.set(key, (map.get(key) ?? 0) + 1);
+    }
+    return [...map.entries()]
+      .map(([section, count]) => ({ section, count }))
+      .sort((a, b) => {
+        if (a.section === '(No section)') return 1;
+        if (b.section === '(No section)') return -1;
+        return a.section.localeCompare(b.section);
+      });
+  });
+
   // ── Icon references ────────────────────────────────────────────────────────
-  protected readonly UserPlusIcon     = UserPlus;
-  protected readonly PencilIcon       = Pencil;
-  protected readonly Trash2Icon       = Trash2;
-  protected readonly ShieldIcon       = Shield;
-  protected readonly UserIcon         = User;
-  protected readonly ArrowLeftIcon    = ArrowLeft;
-  protected readonly LogOutIcon       = LogOut;
-  protected readonly XIcon            = X;
-  protected readonly CheckIcon        = Check;
-  protected readonly UsersIcon        = Users;
-  protected readonly SearchIcon       = Search;
-  protected readonly ChevronLeftIcon  = ChevronLeft;
-  protected readonly ChevronRightIcon = ChevronRight;
+  protected readonly UserPlusIcon      = UserPlus;
+  protected readonly PencilIcon        = Pencil;
+  protected readonly Trash2Icon        = Trash2;
+  protected readonly ShieldIcon        = Shield;
+  protected readonly UserIcon          = User;
+  protected readonly ArrowLeftIcon     = ArrowLeft;
+  protected readonly LogOutIcon        = LogOut;
+  protected readonly XIcon             = X;
+  protected readonly CheckIcon         = Check;
+  protected readonly UsersIcon         = Users;
+  protected readonly SearchIcon        = Search;
+  protected readonly ChevronLeftIcon   = ChevronLeft;
+  protected readonly ChevronRightIcon  = ChevronRight;
+  protected readonly FileTextIcon      = FileText;
+  protected readonly LinkIcon          = Link;
+  protected readonly UploadIcon        = Upload;
+  protected readonly ExternalLinkIcon  = ExternalLink;
+  protected readonly FolderPlusIcon    = FolderPlus;
+  protected readonly FolderIcon        = Folder;
+  protected readonly PlusIcon          = Plus;
+  protected readonly GripVerticalIcon  = GripVertical;
 
   // ── Reactive form ──────────────────────────────────────────────────────────
 
   /**
-   * Shared form used by both create and edit modals.
+   * Shared form used by both create and edit user modals.
    * Password validators are swapped dynamically:
    * - Create: required + minLength(8)
    * - Edit: optional, but minLength(8) if a value is provided
@@ -172,6 +290,15 @@ export class Admin implements OnInit {
     email:    ['', [Validators.required, strictEmail]],
     password: ['', Validators.minLength(8)],
     role:     ['member' as UserRole, Validators.required],
+  });
+
+  /**
+   * Form for the R&D document create/edit modal.
+   * `externalUrl` is only required when `docLinkType === 'url'`.
+   */
+  protected readonly docForm = this._fb.nonNullable.group({
+    title:       ['', Validators.required],
+    externalUrl: [''],
   });
 
   constructor() {
@@ -186,6 +313,25 @@ export class Admin implements OnInit {
   /** Loads users on first render. */
   async ngOnInit(): Promise<void> {
     await this._loadUsers();
+  }
+
+  // ── Tab navigation ─────────────────────────────────────────────────────────
+
+  /**
+   * Switches the active admin tab and lazy-loads documents on first visit.
+   *
+   * @param tab The tab to activate (`'users'` | `'documents'`).
+   */
+  protected async switchTab(tab: AdminTab): Promise<void> {
+    this.activeTab.set(tab);
+    if (tab === 'documents') {
+      if (this.documents().length === 0 && !this.docsLoading()) {
+        await this._loadDocuments();
+      }
+      if (this.sections().length === 0 && !this.sectionsLoading()) {
+        await this._loadSections();
+      }
+    }
   }
 
   // ── Modal actions ──────────────────────────────────────────────────────────
@@ -357,6 +503,326 @@ export class Admin implements OnInit {
     await this._auth.signOut();
   }
 
+  // ── Document modal actions ─────────────────────────────────────────────────
+
+  /**
+   * Resets the document form to create-mode defaults and opens the modal.
+   * Defaults to URL link type.
+   */
+  protected openCreateDocModal(): void {
+    this.docForm.reset({ title: '', externalUrl: '' });
+    this.docModalMode.set('create');
+    this.editingDocId.set(null);
+    this.docModalError.set(null);
+    this.docLinkType.set('url');
+    this.stagedFile.set(null);
+    this.stagedFileName.set('');
+    this.docSectionSelect.set('');
+    this.docSectionTouched.set(false);
+    this.docModalOpen.set(true);
+  }
+
+  /**
+   * Pre-fills the document form with the given record's data and opens the
+   * modal in edit mode.
+   *
+   * @param doc The document record to edit.
+   */
+  protected openEditDocModal(doc: RdDocument): void {
+    this.docForm.reset({
+      title:       doc.title,
+      externalUrl: doc.file_path ? '' : doc.url,
+    });
+    this.docModalMode.set('edit');
+    this.editingDocId.set(doc.id);
+    this.docModalError.set(null);
+    this.docLinkType.set(doc.file_path ? 'upload' : 'url');
+    this.stagedFile.set(null);
+    this.stagedFileName.set(doc.file_path ? doc.url.split('/').pop() ?? '' : '');
+    this.docSectionSelect.set(doc.section ?? '');
+    this.docSectionTouched.set(false);
+    this.docModalOpen.set(true);
+  }
+
+  /** Closes the document create/edit modal without saving. */
+  protected closeDocModal(): void {
+    this.docModalOpen.set(false);
+  }
+
+  /**
+   * Updates the section dropdown signal and resets the subsection selection
+   * whenever the section changes (old subsection would belong to a different section).
+   *
+   * @param val Selected section value from the dropdown.
+   */
+  protected onSectionChange(val: string): void {
+    this.docSectionSelect.set(val);
+  }
+
+  /**
+   * Handles file input change — stages the selected file for upload.
+   *
+   * @param event The DOM `change` event from the file input.
+   */
+  protected onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file  = input.files?.[0] ?? null;
+    this.stagedFile.set(file);
+    this.stagedFileName.set(file?.name ?? '');
+  }
+
+  /**
+   * Validates the document form and either uploads the staged file or saves
+   * the external URL, then calls create or update via the Edge Function.
+   */
+  protected async onDocSave(): Promise<void> {
+    this.docForm.markAllAsTouched();
+    this.docSectionTouched.set(true);
+    if (this.docSaving()) return;
+
+    const { title, externalUrl } = this.docForm.getRawValue();
+
+    if (!title.trim()) {
+      this.docModalError.set('Title is required.');
+      return;
+    }
+
+    // Section is required
+    const sectionVal = this.docSectionSelect();
+
+    if (!sectionVal) {
+      this.docModalError.set('Section is required.');
+      return;
+    }
+
+    const isUpload = this.docLinkType() === 'upload';
+
+    if (isUpload && !this.stagedFile() && this.docModalMode() === 'create') {
+      this.docModalError.set('Please select a file to upload.');
+      return;
+    }
+    if (!isUpload && !externalUrl.trim()) {
+      this.docModalError.set('Please enter a URL.');
+      return;
+    }
+
+    this.docSaving.set(true);
+    this.docModalError.set(null);
+
+    try {
+      let url       = externalUrl.trim();
+      let file_path: string | null = null;
+
+      if (isUpload && this.stagedFile()) {
+        const uploaded = await this._rdDocs.uploadFile(this.stagedFile()!);
+        url       = uploaded.url;
+        file_path = uploaded.file_path;
+      } else if (isUpload && this.docModalMode() === 'edit') {
+        // Editing an upload record but no new file selected — keep existing values
+        const existing = this.documents().find(d => d.id === this.editingDocId());
+        url       = existing?.url ?? '';
+        file_path = existing?.file_path ?? null;
+      }
+
+      const mode = this.docModalMode();
+
+      if (mode === 'create') {
+        await this._rdDocs.adminCreateDocument({ title: title.trim(), url, file_path, section: sectionVal, subsection: null });
+      } else {
+        await this._rdDocs.adminUpdateDocument(this.editingDocId()!, { title: title.trim(), url, file_path, section: sectionVal, subsection: null });
+      }
+
+      this.docModalOpen.set(false);
+      this._toast.show(
+        mode === 'create' ? 'Document added successfully.' : 'Document updated successfully.',
+        'success'
+      );
+      await this._loadDocuments();
+    } catch (err: unknown) {
+      this.docModalError.set(err instanceof Error ? err.message : 'An error occurred.');
+    } finally {
+      this.docSaving.set(false);
+    }
+  }
+
+  // ── Document delete actions ────────────────────────────────────────────────
+
+  /**
+   * Stages the given document for deletion and opens the confirmation dialog.
+   *
+   * @param doc The document record to delete.
+   */
+  protected confirmDeleteDoc(doc: RdDocument): void {
+    this.deleteDocError.set(null);
+    this.deleteDocTarget.set(doc);
+  }
+
+  /** Closes the document delete confirmation without deleting. */
+  protected cancelDeleteDoc(): void {
+    this.deleteDocTarget.set(null);
+    this.deleteDocError.set(null);
+  }
+
+  /**
+   * Executes deletion of the staged document via the Edge Function.
+   * Also removes the associated storage object if the document was a file upload.
+   */
+  protected async executeDeleteDoc(): Promise<void> {
+    const target = this.deleteDocTarget();
+    if (!target || this.docDeleting()) return;
+
+    this.docDeleting.set(true);
+    try {
+      await this._rdDocs.adminDeleteDocument(target.id, target.file_path);
+      this.deleteDocTarget.set(null);
+      this.deleteDocError.set(null);
+      this._toast.show(`"${target.title}" has been removed.`, 'success');
+      await this._loadDocuments();
+    } catch (err: unknown) {
+      this.deleteDocError.set(err instanceof Error ? err.message : 'Delete failed.');
+    } finally {
+      this.docDeleting.set(false);
+    }
+  }
+
+  // ── Section management actions ─────────────────────────────────────────────
+
+  /** Opens the section management modal and resets transient state. */
+  protected openSecMgmt(): void {
+    this.secMgmtError.set(null);
+    this.newSectionInput.set('');
+    this.editingSecId.set(null);
+    this.editingSecInput.set('');
+    this.secMgmtOpen.set(true);
+  }
+
+  /** Closes the section management modal without saving. */
+  protected closeSecMgmt(): void {
+    this.secMgmtOpen.set(false);
+  }
+
+  /** Creates a new section and refreshes the list. */
+  protected async createSection(): Promise<void> {
+    const name = this.newSectionInput().trim();
+    if (!name || this.secMgmtSaving()) return;
+    this.secMgmtSaving.set(true);
+    this.secMgmtError.set(null);
+    try {
+      await this._rdSections.createSection(name);
+      this.newSectionInput.set('');
+      this._toast.show(`Section "${name}" created.`, 'success');
+      await this._loadSections();
+    } catch (err: unknown) {
+      this.secMgmtError.set(err instanceof Error ? err.message : 'Failed to create section.');
+    } finally {
+      this.secMgmtSaving.set(false);
+    }
+  }
+
+  /** Starts inline rename for the given section. */
+  protected startRenameSection(id: string, currentName: string): void {
+    this.editingSecId.set(id);
+    this.editingSecInput.set(currentName);
+    this.secMgmtError.set(null);
+  }
+
+  /** Cancels the inline rename without saving. */
+  protected cancelRenameSection(): void {
+    this.editingSecId.set(null);
+    this.editingSecInput.set('');
+  }
+
+  /** Commits the rename for the section currently being edited. */
+  protected async commitRenameSection(): Promise<void> {
+    const id   = this.editingSecId();
+    const name = this.editingSecInput().trim();
+    if (!id || !name || this.secMgmtSaving()) return;
+    this.secMgmtSaving.set(true);
+    this.secMgmtError.set(null);
+    try {
+      await this._rdSections.renameSection(id, name);
+      this.editingSecId.set(null);
+      this.editingSecInput.set('');
+      this._toast.show('Section renamed.', 'success');
+      await this._loadSections();
+    } catch (err: unknown) {
+      this.secMgmtError.set(err instanceof Error ? err.message : 'Failed to rename section.');
+    } finally {
+      this.secMgmtSaving.set(false);
+    }
+  }
+
+  /** Deletes a section. */
+  protected async deleteSection(id: string, name: string): Promise<void> {
+    if (this.secMgmtSaving()) return;
+    this.secMgmtSaving.set(true);
+    this.secMgmtError.set(null);
+    try {
+      await this._rdSections.deleteSection(id);
+      this._toast.show(`Section "${name}" deleted.`, 'success');
+      await this._loadSections();
+    } catch (err: unknown) {
+      this.secMgmtError.set(err instanceof Error ? err.message : 'Failed to delete section.');
+    } finally {
+      this.secMgmtSaving.set(false);
+    }
+  }
+
+  /** Called when the user starts dragging a section row. */
+  protected onSecDragStart(event: DragEvent, id: string): void {
+    this.dragSectionId.set(id);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  /** Called continuously while dragging over a potential drop target. */
+  protected onSecDragOver(event: DragEvent, id: string): void {
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    this.dragOverSecId.set(id);
+  }
+
+  /** Called when the drag cursor leaves a potential drop target. */
+  protected onSecDragLeave(id: string): void {
+    if (this.dragOverSecId() === id) this.dragOverSecId.set(null);
+  }
+
+  /** Handles the drop: reorders sections and persists new positions. */
+  protected async onSecDrop(event: DragEvent, targetId: string): Promise<void> {
+    event.preventDefault();
+    const sourceId = this.dragSectionId();
+    this.dragSectionId.set(null);
+    this.dragOverSecId.set(null);
+    if (!sourceId || sourceId === targetId || this.secMgmtSaving()) return;
+
+    const secs = [...this.sections()];
+    const fromIdx = secs.findIndex(s => s.id === sourceId);
+    const toIdx   = secs.findIndex(s => s.id === targetId);
+    if (fromIdx < 0 || toIdx < 0) return;
+
+    // Reorder locally for instant feedback
+    const [moved] = secs.splice(fromIdx, 1);
+    secs.splice(toIdx, 0, moved);
+    const reordered = secs.map((s, i) => ({ ...s, position: i }));
+    this.sections.set(reordered);
+
+    this.secMgmtSaving.set(true);
+    this.secMgmtError.set(null);
+    try {
+      await this._rdSections.reorderSections(reordered.map(s => ({ id: s.id, position: s.position })));
+    } catch (err: unknown) {
+      this.secMgmtError.set(err instanceof Error ? err.message : 'Failed to reorder sections.');
+      await this._loadSections(); // revert on failure
+    } finally {
+      this.secMgmtSaving.set(false);
+    }
+  }
+
+  /** Clears drag state when a drag ends without a valid drop. */
+  protected onSecDragEnd(): void {
+    this.dragSectionId.set(null);
+    this.dragOverSecId.set(null);
+  }
+
   // ── Private helpers ────────────────────────────────────────────────────────
 
   /**
@@ -373,6 +839,38 @@ export class Admin implements OnInit {
       this.tableError.set(err instanceof Error ? err.message : 'Failed to load users.');
     } finally {
       this.isLoading.set(false);
+    }
+  }
+
+  /**
+   * Fetches all R&D documents via the `RdDocumentsService` and updates
+   * the `documents` signal. Sets `docsError` on failure.
+   */
+  private async _loadDocuments(): Promise<void> {
+    this.docsLoading.set(true);
+    this.docsError.set(null);
+    try {
+      const list = await this._rdDocs.listDocuments();
+      this.documents.set(list);
+    } catch (err: unknown) {
+      this.docsError.set(err instanceof Error ? err.message : 'Failed to load documents.');
+    } finally {
+      this.docsLoading.set(false);
+    }
+  }
+
+  /**
+   * Fetches all R&D sections (with subsections) from the `RdSectionsService`
+   * and updates the `sections` signal. Non-critical — errors are silently ignored.
+   */
+  private async _loadSections(): Promise<void> {
+    this.sectionsLoading.set(true);
+    try {
+      this.sections.set(await this._rdSections.listSections());
+    } catch {
+      // Non-critical, fall back to document-derived sections
+    } finally {
+      this.sectionsLoading.set(false);
     }
   }
 

@@ -1,170 +1,118 @@
 @reference "tailwindcss";
 
-// ── FILE: src/app/features/apps-page/apps-page.component.scss ──
-
 :host { @apply block; }
 
-.apps-page {
+// ── Page layout ────────────────────────────────────────────────────────────────
+
+.rd-page {
   &__content {
-    @apply flex flex-col gap-12 pt-[40px] pr-[48px] pb-[80px] pl-[48px];
+    @apply px-12 pt-10 pb-20 max-w-[780px];
 
-    @media (max-width: 768px) { @apply pt-[24px] pr-[20px] pb-[60px] pl-[20px]; }
-  }
-
-  &__section {
-    @apply flex flex-col gap-6 scroll-mt-[80px];
-  }
-
-  // ── All Apps Grid ──────────────────────────────────────────────────────────
-
-  &__apps-grid {
-    @apply grid gap-4 grid-cols-2;
-
-    @media (max-width: 768px) { @apply grid-cols-1; }
-  }
-
-  // ── Projects by Team ──────────────────────────────────────────────────────
-
-  &__by-team {
-    @apply flex flex-col gap-6;
-  }
-
-  // ── Ownership Matrix ──────────────────────────────────────────────────────
-
-  &__matrix-wrap {
-    @apply rounded-xl border border-[var(--border)] overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.06)];
-  }
-
-  // ── Shared Infra Grid ─────────────────────────────────────────────────────
-
-  &__infra-grid {
-    @apply grid gap-4 grid-cols-3;    @media (max-width: 900px) { @apply grid-cols-2; }
-    @media (max-width: 600px) { @apply grid-cols-1; }  }
-}
-
-// ── App Card ───────────────────────────────────────────────────────────────
-
-.app-card {
-  @apply flex flex-col gap-2 p-5 rounded-2xl border bg-[var(--card)] border-[var(--border)] transition-shadow duration-[0.15s] hover:shadow-[0_2px_12px_rgba(0,0,0,0.07)];
-
-  &__header {
-    @apply flex items-center justify-between;
-  }
-
-  &__icon {
-    @apply flex items-center text-[var(--navy)];
-  }
-
-  &__name {
-    @apply font-bold m-0 font-['Syne',_sans-serif] text-[14px] text-[var(--navy)];
-  }
-
-  &__desc {
-    @apply m-0 text-[13px] text-[var(--muted)] leading-[1.5];
-  }
-
-  &__tags {
-    @apply flex flex-wrap gap-1.5;
-  }
-
-  &__tag {
-    @apply font-['DM_Mono',_monospace] text-[10px] py-[2px] px-[7px] rounded-[5px] bg-[var(--bg)] text-[var(--muted)] border border-[var(--border)];
-  }
-
-  &__notes {
-    @apply m-0 text-[11.5px] text-[var(--light)] italic;
+    @media (max-width: 768px) { @apply px-5 pt-6 pb-14; }
   }
 }
 
-// ── Team Block ──────────────────────────────────────────────────────────────
+// ── Document groups ────────────────────────────────────────────────────────────
 
-.team-block {
-  @apply flex flex-col gap-4;
+.rd-docs {
 
-  &__header {
-    @apply flex items-center gap-2;
+  &__groups {
+    @apply flex flex-col gap-10;
   }
 
-  &__icon {
-    @apply flex items-center shrink-0;
+  &__group {
+    @apply flex flex-col gap-3;
   }
 
-  &__name {
-    @apply font-bold m-0 font-['Syne',_sans-serif] text-[15px] text-[var(--navy)];
+  // Section heading — bold label + full-width rule
+  &__section-header {
+    @apply flex items-center gap-3 mb-1;
   }
 
-  &__projects {
-    @apply grid gap-3 grid-cols-3;
-
-    @media (max-width: 768px) { @apply grid-cols-1; }
-    @media (max-width: 1024px) and (min-width: 769px) { @apply grid-cols-2; }
-  }
-}
-
-// ── Mini Project Card ──────────────────────────────────────────────────────
-
-.mini-project-card {
-  @apply flex items-start gap-3 p-4 rounded-xl border bg-[var(--card)] border-[var(--border)];
-
-  &__icon {
-    @apply flex items-center shrink-0 mt-[2px] text-[var(--muted)];
+  &__section-label {
+    @apply font-['Syne',_sans-serif] text-[13px] font-bold uppercase tracking-[0.08em]
+           text-[var(--navy)] whitespace-nowrap;
   }
 
-  &__info {
-    @apply flex flex-col gap-1 flex-[1_1_0%];
+  &__section-line {
+    @apply flex-1 h-px bg-[var(--border)];
   }
 
-  &__name {
-    @apply font-['Syne',_sans-serif] text-[13px] font-bold text-[var(--navy)];
+  // Subsection label — smaller, muted
+  &__subsection-label {
+    @apply font-['DM_Mono',_monospace] text-[11px] font-medium uppercase tracking-[0.07em]
+           text-[var(--muted)] mt-2 mb-0.5;
   }
 
-  &__desc {
-    @apply text-[11.5px] text-[var(--muted)] leading-[1.4];
-  }
-}
-
-// ── Ownership Matrix ────────────────────────────────────────────────────────
-
-.matrix {
-  @apply w-full border-collapse;
-
-  &__head {
-    @apply bg-[var(--navy)];
+  // Document link list
+  &__list {
+    @apply list-none m-0 p-0 flex flex-col gap-1.5;
   }
 
-  &__th {
-    @apply text-left py-[11px] px-[20px] font-['Syne',_sans-serif] text-[10.5px] font-semibold uppercase tracking-[0.05em] text-[rgba(255,255,255,0.7)] whitespace-nowrap;
-
-    &--app {
-      @apply text-[rgba(255,255,255,0.5)];
-    }
+  &__item {
+    @apply flex;
   }
 
-  &__row {
-    @apply border-b border-[var(--border)] transition-colors duration-[0.1s] hover:bg-[#f9fafb] last:border-b-0;
+  &__link {
+    @apply flex items-center gap-3 px-4 py-[11px] rounded-xl w-full no-underline
+           border border-[var(--border)] bg-[var(--card)]
+           transition-all duration-[150ms]
+           hover:border-[#8DCB2C] hover:bg-[rgba(141,203,44,0.035)]
+           hover:shadow-[0_2px_10px_rgba(141,203,44,0.07)];
   }
 
-  &__td {
-    @apply py-[11px] px-[20px] text-[13.5px] text-[var(--muted)];
+  &__link-icon {
+    @apply flex items-center shrink-0 text-[#8DCB2C] opacity-60
+           transition-opacity duration-[150ms];
 
-    &--app {
-      @apply flex items-center gap-2 font-['DM_Mono',_monospace] text-[12.5px] text-[var(--navy)] font-medium;
-    }
-
-    &--check {
-      @apply text-center;
-    }
+    .rd-docs__link:hover & { @apply opacity-100; }
   }
 
-  &__app-icon {
-    @apply text-[14px];
+  &__link-title {
+    @apply flex-1 font-['DM_Sans',_sans-serif] text-[13.5px] font-medium
+           text-[var(--navy)] leading-snug;
   }
 
-  &__check {
-    @apply text-[14px] font-bold;
+  &__link-ext {
+    @apply flex items-center shrink-0 text-[var(--muted)] opacity-0
+           transition-opacity duration-[150ms];
+
+    .rd-docs__link:hover & { @apply opacity-60; }
   }
 
-  &__dash {
-    @apply text-[14px] text-[var(--border)];
+  // ── Empty state ─────────────────────────────────────────────────────────────
+
+  &__empty {
+    @apply flex flex-col items-start gap-2 pt-4;
+  }
+
+  &__empty-icon {
+    @apply text-[var(--border)] mb-1;
+  }
+
+  &__empty-title {
+    @apply font-['Syne',_sans-serif] text-[15px] font-bold text-[var(--navy)] m-0;
+  }
+
+  &__empty-sub {
+    @apply text-[13px] text-[var(--muted)] m-0;
+  }
+
+  // ── Loading skeleton ─────────────────────────────────────────────────────────
+
+  &__skeleton {
+    @apply flex flex-col gap-2;
+  }
+
+  &__skel-row {
+    @apply flex items-center gap-3 px-4 py-[11px] rounded-xl
+           border border-[var(--border)] bg-[var(--card)];
+  }
+
+  &__skel {
+    @apply rounded bg-[var(--border)] animate-pulse;
+
+    &--icon { @apply w-[18px] h-[18px] shrink-0 rounded; }
+    &--text { @apply h-[12px] flex-1 rounded; }
   }
 }
