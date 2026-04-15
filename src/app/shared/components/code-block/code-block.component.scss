@@ -121,7 +121,7 @@ $tok-punct:     #89ddff;   // cyan  — => {} () : ,
     padding: 0 12px 0 8px;
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    line-height: 1.75;
+    line-height: 21.875px;
     color: rgba(255, 255, 255, 0.15);
     text-align: right;
   }
@@ -138,14 +138,14 @@ $tok-punct:     #89ddff;   // cyan  — => {} () : ,
   &__code {
     font-family: 'DM Mono', monospace;
     font-size: 12.5px;
-    line-height: 1.75;
+    line-height: 21.875px;
     white-space: pre;
     display: block;
   }
 
   &__line {
     display: block;
-    min-height: 1.75em;
+    min-height: 21.875px;
   }
 
   // ── Token colours ─────────────────────────────────────────────────────────

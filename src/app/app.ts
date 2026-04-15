@@ -3,14 +3,16 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LucideAngularModule, ArrowUp } from 'lucide-angular';
+import { ToastComponent } from './shared/components/toast/toast.component';
 
 /** Root application component — renders the router outlet and global scroll-to-top button */
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LucideAngularModule],
+  imports: [RouterOutlet, LucideAngularModule, ToastComponent],
   template: `
     <router-outlet />
+    <app-toast />
 
     <!-- Global scroll-to-top button -->
     <button

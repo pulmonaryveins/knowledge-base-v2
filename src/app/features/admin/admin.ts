@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal, computed, untracked, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   LucideAngularModule,
@@ -7,9 +7,17 @@ import {
   ChevronLeft, ChevronRight,
 } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
+import { ToastService } from '../../core/services/toast.service';
 import type { AdminUserRecord, UserRole } from '../../core/models/profile.model';
 
 type ModalMode = 'create' | 'edit';
+
+// Stricter than Validators.email — requires a real TLD (≥2 chars) and a proper domain
+const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+function strictEmail(ctrl: AbstractControl): ValidationErrors | null {
+  const v = ctrl.value as string;
+  return !v || EMAIL_RE.test(v.trim()) ? null : { email: true };
+}
 
 @Component({
   selector: 'app-admin',
@@ -21,6 +29,7 @@ export class Admin implements OnInit {
   private readonly _auth   = inject(AuthService);
   private readonly _router = inject(Router);
   private readonly _fb     = inject(FormBuilder);
+  private readonly _toast  = inject(ToastService);
 
   // ── State ──────────────────────────────────────────────────────────────────
   protected readonly users        = signal<AdminUserRecord[]>([]);
@@ -45,6 +54,11 @@ export class Admin implements OnInit {
   protected readonly adminCount  = computed(() => this.users().filter(u => u.role === 'admin').length);
   protected readonly memberCount = computed(() => this.users().filter(u => u.role === 'member').length);
 
+  // Delete guards
+  protected readonly isLastAdmin = computed(() => this.adminCount() === 1);
+  protected readonly deleteTargetIsAdmin = computed(() => this.deleteTarget()?.role === 'admin');
+  protected readonly deleteError = signal<string | null>(null);
+
   // Search / Filter
   protected readonly searchQuery   = signal('');
   protected readonly roleFilter    = signal<'all' | 'admin' | 'member'>('all');
@@ -61,7 +75,7 @@ export class Admin implements OnInit {
   });
 
   // Pagination
-  protected readonly pageSize       = signal(10);
+  protected readonly pageSize       = signal(7);
   protected readonly pageIndex      = signal(0);
   protected readonly totalPages     = computed(() =>
     Math.max(1, Math.ceil(this.filteredUsers().length / this.pageSize()))
@@ -93,7 +107,7 @@ export class Admin implements OnInit {
   // ── Form ───────────────────────────────────────────────────────────────────
   protected readonly form = this._fb.nonNullable.group({
     fullName: ['', Validators.required],
-    email:    ['', [Validators.required, Validators.email]],
+    email:    ['', [Validators.required, strictEmail]],
     password: ['', Validators.minLength(8)],
     role:     ['member' as UserRole, Validators.required],
   });
@@ -146,12 +160,25 @@ export class Admin implements OnInit {
   }
 
   protected async onSave() {
+    // Mark all touched so every field shows its error immediately
+    this.form.markAllAsTouched();
     if (this.form.invalid || this.isSaving()) return;
 
     this.isSaving.set(true);
     this.modalError.set(null);
 
     const { fullName, email, password, role } = this.form.getRawValue();
+
+    // Duplicate email check (skip own record on edit)
+    const duplicate = this.users().find(u =>
+      u.email.toLowerCase() === email.toLowerCase() &&
+      u.id !== this.editingId()
+    );
+    if (duplicate) {
+      this.modalError.set('A user with this email address already exists.');
+      this.isSaving.set(false);
+      return;
+    }
 
     try {
       if (this.modalMode() === 'create') {
@@ -165,7 +192,12 @@ export class Admin implements OnInit {
           ...(password ? { password } : {}),
         });
       }
+      const mode = this.modalMode();
       this.modalOpen.set(false);
+      this._toast.show(
+        mode === 'create' ? 'User created successfully.' : 'User updated successfully.',
+        'success'
+      );
       await this._loadUsers();
     } catch (err: unknown) {
       this.modalError.set(err instanceof Error ? err.message : 'An error occurred.');
@@ -175,24 +207,35 @@ export class Admin implements OnInit {
   }
 
   protected confirmDelete(user: AdminUserRecord) {
+    this.deleteError.set(null);
     this.deleteTarget.set(user);
   }
 
   protected cancelDelete() {
     this.deleteTarget.set(null);
+    this.deleteError.set(null);
   }
 
   protected async executeDelete() {
     const target = this.deleteTarget();
     if (!target || this.isDeleting()) return;
 
+    // Guard: cannot delete the last admin
+    if (target.role === 'admin' && this.isLastAdmin()) {
+      this.deleteError.set('Cannot delete the only admin account. Promote another user to admin first.');
+      return;
+    }
+
     this.isDeleting.set(true);
     try {
+      const name = target.full_name ?? target.email;
       await this._auth.adminDeleteUser(target.id);
       this.deleteTarget.set(null);
+      this.deleteError.set(null);
+      this._toast.show(`"${name}" has been removed.`, 'success');
       await this._loadUsers();
     } catch (err: unknown) {
-      this.tableError.set(err instanceof Error ? err.message : 'Delete failed.');
+      this.deleteError.set(err instanceof Error ? err.message : 'Delete failed.');
     } finally {
       this.isDeleting.set(false);
     }
@@ -206,6 +249,7 @@ export class Admin implements OnInit {
   }
 
   protected async signOut() {
+    this._toast.show('Signed out successfully.', 'info');
     await this._auth.signOut();
   }
 

@@ -19,6 +19,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { StatusBadgeComponent } from '../status-badge/status-badge.component';
 import { Team, Tool } from '../../../core/models';
 import { getTeamIcon, getAppIcon, getToolIcon } from '../../../core/utils/icons';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,6 +33,7 @@ export class SidebarComponent {
   private readonly _docsData = inject(DocsDataService);
   private readonly _router = inject(Router);
   private readonly _auth = inject(AuthService);
+  private readonly _toast = inject(ToastService);
 
   // ── Lucide icon references exposed to template ──────────────────────────
   protected readonly SearchIcon = Search;
@@ -161,8 +163,9 @@ export class SidebarComponent {
   }
 
   /** Sign out and redirect to login */
-  protected signOut(): void {
-    this._auth.signOut();
+  protected async signOut(): Promise<void> {
     this.mobileOpen.set(false);
+    this._toast.show('Signed out successfully.', 'info');
+    await this._auth.signOut();
   }
 }

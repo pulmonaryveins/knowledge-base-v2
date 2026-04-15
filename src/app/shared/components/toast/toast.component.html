@@ -1,0 +1,31 @@
+<div class="toast-stack" aria-live="polite" aria-atomic="false">
+  @for (toast of _toast.toasts(); track toast.id) {
+    <div
+      class="toast toast--{{ toast.type }}"
+      [class.toast--out]="toast.removing"
+      role="alert"
+    >
+      <span class="toast__icon-wrap">
+        @if (toast.type === 'success') {
+          <lucide-icon [img]="CheckIcon" [size]="14" />
+        } @else if (toast.type === 'error') {
+          <lucide-icon [img]="AlertIcon" [size]="14" />
+        } @else {
+          <lucide-icon [img]="InfoIcon"  [size]="14" />
+        }
+      </span>
+
+      <span class="toast__msg">{{ toast.message }}</span>
+
+      <button class="toast__close" (click)="_toast.dismiss(toast.id)" aria-label="Dismiss">
+        <lucide-icon [img]="XIcon" [size]="12" />
+      </button>
+
+      <!-- Auto-dismiss progress bar -->
+      <span
+        class="toast__bar"
+        [style.animation-duration]="toast.duration + 'ms'"
+      ></span>
+    </div>
+  }
+</div>

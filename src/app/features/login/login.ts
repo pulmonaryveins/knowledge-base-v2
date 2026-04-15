@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { ToastService } from '../../core/services/toast.service';
 import { LucideAngularModule, ArrowLeft, ArrowRight, ExternalLink } from 'lucide-angular';
 import { BgRippleComponent } from '../../shared/components/bg-ripple/bg-ripple.component';
 
@@ -16,6 +17,7 @@ export class Login {
   private readonly _router  = inject(Router);
   private readonly _route   = inject(ActivatedRoute);
   private readonly _fb      = inject(FormBuilder);
+  private readonly _toast   = inject(ToastService);
 
   protected readonly form = this._fb.nonNullable.group({
     email:    ['', [Validators.required, Validators.email]],
@@ -50,6 +52,7 @@ export class Login {
       return;
     }
 
+    this._toast.show('Signed in successfully. Welcome back!', 'success');
     const returnUrl = this._route.snapshot.queryParams['returnUrl'] ?? '/portal';
     this._router.navigateByUrl(returnUrl);
   }

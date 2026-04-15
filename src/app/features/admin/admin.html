@@ -233,12 +233,22 @@
             <label class="adm__label" for="adm-fullName">Full name</label>
             <input id="adm-fullName" type="text" class="adm__input" formControlName="fullName" placeholder="Jane Smith"
               [class.adm__input--error]="form.controls.fullName.invalid && form.controls.fullName.touched" />
+            @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+              <span class="adm__field-error">Full name is required.</span>
+            }
           </div>
 
           <div class="adm__field">
             <label class="adm__label" for="adm-email">Email address</label>
             <input id="adm-email" type="email" class="adm__input" formControlName="email" placeholder="jane@ncompasstv.com"
               [class.adm__input--error]="form.controls.email.invalid && form.controls.email.touched" />
+            @if (form.controls.email.touched) {
+              @if (form.controls.email.hasError('required')) {
+                <span class="adm__field-error">Email address is required.</span>
+              } @else if (form.controls.email.hasError('email')) {
+                <span class="adm__field-error">Enter a valid email address.</span>
+              }
+            }
           </div>
 
           <div class="adm__field">
@@ -250,6 +260,13 @@
             </label>
             <input id="adm-password" type="password" class="adm__input" formControlName="password" placeholder="Min. 8 characters"
               [class.adm__input--error]="form.controls.password.invalid && form.controls.password.touched" />
+            @if (form.controls.password.touched) {
+              @if (form.controls.password.hasError('required')) {
+                <span class="adm__field-error">Password is required.</span>
+              } @else if (form.controls.password.hasError('minlength')) {
+                <span class="adm__field-error">Password must be at least 8 characters.</span>
+              }
+            }
           </div>
 
           <!-- Role picker -->
@@ -323,13 +340,31 @@
             <lucide-icon [img]="XIcon" [size]="16" />
           </button>
         </div>
+
+        <!-- Last-admin block error -->
+        @if (deleteError()) {
+          <div class="adm__banner adm__banner--error adm__banner--sm">{{ deleteError() }}</div>
+        }
+
+        <!-- Admin demotion warning -->
+        @if (deleteTargetIsAdmin() && !isLastAdmin()) {
+          <div class="adm__banner adm__banner--warn adm__banner--sm">
+            <lucide-icon [img]="ShieldIcon" [size]="13" />
+            This user is an admin. Deleting them will remove their admin access permanently.
+          </div>
+        }
+
         <p class="adm__modal-body">
-          <strong>{{ deleteTarget()!.email }}</strong> will lose all access immediately.
-          This cannot be undone.
+          <strong>{{ deleteTarget()!.full_name || deleteTarget()!.email }}</strong> will lose
+          all portal access immediately. This cannot be undone.
         </p>
         <div class="adm__modal-footer">
           <button class="adm__btn adm__btn--ghost" (click)="cancelDelete()">Cancel</button>
-          <button class="adm__btn adm__btn--danger" (click)="executeDelete()" [disabled]="isDeleting()">
+          <button
+            class="adm__btn adm__btn--danger"
+            (click)="executeDelete()"
+            [disabled]="isDeleting() || (deleteTargetIsAdmin() && isLastAdmin())"
+          >
             @if (isDeleting()) {
               <span class="adm__spinner adm__spinner--sm"></span> Deleting…
             } @else {
