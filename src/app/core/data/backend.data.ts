@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/backend.data.ts ──
+﻿// ── FILE: src/app/core/data/backend.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -227,6 +227,28 @@ git commit -m "refactor: Extract FieldMappingService to libs/core"
             { cells: ['Extending a plain class instead of BaseMetadataEntity', 'All domain entities must extend BaseMetadataEntity for audit columns'] },
           ],
         },
+      },
+    },
+    {
+      id: 'be-contacts',
+      label: 'Team Contacts',
+      num: '06',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Lester Vitor',
+            role: 'Team Lead',
+            initials: 'LV',
+            color: '#7C3AED',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
       },
     },
   ],

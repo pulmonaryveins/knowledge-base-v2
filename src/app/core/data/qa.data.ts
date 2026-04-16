@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/qa.data.ts ──
+﻿// ── FILE: src/app/core/data/qa.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -330,6 +330,28 @@ def setup_session(setup_browser, role="admin"):
             { cells: ['`await page.waitForTimeout(3000)` for synchronization', 'Use `page.waitForSelector()`, `page.waitForResponse()`, or `expect(locator).toBeVisible()` instead'] },
           ],
         },
+      },
+    },
+    {
+      id: 'qa-contacts',
+      label: 'Team Contacts',
+      num: '06',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Shawn Leif Recentes',
+            role: 'Team Lead',
+            initials: 'SL',
+            color: '#0891B2',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
       },
     },
   ],

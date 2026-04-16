@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/webdev.data.ts ──
+﻿// ── FILE: src/app/core/data/webdev.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -378,6 +378,28 @@ npm run dev   # http://localhost:5173`,
             { cells: ['Choosing a framework out of habit, not fit', 'Select the right tool per project: Astro for static, Svelte for reactive tools, WordPress for client CMS'] },
           ],
         },
+      },
+    },
+    {
+      id: 'wd-contacts',
+      label: 'Team Contacts',
+      num: '07',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Efraim Gabuat',
+            role: 'Team Lead',
+            initials: 'EG',
+            color: '#F97316',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
       },
     },
   ],

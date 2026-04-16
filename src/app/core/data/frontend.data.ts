@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/frontend.data.ts ──
+﻿// ── FILE: src/app/core/data/frontend.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -464,6 +464,28 @@ export class DeviceListComponent {
             { cells: ['any type: const x: any = ...', 'Use specific types or unknown with a type guard'] },
           ],
         },
+      },
+    },
+    {
+      id: 'fe-contacts',
+      label: 'Team Contacts',
+      num: '07',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Jeremicah Licup',
+            role: 'Team Lead',
+            initials: 'JL',
+            color: '#8DCB2C',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
       },
     },
   ],

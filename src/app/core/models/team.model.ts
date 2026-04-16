@@ -170,6 +170,20 @@ export interface NcBrandSection {
   readonly type: 'nc-brand-storytelling';
 }
 
+/** A single contact person displayed in a Team Contacts section */
+export interface TeamContact {
+  readonly name: string;
+  readonly role: string;
+  readonly initials: string;
+  readonly color: string;
+}
+
+/** Team Contacts section — renders a grid of contact cards */
+export interface TeamContactsSection {
+  readonly type: 'team-contacts';
+  readonly contacts: ReadonlyArray<TeamContact>;
+}
+
 /** Discriminated union of all possible section content types */
 export type SectionContent =
   | TechStackSection
@@ -191,7 +205,8 @@ export type SectionContent =
   | NcPrototypeSection
   | NcWebDesignSection
   | NcPrintSection
-  | NcBrandSection;
+  | NcBrandSection
+  | TeamContactsSection;
 
 /** A single documentation section within a team page */
 export interface TeamSection {

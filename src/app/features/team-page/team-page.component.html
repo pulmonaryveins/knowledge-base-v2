@@ -209,6 +209,24 @@
           @case ('nc-brand-storytelling') {
             <app-nc-brand-showcase />
           }
+
+          <!-- Team Contacts -->
+          @case ('team-contacts') {
+            <div class="team-page__contacts">
+              @for (contact of asTeamContacts(section.content).contacts; track contact.name; let idx = $index) {
+                <div class="team-page__contact-card" [appReveal]="'up'" [appRevealDelay]="idx * 60"
+                     [style.--contact-color]="contact.color">
+                  <div class="team-page__contact-avatar" [style.background]="contact.color">
+                    {{ contact.initials }}
+                  </div>
+                  <div class="team-page__contact-info">
+                    <span class="team-page__contact-name">{{ contact.name }}</span>
+                    <span class="team-page__contact-role">{{ contact.role }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
         }
       </section>
     }

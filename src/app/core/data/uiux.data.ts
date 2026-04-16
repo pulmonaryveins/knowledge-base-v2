@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/uiux.data.ts ──
+﻿// ── FILE: src/app/core/data/uiux.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -679,6 +679,28 @@ export const uiuxTeam: Team = {
             { cells: ['Presenting at Phase 6 without incorporating feedback iterations', 'Gather and apply at least one round of team feedback before the final portfolio presentation (Phase 6)'] },
           ],
         },
+      },
+    },
+    {
+      id: 'ux-contacts',
+      label: 'Team Contacts',
+      num: '18',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Hazel Sellote',
+            role: 'Team Lead',
+            initials: 'HS',
+            color: '#EC4899',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
       },
     },
   ],
