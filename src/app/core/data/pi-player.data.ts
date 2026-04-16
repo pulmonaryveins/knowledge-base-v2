@@ -16,33 +16,6 @@ export const piPlayerTeam: Team = {
     { label: 'In Dev', value: '1' },
     { label: 'Platforms', value: '1' },
   ],
-  projects: [
-    {
-      id: 'pi-player-app',
-      name: 'Pi Player',
-      description: 'Raspberry Pi-based kiosk player for NCompassTV display hardware.',
-      status: 'Dev',
-      icon: 'cpu',
-      teamKey: 'pi-player',
-      teamColor: '#C2185B',
-      doc: {
-        meta: { stack: 'TBD', repo: 'nctv/pi-player', deploy: 'Raspberry Pi OS', sprint: 'TBD' },
-        purpose: 'Content coming soon.',
-        features: [],
-        folderStructure: {
-          language: 'bash',
-          code: `pi-player/\n└── (structure TBD)`,
-        },
-        gettingStarted: [],
-        contacts: [
-          { name: 'Mikoo Saguindang', role: 'Team Lead', initials: 'MS', color: '#C2185B' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-        ],
-      },
-    },
-  ],
+  projects: [],
   sections: [],
 };

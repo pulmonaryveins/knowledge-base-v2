@@ -772,24 +772,45 @@ $red:    #ef4444;
 
 // ── Modal size variants ───────────────────────────────────────────────────────
 
-.adm__modal--lg {
-  max-width: 560px;
+.adm__modal--sec {
+  max-width: 640px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: min(780px, 90vh);
+  overflow: hidden;
 }
 
-// ── Section management styles ─────────────────────────────────────────────────
+// ── Section modal top (sticky header + add row) ───────────────────────────────
+
+.adm__sec-modal-top {
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+
+  .adm__modal-header { margin-bottom: 14px; }
+}
+
+.adm__sec-modal-meta {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 2px 0 0;
+  line-height: 1;
+}
+
+// ── Section add row ───────────────────────────────────────────────────────────
 
 .adm__sec-add {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 20px;
 
   &-input {
     flex: 1;
-    height: 38px;
+    height: 36px;
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 9px;
     padding: 0 12px;
     font-size: 13px;
     color: #fff;
@@ -797,46 +818,64 @@ $red:    #ef4444;
     transition: border-color 0.15s;
     font-family: 'DM Sans', sans-serif;
 
-    &::placeholder { color: rgba(255, 255, 255, 0.3); }
+    &::placeholder { color: rgba(255, 255, 255, 0.28); }
     &:focus { border-color: rgba($green, 0.5); }
 
     &--sm { height: 34px; font-size: 12.5px; }
   }
 }
 
+// ── Sections scrollable list ──────────────────────────────────────────────────
+
 .adm__sec-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 16px 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  max-height: 360px;
-  overflow-y: auto;
-  margin-bottom: 8px;
-  padding-right: 2px;
+  gap: 3px;
+  min-height: 0;
+
+  // Custom scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+
+  &::-webkit-scrollbar { width: 5px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+    &:hover { background: rgba(255, 255, 255, 0.22); }
+  }
 }
 
 .adm__sec-empty {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 18px 0;
-  color: rgba(255, 255, 255, 0.35);
+  padding: 32px 0;
+  color: rgba(255, 255, 255, 0.3);
   font-size: 13px;
   justify-content: center;
 }
 
-.adm__sec-item {
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 10px;
-  overflow: hidden;
-  transition: border-color 0.15s, opacity 0.15s;
-  cursor: grab;
+// ── Individual section item ───────────────────────────────────────────────────
 
-  &:active { cursor: grabbing; }
-  &--expanded { border-color: rgba($green, 0.3); }
-  &--dragging { opacity: 0.35; }
+.adm__sec-item {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  overflow: hidden;
+  transition: border-color 0.15s, opacity 0.15s, box-shadow 0.15s;
+
+  &--expanded {
+    border-color: rgba($green, 0.28);
+    box-shadow: 0 0 0 1px rgba($green, 0.08);
+  }
+  &--dragging { opacity: 0.3; }
   &--drag-over {
-    border-color: rgba($green, 0.6);
-    background: rgba($green, 0.05);
+    border-color: rgba($green, 0.55);
+    background: rgba($green, 0.04);
+    box-shadow: 0 0 0 1px rgba($green, 0.15);
   }
 }
 
@@ -844,29 +883,33 @@ $red:    #ef4444;
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.18);
   padding: 0 2px;
+  cursor: grab;
   transition: color 0.15s;
 
+  &:active { cursor: grabbing; }
   &:hover { color: rgba(255, 255, 255, 0.5); }
 }
 
 .adm__sec-item-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.03);
+  gap: 5px;
+  padding: 7px 10px 7px 8px;
+  background: rgba(255, 255, 255, 0.025);
+  transition: background 0.12s;
 
-  &--editing { padding: 8px 10px; }
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+  &--editing { padding: 7px 8px; }
 }
 
 .adm__sec-rename-input {
   flex: 1;
-  height: 32px;
+  height: 30px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba($green, 0.45);
-  border-radius: 8px;
+  border-radius: 7px;
   padding: 0 10px;
   font-size: 13px;
   font-weight: 600;
@@ -878,29 +921,158 @@ $red:    #ef4444;
   &:focus { border-color: rgba($green, 0.7); }
 }
 
+.adm__sec-expand-btn {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.28);
+  transition: color 0.15s, background 0.15s, transform 0.2s;
+  transform: rotate(-90deg);
+
+  &--open { transform: rotate(0deg); }
+  &:hover { color: rgba(255, 255, 255, 0.7); background: rgba(255, 255, 255, 0.06); }
+}
+
+.adm__sec-doc-count {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 1px 6px;
+  flex-shrink: 0;
+  pointer-events: none;
+  min-width: 20px;
+  text-align: center;
+
+  &--empty {
+    color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+// ── Expanded docs panel ───────────────────────────────────────────────────────
+
+.adm__sec-docs-list {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 4px 8px 6px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: rgba(0, 0, 0, 0.18);
+  position: relative;
+
+  // Left accent line
+  &::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: rgba($green, 0.2);
+    border-radius: 1px;
+  }
+}
+
+.adm__sec-docs-empty {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.22);
+  text-align: center;
+  padding: 8px 0;
+  font-style: italic;
+}
+
+.adm__sec-doc-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  cursor: grab;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background 0.1s, border-color 0.1s, opacity 0.1s;
+
+  &:active { cursor: grabbing; }
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+  &--dragging { opacity: 0.3; }
+  &--drag-over {
+    background: rgba($green, 0.07);
+    border-color: rgba($green, 0.3);
+  }
+}
+
+.adm__sec-doc-grip {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.13);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.adm__sec-doc-icon {
+  flex-shrink: 0;
+  color: rgba($green, 0.65);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.adm__sec-doc-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
 .adm__sec-folder-icon {
   flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba($green, 0.6);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
 
 .adm__sec-name {
   font-weight: 600;
   flex: 1;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
 }
+
+// ── Section row action buttons ────────────────────────────────────────────────
 
 .adm__sec-actions {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 1px;
   flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.12s;
+
+  .adm__sec-item-row:hover & { opacity: 1; }
 }
 
 .adm__sec-move-btn {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -908,8 +1080,8 @@ $red:    #ef4444;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.35);
-  transition: color 0.15s, background 0.15s;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.12s, background 0.12s;
 
   &:hover:not(:disabled) { color: #fff; background: rgba(255, 255, 255, 0.08); }
   &:disabled { opacity: 0.25; cursor: not-allowed; }
@@ -922,8 +1094,8 @@ $red:    #ef4444;
 
 .adm__sec-delete-btn {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -931,9 +1103,8 @@ $red:    #ef4444;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.3);
-  transition: color 0.15s, background 0.15s;
-  margin-left: 2px;
+  color: rgba(255, 255, 255, 0.25);
+  transition: color 0.12s, background 0.12s;
 
   &:hover:not(:disabled) { color: #EF4444; background: rgba(239, 68, 68, 0.1); }
   &:disabled { opacity: 0.4; cursor: not-allowed; }

@@ -31,6 +31,7 @@ export class RdDocumentsService {
     const { data, error } = await this._sb.client
       .from('rd_documents')
       .select('*')
+      .order('position', { ascending: true })
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -38,6 +39,17 @@ export class RdDocumentsService {
       return [];
     }
     return (data as RdDocument[]) ?? [];
+  }
+
+  /** Batch-updates the `position` for a set of documents after a drag reorder. */
+  async reorderDocuments(items: { id: string; position: number }[]): Promise<void> {
+    const results = await Promise.all(
+      items.map(({ id, position }) =>
+        this._sb.client.from('rd_documents').update({ position }).eq('id', id)
+      )
+    );
+    const failed = results.find(r => r.error);
+    if (failed?.error) throw new Error(failed.error.message);
   }
 
   // ── Admin writes ───────────────────────────────────────────────────────────
@@ -54,11 +66,10 @@ export class RdDocumentsService {
     const { data, error } = await this._sb.client
       .from('rd_documents')
       .insert({
-        title:      payload.title.trim(),
-        url:        payload.url.trim(),
-        file_path:  payload.file_path ?? null,
-        section:    payload.section    ?? null,
-        subsection: payload.subsection ?? null,
+        title:     payload.title.trim(),
+        url:       payload.url.trim(),
+        file_path: payload.file_path ?? null,
+        section:   payload.section   ?? null,
       })
       .select()
       .single();
@@ -80,11 +91,10 @@ export class RdDocumentsService {
     const { data, error } = await this._sb.client
       .from('rd_documents')
       .update({
-        title:      payload.title.trim(),
-        url:        payload.url.trim(),
-        file_path:  payload.file_path ?? null,
-        section:    payload.section    ?? null,
-        subsection: payload.subsection ?? null,
+        title:     payload.title.trim(),
+        url:       payload.url.trim(),
+        file_path: payload.file_path ?? null,
+        section:   payload.section   ?? null,
       })
       .eq('id', docId)
       .select()

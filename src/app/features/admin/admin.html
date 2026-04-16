@@ -574,47 +574,54 @@
   <!-- ── Section Management Modal ────────────────────────────────────────── -->
   @if (secMgmtOpen()) {
     <div class="adm__overlay" (click)="closeSecMgmt()">
-      <div class="adm__modal adm__modal--lg" (click)="$event.stopPropagation()">
+      <div class="adm__modal adm__modal--sec" (click)="$event.stopPropagation()">
 
-        <!-- Header -->
-        <div class="adm__modal-header">
-          <div class="adm__modal-title-row">
-            <div class="adm__modal-icon">
-              <lucide-icon [img]="FolderPlusIcon" [size]="16" />
+        <!-- Sticky top: header + add row -->
+        <div class="adm__sec-modal-top">
+          <div class="adm__modal-header">
+            <div class="adm__modal-title-row">
+              <div class="adm__modal-icon">
+                <lucide-icon [img]="FolderPlusIcon" [size]="16" />
+              </div>
+              <div>
+                <h2 class="adm__modal-title">Manage Sections</h2>
+                @if (!sectionsLoading()) {
+                  <p class="adm__sec-modal-meta">
+                    {{ sections().length }} section{{ sections().length !== 1 ? 's' : '' }}&nbsp;·&nbsp;{{ documents().length }} document{{ documents().length !== 1 ? 's' : '' }}
+                  </p>
+                }
+              </div>
             </div>
-            <h2 class="adm__modal-title">Manage Sections</h2>
+            <button class="adm__modal-close" (click)="closeSecMgmt()" aria-label="Close">
+              <lucide-icon [img]="XIcon" [size]="16" />
+            </button>
           </div>
-          <button class="adm__modal-close" (click)="closeSecMgmt()" aria-label="Close">
-            <lucide-icon [img]="XIcon" [size]="16" />
-          </button>
+
+          @if (secMgmtError()) {
+            <div class="adm__banner adm__banner--error adm__banner--sm">{{ secMgmtError() }}</div>
+          }
+
+          <div class="adm__sec-add">
+            <input
+              class="adm__sec-add-input"
+              type="text"
+              placeholder="New section name…"
+              [value]="newSectionInput()"
+              (input)="newSectionInput.set($any($event.target).value)"
+              (keydown.enter)="createSection()"
+            />
+            <button
+              class="adm__btn adm__btn--primary adm__btn--sm"
+              (click)="createSection()"
+              [disabled]="!newSectionInput().trim() || secMgmtSaving()"
+            >
+              <lucide-icon [img]="PlusIcon" [size]="13" />
+              Add Section
+            </button>
+          </div>
         </div>
 
-        <!-- Error banner -->
-        @if (secMgmtError()) {
-          <div class="adm__banner adm__banner--error adm__banner--sm">{{ secMgmtError() }}</div>
-        }
-
-        <!-- Add new section row -->
-        <div class="adm__sec-add">
-          <input
-            class="adm__sec-add-input"
-            type="text"
-            placeholder="New section name…"
-            [value]="newSectionInput()"
-            (input)="newSectionInput.set($any($event.target).value)"
-            (keydown.enter)="createSection()"
-          />
-          <button
-            class="adm__btn adm__btn--primary adm__btn--sm"
-            (click)="createSection()"
-            [disabled]="!newSectionInput().trim() || secMgmtSaving()"
-          >
-            <lucide-icon [img]="PlusIcon" [size]="13" />
-            Add Section
-          </button>
-        </div>
-
-        <!-- Sections list -->
+        <!-- Scrollable sections list -->
         <div class="adm__sec-list">
           @if (sectionsLoading()) {
             <div class="adm__sec-empty">
@@ -627,10 +634,9 @@
               <div class="adm__sec-item"
                    [class.adm__sec-item--dragging]="dragSectionId() === sec.id"
                    [class.adm__sec-item--drag-over]="dragOverSecId() === sec.id"
-                   draggable="true"
-                   (dragstart)="onSecDragStart($event, sec.id)"
+                   [class.adm__sec-item--expanded]="expandedSecId() === sec.id"
                    (dragover)="onSecDragOver($event, sec.id)"
-                   (dragleave)="onSecDragLeave(sec.id)"
+                   (dragleave)="onSecDragLeave($event, sec.id)"
                    (drop)="onSecDrop($event, sec.id)"
                    (dragend)="onSecDragEnd()">
                 @if (editingSecId() === sec.id) {
@@ -656,12 +662,25 @@
                   </div>
                 } @else {
                   <!-- Normal row -->
-                  <div class="adm__sec-item-row">
-                    <span class="adm__sec-drag-handle" title="Drag to reorder">
+                  <div class="adm__sec-item-row" (dragover)="onSecDragOver($event, sec.id)">
+                    <span class="adm__sec-drag-handle"
+                          title="Drag to reorder"
+                          draggable="true"
+                          (dragstart)="onSecDragStart($event, sec.id)"
+                          (dragend)="onSecDragEnd()">
                       <lucide-icon [img]="GripVerticalIcon" [size]="14" />
                     </span>
+                    <button class="adm__sec-expand-btn"
+                            (click)="toggleSecExpand(sec.id)"
+                            [class.adm__sec-expand-btn--open]="expandedSecId() === sec.id"
+                            title="Show documents">
+                      <lucide-icon [img]="ChevronDownIcon" [size]="13" />
+                    </button>
                     <lucide-icon [img]="FolderIcon" [size]="14" class="adm__sec-folder-icon" />
                     <span class="adm__sec-name">{{ sec.name }}</span>
+                    <span class="adm__sec-doc-count" [class.adm__sec-doc-count--empty]="(docsBySection().get(sec.name)?.length ?? 0) === 0">
+                      {{ docsBySection().get(sec.name)?.length ?? 0 }}
+                    </span>
                     <div class="adm__sec-actions">
                       <button class="adm__sec-move-btn" (click)="startRenameSection(sec.id, sec.name)" [disabled]="secMgmtSaving()" title="Rename">
                         <lucide-icon [img]="PencilIcon" [size]="13" />
@@ -671,6 +690,34 @@
                       </button>
                     </div>
                   </div>
+                  <!-- Expanded documents list -->
+                  @if (expandedSecId() === sec.id) {
+                    <div class="adm__sec-docs-list">
+                      @if ((docsBySection().get(sec.name)?.length ?? 0) === 0) {
+                        <div class="adm__sec-docs-empty">No documents in this section. Drag one here.</div>
+                      } @else {
+                        @for (doc of docsBySection().get(sec.name) ?? []; track doc.id) {
+                          <div class="adm__sec-doc-item"
+                               [class.adm__sec-doc-item--dragging]="dragDocId() === doc.id"
+                               [class.adm__sec-doc-item--drag-over]="dragDocOverId() === doc.id"
+                               draggable="true"
+                               (dragstart)="onDocDragStart($event, doc.id)"
+                               (dragover)="onDocDragOver($event, doc.id)"
+                               (dragleave)="onDocDragLeave(doc.id)"
+                               (drop)="onDocDrop($event, sec.id, doc.id)"
+                               (dragend)="onDocDragEnd()">
+                            <span class="adm__sec-doc-grip">
+                              <lucide-icon [img]="GripVerticalIcon" [size]="12" />
+                            </span>
+                            <span class="adm__sec-doc-icon">
+                              <lucide-icon [img]="FileTextIcon" [size]="12" />
+                            </span>
+                            <span class="adm__sec-doc-title">{{ doc.title }}</span>
+                          </div>
+                        }
+                      }
+                    </div>
+                  }
                 }
               </div>
             }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import {
   LucideAngularModule,
   UserPlus, Pencil, Trash2, Shield, User, ArrowLeft, LogOut, X, Check, Users, Search,
-  ChevronLeft, ChevronRight, FileText, Link, Upload, ExternalLink, FolderPlus, Folder, Plus, GripVertical,
+  ChevronLeft, ChevronRight, ChevronDown, FileText, Link, Upload, ExternalLink, FolderPlus, Folder, Plus, GripVertical,
 } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -223,6 +223,12 @@ export class Admin implements OnInit {
   protected readonly dragOverSecId   = signal<string | null>(null);
   /** True while a section mutation (create / rename / delete / reorder) is in flight. */
   protected readonly secMgmtSaving   = signal(false);
+  /** ID of the currently expanded section (only one at a time); null when none. */
+  protected readonly expandedSecId   = signal<string | null>(null);
+  /** ID of the document currently being dragged (to move between sections). */
+  protected readonly dragDocId       = signal<string | null>(null);
+  /** ID of the document row currently under the drag cursor. */
+  protected readonly dragDocOverId   = signal<string | null>(null);
 
   /**
    * The section dropdown value in the doc modal.
@@ -234,6 +240,21 @@ export class Admin implements OnInit {
   protected readonly availableSections = computed<string[]>(() =>
     this.sections().map(s => s.name)
   );
+
+  /** Documents grouped by section name, each group sorted by position. */
+  protected readonly docsBySection = computed<Map<string, RdDocument[]>>(() => {
+    const map = new Map<string, RdDocument[]>();
+    for (const sec of this.sections()) map.set(sec.name, []);
+    for (const doc of this.documents()) {
+      const key = doc.section?.trim() || '';
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(doc);
+    }
+    for (const docs of map.values()) {
+      docs.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+    }
+    return map;
+  });
 
   /**
    * Per-section document counts shown in the Documents tab overview.
@@ -276,6 +297,7 @@ export class Admin implements OnInit {
   protected readonly FolderIcon        = Folder;
   protected readonly PlusIcon          = Plus;
   protected readonly GripVerticalIcon  = GripVertical;
+  protected readonly ChevronDownIcon   = ChevronDown;
 
   // ── Reactive form ──────────────────────────────────────────────────────────
 
@@ -627,9 +649,9 @@ export class Admin implements OnInit {
       const mode = this.docModalMode();
 
       if (mode === 'create') {
-        await this._rdDocs.adminCreateDocument({ title: title.trim(), url, file_path, section: sectionVal, subsection: null });
+        await this._rdDocs.adminCreateDocument({ title: title.trim(), url, file_path, section: sectionVal });
       } else {
-        await this._rdDocs.adminUpdateDocument(this.editingDocId()!, { title: title.trim(), url, file_path, section: sectionVal, subsection: null });
+        await this._rdDocs.adminUpdateDocument(this.editingDocId()!, { title: title.trim(), url, file_path, section: sectionVal });
       }
 
       this.docModalOpen.set(false);
@@ -690,9 +712,13 @@ export class Admin implements OnInit {
   /** Opens the section management modal and resets transient state. */
   protected openSecMgmt(): void {
     this.secMgmtError.set(null);
-    this.newSectionInput.set('');
+    this.newSectionInput.set('');    
     this.editingSecId.set(null);
     this.editingSecInput.set('');
+    this.expandedSecId.set(null);
+    if (this.documents().length === 0 && !this.docsLoading()) {
+      void this._loadDocuments();
+    }
     this.secMgmtOpen.set(true);
   }
 
@@ -782,13 +808,54 @@ export class Admin implements OnInit {
   }
 
   /** Called when the drag cursor leaves a potential drop target. */
-  protected onSecDragLeave(id: string): void {
-    if (this.dragOverSecId() === id) this.dragOverSecId.set(null);
+  protected onSecDragLeave(event: DragEvent, id: string): void {
+    // Only clear when the cursor has genuinely left the element (not entered a child)
+    const related = event.relatedTarget as Node | null;
+    if (!related || !(event.currentTarget as HTMLElement).contains(related)) {
+      if (this.dragOverSecId() === id) this.dragOverSecId.set(null);
+    }
   }
 
-  /** Handles the drop: reorders sections and persists new positions. */
+  /** Handles the drop: reorders sections OR moves a document to this section. */
   protected async onSecDrop(event: DragEvent, targetId: string): Promise<void> {
     event.preventDefault();
+
+    // ── Case 1: a document is being dropped onto this section ──────────────
+    const docId = this.dragDocId();
+    if (docId) {
+      this.dragDocId.set(null);
+      this.dragDocOverId.set(null);
+      this.dragOverSecId.set(null);
+      const targetSec = this.sections().find(s => s.id === targetId);
+      const sourceDoc = this.documents().find(d => d.id === docId);
+      if (!targetSec || !sourceDoc || sourceDoc.section === targetSec.name || this.secMgmtSaving()) return;
+
+      // Optimistic: reflect the move in the UI immediately
+      const movedDoc = { ...sourceDoc, section: targetSec.name };
+      this.documents.update(docs => docs.map(d => d.id === docId ? movedDoc : d));
+
+      this.secMgmtSaving.set(true);
+      this.secMgmtError.set(null);
+      try {
+        await this._rdDocs.adminUpdateDocument(docId, {
+          title: sourceDoc.title,
+          url:   sourceDoc.url,
+          file_path: sourceDoc.file_path,
+          section: targetSec.name,
+        });
+        this._toast.show(`"${sourceDoc.title}" moved to "${targetSec.name}".`, 'success');
+        await this._loadDocuments();
+      } catch (err: unknown) {
+        // Revert optimistic update on failure
+        this.documents.update(docs => docs.map(d => d.id === docId ? sourceDoc : d));
+        this.secMgmtError.set(err instanceof Error ? err.message : 'Failed to move document.');
+      } finally {
+        this.secMgmtSaving.set(false);
+      }
+      return;
+    }
+
+    // ── Case 2: a section is being dropped onto another section ────────────
     const sourceId = this.dragSectionId();
     this.dragSectionId.set(null);
     this.dragOverSecId.set(null);
@@ -799,7 +866,6 @@ export class Admin implements OnInit {
     const toIdx   = secs.findIndex(s => s.id === targetId);
     if (fromIdx < 0 || toIdx < 0) return;
 
-    // Reorder locally for instant feedback
     const [moved] = secs.splice(fromIdx, 1);
     secs.splice(toIdx, 0, moved);
     const reordered = secs.map((s, i) => ({ ...s, position: i }));
@@ -811,7 +877,7 @@ export class Admin implements OnInit {
       await this._rdSections.reorderSections(reordered.map(s => ({ id: s.id, position: s.position })));
     } catch (err: unknown) {
       this.secMgmtError.set(err instanceof Error ? err.message : 'Failed to reorder sections.');
-      await this._loadSections(); // revert on failure
+      await this._loadSections();
     } finally {
       this.secMgmtSaving.set(false);
     }
@@ -821,6 +887,92 @@ export class Admin implements OnInit {
   protected onSecDragEnd(): void {
     this.dragSectionId.set(null);
     this.dragOverSecId.set(null);
+  }
+
+  /** Toggles the expanded section; collapses it if already open. */
+  protected toggleSecExpand(id: string): void {
+    this.expandedSecId.set(this.expandedSecId() === id ? null : id);
+  }
+
+  /** Starts a document drag (prevents parent section drag from firing). */
+  protected onDocDragStart(event: DragEvent, docId: string): void {
+    this.dragDocId.set(docId);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  /** Highlights a document row as the drag target. */
+  protected onDocDragOver(event: DragEvent, docId: string): void {
+    event.preventDefault();
+    this.dragDocOverId.set(docId);
+  }
+
+  /**
+   * Handles a drop onto a document row.
+   * - Same section: reorders documents within that section.
+   * - Different section: moves the source document into the target section.
+   */
+  protected async onDocDrop(event: DragEvent, sectionId: string, targetDocId: string): Promise<void> {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const sourceDocId = this.dragDocId();
+    if (!sourceDocId) return;
+
+    // Dropped onto itself — no-op
+    if (sourceDocId === targetDocId) {
+      this.dragDocId.set(null);
+      this.dragDocOverId.set(null);
+      return;
+    }
+
+    const sourceDoc  = this.documents().find(d => d.id === sourceDocId);
+    const targetSec  = this.sections().find(s => s.id === sectionId);
+    if (!sourceDoc || !targetSec || this.secMgmtSaving()) return;
+
+    // ── Same section: reorder ────────────────────────────────────────────────
+    if (sourceDoc.section === targetSec.name) {
+      this.dragDocId.set(null);
+      this.dragDocOverId.set(null);
+
+      const sectionDocs = [...(this.docsBySection().get(targetSec.name) ?? [])];
+      const fromIdx = sectionDocs.findIndex(d => d.id === sourceDocId);
+      const toIdx   = sectionDocs.findIndex(d => d.id === targetDocId);
+      if (fromIdx < 0 || toIdx < 0 || fromIdx === toIdx) return;
+
+      const [moved] = sectionDocs.splice(fromIdx, 1);
+      sectionDocs.splice(toIdx, 0, moved);
+      const reordered = sectionDocs.map((d, i) => ({ ...d, position: i }));
+
+      // Optimistic update
+      const reorderedMap = new Map(reordered.map(d => [d.id, d]));
+      this.documents.update(docs => docs.map(d => reorderedMap.has(d.id) ? reorderedMap.get(d.id)! : d));
+
+      this.secMgmtSaving.set(true);
+      this.secMgmtError.set(null);
+      try {
+        await this._rdDocs.reorderDocuments(reordered.map(d => ({ id: d.id, position: d.position })));
+      } catch (err: unknown) {
+        await this._loadDocuments();
+        this.secMgmtError.set(err instanceof Error ? err.message : 'Failed to reorder documents.');
+      } finally {
+        this.secMgmtSaving.set(false);
+      }
+      return;
+    }
+
+    // ── Different section: move doc to target section ────────────────────────
+    void this.onSecDrop(event, sectionId);
+  }
+
+  /** Clears the document drag-over highlight. */
+  protected onDocDragLeave(docId: string): void {
+    if (this.dragDocOverId() === docId) this.dragDocOverId.set(null);
+  }
+
+  /** Clears all document drag state when the drag ends. */
+  protected onDocDragEnd(): void {
+    this.dragDocId.set(null);
+    this.dragDocOverId.set(null);
   }
 
   // ── Private helpers ────────────────────────────────────────────────────────

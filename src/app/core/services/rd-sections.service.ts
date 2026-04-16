@@ -68,11 +68,13 @@ export class RdSectionsService {
 
   /** Batch-updates positions for all sections after a drag-and-drop reorder. */
   async reorderSections(items: { id: string; position: number }[]): Promise<void> {
-    await Promise.all(
+    const results = await Promise.all(
       items.map(({ id, position }) =>
         this._sb.client.from('rd_sections').update({ position }).eq('id', id)
       )
     );
+    const failed = results.find(r => r.error);
+    if (failed?.error) throw new Error(failed.error.message);
   }
 
   /** Swaps the position values of two sections (move up / move down). */
