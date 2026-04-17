@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal, OnInit } from '@angular/core';
-import { LucideAngularModule, FileText, ExternalLink } from 'lucide-angular';
+import { LucideAngularModule, FileText, ExternalLink, ArrowUpRight } from 'lucide-angular';
 import { NavigationService } from '../../core/services/navigation.service';
 import { RdDocumentsService } from '../../core/services/rd-documents.service';
 import { RdSectionsService } from '../../core/services/rd-sections.service';
@@ -37,6 +37,7 @@ export class AppsPageComponent implements OnInit {
 
   protected readonly FileTextIcon     = FileText;
   protected readonly ExternalLinkIcon = ExternalLink;
+  protected readonly ArrowUpRightIcon = ArrowUpRight;
 
   /**
    * Documents grouped by section, ordered by the position defined in rd_sections.

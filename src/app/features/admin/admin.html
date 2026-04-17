@@ -249,17 +249,43 @@
       <div class="adm__banner adm__banner--error">{{ docsError() }}</div>
     }
 
-    <!-- Sections overview (only shown when docs exist) -->
-    @if (!docsLoading() && sectionStats().length > 0) {
-      <div class="adm__section-overview">
-        <span class="adm__section-overview-label">Sections</span>
-        <div class="adm__section-chips">
-          @for (stat of sectionStats(); track stat.section) {
-            <span class="adm__section-chip"
-              [class.adm__section-chip--ungrouped]="stat.section === '(No section)'">
-              {{ stat.section }}
-              <span class="adm__section-chip-count">{{ stat.count }}</span>
+    <!-- Documents toolbar: search + section filter -->
+    @if (!docsLoading() && documents().length > 0) {
+      <div class="adm__toolbar">
+        <div class="adm__search-wrap">
+          <lucide-icon [img]="SearchIcon" [size]="14" class="adm__search-icon" />
+          <input
+            type="search"
+            class="adm__search-input"
+            placeholder="Search documents…"
+            [value]="docSearchQuery()"
+            (input)="onDocSearch($any($event.target).value)" />
+        </div>
+        <div class="adm__dd" [class.adm__dd--open]="docDropdownOpen()">
+          <button type="button" class="adm__dd-trigger" (click)="toggleDocDropdown()">
+            <span class="adm__dd-label">
+              {{ docSectionFilter() === 'all' ? 'All sections' : docSectionFilter() }}
             </span>
+            <span class="adm__dd-count">
+              {{ docSectionFilter() === 'all' ? documents().length : (docsBySection().get(docSectionFilter())?.length ?? 0) }}
+            </span>
+            <lucide-icon [img]="ChevronDownIcon" [size]="13" class="adm__dd-chevron" />
+          </button>
+          @if (docDropdownOpen()) {
+            <div class="adm__dd-menu">
+              <button type="button" class="adm__dd-opt" [class.adm__dd-opt--active]="docSectionFilter() === 'all'"
+                      (click)="pickDocSection('all')">
+                <span class="adm__dd-opt-label">All sections</span>
+                <span class="adm__dd-opt-count">{{ documents().length }}</span>
+              </button>
+              @for (sec of docFilterSections(); track sec) {
+                <button type="button" class="adm__dd-opt" [class.adm__dd-opt--active]="docSectionFilter() === sec"
+                        (click)="pickDocSection(sec)">
+                  <span class="adm__dd-opt-label">{{ sec }}</span>
+                  <span class="adm__dd-opt-count">{{ docsBySection().get(sec)?.length ?? 0 }}</span>
+                </button>
+              }
+            </div>
           }
         </div>
       </div>
@@ -282,11 +308,17 @@
           <lucide-icon [img]="FileTextIcon" [size]="28" />
           <span>No documents yet. Add one to get started.</span>
         </div>
+      } @else if (filteredDocs().length === 0) {
+        <div class="adm__empty">
+          <lucide-icon [img]="SearchIcon" [size]="28" />
+          <span>No documents match your search.</span>
+        </div>
       } @else {
         <table class="adm__table">
           <thead>
             <tr>
               <th>Title</th>
+              <th>Section</th>
               <th>URL</th>
               <th>Type</th>
               <th>Added</th>
@@ -294,13 +326,14 @@
             </tr>
           </thead>
           <tbody>
-            @for (doc of documents(); track doc.id) {
+            @for (doc of paginatedDocs(); track doc.id) {
               <tr class="adm__row">
                 <td class="adm__cell--doc-title">{{ doc.title }}</td>
+                <td class="adm__cell--dim">{{ doc.section || '—' }}</td>
                 <td class="adm__cell--doc-url">
                   <a [href]="doc.url" target="_blank" rel="noopener noreferrer" class="adm__doc-link">
                     <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
-                    {{ doc.url.length > 48 ? doc.url.slice(0, 48) + '…' : doc.url }}
+                    {{ doc.url.length > 40 ? doc.url.slice(0, 40) + '…' : doc.url }}
                   </a>
                 </td>
                 <td>
@@ -325,6 +358,20 @@
             }
           </tbody>
         </table>
+        @if (docTotalPages() > 1) {
+          <div class="adm__pagination">
+            <span class="adm__page-showing">Showing {{ docPageStart() }}–{{ docPageEnd() }} of {{ filteredDocs().length }}</span>
+            <div class="adm__page-controls">
+              <button class="adm__page-btn" [disabled]="docPageIndex() === 0" (click)="prevDocPage()" aria-label="Previous page">
+                <lucide-icon [img]="ChevronLeftIcon" [size]="14" />
+              </button>
+              <span class="adm__page-info">{{ docPageIndex() + 1 }} / {{ docTotalPages() }}</span>
+              <button class="adm__page-btn" [disabled]="docPageIndex() === docTotalPages() - 1" (click)="nextDocPage()" aria-label="Next page">
+                <lucide-icon [img]="ChevronRightIcon" [size]="14" />
+              </button>
+            </div>
+          </div>
+        }
       }
     </div>
 
@@ -492,15 +539,25 @@
           <!-- Section -->
           <div class="adm__field">
             <label class="adm__label">Section <span class="adm__label-required">*</span></label>
-            <select class="adm__input adm__select"
-              [class.adm__input--error]="docSectionTouched() && !docSectionSelect()"
-              [value]="docSectionSelect()"
-              (change)="onSectionChange($any($event.target).value)">
-              <option value="" disabled selected>— Select a section —</option>
-              @for (s of availableSections(); track s) {
-                <option [value]="s">{{ s }}</option>
+            <div class="adm__dd adm__dd--modal" [class.adm__dd--open]="docSectionModalDropdownOpen()"
+                 [class.adm__dd--error]="docSectionTouched() && !docSectionSelect()">
+              <button type="button" class="adm__dd-trigger" (click)="toggleDocSectionModal()">
+                <span class="adm__dd-label" [class.adm__dd-label--placeholder]="!docSectionSelect()">
+                  {{ docSectionSelect() || '— Select a section —' }}
+                </span>
+                <lucide-icon [img]="ChevronDownIcon" [size]="13" class="adm__dd-chevron" />
+              </button>
+              @if (docSectionModalDropdownOpen()) {
+                <div class="adm__dd-menu">
+                  @for (s of availableSections(); track s) {
+                    <button type="button" class="adm__dd-opt" [class.adm__dd-opt--active]="docSectionSelect() === s"
+                            (click)="pickDocSectionModal(s)">
+                      <span class="adm__dd-opt-label">{{ s }}</span>
+                    </button>
+                  }
+                </div>
               }
-            </select>
+            </div>
             @if (docSectionTouched() && !docSectionSelect()) {
               <span class="adm__field-error">Section is required.</span>
             }

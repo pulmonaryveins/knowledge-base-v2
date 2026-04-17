@@ -1,6 +1,6 @@
 // ── FILE: src/app/shared/components/hero/hero.component.ts ──
 
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, effect, input, signal, afterNextRender } from '@angular/core';
 import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 import { HeroStat } from '../../../core/models';
 import { getTeamIcon } from '../../../core/utils/icons';
@@ -23,4 +23,50 @@ export class HeroComponent {
   protected readonly teamIcon = computed<LucideIconData>(() =>
     getTeamIcon(this.teamKey())
   );
+
+  /** Animated display values — counts up from 0 on load. */
+  protected readonly displayedValues = signal<string[]>([]);
+
+  private _timerId: ReturnType<typeof setInterval> | null = null;
+
+  constructor() {
+    // Kick off count-up once the view has rendered
+    afterNextRender(() => this._animateStats());
+
+    // Re-animate whenever the stats input changes (e.g. team navigation)
+    effect(() => {
+      const stats = this.stats();
+      this.displayedValues.set(stats.map(() => '0'));
+      if (this._timerId) clearInterval(this._timerId);
+      this._animateStats();
+    });
+  }
+
+  private _animateStats(): void {
+    const stats    = this.stats();
+    const duration = 1600;
+    const fps      = 60;
+    const steps    = Math.round(duration / (1000 / fps));
+    const targets  = stats.map(s => { const n = parseInt(s.value, 10); return isNaN(n) ? null : n; });
+
+    this.displayedValues.set(stats.map((s, i) => targets[i] !== null ? '0' : s.value));
+
+    let step = 0;
+    this._timerId = setInterval(() => {
+      step++;
+      const t      = step / steps;
+      const eased  = 1 - Math.pow(1 - t, 3);  // ease-out cubic
+      this.displayedValues.set(
+        stats.map((s, i) => {
+          const target = targets[i];
+          return target !== null ? Math.round(eased * target).toString() : s.value;
+        })
+      );
+      if (step >= steps) {
+        clearInterval(this._timerId!);
+        this._timerId = null;
+        this.displayedValues.set(stats.map(s => s.value));
+      }
+    }, 1000 / fps);
+  }
 }

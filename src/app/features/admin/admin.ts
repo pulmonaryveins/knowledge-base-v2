@@ -275,6 +275,104 @@ export class Admin implements OnInit {
       });
   });
 
+  // ── Docs search / filter / pagination ────────────────────────────────────
+
+  /** Search query for the documents table. */
+  protected readonly docSearchQuery  = signal('');
+  /** Active section filter; `'all'` means no filter. */
+  protected readonly docSectionFilter  = signal<string>('all');
+  /** Controls the custom section filter dropdown visibility. */
+  protected readonly docDropdownOpen            = signal(false);
+  /** Controls the custom section dropdown in the add/edit document modal. */
+  protected readonly docSectionModalDropdownOpen = signal(false);
+  /** Zero-based page index for the documents table. */
+  protected readonly docPageIndex      = signal(0);
+  /** Rows per page for the documents table (fixed at 7). */
+  protected readonly docPageSize     = 7;
+
+  /** Documents filtered by search query and section filter. */
+  protected readonly filteredDocs = computed(() => {
+    const q   = this.docSearchQuery().toLowerCase().trim();
+    const sec = this.docSectionFilter();
+    return this.documents().filter(doc => {
+      const matchesSec    = sec === 'all' || (doc.section?.trim() || '(No section)') === sec;
+      const matchesSearch = !q || doc.title.toLowerCase().includes(q) ||
+                            (doc.section ?? '').toLowerCase().includes(q);
+      return matchesSec && matchesSearch;
+    });
+  });
+
+  /** Total pages for docs pagination. */
+  protected readonly docTotalPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredDocs().length / this.docPageSize))
+  );
+
+  /** Slice of filteredDocs for the current page. */
+  protected readonly paginatedDocs = computed(() => {
+    const start = this.docPageIndex() * this.docPageSize;
+    return this.filteredDocs().slice(start, start + this.docPageSize);
+  });
+
+  /** 1-based first row index for the "Showing X–Y" label. */
+  protected readonly docPageStart = computed(() =>
+    this.filteredDocs().length === 0 ? 0 : this.docPageIndex() * this.docPageSize + 1
+  );
+
+  /** 1-based last row index for the "Showing X–Y" label. */
+  protected readonly docPageEnd = computed(() =>
+    Math.min(this.filteredDocs().length, (this.docPageIndex() + 1) * this.docPageSize)
+  );
+
+  /** Section names available as filter options (from loaded sections + 'all'). */
+  protected readonly docFilterSections = computed<string[]>(() =>
+    this.sections().map(s => s.name)
+  );
+
+  /** Navigate to previous docs page. */
+  protected prevDocPage(): void {
+    this.docPageIndex.update(p => Math.max(0, p - 1));
+  }
+
+  /** Navigate to next docs page. */
+  protected nextDocPage(): void {
+    this.docPageIndex.update(p => Math.min(this.docTotalPages() - 1, p + 1));
+  }
+
+  /** Set docs section filter and reset to first page. */
+  protected setDocSectionFilter(sec: string): void {
+    this.docSectionFilter.set(sec);
+    this.docPageIndex.set(0);
+  }
+
+  /** Toggle the custom section filter dropdown open/closed. */
+  protected toggleDocDropdown(): void {
+    this.docDropdownOpen.update(v => !v);
+  }
+
+  /** Select a section from the custom dropdown and close it. */
+  protected pickDocSection(sec: string): void {
+    this.setDocSectionFilter(sec);
+    this.docDropdownOpen.set(false);
+  }
+
+  /** Toggle the section dropdown inside the add/edit document modal. */
+  protected toggleDocSectionModal(): void {
+    this.docSectionModalDropdownOpen.update(v => !v);
+  }
+
+  /** Pick a section inside the document modal and close its dropdown. */
+  protected pickDocSectionModal(sec: string): void {
+    this.onSectionChange(sec);
+    this.docSectionTouched.set(true);
+    this.docSectionModalDropdownOpen.set(false);
+  }
+
+  /** Called on search input — resets to first page. */
+  protected onDocSearch(q: string): void {
+    this.docSearchQuery.set(q);
+    this.docPageIndex.set(0);
+  }
+
   // ── Icon references ────────────────────────────────────────────────────────
   protected readonly UserPlusIcon      = UserPlus;
   protected readonly PencilIcon        = Pencil;
@@ -541,6 +639,7 @@ export class Admin implements OnInit {
     this.stagedFileName.set('');
     this.docSectionSelect.set('');
     this.docSectionTouched.set(false);
+    this.docSectionModalDropdownOpen.set(false);
     this.docModalOpen.set(true);
   }
 
@@ -563,11 +662,13 @@ export class Admin implements OnInit {
     this.stagedFileName.set(doc.file_path ? doc.url.split('/').pop() ?? '' : '');
     this.docSectionSelect.set(doc.section ?? '');
     this.docSectionTouched.set(false);
+    this.docSectionModalDropdownOpen.set(false);
     this.docModalOpen.set(true);
   }
 
   /** Closes the document create/edit modal without saving. */
   protected closeDocModal(): void {
+    this.docSectionModalDropdownOpen.set(false);
     this.docModalOpen.set(false);
   }
 
@@ -1004,6 +1105,7 @@ export class Admin implements OnInit {
     try {
       const list = await this._rdDocs.listDocuments();
       this.documents.set(list);
+      this.docPageIndex.set(0);
     } catch (err: unknown) {
       this.docsError.set(err instanceof Error ? err.message : 'Failed to load documents.');
     } finally {
