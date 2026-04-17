@@ -43,11 +43,11 @@
   }
 
   &__hero-badge-label {
-    @apply font-['Syne',_sans-serif] text-[11px] font-extrabold uppercase tracking-[0.1em];
+    @apply font-['DM_Mono',_monospace] text-[11px] font-extrabold uppercase tracking-[0.1em];
   }
 
   &__hero-title {
-    @apply font-bold m-0 font-['Syne',_sans-serif] text-[48px] text-white leading-[1.1] tracking-[-0.02em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.1)];
+    @apply font-extrabold m-0 font-['Syne',_sans-serif] text-[48px] text-white leading-[1.1] tracking-[-0.02em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.1)];
     @media (max-width: 768px) { @apply text-[32px]; }
   }
 

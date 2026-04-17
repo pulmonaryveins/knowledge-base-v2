@@ -128,12 +128,11 @@ export class SearchOverlayComponent implements OnInit, AfterViewInit {
       this._nav.switchToTool(result.toolKey);
       this.close();
     } else {
+      // Queue the scroll BEFORE switching team so DocsShellComponent
+      // picks it up after the 420ms skeleton clears and the DOM is ready.
+      this._nav.setPendingScroll(result.sectionId);
       this._nav.switchTeam(result.teamKey);
       this.close();
-      setTimeout(() => {
-        const el = document.getElementById(result.sectionId);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
     }
   }
 

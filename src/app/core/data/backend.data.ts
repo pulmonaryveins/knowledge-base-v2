@@ -11,9 +11,9 @@ export const backendTeam: Team = {
   subtitle: 'NestJS Monorepo · AWS Lambda (SAM) · TypeORM · MySQL · GraphQL',
   stats: [
     { label: 'API Apps', value: '3' },
-    { label: 'Endpoints', value: '148' },
-    { label: 'API Uptime', value: '99.97%' },
-    { label: 'Avg Latency', value: '38ms' },
+    { label: 'Endpoints', value: '200+' },
+    { label: 'API Uptime', value: '99.99%' },
+    { label: 'Avg Latency', value: '35ms' },
   ],
   projects: [],
   sections: [

@@ -10,9 +10,9 @@ export const qaTeam: Team = {
   icon: 'test-tube',
   subtitle: 'Python · Playwright · Selenium · Page Object Model · pytest · flake8',
   stats: [
-    { label: 'Automation Suites', value: '3' },
-    { label: 'Tools', value: '7' },
-    { label: 'POM Classes', value: '20+' },
+    { label: 'Automation Suites', value: '5' },
+    { label: 'Tools', value: '8' },
+    { label: 'POM Classes', value: '30+' },
     { label: 'Test Coverage', value: 'E2E + API' },
   ],
   projects: [],

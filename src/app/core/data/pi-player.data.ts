@@ -11,10 +11,10 @@ export const piPlayerTeam: Team = {
   logoUrl: 'https://cdn.simpleicons.org/raspberrypi/C2185B',
   subtitle: 'Raspberry Pi · Embedded Player · Hardware Integration · Display OS',
   stats: [
-    { label: 'Devices', value: '0' },
-    { label: 'Projects', value: '1' },
+    { label: 'Devices', value: '12+' },
+    { label: 'Projects', value: '2' },
     { label: 'In Dev', value: '1' },
-    { label: 'Platforms', value: '1' },
+    { label: 'Platforms', value: '2' },
   ],
   projects: [],
   sections: [

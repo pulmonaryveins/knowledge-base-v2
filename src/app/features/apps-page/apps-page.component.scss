@@ -7,7 +7,6 @@
 .rd-page {
   &__content {
     padding: 48px 52px 80px;
-    max-width: 860px;
 
     @media (max-width: 768px) { padding: 24px 20px 60px; }
   }
@@ -18,9 +17,14 @@
 .rd-docs {
 
   &__groups {
-    display: flex;
-    flex-direction: column;
-    gap: 64px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 56px 64px;
+
+    @media (max-width: 960px) {
+      grid-template-columns: 1fr;
+      gap: 56px;
+    }
   }
 
   &__group {

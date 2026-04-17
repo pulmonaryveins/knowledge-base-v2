@@ -10,10 +10,10 @@ export const webdevTeam: Team = {
   icon: 'globe',
   subtitle: 'Astro · Svelte · Tailwind CSS · AI-Assisted Development · Multi-framework',
   stats: [
-    { label: 'Live Sites', value: '6' },
-    { label: 'Projects', value: '3' },
-    { label: 'Frameworks', value: '4+' },
-    { label: 'AI Tools', value: '3' },
+    { label: 'Live Sites', value: '8' },
+    { label: 'Projects', value: '5' },
+    { label: 'Frameworks', value: '5+' },
+    { label: 'AI Tools', value: '4' },
   ],
   projects: [
     {

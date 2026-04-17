@@ -1,6 +1,6 @@
 // ── FILE: src/app/shared/components/hero/hero.component.ts ──
 
-import { Component, computed, effect, input, signal, afterNextRender } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 import { HeroStat } from '../../../core/models';
 import { getTeamIcon } from '../../../core/utils/icons';
@@ -30,10 +30,7 @@ export class HeroComponent {
   private _timerId: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
-    // Kick off count-up once the view has rendered
-    afterNextRender(() => this._animateStats());
-
-    // Re-animate whenever the stats input changes (e.g. team navigation)
+    // Animate on first render and re-animate on every stats change (e.g. team navigation or async load)
     effect(() => {
       const stats = this.stats();
       this.displayedValues.set(stats.map(() => '0'));

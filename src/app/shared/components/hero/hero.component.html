@@ -12,7 +12,7 @@
     <div class="hero__stats">
       @for (stat of stats(); track stat.label; let i = $index) {
         <div class="hero__stat">
-          <span class="hero__stat-value">{{ displayedValues()[i] ?? stat.value }}</span>
+          <span class="hero__stat-value">{{ displayedValues()[i] || stat.value }}</span>
           <span class="hero__stat-label">{{ stat.label }}</span>
         </div>
       }

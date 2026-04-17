@@ -38,6 +38,12 @@ export class NavigationService {
   public readonly heroVisible = signal<boolean>(true);
 
   /**
+   * Section ID to scroll to once the next page finishes loading.
+   * Set before a team switch so DocsShellComponent can scroll after the skeleton clears.
+   */
+  public readonly pendingScrollId = signal<string | null>(null);
+
+  /**
    * The full Team object for the currently active team key.
    * Falls back to the first team if the key is not found.
    */
@@ -133,5 +139,14 @@ export class NavigationService {
   /** Close the global search overlay. */
   public closeSearch(): void {
     this.searchOpen.set(false);
+  }
+
+  /**
+   * Queue a section to be scrolled into view after the next page load completes.
+   * Pass null to cancel any pending scroll.
+   * @param id - The DOM element ID to scroll to
+   */
+  public setPendingScroll(id: string | null): void {
+    this.pendingScrollId.set(id);
   }
 }

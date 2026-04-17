@@ -10,8 +10,8 @@ export const frontendTeam: Team = {
   icon: 'monitor',
   subtitle: 'Angular 21 · Tailwind CSS v4 · TypeScript 5 · Zoneless Signals',
   stats: [
-    { label: 'Components', value: '84' },
-    { label: 'Projects', value: '4' },
+    { label: 'Components', value: '120+' },
+    { label: 'Projects', value: '5' },
     { label: 'Test Coverage', value: '91%' },
     { label: 'Avg TTI', value: '1.2s' },
   ],
@@ -19,94 +19,126 @@ export const frontendTeam: Team = {
     {
       id: 'fe-dashboard',
       name: 'Dashboard',
-      description: 'Main operator dashboard — analytics, schedules, and device management.',
+      description: 'Primary operator control plane — analytics, licenses, users, device management, and content approval.',
       status: 'Live',
       icon: 'layout-dashboard',
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {
-        meta: { stack: 'Angular 21 · Signals · Tailwind v4', repo: 'nctv/dashboard-fe', deploy: 'AWS CloudFront', sprint: 'Sprint 42' },
-        purpose: 'The Dashboard is the primary control plane for NCompassTV operators. It surfaces real-time device health, schedule management, content approval queues, and analytics in a single Angular SPA.',
+        meta: { stack: 'Angular 21 · TypeScript 5.9 · Tailwind CSS 3.x · RxJS 7.8 · Auth0 2.3 · SSR', repo: 'ncompasstv-dashboard', deploy: 'AWS CloudFront (SSR + Hydration)', sprint: 'Sprint 42' },
+        purpose: 'The ncompasstv-dashboard is the primary control plane for NCompassTV operators. Built as an Angular 21 SSR application with zoneless change detection, it provides license management, user administration, advertiser CRUD, host location management, and a media library — all driven exclusively by Angular Signals.',
         features: [
-          { title: 'Real-time Device Health', body: 'WebSocket-powered grid showing online/offline/error states for all registered screens, refreshed every 5 seconds.' },
-          { title: 'Schedule Builder', body: 'Drag-and-drop calendar with conflict detection, time-zone support, and bulk publish actions across device groups.' },
-          { title: 'Analytics Dashboards', body: 'Recharts-based charts showing impressions, uptime %, play counts, and audience segmentation filters.' },
+          { title: 'Zoneless Change Detection', body: 'Uses provideZonelessChangeDetection() instead of Zone.js. All UI updates are driven by signals — no manual ChangeDetectorRef.markForCheck() calls needed.' },
+          { title: 'Standalone Components Only', body: 'No NgModules anywhere. Every component is standalone: true and imports its own dependencies. Combined with lazy-loaded routes this significantly reduces initial bundle size.' },
+          { title: 'SSR + Hydration', body: 'The app renders on the server first then hydrates on the client via Angular SSR, improving SEO and perceived load times.' },
+          { title: 'Auth0 Authentication', body: 'Auth0 v2.3 handles all authentication and authorization. Route guards protect all feature routes.' },
+          { title: 'ApexCharts Data Visualization', body: 'ApexCharts 5.x renders analytics charts across dashboard views with configurable series and responsive breakpoints.' },
+          { title: 'Component Pantry UI Library', body: 'Shared @ntv360/component-pantry components are used throughout — tables, buttons, autocomplete, modals — ensuring visual consistency across all NCompassTV frontends.' },
         ],
         folderStructure: {
           language: 'bash',
-          code: `dashboard-fe/
+          code: `ncompasstv-dashboard/
 ├── src/app/
 │   ├── core/
-│   │   ├── models/          # TypeScript interfaces
-│   │   ├── services/        # Data + state services
-│   │   └── guards/          # Route guards
+│   │   ├── guards/          # authGuard, guestGuard
+│   │   ├── services/        # auth, licenses, users, dealers, hosts, export
+│   │   ├── dto/             # Data Transfer Objects for API requests/responses
+│   │   └── index.ts         # Barrel file
 │   ├── shared/
-│   │   └── components/      # Reusable dumb components
+│   │   ├── components/      # table, button, autocomplete, modals
+│   │   ├── constants/       # colors, icons, timezones
+│   │   ├── directives/      # click-outside, copy
+│   │   ├── interfaces/      # table, media, stats, city
+│   │   ├── pipes/           # duration-formatter, file-size, kebab-case
+│   │   ├── utils/           # withLoading, Logger, query-builder
+│   │   ├── validators/      # Custom form validators
+│   │   └── index.ts
 │   ├── features/
-│   │   ├── overview/        # Home analytics page
-│   │   ├── devices/         # Device management
-│   │   ├── schedules/       # Schedule builder
-│   │   └── content/         # Content approval
+│   │   ├── advertisers/     # CRUD for advertisers
+│   │   ├── auth/            # Login + Auth0 callback
+│   │   ├── dashboard/       # Main dashboard view
+│   │   ├── dealers/         # Dealer management
+│   │   ├── hosts/           # Host location management
+│   │   ├── licenses/        # License management
+│   │   ├── media-library/   # Media asset management
+│   │   ├── screens/         # Screen/player management
+│   │   └── users/           # User management
 │   └── layout/
-│       └── shell/           # App shell layout
-└── public/                  # Static assets`,
+│       ├── authenticated/   # Layout for logged-in users
+│       ├── public/          # Layout for guest pages
+│       └── main-layout/     # Sidebar + header + router-outlet`,
         },
         gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone the repo and install dependencies.', code: 'git clone git@github.com:nctv/dashboard-fe.git\ncd dashboard-fe && npm install', language: 'bash' },
-          { title: 'Configure Environment', description: 'Copy the example env file and fill in your API endpoint.', code: 'cp .env.example .env.local\n# Set VITE_API_URL=http://localhost:3000', language: 'bash' },
-          { title: 'Start Dev Server', description: 'Run the Angular dev server with hot-reload.', code: 'npm start\n# Opens at server', language: 'bash' },
-          { title: 'Run Tests', description: 'Execute the full Vitest suite.', code: 'npm test', language: 'bash' },
+          { title: 'Clone & Install', description: 'Clone the repository and install dependencies.', code: 'git clone <repo-url>\ncd ncompasstv-dashboard\nnpm install', language: 'bash' },
+          { title: 'Configure Environment', description: 'Copy the example env file and fill in required values.', code: 'cp .env.example .env\n# Required:\n# AWS_API_URL       — backend API URL\n# AUTH0_DOMAIN      — Auth0 domain\n# AUTH0_CLIENT_ID   — Auth0 client ID\n# AUTH0_AUDIENCE    — Auth0 audience\n# ALLOWED_ORIGIN    — allowed CORS origin', language: 'bash' },
+          { title: 'Start Dev Server', description: 'Run the Angular development server with hot-reload.', code: 'npm run start\n# Opens at http://localhost:4200', language: 'bash' },
+          { title: 'Run Tests', description: 'Execute the Karma + Jasmine unit test suite.', code: 'npm test', language: 'bash' },
+          { title: 'Format Code', description: 'Run Prettier across all source files.', code: 'npm run pretty\n# Check only (no write):\nnpm run pretty:check', language: 'bash' },
         ],
         contacts: [
           { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
           { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'Staging Deploy', url: '#', type: 'deploy' },
-          { label: 'Jira Board', url: '#', type: 'jira' },
+          { label: 'Git Repository', url: 'https://git.n-compass.online/NTV360/knowledge-base-v2.git', type: 'repo' },
         ],
       },
     },
     {
       id: 'fe-channels',
-      name: 'Channels App',
-      description: 'Channel lineup builder and preview tool for content managers.',
+      name: 'Channels UI',
+      description: 'Angular 20 SSR app for managing Channels, Collections, and Content for the NTV360 platform.',
       status: 'Dev',
       icon: 'tv',
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {
-        meta: { stack: 'Angular 21 · NgRx Signals Store', repo: 'nctv/channels-fe', deploy: 'Vercel Preview', sprint: 'Sprint 40' },
-        purpose: 'The Channels App lets content managers build, preview, and publish channel lineups. It talks to the Channels API and renders a live preview of on-screen layouts.',
+        meta: { stack: 'Angular 20.3.7 · TypeScript 5.8.3 · SSR (Express 5) · Tailwind 3.4.18 · Component Pantry 0.5.3', repo: 'channels-ui', deploy: 'AWS CloudFront (Lambda SSR + S3 static)', sprint: 'Sprint 40' },
+        purpose: 'channels-ui is a standalone Angular 20 SSR application that allows content administrators to manage Channels, Collections, and Content for the NTV360 platform. The Express BFF proxies all API requests, injects runtime config at render time, and handles HttpOnly cookie auth forwarding.',
         features: [
-          { title: 'Lineup Editor', body: 'Visual drag-and-drop editor for ordering content blocks within a channel schedule, with collision detection.' },
-          { title: 'Live Preview', body: 'Embedded player preview rendering the channel output in real time using the same renderer as Screen Player.' },
-          { title: 'Publish Workflow', body: 'One-click publish with rollback support and detailed diff view before confirming changes.' },
+          { title: 'Multi-step Channel Creation Wizard', body: 'A 3-step wizard (Channel Information → Select Content → Preview) guides admins through creating a channel. Name uniqueness is validated in real-time via a debounced API call.' },
+          { title: 'Genre-based Collections with Drag-and-Drop', body: 'Collections are grouped by genre. DraggableRowDirective enables drag-and-drop content reordering. CollectionCreationStateService manages the multi-step creation draft.' },
+          { title: 'Content Library Browser', body: 'ChannelLibraryComponent provides a paginated content picker with selection state managed by ChannelLibraryStateService.' },
+          { title: 'AI Thumbnail Generation', body: 'AiImageModalComponent generates thumbnail suggestions via the Google Gemini API (@google/genai 1.34). Thumbnails are hosted on Filestack CDN.' },
+          { title: 'Real-time Video Conversion Status', body: 'VideoConversionWebsocketService maintains a native WebSocket connection to stream video processing events live to the UI.' },
+          { title: 'BFF Proxy + SSR Config Injection', body: 'The Express server routes /api/* to the upstream REST API and injects window.__APP_CONFIG__ (apiBaseUrl, wsUrl, user, role) into the SSR HTML at render time.' },
         ],
         folderStructure: {
           language: 'bash',
-          code: `channels-fe/
-├── src/app/
-│   ├── core/
-│   ├── shared/
-│   ├── features/
-│   │   ├── lineup/          # Lineup editor
-│   │   ├── preview/         # Live preview
-│   │   └── publish/         # Publish workflow
-│   └── layout/`,
+          code: `channels-ui/
+├── src/
+│   ├── app/
+│   │   ├── app.component.*        # Root component
+│   │   ├── app.config.ts          # Providers: zoneless, HTTP, auth
+│   │   ├── app.routes.ts          # Root routes (all require authGuard)
+│   │   ├── api-endpoints.ts       # Centralized API path constants
+│   │   ├── core/                  # Guards, interceptors, models, services
+│   │   ├── features/
+│   │   │   ├── channels/          # Channel list, create wizard, single view
+│   │   │   ├── channel-library/   # Content library browser
+│   │   │   └── dashboard/         # Dashboard overview
+│   │   ├── shared/
+│   │   │   ├── components/        # ChannelGallery, AiImageModal, UploadModal
+│   │   │   ├── services/          # Filestack, Gemini, WebSocket, HelperService
+│   │   │   └── directives/        # DraggableRowDirective
+│   │   └── layout/                # Authenticated & public shell layouts
+│   └── server/                    # Express BFF (proxies /api/*, injects config)
+├── public/                        # Static assets (default_thumbnail, Lottie JSON)
+└── terraform/                     # AWS CloudFront + Lambda + S3 infrastructure`,
         },
         gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone repo and install packages.', code: 'git clone git@github.com:nctv/channels-fe.git && npm i', language: 'bash' },
-          { title: 'Start Dev Server', description: 'Launch with hot-reload.', code: 'npm start', language: 'bash' },
+          { title: 'Clone & Install', description: 'Clone the repository and install all packages.', code: 'git clone <repo-url>\ncd channels-ui\nnpm install', language: 'bash' },
+          { title: 'Configure Environment', description: 'Set up the .env file with API base URLs, WebSocket URLs, and auth config.', code: '# Required .env variables:\n# DEV_API_BASE_URL, STG_API_BASE_URL, PROD_API_BASE_URL\n# DEV_WS_URL, STG_WS_URL, PROD_WS_URL\n# MOCK_AUTH_* (for local dev)\n# PORT, NODE_ENV, ENABLE_LOGGING', language: 'bash' },
+          { title: 'Start Dev Server', description: 'Launch with the development environment (SSR + BFF proxy).', code: 'npm start\n# App at http://localhost:4200', language: 'bash' },
+          { title: 'Build for Production', description: 'Compile SSR bundle for deployment.', code: 'npm run build:prod', language: 'bash' },
+          { title: 'Format Code', description: 'Run Prettier across all source files.', code: 'npm run pretty\n# Staged only (pre-commit hook):\nnpm run pretty:staged', language: 'bash' },
         ],
         contacts: [
           { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
           { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'Figma Design', url: '#', type: 'design' },
+          { label: 'Git Repository', url: 'https://git.n-compass.online/NTV360/channels-ui.git', type: 'repo' },
         ],
       },
     },
@@ -146,8 +178,7 @@ export const frontendTeam: Team = {
           { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'Figma Design', url: '#', type: 'design' },
+          { label: 'Git Repository', url: '#', type: 'repo' },
         ],
       },
     },
@@ -190,8 +221,7 @@ export const frontendTeam: Team = {
           { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'Staging Deploy', url: '#', type: 'deploy' },
+          { label: 'Git Repository', url: '#', type: 'repo' },
         ],
       },
     },
@@ -262,8 +292,7 @@ export const frontendTeam: Team = {
           { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'Live Storybook', url: 'https://component-pantry-6gzti48wc-ntv360-live.vercel.app/', type: 'deploy' },
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
+          { label: 'Git Repository', url: 'https://git.n-compass.online/NTV360/ntv360-component-pantry.git', type: 'repo' },
         ],
       },
     },

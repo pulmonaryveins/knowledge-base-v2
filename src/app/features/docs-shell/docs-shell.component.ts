@@ -44,7 +44,7 @@ export class DocsShellComponent implements OnInit {
 
   constructor() {
     // On every team / tool switch: show skeleton briefly, then reveal content.
-    // Also scrolls to top on navigation.
+    // After the skeleton clears, execute any pending scroll from a search result.
     effect(() => {
       this._nav.activeTeamKey();
       this._nav.activeToolKey();
@@ -52,7 +52,20 @@ export class DocsShellComponent implements OnInit {
       window.scrollTo({ top: 0, behavior: 'instant' });
       this.isLoading.set(true);
       clearTimeout(this._loadTimer);
-      this._loadTimer = window.setTimeout(() => this.isLoading.set(false), 420);
+      this._loadTimer = window.setTimeout(() => {
+        this.isLoading.set(false);
+
+        // Scroll to the section queued by a search result selection
+        const targetId = this._nav.pendingScrollId();
+        if (targetId) {
+          this._nav.setPendingScroll(null);
+          // Small extra tick to ensure Angular has rendered the section elements
+          setTimeout(() => {
+            const el = document.getElementById(targetId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 80);
+        }
+      }, 420);
     });
   }
 
