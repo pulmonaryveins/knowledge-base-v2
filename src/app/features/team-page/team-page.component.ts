@@ -21,6 +21,7 @@ import {
   GridSection,
   IconographySection,
   ButtonShowcaseSection,
+  TeamContactsSection,
 } from '../../core/models';
 import { HeroComponent } from '../../shared/components/hero/hero.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -178,5 +179,9 @@ export class TeamPageComponent {
 
   public asButtonShowcase(c: SectionContent): ButtonShowcaseSection {
     return c as ButtonShowcaseSection;
+  }
+
+  public asTeamContacts(c: SectionContent): TeamContactsSection {
+    return c as TeamContactsSection;
   }
 }

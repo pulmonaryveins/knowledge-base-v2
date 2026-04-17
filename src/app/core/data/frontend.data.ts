@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/frontend.data.ts ──
+﻿// ── FILE: src/app/core/data/frontend.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -270,9 +270,15 @@ export const frontendTeam: Team = {
   ],
   sections: [
     {
+      id: 'fe-projects',
+      label: 'Projects',
+      num: '01',
+      content: { type: 'projects' },
+    },
+    {
       id: 'fe-tech-stack',
       label: 'Tech Stack Overview',
-      num: '01',
+      num: '02',
       content: {
         type: 'tech-stack',
         table: {
@@ -292,7 +298,7 @@ export const frontendTeam: Team = {
     {
       id: 'fe-getting-started',
       label: 'Getting Started',
-      num: '02',
+      num: '03',
       content: {
         type: 'getting-started',
         steps: [
@@ -316,7 +322,7 @@ npm start`,
     {
       id: 'fe-folder-arch',
       label: 'Folder Architecture',
-      num: '03',
+      num: '04',
       content: {
         type: 'folder-arch',
         cards: [
@@ -350,7 +356,7 @@ npm start`,
     {
       id: 'fe-coding-patterns',
       label: 'Coding Patterns',
-      num: '04',
+      num: '05',
       content: {
         type: 'coding-patterns',
         layout: 'stack',
@@ -444,7 +450,7 @@ export class DeviceListComponent {
     {
       id: 'fe-mistakes',
       label: 'Common Mistakes',
-      num: '05',
+      num: '06',
       content: {
         type: 'mistakes',
         table: {
@@ -461,10 +467,26 @@ export class DeviceListComponent {
       },
     },
     {
-      id: 'fe-projects',
-      label: 'Projects',
-      num: '06',
-      content: { type: 'projects' },
+      id: 'fe-contacts',
+      label: 'Team Contacts',
+      num: '07',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Jeremicah Licup',
+            role: 'Team Lead',
+            initials: 'JL',
+            color: '#8DCB2C',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
+      },
     },
   ],
 };

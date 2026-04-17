@@ -16,5 +16,27 @@ export const rdTeam: Team = {
     { label: 'Shared Services', value: '3' },
   ],
   projects: [],
-  sections: [],
+  sections: [
+    {
+      id: 'rd-contacts',
+      label: 'Team Contacts',
+      num: '01',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Fratz Antigua',
+            role: 'Team Lead',
+            initials: 'FA',
+            color: '#0D9488',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
+      },
+    },  ],
 };

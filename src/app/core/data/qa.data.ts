@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/qa.data.ts ──
+﻿// ── FILE: src/app/core/data/qa.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -15,252 +15,7 @@ export const qaTeam: Team = {
     { label: 'POM Classes', value: '20+' },
     { label: 'Test Coverage', value: 'E2E + API' },
   ],
-  projects: [
-    {
-      id: 'qa-dashboard',
-      name: 'Dashboard Automation Suite',
-      description: 'Python + Selenium POM automation suite for the NCompassTV Dashboard, covering module scripts, suites, and test data.',
-      status: 'Live',
-      icon: 'test-tube',
-      teamKey: 'qa',
-      teamColor: '#0891B2',
-      doc: {
-        meta: {
-          stack: 'Python 3.8+ · Selenium WebDriver · pytest · flake8',
-          repo: 'N-Compass-TV/qa-automation-nctv-dashboardv1',
-          deploy: 'GitHub Actions CI',
-          sprint: 'Active',
-        },
-        purpose: 'Maintains the full automated test coverage for the NCompassTV Dashboard using Python and Selenium WebDriver. Tests are organized with the Page Object Model (POM) pattern — page classes inherit from BasePage, encapsulating locators and actions. pytest manages test execution; flake8 enforces code quality.',
-        features: [
-          {
-            title: 'Page Object Model Architecture',
-            body: 'Every page has a dedicated Page class extending BasePage. Locators are class-level attributes; interactions are methods. Tests import page objects and never interact with raw selectors directly.',
-          },
-          {
-            title: 'Fixture-Based Setup with conftest.py',
-            body: 'conftest.py provides `setup_browser` (session-scoped WebDriver setup/teardown) and `setup_session(role)` (login fixture per role). Tests declare fixtures — no manual browser init in test files.',
-          },
-          {
-            title: 'Structured Test Arrangements',
-            body: 'Every test follows the Ticket Information header (Header, Description, Objective, NSP/NAB Link, Date, Author, Updated by, Change log) and Test Arrangements (Arrange, Test Data, Precondition, Act, Assert, Cleanup) structure.',
-          },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `qa-automation-nctv-dashboardv1/
-├── dashboard/
-│   ├── module_scripts/      # Individual page automation scripts
-│   ├── module_suites/       # Full test suite runners
-│   └── module_data/         # Test data files (JSON, CSV)
-├── helpers/
-│   ├── base_page.py         # BasePage class (driver, wait, shared actions)
-│   ├── base_player.py       # BasePlayer for player-specific helpers
-│   └── base_api.py          # BaseApi for API request helpers
-├── locators/
-│   └── <module>_locators.py # CSS/XPath locators per module
-├── conftest.py              # pytest fixtures (browser, session, roles)
-├── pytest.ini               # pytest configuration
-└── .flake8                  # flake8 linting config (max-line-length=100)`,
-        },
-        gettingStarted: [
-          {
-            title: 'Clone & Install',
-            description: 'Clone the dashboard automation repo and install dependencies.',
-            code: 'git clone git@github.com:N-Compass-TV/qa-automation-nctv-dashboardv1.git\ncd qa-automation-nctv-dashboardv1\npip install -r requirements.txt',
-            language: 'bash',
-          },
-          {
-            title: 'Configure Environment',
-            description: 'Set up your .env file with base URL and credentials.',
-            code: 'cp .env.example .env\n# Set BASE_URL, USERNAME, PASSWORD',
-            language: 'bash',
-          },
-          {
-            title: 'Run Tests',
-            description: 'Execute the full suite with pytest.',
-            code: 'pytest dashboard/module_suites/ -v',
-            language: 'bash',
-          },
-          {
-            title: 'Lint Check',
-            description: 'Run flake8 to ensure code quality before committing.',
-            code: 'flake8 . --max-line-length=100',
-            language: 'bash',
-          },
-        ],
-        contacts: [
-          { name: 'Shawn Leif Recentes', role: 'Team Lead', initials: 'SL', color: '#0891B2' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'Test Reports', url: '#', type: 'docs' },
-        ],
-      },
-    },
-    {
-      id: 'qa-playwright',
-      name: 'Playwright Automation Suite',
-      description: 'TypeScript Playwright POM test suite with role-based selectors, test isolation, and structured test data management.',
-      status: 'Live',
-      icon: 'play',
-      teamKey: 'qa',
-      teamColor: '#0891B2',
-      doc: {
-        meta: {
-          stack: 'Playwright · TypeScript · Page Object Model',
-          repo: 'N-Compass-TV/qa-playwright-suite',
-          deploy: 'GitHub Actions CI',
-          sprint: 'Active',
-        },
-        purpose: 'TypeScript-based Playwright automation suite following strict POM conventions. Page classes extend BasePage, all locators are readonly properties initialized in the constructor. Selector priority enforces semantic, role-based selectors over CSS or XPath. Tests use testLoginAccount() helpers and test.describe() blocks for isolation.',
-        features: [
-          {
-            title: 'Strict Selector Priority',
-            body: 'Selector usage is enforced in order: getByRole() → getByText() → locator() with CSS. XPath selectors are forbidden. Role-based selectors improve test reliability and accessibility alignment.',
-          },
-          {
-            title: 'POM with BasePage Inheritance',
-            body: 'All page classes extend BasePage. Locators are readonly Locator properties initialized in the constructor — never inside methods. Page methods perform one action only and are named with action verbs (click, fill, select).',
-          },
-          {
-            title: 'testLoginAccount() Workflow',
-            body: 'Login is centralized via the testLoginAccount() helper. Tests never duplicate authentication logic. The helper manages navigation, credentials, and wait-for-URL confirmation.',
-          },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `playwright-suite/
-├── tests/
-│   └── <feature>/
-│       └── <feature>.spec.ts    # Test specs, grouped by feature
-├── pages/
-│   └── <feature>/
-│       └── <feature>.page.ts    # Page Object classes
-├── helpers/
-│   ├── base-page.ts             # BasePage with shared Locator helpers
-│   └── login.helper.ts          # testLoginAccount() and auth helpers
-├── test-data/
-│   └── <feature>.data.ts        # Typed test data constants
-├── config/
-│   └── playwright.config.ts
-└── tsconfig.json`,
-        },
-        gettingStarted: [
-          {
-            title: 'Clone & Install',
-            description: 'Clone the Playwright suite and install dependencies.',
-            code: 'git clone git@github.com:N-Compass-TV/qa-playwright-suite.git\ncd qa-playwright-suite\nnpm install',
-            language: 'bash',
-          },
-          {
-            title: 'Install Playwright Browsers',
-            description: 'Download Playwright browser binaries.',
-            code: 'npx playwright install --with-deps',
-            language: 'bash',
-          },
-          {
-            title: 'Run Tests',
-            description: 'Execute the full Playwright test suite.',
-            code: 'npx playwright test',
-            language: 'bash',
-          },
-          {
-            title: 'View Report',
-            description: 'Open the HTML test report after a run.',
-            code: 'npx playwright show-report',
-            language: 'bash',
-          },
-        ],
-        contacts: [
-          { name: 'Shawn Leif Recentes', role: 'Team Lead', initials: 'SL', color: '#0891B2' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-        ],
-      },
-    },
-    {
-      id: 'qa-player',
-      name: 'Player Testing Suite',
-      description: 'API regression and hardware-in-the-loop testing for NCompassTV players — Pi devices with Flask server, SSH-based automation, and Selenium Chromium.',
-      status: 'Live',
-      icon: 'monitor',
-      teamKey: 'qa',
-      teamColor: '#0891B2',
-      doc: {
-        meta: {
-          stack: 'Python · Selenium · Flask · SSH · Raspberry Pi',
-          repo: 'N-Compass-TV/qa-player-testing',
-          deploy: 'Manual / Lab',
-          sprint: 'Active',
-        },
-        purpose: 'Tests NCompassTV player hardware using a two-machine setup: the PC runs API regression tests using Python/Selenium, while SSH connects to Raspberry Pi devices running a Flask server. Selenium Chromium drives browser automation on the Pi. BasePlayer and BaseApi helper classes abstract common player and API interactions.',
-        features: [
-          {
-            title: 'PC-Side API Regression',
-            body: 'Python scripts on the PC hit player management APIs (content scheduling, sync, health checks) using BaseApi helper. Tests verify response codes, payloads, and state consistency.',
-          },
-          {
-            title: 'Pi Device Automation via SSH',
-            body: 'SSH connects to Raspberry Pi player units in the lab. A Flask server on each Pi receives test commands. Selenium Chromium automates browser-side player behavior on the device.',
-          },
-          {
-            title: 'BasePlayer & BaseApi Helpers',
-            body: 'BasePlayer encapsulates SSH session management, Flask endpoint calls, and Selenium WebDriver setup on the Pi. BaseApi provides HTTP session management and assertion helpers for REST endpoints.',
-          },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `qa-player-testing/
-├── api-player/
-│   └── tests/               # API regression test scripts
-├── pi-testing/
-│   └── scripts/             # SSH + Flask + Selenium test scripts
-├── helpers/
-│   ├── base_player.py       # SSH session, Flask calls, Selenium on Pi
-│   └── base_api.py          # HTTP session, API assertion helpers
-├── conftest.py
-└── requirements.txt`,
-        },
-        gettingStarted: [
-          {
-            title: 'Clone & Install',
-            description: 'Clone the player testing repo.',
-            code: 'git clone git@github.com:N-Compass-TV/qa-player-testing.git\ncd qa-player-testing\npip install -r requirements.txt',
-            language: 'bash',
-          },
-          {
-            title: 'Configure Pi SSH',
-            description: 'Set Pi host, SSH credentials, and Flask server port in .env.',
-            code: 'cp .env.example .env\n# Set PI_HOST, SSH_USER, SSH_KEY_PATH, FLASK_PORT',
-            language: 'bash',
-          },
-          {
-            title: 'Run API Tests',
-            description: 'Execute API regression tests on the PC.',
-            code: 'pytest api-player/tests/ -v',
-            language: 'bash',
-          },
-          {
-            title: 'Run Pi Tests',
-            description: 'Run Pi device automation tests (Pi must be reachable via SSH).',
-            code: 'pytest pi-testing/scripts/ -v',
-            language: 'bash',
-          },
-        ],
-        contacts: [
-          { name: 'Shawn Leif Recentes', role: 'Team Lead', initials: 'SL', color: '#0891B2' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-        ],
-      },
-    },
-  ],
+  projects: [],
   sections: [
     {
       id: 'qa-tech-stack',
@@ -578,10 +333,26 @@ def setup_session(setup_browser, role="admin"):
       },
     },
     {
-      id: 'qa-projects',
-      label: 'Projects',
+      id: 'qa-contacts',
+      label: 'Team Contacts',
       num: '06',
-      content: { type: 'projects' },
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Shawn Leif Recentes',
+            role: 'Team Lead',
+            initials: 'SL',
+            color: '#0891B2',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
+      },
     },
   ],
 };

@@ -64,9 +64,11 @@
               }
             </span>
             <span class="sidebar__team-name">{{ team.label }}</span>
-            <span class="sidebar__team-chevron" [class.sidebar__team-chevron--open]="isExpanded(team.key)">
-              <lucide-icon [img]="ChevronDownIcon" [size]="13" />
-            </span>
+            @if (team.projects.length > 0) {
+              <span class="sidebar__team-chevron" [class.sidebar__team-chevron--open]="isExpanded(team.key)">
+                <lucide-icon [img]="ChevronDownIcon" [size]="13" />
+              </span>
+            }
           </button>
 
           <!-- Animated projects wrapper — always in DOM, toggled via CSS max-height -->

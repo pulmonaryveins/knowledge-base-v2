@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/backend.data.ts ──
+﻿// ── FILE: src/app/core/data/backend.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -15,142 +15,7 @@ export const backendTeam: Team = {
     { label: 'API Uptime', value: '99.97%' },
     { label: 'Avg Latency', value: '38ms' },
   ],
-  projects: [
-    {
-      id: 'be-ntv360-api',
-      name: 'ntv360-api',
-      description: 'Core NestJS REST API — the primary HTTP interface for the NTV360 platform.',
-      status: 'Live',
-      icon: 'zap',
-      teamKey: 'backend',
-      teamColor: '#7C3AED',
-      doc: {
-        meta: { stack: 'NestJS · TypeORM · MySQL · AWS Lambda', repo: 'nctv/ntv360-monorepo', deploy: 'AWS Lambda via SAM', sprint: 'Sprint 42' },
-        purpose: 'ntv360-api is the primary REST API within the NestJS monorepo. It handles authentication, device management, schedule publishing, and all CRUD operations consumed by the Dashboard and Host Portal frontends. Deployed as an AWS Lambda function via SAM.',
-        features: [
-          { title: 'Versioned REST Endpoints', body: 'Versioned REST API with OpenAPI 3.1 documentation auto-generated via @nestjs/swagger, supporting v1 and v2 routes.' },
-          { title: 'Field Mapping Layer', body: 'FieldMappingService with BASE_*_FIELDS constants maps camelCase DTOs to snake_case database columns automatically on every query.' },
-          { title: 'Audit Trail via BaseMetadataEntity', body: 'All entities extend BaseMetadataEntity, which provides created_at/by, updated_at/by, and deleted_at/by audit columns with soft-delete support.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `ntv360-monorepo/
-├── apps/
-│   ├── ntv360-api/          # REST API app
-│   │   └── src/
-│   │       ├── modules/     # Feature modules
-│   │       └── main.ts
-│   ├── graphql/             # GraphQL API app
-│   └── ntv360-websocket/    # WebSocket app
-├── libs/
-│   └── core/                # Shared library
-│       ├── entities/        # BaseMetadataEntity + shared entities
-│       ├── services/        # FieldMappingService + shared services
-│       ├── dto/             # Shared DTOs with @Expose()
-│       └── transformers/    # UuidBinaryTransformer
-├── template.yaml            # AWS SAM deployment template
-└── nest-cli.json            # Monorepo config`,
-        },
-        gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone the monorepo and install Node dependencies.', code: 'git clone git@github.com:nctv/ntv360-monorepo.git\ncd ntv360-monorepo && npm install', language: 'bash' },
-          { title: 'Configure Environment', description: 'Copy and fill in the environment variables for local development.', code: 'cp .env.example .env\n# Set DATABASE_URL, JWT_SECRET, AWS_REGION', language: 'bash' },
-          { title: 'Start Local DB', description: 'Spin up MySQL via Docker Compose.', code: 'docker-compose up -d mysql', language: 'bash' },
-          { title: 'Run Migrations', description: 'Apply all pending TypeORM migrations.', code: 'npm run migration:run', language: 'bash' },
-          { title: 'Start REST API', description: 'Launch the ntv360-api app in watch mode.', code: 'npm run start:dev ntv360-api\n# API at http://localhost:3000\n# Swagger at http://localhost:3000/api', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Lester Vitor', role: 'Team Lead', initials: 'LV', color: '#7C3AED' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'API Docs (Swagger)', url: '#', type: 'docs' },
-          { label: 'Jira Board', url: '#', type: 'jira' },
-        ],
-      },
-    },
-    {
-      id: 'be-ntv360-graphql',
-      name: 'ntv360-graphql',
-      description: 'GraphQL API app within the NestJS monorepo for flexible client queries.',
-      status: 'Dev',
-      icon: 'network',
-      teamKey: 'backend',
-      teamColor: '#7C3AED',
-      doc: {
-        meta: { stack: 'NestJS · GraphQL · Apollo Server · AWS Lambda', repo: 'nctv/ntv360-monorepo', deploy: 'AWS Lambda via SAM', sprint: 'Sprint 41' },
-        purpose: 'The GraphQL app within the NestJS monorepo exposes a schema-first GraphQL API for clients that need flexible query composition. It shares entities and services from libs/core with the REST API app.',
-        features: [
-          { title: 'Schema-first Design', body: 'GraphQL schema defined in .graphql files; resolvers generated with code-first decorators via @nestjs/graphql and Apollo Server.' },
-          { title: 'Shared Core Library', body: 'Reuses all entity classes, FieldMappingService, and DTOs from libs/core — no data layer duplication between REST and GraphQL apps.' },
-          { title: 'Serverless Deployment', body: 'Deployed as a standalone Lambda function via AWS SAM, with the same VPC and RDS access as the REST API.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `apps/graphql/
-└── src/
-    ├── modules/
-    │   ├── devices/
-    │   │   ├── devices.resolver.ts
-    │   │   └── devices.module.ts
-    │   └── schedules/
-    ├── schema/
-    │   └── *.graphql
-    └── main.ts`,
-        },
-        gettingStarted: [
-          { title: 'Start GraphQL App', description: 'Run the GraphQL app from the monorepo root.', code: 'npm run start:dev graphql\n# GraphQL Playground at http://localhost:3001/graphql', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Lester Vitor', role: 'Team Lead', initials: 'LV', color: '#7C3AED' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'GraphQL Playground', url: '#', type: 'docs' },
-        ],
-      },
-    },
-    {
-      id: 'be-ntv360-websocket',
-      name: 'ntv360-websocket',
-      description: 'Real-time WebSocket gateway for device health and live event streaming.',
-      status: 'Live',
-      icon: 'plug',
-      teamKey: 'backend',
-      teamColor: '#7C3AED',
-      doc: {
-        meta: { stack: 'NestJS · Socket.IO · AWS Lambda · WebSocket API Gateway', repo: 'nctv/ntv360-monorepo', deploy: 'AWS API Gateway WebSocket + Lambda', sprint: 'Sprint 42' },
-        purpose: 'The WebSocket app handles all real-time communication between the backend and connected clients. Device health updates, live schedule changes, and operator notifications are pushed via Socket.IO rooms through AWS API Gateway WebSocket.',
-        features: [
-          { title: 'Room-based Subscriptions', body: 'Operators subscribe to device rooms; the gateway broadcasts health events only to rooms matching the operator\'s account scope.' },
-          { title: 'Heartbeat Ingestion', body: 'Accepts 30-second heartbeat payloads from Screen Player kiosks and forwards aggregated health metrics to the REST API.' },
-          { title: 'API Gateway Integration', body: 'Deployed behind AWS API Gateway WebSocket, enabling persistent connections with Lambda cold-start mitigation via provisioned concurrency.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `apps/ntv360-websocket/
-└── src/
-    ├── gateways/
-    │   ├── device-health.gateway.ts
-    │   └── schedule-events.gateway.ts
-    ├── modules/
-    └── main.ts`,
-        },
-        gettingStarted: [
-          { title: 'Start WebSocket App', description: 'Run the WebSocket app from the monorepo root.', code: 'npm run start:dev ntv360-websocket\n# WS at ws://localhost:3002', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Lester Vitor', role: 'Team Lead', initials: 'LV', color: '#7C3AED' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'GitHub Repo', url: 'repo', type: 'repo' },
-          { label: 'API Docs', url: '#', type: 'docs' },
-        ],
-      },
-    },
-  ],
+  projects: [],
   sections: [
     {
       id: 'be-tech-stack',
@@ -365,10 +230,26 @@ git commit -m "refactor: Extract FieldMappingService to libs/core"
       },
     },
     {
-      id: 'be-projects',
-      label: 'Projects',
+      id: 'be-contacts',
+      label: 'Team Contacts',
       num: '06',
-      content: { type: 'projects' },
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Lester Vitor',
+            role: 'Team Lead',
+            initials: 'LV',
+            color: '#7C3AED',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
+      },
     },
   ],
 };

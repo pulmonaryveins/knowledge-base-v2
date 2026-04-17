@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/webdev.data.ts ──
+﻿// ── FILE: src/app/core/data/webdev.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -162,9 +162,15 @@ export const webdevTeam: Team = {
   ],
   sections: [
     {
+      id: 'wd-projects',
+      label: 'Projects',
+      num: '01',
+      content: { type: 'projects' },
+    },
+    {
       id: 'wd-tech-stack',
       label: 'Tech Stack Overview',
-      num: '01',
+      num: '02',
       content: {
         type: 'tech-stack',
         table: {
@@ -188,7 +194,7 @@ export const webdevTeam: Team = {
     {
       id: 'wd-getting-started',
       label: 'Development Workflow',
-      num: '02',
+      num: '03',
       content: {
         type: 'getting-started',
         steps: [
@@ -245,7 +251,7 @@ npm run dev   # http://localhost:5173`,
     {
       id: 'wd-folder-arch',
       label: 'Folder Architecture',
-      num: '03',
+      num: '04',
       content: {
         type: 'folder-arch',
         cards: [
@@ -284,7 +290,7 @@ npm run dev   # http://localhost:5173`,
     {
       id: 'wd-coding-patterns',
       label: 'Dev Principles & Patterns',
-      num: '04',
+      num: '05',
       content: {
         type: 'coding-patterns',
         patterns: [
@@ -354,7 +360,7 @@ npm run dev   # http://localhost:5173`,
     {
       id: 'wd-mistakes',
       label: 'Common Mistakes',
-      num: '05',
+      num: '06',
       content: {
         type: 'mistakes',
         table: {
@@ -375,10 +381,26 @@ npm run dev   # http://localhost:5173`,
       },
     },
     {
-      id: 'wd-projects',
-      label: 'Projects',
-      num: '06',
-      content: { type: 'projects' },
+      id: 'wd-contacts',
+      label: 'Team Contacts',
+      num: '07',
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Efraim Gabuat',
+            role: 'Team Lead',
+            initials: 'EG',
+            color: '#F97316',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
+      },
     },
   ],
 };

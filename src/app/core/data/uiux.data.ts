@@ -1,4 +1,4 @@
-// ── FILE: src/app/core/data/uiux.data.ts ──
+﻿// ── FILE: src/app/core/data/uiux.data.ts ──
 
 import { Team } from '../models/team.model';
 
@@ -15,130 +15,7 @@ export const uiuxTeam: Team = {
     { label: 'Training Phases', value: '7' },
     { label: 'WCAG Score', value: 'AA' },
   ],
-  projects: [
-    {
-      id: 'ux-dashboard-design',
-      name: 'Dashboard Design',
-      description: 'Figma design system and component library for the operator dashboard.',
-      status: 'Live',
-      icon: 'palette',
-      teamKey: 'uiux',
-      teamColor: '#EC4899',
-      doc: {
-        meta: { stack: 'Figma · Design Tokens · Storybook 7', repo: 'figma://nctv/dashboard', deploy: 'Storybook on Vercel', sprint: 'Sprint 42' },
-        purpose: 'The Dashboard Design project maintains the Figma component library, design tokens, and Storybook for the operator dashboard. It is the source of truth for all visual specs.',
-        features: [
-          { title: 'Component Library', body: '120+ Figma components with auto-layout, variants, and interactive prototypes covering all dashboard states.' },
-          { title: 'Design Tokens', body: 'Style Dictionary config exporting colours, spacing, and typography to CSS variables, SCSS, and JSON for cross-platform use.' },
-          { title: 'Storybook Docs', body: 'Storybook 7 with Chromatic visual regression testing on every PR, catching pixel-level regressions before merge.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `dashboard-design/
-├── tokens/
-│   ├── colors.json
-│   ├── spacing.json
-│   └── typography.json
-├── storybook/
-│   ├── stories/
-│   └── .storybook/
-└── exports/
-    └── css-variables.css`,
-        },
-        gettingStarted: [
-          { title: 'Open Figma File', description: 'Request access to the Figma file from the UI/UX lead.', code: '# Ask @nctv-design for editor access', language: 'bash' },
-          { title: 'Install Storybook', description: 'Clone the Storybook repo and install.', code: 'git clone git@github.com:nctv/dashboard-design.git && npm i', language: 'bash' },
-          { title: 'Run Storybook', description: 'Launch Storybook locally.', code: 'npm run storybook', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Hazel Sellote', role: 'Team Lead', initials: 'HS', color: '#EC4899' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'Figma File', url: '#', type: 'design' },
-          { label: 'Storybook', url: '#', type: 'docs' },
-        ],
-      },
-    },
-    {
-      id: 'ux-host-revamp-design',
-      name: 'Host Revamp Design',
-      description: 'New UI/UX designs for the host portal redesign project.',
-      status: 'Revamp',
-      icon: 'pencil',
-      teamKey: 'uiux',
-      teamColor: '#EC4899',
-      doc: {
-        meta: { stack: 'Figma · FigJam · Lottie', repo: 'figma://nctv/host-revamp', deploy: 'Figma Prototype', sprint: 'Sprint 38' },
-        purpose: 'Provides high-fidelity Figma designs, motion specs, and design-to-dev handoff for the Host Revamp engineering project.',
-        features: [
-          { title: 'High-fidelity Mockups', body: 'All 14 screens designed in Figma with full light and dark mode variants and responsive breakpoints.' },
-          { title: 'Motion Design', body: 'Lottie animations for loading states and transitions, exported as JSON and integrated directly into the Angular app.' },
-          { title: 'Handoff Annotations', body: 'Figma Dev Mode annotations covering spacing, tokens, component names, and interaction notes for every screen.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `host-revamp-design/
-├── frames/
-│   ├── login/
-│   ├── profile/
-│   └── settings/
-├── animations/
-│   └── *.json
-└── handoff-notes.md`,
-        },
-        gettingStarted: [
-          { title: 'Access Figma', description: 'Open the Figma design file.', code: '# Request access from @lena-morozova', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Hazel Sellote', role: 'Team Lead', initials: 'HS', color: '#EC4899' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'Figma File', url: '#', type: 'design' },
-        ],
-      },
-    },
-    {
-      id: 'ux-channels-design',
-      name: 'Channels Design',
-      description: 'UX flows and components for the Channels App lineup builder.',
-      status: 'Dev',
-      icon: 'paintbrush',
-      teamKey: 'uiux',
-      teamColor: '#EC4899',
-      doc: {
-        meta: { stack: 'Figma · Maze · UserTesting', repo: 'figma://nctv/channels', deploy: 'Figma Prototype', sprint: 'Sprint 40' },
-        purpose: 'UX research, wireframes, and high-fidelity designs for the Channels App, validated through Maze usability tests with 12 content manager participants.',
-        features: [
-          { title: 'UX Research', body: '3 rounds of Maze usability tests with content managers, identifying 8 critical flow improvements.' },
-          { title: 'Wireframes', body: 'Low-fidelity wireframes for all lineup editor states, reviewed with engineering before high-fi production.' },
-          { title: 'Component Specs', body: 'Annotated Figma specs for every custom component in the lineup editor, including drag handle states.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `channels-design/
-├── research/
-│   └── usability-reports/
-├── wireframes/
-└── high-fi/
-    ├── editor/
-    └── preview/`,
-        },
-        gettingStarted: [
-          { title: 'Access Figma', description: 'Request access from the design lead.', code: '# Ask @lena-morozova', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Hazel Sellote', role: 'Team Lead', initials: 'HS', color: '#EC4899' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'Figma File', url: '#', type: 'design' },
-          { label: 'Maze Results', url: '#', type: 'docs' },
-        ],
-      },
-    },
-  ],
+  projects: [],
   sections: [
     {
       id: 'ux-tech-stack',
@@ -805,11 +682,26 @@ export const uiuxTeam: Team = {
       },
     },
     {
-      id: 'ux-projects',
-      label: 'Projects',
+      id: 'ux-contacts',
+      label: 'Team Contacts',
       num: '18',
-      subHeader: 'Active and completed design projects owned by the UI/UX team, with links to Figma files, prototypes, and Maze research results.',
-      content: { type: 'projects' },
+      content: {
+        type: 'team-contacts',
+        contacts: [
+          {
+            name: 'Hazel Sellote',
+            role: 'Team Lead',
+            initials: 'HS',
+            color: '#EC4899',
+          },
+          {
+            name: 'Earl Vhin Gabuat',
+            role: 'Lead Engineer',
+            initials: 'EV',
+            color: '#6366F1',
+          },
+        ],
+      },
     },
   ],
 };

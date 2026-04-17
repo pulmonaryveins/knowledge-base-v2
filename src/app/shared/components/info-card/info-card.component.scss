@@ -4,6 +4,9 @@
 
 .info-card {
   @apply rounded-xl p-4 bg-[var(--card)] border border-[var(--border)];
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   transition: border-color 0.2s ease;
 
   // ── Accent variant (icon + colored left border) ────────────────────────
@@ -27,5 +30,6 @@
 
   &__body {
     @apply m-0 text-[13px] text-[var(--muted)] leading-[1.55];
+    flex: 1;
   }
 }
