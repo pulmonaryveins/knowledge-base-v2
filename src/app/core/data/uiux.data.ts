@@ -9,12 +9,7 @@ export const uiuxTeam: Team = {
   gradient: 'linear-gradient(135deg, #4a0a2e, #831843)',
   icon: 'palette',
   subtitle: 'Figma · WCAG 2.1 · Design Tokens · Storybook 7 · Maze',
-  stats: [
-    { label: 'Components', value: '120+' },
-    { label: 'Projects', value: '3' },
-    { label: 'Training Phases', value: '7' },
-    { label: 'WCAG Score', value: 'AA' },
-  ],
+  description: 'Design system, Figma workflows, component specifications, accessibility standards, and UX research practices used across NCompassTV products.',
   projects: [],
   sections: [
     {

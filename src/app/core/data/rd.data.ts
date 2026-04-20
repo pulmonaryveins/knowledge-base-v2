@@ -9,12 +9,7 @@ export const rdTeam: Team = {
   gradient: 'linear-gradient(135deg, #022c22, #065f46)',
   icon: 'microscope',
   subtitle: 'Innovation · Proof of Concepts · Internal Tools · Tech Exploration',
-  stats: [
-    { label: 'Live Apps', value: '7' },
-    { label: 'In Development', value: '4' },
-    { label: 'Teams', value: '4' },
-    { label: 'Shared Services', value: '3' },
-  ],
+  description: 'Research documents, proof-of-concept write-ups, and technical explorations from the R&D team — organized by topic and updated continuously.',
   projects: [],
   sections: [
     {

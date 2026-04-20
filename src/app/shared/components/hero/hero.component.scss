@@ -39,22 +39,8 @@
     @media (max-width: 768px) { @apply text-[14px]; }
   }
 
-  &__stats {
-    @apply flex flex-wrap gap-10 mt-4;
-    @media (max-width: 768px) { @apply gap-5 mt-2; }
-    @media (max-width: 480px) { @apply gap-4; }
-  }
-
-  &__stat {
-    @apply flex flex-col gap-1;
-
-    &-value {
-      @apply font-['Syne',_sans-serif] text-[28px] font-extrabold text-[#ffffff] leading-[1];
-      @media (max-width: 768px) { @apply text-[22px]; }
-    }
-
-    &-label {
-      @apply text-[12px] font-semibold text-[rgba(255,255,255,0.4)] uppercase tracking-[0.08em];
-    }
+  &__description {
+    @apply m-0 mt-3 text-[15px] text-[rgba(255,255,255,0.55)] leading-[1.65] font-['DM_Sans',_sans-serif] max-w-[640px];
+    @media (max-width: 768px) { @apply text-[13px] mt-2; }
   }
 }

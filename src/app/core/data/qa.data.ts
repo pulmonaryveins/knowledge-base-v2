@@ -9,12 +9,7 @@ export const qaTeam: Team = {
   gradient: 'linear-gradient(135deg, #042f3d, #0c4a6e)',
   icon: 'test-tube',
   subtitle: 'Python · Playwright · Selenium · Page Object Model · pytest · flake8',
-  stats: [
-    { label: 'Automation Suites', value: '5' },
-    { label: 'Tools', value: '8' },
-    { label: 'POM Classes', value: '30+' },
-    { label: 'Test Coverage', value: 'E2E + API' },
-  ],
+  description: 'Automation frameworks, Selenium and Playwright test suites, Page Object Model conventions, and QA workflow standards.',
   projects: [],
   sections: [
     {

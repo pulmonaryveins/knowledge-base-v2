@@ -238,8 +238,8 @@ export interface Team {
   readonly logoUrl?: string;
   /** Hero subtitle text */
   readonly subtitle: string;
-  /** Stat pills rendered in the hero banner */
-  readonly stats: ReadonlyArray<HeroStat>;
+  /** Short description shown in the hero below the subtitle */
+  readonly description: string;
   /** Ordered documentation sections */
   readonly sections: ReadonlyArray<TeamSection>;
   /** Projects owned by this team */

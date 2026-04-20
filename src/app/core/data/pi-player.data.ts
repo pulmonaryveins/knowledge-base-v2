@@ -10,12 +10,7 @@ export const piPlayerTeam: Team = {
   icon: 'cpu',
   logoUrl: 'https://cdn.simpleicons.org/raspberrypi/C2185B',
   subtitle: 'Raspberry Pi · Embedded Player · Hardware Integration · Display OS',
-  stats: [
-    { label: 'Devices', value: '12+' },
-    { label: 'Projects', value: '2' },
-    { label: 'In Dev', value: '1' },
-    { label: 'Platforms', value: '2' },
-  ],
+  description: 'Hardware setup, player-server and player-ui architecture, deployment procedures, and remote device management for NCompassTV Pi kiosks.',
   projects: [],
   sections: [
     {
@@ -220,12 +215,6 @@ sudo ./ntv-rpi-imager.sh /dev/sda ./my-custom-image.img.xz  # Custom output`,
             description: 'Proceed with rebooting or running the designated script to resolve the issue. If unresolved, escalate to the devs with all collected logs and screenshots via email, Skype, or Zoom.',
           },
         ],
-        codeBlock: {
-          language: 'bash',
-          code: `# Dev Contacts
-# Earl Vhin Gabuat   — earlg@n-compass.biz   | Zoom PMI: 724 768 7393
-# Mikoo Saguindang   — mikoos@n-compass.biz  | Zoom PMI: 739 516 4672`,
-        },
       },
     },
     {

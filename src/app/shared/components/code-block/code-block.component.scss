@@ -103,34 +103,11 @@ $tok-punct:     #89ddff;   // cyan  — => {} () : ,
     &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
   }
 
-  // ── Gutter ───────────────────────────────────────────────────────────────
-
-  &__gutter {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    padding: 16px 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.04);
-    background: rgba(0, 0, 0, 0.12);
-    user-select: none;
-  }
-
-  &__ln {
-    display: block;
-    min-width: 40px;
-    padding: 0 12px 0 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    line-height: 21.875px;
-    color: rgba(255, 255, 255, 0.15);
-    text-align: right;
-  }
-
   // ── Pre / code ───────────────────────────────────────────────────────────
 
   &__pre {
     margin: 0;
-    padding: 16px 20px 16px 14px;
+    padding: 16px 20px;
     flex: 1;
     overflow: visible;
   }

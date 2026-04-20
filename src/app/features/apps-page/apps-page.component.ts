@@ -5,7 +5,6 @@ import { RdDocumentsService } from '../../core/services/rd-documents.service';
 import { RdSectionsService } from '../../core/services/rd-sections.service';
 import { SupabaseService } from '../../core/services/supabase.service';
 import { Team } from '../../core/models';
-import type { HeroStat } from '../../core/models/team.model';
 import type { RdDocument } from '../../core/models/rd-document.model';
 import type { RdSection } from '../../core/models/rd-section.model';
 import type { RealtimeChannel } from '@supabase/supabase-js';
@@ -44,22 +43,6 @@ export class AppsPageComponent implements OnInit, OnDestroy {
   protected readonly FileTextIcon     = FileText;
   protected readonly ExternalLinkIcon = ExternalLink;
   protected readonly ArrowUpRightIcon = ArrowUpRight;
-
-  /**
-   * Dynamic stats for R&D hero.
-   * Shows '—' placeholders while loading so the hero displays a non-numeric
-   * dash instead of '0'. Once data arrives the values change to real numbers,
-   * which triggers the hero's effect to re-run the count-up animation.
-   */
-  protected readonly rdStats = computed<HeroStat[]>(() => {
-    const loading = this.rdDocsLoading();
-    return [
-      { label: 'Sections',    value: loading ? '—' : this.rdSections().length.toString() },
-      { label: 'Documents',   value: loading ? '—' : this.rdDocuments().length.toString() },
-      { label: 'Teams',       value: '4' },
-      { label: 'Shared Svcs', value: '3' },
-    ];
-  });
 
   /**
    * Documents grouped by section, ordered by the position defined in rd_sections.

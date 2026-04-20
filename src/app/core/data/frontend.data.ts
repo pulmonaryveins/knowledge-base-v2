@@ -8,13 +8,8 @@ export const frontendTeam: Team = {
   color: '#8DCB2C',
   gradient: 'linear-gradient(135deg, #091635, #1a3366)',
   icon: 'monitor',
-  subtitle: 'Angular 21 · Tailwind CSS v4 · TypeScript 5 · Zoneless Signals',
-  stats: [
-    { label: 'Components', value: '120+' },
-    { label: 'Projects', value: '5' },
-    { label: 'Test Coverage', value: '91%' },
-    { label: 'Avg TTI', value: '1.2s' },
-  ],
+  subtitle: 'Angular 21 · TypeScript 5.9 · Tailwind 3.x · Auth0 · SSR',
+  description: 'Architecture guides, component patterns, coding standards, and project documentation for all NCompassTV Angular applications.',
   projects: [
     {
       id: 'fe-dashboard',
@@ -145,76 +140,52 @@ export const frontendTeam: Team = {
     {
       id: 'fe-host-revamp',
       name: 'Host Revamp',
-      description: 'Redesigned host portal with updated UX and Angular 21 migration.',
+      description: 'Nx monorepo housing the Host Installation flow — a multi-step wizard for host setup and screen provisioning.',
       status: 'Revamp',
       icon: 'paintbrush',
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {
-        meta: { stack: 'Angular 21 · Tailwind v4 · SCSS', repo: 'nctv/host-revamp', deploy: 'Cloudflare Pages', sprint: 'Sprint 38' },
-        purpose: 'A ground-up redesign of the legacy Host Portal, migrating from AngularJS to Angular 21 with a refreshed UI matching the new design system.',
+        meta: { stack: 'Angular 20+ · Nx 21+ · Tailwind CSS 3.0+ · Jest · Playwright · Storybook 8+', repo: 'ncompass-forgejo/host-installation-setup-v2', deploy: 'AWS CloudFront', sprint: 'Sprint 38' },
+        purpose: 'Host Revamp is an Nx Monorepo that manages the end-to-end setup flow for Host Installation and Host Revamp. It separates core application logic from reusable UI components via two Nx projects: the main host-installation app and the shared component-pantry library. The installation flow is a multi-step wizard covering host creation, screen setup, installation scheduling, and final review.',
         features: [
-          { title: 'Component Migration', body: 'Full replacement of all AngularJS directives with standalone Angular 21 components using signals.' },
-          { title: 'Design System Adoption', body: 'Implements the new NCompassTV design tokens, typography scale, and colour variables from Figma.' },
-          { title: 'Performance Uplift', body: 'Zoneless change detection and lazy-loaded route chunks cut initial TTI by 58%.' },
+          { title: 'Nx Monorepo Architecture', body: 'The workspace is split into apps/ (host-installation, host-installation-e2e) and libs/ (component-pantry). Focused VS Code workspace configs (npm run open:host, npm run open:pantry) let developers scope their editor to a single project.' },
+          { title: 'Multi-step Installation Wizard', body: 'InstallationFlowService acts as the core state machine managing step/sub-step navigation and validation. The four steps are: Create Host → Create Screen → Set Installation → Review Information.' },
+          { title: 'Component Pantry Library', body: 'libs/component-pantry is a dedicated atomic design library (Atoms, Molecules, Utilities). Components are self-contained with .ts, .html, .css, and .stories.ts files and documented via Storybook at localhost:4400.' },
+          { title: 'Atomic Design System', body: 'Components are layered as Atoms (Button, Input, Badge), Molecules (Modal, Accordion, Table), and Utilities (Pipes, Directives, Utils). All UI is driven from this shared library for consistency.' },
+          { title: 'Jest + Playwright Testing', body: 'Unit tests run with Jest (npm run test), E2E tests with Playwright (npm run e2e). The host-installation-e2e app is a dedicated Playwright test suite in the monorepo.' },
+          { title: 'Session & Draft Management', body: 'InstallationDraftApiService auto-saves wizard drafts to the backend. SessionExpirationService monitors user activity and handles session timeout across the wizard flow.' },
         ],
         folderStructure: {
           language: 'bash',
-          code: `host-revamp/
-├── src/app/
-│   ├── core/
-│   ├── shared/
-│   └── features/
-│       ├── login/
-│       ├── profile/
-│       └── settings/`,
+          code: `host-installation-setup-v2/               # Nx workspace root
+├── apps/
+│   ├── host-installation/                 # Main Angular app
+│   │   └── src/app/
+│   │       ├── installation-flow/         # Multi-step wizard components & logic
+│   │       ├── pages/                     # Route components (NotFound, Forbidden)
+│   │       ├── components/                # App-specific shared components
+│   │       ├── services/                  # API & global state services
+│   │       ├── resolvers/                 # Route data pre-fetchers
+│   │       ├── interfaces/                # Data models
+│   │       └── types/                     # TypeScript definitions
+│   └── host-installation-e2e/             # Playwright E2E test suite
+├── libs/
+│   └── component-pantry/                  # Shared UI library
+│       └── src/lib/component-pantry/
+│           ├── atoms/                     # Button, Input, Badge
+│           ├── molecules/                 # Modal, Accordion, Table
+│           └── utilities/                 # Pipes, Directives, Utils
+├── workspace-configs/                     # Focused VS Code workspace profiles
+└── scripts/                               # Automation & standards scripts`,
         },
         gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone and install.', code: 'git clone git@github.com:nctv/host-revamp.git && npm i', language: 'bash' },
-          { title: 'Run Dev Server', description: 'Start with ng serve.', code: 'npm start', language: 'bash' },
-        ],
-        contacts: [
-          { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
-          { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
-        ],
-        links: [
-          { label: 'Git Repository', url: '#', type: 'repo' },
-        ],
-      },
-    },
-    {
-      id: 'fe-screen-player',
-      name: 'Screen Player',
-      description: 'Browser-based kiosk player rendering scheduled content on displays.',
-      status: 'Live',
-      icon: 'monitor',
-      teamKey: 'frontend',
-      teamColor: '#8DCB2C',
-      doc: {
-        meta: { stack: 'Angular 21 · Web Animations API', repo: 'nctv/screen-player', deploy: 'Electron + Chromium', sprint: 'Sprint 41' },
-        purpose: 'Screen Player is a headless kiosk application running inside Chromium/Electron on NCompassTV display hardware. It polls the Player Sync API and renders content sequences with smooth transitions.',
-        features: [
-          { title: 'Offline Playback', body: 'IndexedDB-backed asset cache ensures content plays even during network interruptions.' },
-          { title: 'Transition Engine', body: 'Custom Web Animations API engine supporting 12 transition types with configurable easing.' },
-          { title: 'Health Reporting', body: 'Heartbeat WebSocket to the Dashboard API, reporting play counts, errors, and hardware metrics every 30s.' },
-        ],
-        folderStructure: {
-          language: 'bash',
-          code: `screen-player/
-├── src/app/
-│   ├── core/
-│   │   ├── player-engine/
-│   │   └── sync-client/
-│   ├── features/
-│   │   ├── playlist/
-│   │   └── overlay/
-│   └── electron/
-│       └── main.ts`,
-        },
-        gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone the repo.', code: 'git clone git@github.com:nctv/screen-player.git && npm i', language: 'bash' },
-          { title: 'Run in Browser', description: 'Preview in browser mode.', code: 'npm start', language: 'bash' },
-          { title: 'Build Electron', description: 'Package for display hardware.', code: 'npm run electron:build', language: 'bash' },
+          { title: 'Install Dependencies',      description: 'Ensure Node.js is installed, then install all packages.',                         code: 'npm install',                                                                               language: 'bash' },
+          { title: 'Start the App',             description: 'Run the Host Installation app at http://localhost:4200.',                          code: 'npm run serve',                                                                             language: 'bash' },
+          { title: 'Start Storybook',           description: 'Run the Component Pantry docs at http://localhost:4400.',                          code: 'npm run storybook',                                                                         language: 'bash' },
+          { title: 'Focused Workspaces',        description: 'Open a scoped VS Code workspace for better performance.',                          code: 'npm run open:host    # Host Installation only\nnpm run open:pantry  # Component Pantry only', language: 'bash' },
+          { title: 'Tests & Linting',           description: 'Run unit tests (Jest), E2E tests (Playwright), and ESLint.',                       code: 'npm run test   # Unit tests (Jest)\nnpm run e2e    # E2E tests (Playwright)\nnpm run lint   # ESLint', language: 'bash' },
+          { title: 'Add a New UI Component',    description: 'Generate a component in the library and scaffold a Storybook story.',             code: 'npx nx g @nx/angular:component my-component --project=component-pantry\nnpx nx g @nx/storybook:story my-component --project=component-pantry', language: 'bash' },
         ],
         contacts: [
           { name: 'Jeremicah Licup', role: 'Team Lead', initials: 'JL', color: '#8DCB2C' },
@@ -313,13 +284,18 @@ export const frontendTeam: Team = {
         table: {
           headers: ['Technology', 'Version', 'Purpose', 'Status'],
           rows: [
-            { cells: ['Angular', '21.2', 'Component framework — standalone, zoneless, signals', 'Live'] },
-            { cells: ['TypeScript', '5.4', 'Strict-mode typed JavaScript across all source files', 'Live'] },
-            { cells: ['Tailwind CSS', 'v4.1', 'Utility-first CSS applied via @apply in BEM SCSS', 'Live'] },
-            { cells: ['RxJS', '7.8', 'Async streams for HTTP and legacy event handling', 'Live'] },
-            { cells: ['Vitest', '2.x', 'Unit and integration testing with JSDOM environment', 'Live'] },
-            { cells: ['SCSS / Sass', '1.77', 'Compiled styles with BEM naming and CSS variables', 'Live'] },
-            { cells: ['Playwright', '1.44', 'E2E browser automation tests run in CI', 'Live'] },
+            { cells: ['Angular',            '21',                       'Core framework — standalone components, zoneless change detection',    'Live'] },
+            { cells: ['TypeScript',         '5.9',                      'Language — strict mode enabled across all source files',              'Live'] },
+            { cells: ['Tailwind CSS',       '3.x',                      'Utility-first CSS applied via @apply in BEM SCSS',                    'Live'] },
+            { cells: ['SCSS',               '—',                        'Preprocessor with BEM naming conventions',                            'Live'] },
+            { cells: ['RxJS',               '7.8',                      'Reactive programming for API calls and async streams',                'Live'] },
+            { cells: ['Auth0',              '2.3',                      'Authentication & authorization for all protected routes',             'Live'] },
+            { cells: ['Angular SSR',        '—',                        'Server-side rendering with hydration for improved SEO',               'Live'] },
+            { cells: ['Component Pantry',   '@ntv360/component-pantry', 'Internal shared UI component library',                               'Live'] },
+            { cells: ['Leaflet',            '1.9',                      'Maps integration for territory and location features',                'Live'] },
+            { cells: ['ApexCharts',         '5.x',                      'Charts & data visualization across dashboard views',                  'Live'] },
+            { cells: ['Husky + Commitlint', '—',                        'Git hooks & commit message format enforcement',                       'Live'] },
+            { cells: ['Prettier',           '3.x',                      'Code formatting — run npm run pretty before every PR',                'Live'] },
           ],
         },
       },
@@ -331,20 +307,19 @@ export const frontendTeam: Team = {
       content: {
         type: 'getting-started',
         steps: [
-          { icon: 'git-branch',   title: 'Clone the Repository', description: 'Clone the target repo to your local machine using SSH.', code: 'git clone git@github.com:nctv/<repo>.git\ncd <repo>', language: 'bash' },
-          { icon: 'package-open', title: 'Install Dependencies', description: 'Use the exact Node version in .nvmrc, then install packages.', code: 'nvm use\nnpm install', language: 'bash' },
-          { icon: 'key-round',    title: 'Configure Environment', description: 'Copy the example environment file and fill in required API values.', code: 'cp .env.example .env.local\n# Edit VITE_API_URL and VITE_WS_URL', language: 'bash' },
-          { icon: 'terminal',     title: 'Start the Dev Server', description: 'Launch the Angular development server with hot-reload.', code: 'npm start\n# App runs at http://localhost:4200', language: 'bash' },
-          { icon: 'flask-conical',title: 'Run Tests', description: 'Run unit tests with Vitest and E2E tests with Playwright.', code: 'npm test          # unit\nnpm run test:e2e  # E2E', language: 'bash' },
+          { icon: 'git-branch',   title: 'Clone the Repository',  description: 'Clone the repo and move into the project folder.',                                  code: 'git clone <repo-url>\ncd ncompasstv-dashboard',                                                                                                                                                                                                                              language: 'bash' },
+          { icon: 'package-open', title: 'Install Dependencies',  description: 'Install all packages. Prerequisites: Node.js (LTS) and npm.',                       code: 'npm install',                                                                                                                                                                                                                                                              language: 'bash' },
+          { icon: 'key-round',    title: 'Configure Environment', description: 'Copy the example env file and fill in the required API and auth values.',            code: 'cp .env.example .env\n# Required:\n# AWS_API_URL      — backend API URL\n# AUTH0_DOMAIN     — Auth0 domain\n# AUTH0_CLIENT_ID   — Auth0 client ID\n# AUTH0_AUDIENCE    — Auth0 audience\n# ALLOWED_ORIGIN    — allowed CORS origin',                                        language: 'bash' },
+          { icon: 'terminal',     title: 'Start the Dev Server',  description: 'Launch the Angular development server with hot-reload.',                             code: 'npm run start\n# Opens at http://localhost:4200',                                                                                                                                                                                                                    language: 'bash' },
         ],
         codeBlock: {
           language: 'bash',
-          code: `# Full setup in one shot
-git clone git@github.com:nctv/dashboard-fe.git
-cd dashboard-fe
-nvm use && npm install
-cp .env.example .env.local
-npm start`,
+          code: `# Available scripts
+npm run start         # Start the development server
+npm run build         # Production build
+npm test              # Run unit tests (Karma + Jasmine)
+npm run pretty        # Format all files with Prettier
+npm run pretty:check  # Check formatting without fixing`,
         },
       },
     },
@@ -355,30 +330,42 @@ npm start`,
       content: {
         type: 'folder-arch',
         cards: [
-          { title: 'core/', body: 'Models (interfaces), services (business logic and state), and route guards. Nothing in core/ renders UI.' },
-          { title: 'shared/components/', body: 'Dumb, reusable display components. Accept input() signals only; zero service injection. Exported via shared/index.ts.' },
-          { title: 'features/', body: 'Smart feature components. Inject services, hold signals, dispatch actions. Each folder owns one business domain.' },
-          { title: 'layout/', body: 'App shell and layout wrapper components that compose sidebar, main content area, and navigation rails.' },
+          { title: 'core/',     body: 'App-wide infrastructure singletons: guards, global API services (auth, licenses, users, dealers, hosts, export), DTOs, and barrel index.ts. Nothing in core/ renders UI.' },
+          { title: 'shared/',   body: 'Reusable "dumb" components, utilities, and types. Includes components, constants, directives, interfaces, pipes, utils, and validators. All exported via shared/index.ts.' },
+          { title: 'features/', body: 'Feature modules — each is a page or domain area: advertisers, auth, dashboard, dealers, hosts, licenses, media-library, screens, users.' },
+          { title: 'layout/',   body: 'Layout wrappers: authenticated, public, and main-layout (sidebar + header + router-outlet).' },
         ],
         codeBlock: {
           language: 'bash',
           code: `src/app/
 ├── core/
-│   ├── models/          # Interfaces & types
-│   ├── services/        # Injectable services
-│   └── guards/          # Route & auth guards
+│   ├── guards/          # authGuard, guestGuard
+│   ├── services/        # auth, licenses, users, dealers, hosts, export
+│   ├── dto/             # Data Transfer Objects for API requests/responses
+│   └── index.ts         # Barrel file
 ├── shared/
-│   ├── components/      # Reusable dumb components
-│   │   ├── button/
-│   │   ├── data-table/
-│   │   └── status-badge/
+│   ├── components/      # table, button, autocomplete, modals
+│   ├── constants/       # colors, icons, timezones
+│   ├── directives/      # click-outside, copy
+│   ├── interfaces/      # table, media, stats, city
+│   ├── pipes/           # duration-formatter, file-size, kebab-case
+│   ├── utils/           # withLoading, Logger, query-builder
+│   ├── validators/      # Custom form validators
 │   └── index.ts
 ├── features/
-│   ├── overview/
-│   ├── devices/
-│   └── schedules/
+│   ├── advertisers/     # CRUD for advertisers
+│   ├── auth/            # Login + Auth0 callback
+│   ├── dashboard/       # Main dashboard view
+│   ├── dealers/         # Dealer management
+│   ├── hosts/           # Host location management
+│   ├── licenses/        # License management
+│   ├── media-library/   # Media asset management
+│   ├── screens/         # Screen/player management
+│   └── users/           # User management
 └── layout/
-    └── shell/`,
+    ├── authenticated/   # Layout for logged-in users
+    ├── public/          # Layout for guest pages
+    └── main-layout/     # Sidebar + header + router-outlet`,
         },
       },
     },
@@ -473,6 +460,81 @@ export class DeviceListComponent {
 }`,
             },
           },
+          {
+            title: 'Component Anatomy',
+            description: 'Every component is standalone: true, uses inject() for DI, signal() for state. Always prefix the selector with app- and organise imports into three groups.',
+            codeBlock: {
+              language: 'typescript',
+              code: `/** Angular Imports */
+import { Component, inject, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, EMPTY } from 'rxjs';
+
+/** Third-Party Imports */
+import { provideAuth0 } from '@auth0/auth0-angular';
+
+/** Local Imports */
+import { SomeService } from '@core';
+import { Logger, withLoading } from '@shared/utils';
+
+@Component({
+  selector: 'app-my-feature',   // Always 'app-' prefix
+  standalone: true,             // Always standalone
+  imports: [SomeSharedComponent],
+  templateUrl: './my-feature.component.html',
+  styleUrl: './my-feature.component.scss',
+})
+export class MyFeatureComponent {
+  private readonly _service = inject(SomeService);
+  private readonly _destroy = inject(DestroyRef);
+  protected isLoading = signal<boolean>(false);
+  protected data      = signal<MyData[]>([]);
+}`,
+            },
+          },
+          {
+            title: 'Services & API Calling Pattern',
+            description: 'Every API call must follow the four-step pipe pattern: withLoading → catchError with Logger → takeUntilDestroyed → map response in subscribe.',
+            codeBlock: {
+              language: 'typescript',
+              code: `this.service.method(params)
+  .pipe(
+    // 1️⃣ Manage loading state automatically
+    withLoading(this.isLoading),
+
+    // 2️⃣ Handle errors with Logger
+    catchError((error: unknown) => {
+      Logger.error('MyComponent', 'Failed to fetch data:', error);
+      return EMPTY;
+    }),
+
+    // 3️⃣ Auto-unsubscribe on destroy
+    takeUntilDestroyed(this.destroyRef),
+  )
+  .subscribe({
+    next: (response) => {
+      // 4️⃣ Map API data → UI data
+      this.data.set(this.mapData(response.data));
+    },
+  });`,
+            },
+          },
+          {
+            title: 'Git Commit Conventions',
+            description: 'Format: type: Subject in sentence case. Allowed types: feat · fix · refactor · styles · build · chore. Imperative mood, no period at the end.',
+            codeBlock: {
+              language: 'bash',
+              code: `# ✅ Correct
+git commit -m "feat(ntv-200): Add license export button"
+git commit -m "fix: Resolve table pagination bug"
+git commit -m "chore: Update dependencies"
+
+# ❌ Wrong
+git commit -m "feat: add license export button"   # lowercase subject
+git commit -m "feat: Added the export button."    # past tense + period
+git commit -m "update: Fix something"             # invalid type`,
+            },
+          },
         ],
       },
     },
@@ -485,12 +547,18 @@ export class DeviceListComponent {
         table: {
           headers: ['❌ Mistake', '✅ Correct Approach'],
           rows: [
-            { cells: ['Using *ngIf / *ngFor in templates', 'Use @if and @for with a track expression'] },
-            { cells: ['Constructor injection: constructor(private svc: Svc)', 'Field injection: private readonly _svc = inject(Svc)'] },
-            { cells: ['BehaviorSubject for component state', 'signal<T>(initialValue) from @angular/core'] },
-            { cells: ['Tailwind classes inline in HTML: class="flex p-4"', 'BEM class in HTML, @apply in SCSS'] },
-            { cells: ['Missing return type on a method', 'Every method must declare its return type explicitly'] },
-            { cells: ['any type: const x: any = ...', 'Use specific types or unknown with a type guard'] },
+            { cells: ['Putting Tailwind classes inline in HTML',    'Use @apply in SCSS with BEM class names'] },
+            { cells: ['Using *ngIf / *ngFor structural directives', 'Use @if {} and @for {} with a track expression'] },
+            { cells: ['Using constructor injection',                'Use inject() for all dependency injection'] },
+            { cells: ['Using any type',                             'Define a proper interface or use unknown with a type guard'] },
+            { cells: ['Deep relative imports (../../../)',          'Use path aliases: @core, @shared, @features, @layouts'] },
+            { cells: ['Forgetting takeUntilDestroyed',              'Always add it as the last pipe operator in every subscription'] },
+            { cells: ['Forgetting JSDoc on classes & methods',      'Add JSDoc on every class, method, function, and interface'] },
+            { cells: ['Using console.log directly',                 'Use Logger.log() / Logger.error() / Logger.warn()'] },
+            { cells: ['Forgetting to add to barrel file',           'Export new items from the relevant index.ts'] },
+            { cells: ['BehaviorSubject for UI state',               'Use signal() and computed() from @angular/core'] },
+            { cells: ['Using @media queries in SCSS',               "Use Tailwind's max-lg: / max-md: variants (desktop-first)"] },
+            { cells: ['Committing without formatting',              'Run npm run pretty before every commit or PR'] },
           ],
         },
       },

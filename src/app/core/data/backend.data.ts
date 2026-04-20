@@ -9,12 +9,7 @@ export const backendTeam: Team = {
   gradient: 'linear-gradient(135deg, #1e1035, #3b1d6e)',
   icon: 'server',
   subtitle: 'NestJS Monorepo · AWS Lambda (SAM) · TypeORM · MySQL · GraphQL',
-  stats: [
-    { label: 'API Apps', value: '3' },
-    { label: 'Endpoints', value: '200+' },
-    { label: 'API Uptime', value: '99.99%' },
-    { label: 'Avg Latency', value: '35ms' },
-  ],
+  description: 'Monorepo structure, API design patterns, entity conventions, Lambda deployment, and backend development standards for NCompassTV services.',
   projects: [],
   sections: [
     {

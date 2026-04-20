@@ -27,12 +27,6 @@
   </div>
 
   <div class="code-block__body">
-    <div class="code-block__gutter" aria-hidden="true">
-      @for (line of lines(); track $index) {
-        <span class="code-block__ln">{{ $index + 1 }}</span>
-      }
-    </div>
-
     <pre class="code-block__pre"><code class="code-block__code">@for (tokens of tokenLines(); track $index) {<span class="code-block__line">@for (t of tokens; track $index) {<span [class]="t.cls">{{ t.text }}</span>}</span>
 }</code></pre>
   </div>
