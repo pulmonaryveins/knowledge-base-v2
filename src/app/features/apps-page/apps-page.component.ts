@@ -92,6 +92,23 @@ export class AppsPageComponent implements OnInit, OnDestroy {
     this.rdDocsLoading.set(false);
   }
 
+  /** Derive a human-readable document type label from the file path or URL. */
+  protected docType(doc: RdDocument): string {
+    const source = doc.file_path ?? doc.url ?? '';
+    const ext = source.split('?')[0].split('.').pop()?.toLowerCase();
+    switch (ext) {
+      case 'pdf':          return 'PDF';
+      case 'doc':
+      case 'docx':         return 'Word Document';
+      case 'md':           return 'Markdown';
+      case 'ppt':
+      case 'pptx':         return 'Presentation';
+      case 'xls':
+      case 'xlsx':         return 'Spreadsheet';
+      default:             return 'URL';
+    }
+  }
+
   /**
    * Opens a Supabase Realtime channel that watches both rd_documents and
    * rd_sections for any INSERT / UPDATE / DELETE. On each event the affected

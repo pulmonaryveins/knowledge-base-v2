@@ -988,19 +988,9 @@ $red:    #ef4444;
   flex-direction: column;
   gap: 7px;
 
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+  scrollbar-width: none;
 
-  &::-webkit-scrollbar { width: 5px; }
-  &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 0 0 18px 0;   // follows modal corner
-  }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-    &:hover { background: rgba(255, 255, 255, 0.35); }
-  }
+  &::-webkit-scrollbar { display: none; }
 }
 
 .adm__sec-empty {
@@ -1637,7 +1627,8 @@ $red:    #ef4444;
 }
 
 .adm__cell--doc-url {
-  max-width: 280px;
+  max-width: 160px;
+  overflow: hidden;
 }
 
 .adm__doc-link {

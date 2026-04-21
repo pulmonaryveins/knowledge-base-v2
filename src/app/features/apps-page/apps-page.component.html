@@ -61,7 +61,7 @@
                     <span class="rd-docs__article-num">{{ (di + 1).toString().padStart(2, '0') }}</span>
                     <div class="rd-docs__article-body">
                       <span class="rd-docs__article-title">{{ doc.title }}</span>
-                      <span class="rd-docs__article-meta">R&amp;D Research Document</span>
+                      <span class="rd-docs__article-meta">{{ docType(doc) }}</span>
                     </div>
                     <span class="rd-docs__article-cta">
                       Open
