@@ -335,7 +335,7 @@ def setup_session(setup_browser, role="admin"):
         type: 'team-contacts',
         contacts: [
           {
-            name: 'Shawn Leif Recentes',
+            name: 'Shawn Leif Resentes',
             role: 'Team Lead',
             initials: 'SL',
             color: '#0891B2',

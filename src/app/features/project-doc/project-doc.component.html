@@ -79,23 +79,31 @@
 
       <!-- CONTACTS + LINKS -->
       <div class="proj__block proj__block--last">
-        <h4 class="proj__block-label">Team &amp; Links</h4>
+        <h4 class="proj__block-label">
+          @if (project().teamKey === 'frontend' || project().teamKey === 'webdev') {
+            Links
+          } @else {
+            Team &amp; Links
+          }
+        </h4>
         <div class="proj__footer-row">
 
-          <div class="proj__contacts">
-            @for (contact of project().doc.contacts; track contact.name) {
-              <div class="proj__contact">
-                <span class="proj__avatar" [style.background]="contact.color + '22'" [style.color]="contact.color"
-                      [style.border-color]="contact.color + '55'">
-                  {{ contact.initials }}
-                </span>
-                <div class="proj__contact-info">
-                  <span class="proj__contact-name">{{ contact.name }}</span>
-                  <span class="proj__contact-role">{{ contact.role }}</span>
+          @if (project().teamKey !== 'frontend' && project().teamKey !== 'webdev') {
+            <div class="proj__contacts">
+              @for (contact of project().doc.contacts; track contact.name) {
+                <div class="proj__contact">
+                  <span class="proj__avatar" [style.background]="contact.color + '22'" [style.color]="contact.color"
+                        [style.border-color]="contact.color + '55'">
+                    {{ contact.initials }}
+                  </span>
+                  <div class="proj__contact-info">
+                    <span class="proj__contact-name">{{ contact.name }}</span>
+                    <span class="proj__contact-role">{{ contact.role }}</span>
+                  </div>
                 </div>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          }
 
           <div class="proj__links">
             @for (link of project().doc.links; track link.label) {

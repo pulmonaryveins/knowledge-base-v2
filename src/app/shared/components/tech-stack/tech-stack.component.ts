@@ -21,8 +21,8 @@ const TECH_ICONS: Record<string, TechIcon> = {
   'auth0':                { slug: 'auth0',            color: 'EB5424' },
   'angular ssr':          { slug: 'angular',          color: 'DD0031' },
   'leaflet':              { slug: 'leaflet',          color: '199900' },
-  'apexcharts':           { slug: 'apexcharts',       color: '008FFB' },
-  'husky + commitlint':   { slug: 'husky',            color: '42B983' },
+  'apexcharts':           { slug: 'chartdotjs',       color: '008FFB' },
+  'husky + commitlint':   { slug: 'commitlint',       color: '42B983' },
   'prettier':             { slug: 'prettier',         color: 'F7B93E' },
   'vitest':               { url: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitest/vitest-original.svg',         color: '6E9F18' },
   'playwright':           { url: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg', color: '2EAD33' },
@@ -67,7 +67,7 @@ const TECH_ICONS: Record<string, TechIcon> = {
   'figma':                { slug: 'figma',            color: 'F24E1E' },
   'figjam':               { slug: 'figma',            color: 'F24E1E' },
   'sketch':               { slug: 'sketch',           color: 'F7B500' },
-  'adobe xd':             { slug: 'adobexd',          color: 'FF61F6' },
+  'adobe xd':             { url: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xd/xd-plain.svg', color: 'FF61F6' },
   'framer':               { slug: 'framer',           color: '0055FF' },
   'storybook':            { slug: 'storybook',        color: 'FF4785' },
   'chromatic':            { slug: 'chromatic',        color: 'FC521F' },
@@ -140,6 +140,11 @@ export class TechStackComponent {
   /** Returns the BEM modifier class for a status/usage badge. */
   protected badgeClass(status: string): string {
     return BADGE_CLASS[status.toLowerCase().trim()] ?? 'ts__badge--default';
+  }
+
+  /** Returns true when the badge should be rendered (hides 'Live'). */
+  protected showBadge(status: string): boolean {
+    return status.toLowerCase().trim() !== 'live';
   }
 
   /** Deterministic hue from a string for fallback avatar colors. */
