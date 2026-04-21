@@ -270,48 +270,9 @@ npm run dev   # http://localhost:5173`,
       },
     },
     {
-      id: 'wd-folder-arch',
-      label: 'Folder Architecture',
-      num: '04',
-      content: {
-        type: 'folder-arch',
-        cards: [
-          { title: 'No fixed structure', body: 'There is no single folder structure across all projects. Structure depends on the framework used, project type, and client requirements. Always follow the structure of the existing project you are working in.' },
-          { title: 'components/', body: 'Reusable UI components shared across pages. Each component handles one UI concern. Avoid duplicating markup — if you write the same HTML twice, it belongs in a component.' },
-          { title: 'pages/ or routes/', body: 'Route-level page files. In Astro these are .astro files; in SvelteKit they are +page.svelte files. Pages compose components — they do not contain raw HTML blocks.' },
-          { title: 'data/ or lib/', body: 'JSON content files (for static data) and CMS client utilities (for PageCMS or other dynamic sources). All external data access lives here, keeping components and pages clean.' },
-        ],
-        codeBlock: {
-          language: 'bash',
-          code: `# Astro (franchisee templates / marketing sites)
-<project>/
-├── src/
-│   ├── components/      # Hero.astro, Nav.astro, CTA.astro
-│   ├── layouts/         # BaseLayout.astro
-│   ├── pages/           # index.astro, about.astro
-│   └── data/            # site.json (client config)
-├── public/
-└── astro.config.mjs
-
-# Svelte / SvelteKit (internal tools / dashboards)
-<project>/
-├── src/
-│   ├── routes/          # +layout.svelte, +page.svelte
-│   ├── lib/
-│   │   ├── components/  # Shared Svelte components
-│   │   └── stores/      # Svelte writable stores
-│   └── app.html
-└── svelte.config.js
-
-# General rule: organise components, pages, and data separately.
-# Keep files clean and easy to navigate.`,
-        },
-      },
-    },
-    {
       id: 'wd-coding-patterns',
       label: 'Dev Principles & Patterns',
-      num: '05',
+      num: '04',
       content: {
         type: 'coding-patterns',
         patterns: [
@@ -381,7 +342,7 @@ npm run dev   # http://localhost:5173`,
     {
       id: 'wd-mistakes',
       label: 'Common Mistakes',
-      num: '06',
+      num: '05',
       content: {
         type: 'mistakes',
         table: {
@@ -404,7 +365,7 @@ npm run dev   # http://localhost:5173`,
     {
       id: 'wd-contacts',
       label: 'Team Contacts',
-      num: '07',
+      num: '06',
       content: {
         type: 'team-contacts',
         contacts: [

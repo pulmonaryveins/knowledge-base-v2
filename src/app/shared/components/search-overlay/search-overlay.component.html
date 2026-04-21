@@ -43,7 +43,7 @@
               <!-- Body -->
               <div class="search-overlay__result-body">
                 <div class="search-overlay__result-title-row">
-                  <span class="search-overlay__result-title">{{ result.title }}</span>
+                  <span class="search-overlay__result-title" [innerHTML]="highlight(result.title)"></span>
                   <span
                     class="search-overlay__result-tag"
                     [style.background]="result.teamColor + '18'"
@@ -51,7 +51,13 @@
                     [style.border-color]="result.teamColor + '40'"
                   >{{ result.teamLabel }}</span>
                 </div>
-                <span class="search-overlay__result-snippet">{{ result.snippet }}</span>
+                <div class="search-overlay__result-meta">
+                  @if (result.parentLabel) {
+                    <span class="search-overlay__result-parent">{{ result.parentLabel }}</span>
+                    <span class="search-overlay__result-meta-sep">·</span>
+                  }
+                  <span class="search-overlay__result-snippet" [innerHTML]="highlight(result.snippet)"></span>
+                </div>
               </div>
 
               <!-- Arrow -->

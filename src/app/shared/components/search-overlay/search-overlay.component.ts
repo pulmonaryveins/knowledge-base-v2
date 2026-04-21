@@ -14,6 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { SearchService } from '../../../core/services/search.service';
 import { SearchResult } from '../../../core/models';
@@ -33,11 +34,9 @@ import { LucideAngularModule, Search, FileText, FolderGit2, Wrench, ArrowRight }
   styleUrl: './search-overlay.component.scss',
 })
 export class SearchOverlayComponent implements OnInit, AfterViewInit {
-  /** Navigation service for overlay open/close state */
-  private readonly _nav = inject(NavigationService);
-  /** Search service for querying the index */
-  private readonly _search = inject(SearchService);
-  /** DestroyRef for automatic RxJS cleanup */
+  private readonly _nav       = inject(NavigationService);
+  private readonly _search    = inject(SearchService);
+  private readonly _sanitizer = inject(DomSanitizer);
   private readonly _destroyRef = inject(DestroyRef);
 
   /** The search input element for auto-focus */
@@ -99,6 +98,21 @@ export class SearchOverlayComponent implements OnInit, AfterViewInit {
           if (result) this.selectResult(result);
         }
       });
+  }
+
+  /**
+   * Wrap every query word in the text with a <mark> for highlight rendering.
+   * HTML special chars are escaped first to prevent injection.
+   */
+  protected highlight(text: string): SafeHtml {
+    const q = this.query().trim();
+    const safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (!q) return this._sanitizer.bypassSecurityTrustHtml(safe);
+
+    const words   = q.split(/\s+/).filter(Boolean);
+    const pattern = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const html    = safe.replace(new RegExp(`(${pattern})`, 'gi'), '<mark class="search-hl">$1</mark>');
+    return this._sanitizer.bypassSecurityTrustHtml(html);
   }
 
   /**

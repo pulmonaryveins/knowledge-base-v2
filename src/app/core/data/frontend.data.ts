@@ -324,55 +324,9 @@ npm run pretty:check  # Check formatting without fixing`,
       },
     },
     {
-      id: 'fe-folder-arch',
-      label: 'Folder Architecture',
-      num: '04',
-      content: {
-        type: 'folder-arch',
-        cards: [
-          { title: 'core/',     body: 'App-wide infrastructure singletons: guards, global API services (auth, licenses, users, dealers, hosts, export), DTOs, and barrel index.ts. Nothing in core/ renders UI.' },
-          { title: 'shared/',   body: 'Reusable "dumb" components, utilities, and types. Includes components, constants, directives, interfaces, pipes, utils, and validators. All exported via shared/index.ts.' },
-          { title: 'features/', body: 'Feature modules — each is a page or domain area: advertisers, auth, dashboard, dealers, hosts, licenses, media-library, screens, users.' },
-          { title: 'layout/',   body: 'Layout wrappers: authenticated, public, and main-layout (sidebar + header + router-outlet).' },
-        ],
-        codeBlock: {
-          language: 'bash',
-          code: `src/app/
-├── core/
-│   ├── guards/          # authGuard, guestGuard
-│   ├── services/        # auth, licenses, users, dealers, hosts, export
-│   ├── dto/             # Data Transfer Objects for API requests/responses
-│   └── index.ts         # Barrel file
-├── shared/
-│   ├── components/      # table, button, autocomplete, modals
-│   ├── constants/       # colors, icons, timezones
-│   ├── directives/      # click-outside, copy
-│   ├── interfaces/      # table, media, stats, city
-│   ├── pipes/           # duration-formatter, file-size, kebab-case
-│   ├── utils/           # withLoading, Logger, query-builder
-│   ├── validators/      # Custom form validators
-│   └── index.ts
-├── features/
-│   ├── advertisers/     # CRUD for advertisers
-│   ├── auth/            # Login + Auth0 callback
-│   ├── dashboard/       # Main dashboard view
-│   ├── dealers/         # Dealer management
-│   ├── hosts/           # Host location management
-│   ├── licenses/        # License management
-│   ├── media-library/   # Media asset management
-│   ├── screens/         # Screen/player management
-│   └── users/           # User management
-└── layout/
-    ├── authenticated/   # Layout for logged-in users
-    ├── public/          # Layout for guest pages
-    └── main-layout/     # Sidebar + header + router-outlet`,
-        },
-      },
-    },
-    {
       id: 'fe-coding-patterns',
       label: 'Coding Patterns',
-      num: '05',
+      num: '04',
       content: {
         type: 'coding-patterns',
         layout: 'stack',
@@ -541,7 +495,7 @@ git commit -m "update: Fix something"             # invalid type`,
     {
       id: 'fe-mistakes',
       label: 'Common Mistakes',
-      num: '06',
+      num: '05',
       content: {
         type: 'mistakes',
         table: {
@@ -566,7 +520,7 @@ git commit -m "update: Fix something"             # invalid type`,
     {
       id: 'fe-contacts',
       label: 'Team Contacts',
-      num: '07',
+      num: '06',
       content: {
         type: 'team-contacts',
         contacts: [

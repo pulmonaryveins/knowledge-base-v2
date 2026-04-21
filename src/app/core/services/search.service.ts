@@ -9,12 +9,14 @@ import { DocsDataService } from './docs-data.service';
  * pre-built index from DocsDataService and returns ranked results.
  *
  * Scoring:
- *   3 — all query words match the title
- *   2 — partial title match
- *   1 — snippet or label match only
+ *   4 — all query words match the title
+ *   3 — partial title match
+ *   2 — match in snippet or team label
+ *   1 — match in keywords (content body — steps, cards, patterns, table rows)
  *
- * Multi-word queries require ALL words to match somewhere in the result.
- * Results are sorted by score descending (title matches first).
+ * Multi-word queries require ALL words to match somewhere in the combined haystack.
+ * When a match is keyword-only, the snippet is replaced with the surrounding context
+ * so the user can see exactly what matched.
  */
 @Injectable({ providedIn: 'root' })
 export class SearchService {
@@ -33,24 +35,49 @@ export class SearchService {
 
     scored.sort((a, b) => b.score - a.score);
 
-    return scored.map(({ result }) => result);
+    return scored.map(({ result, score }) => {
+      // For keyword-only matches, surface the matching context as the snippet
+      if (score === 1 && result.keywords) {
+        const ctx = this._matchContext(result.keywords, words);
+        if (ctx) return { ...result, snippet: ctx };
+      }
+      return result;
+    });
   }
 
   private _score(r: SearchResult, words: string[]): number {
-    const title   = r.title.toLowerCase();
-    const snippet = r.snippet.toLowerCase();
-    const label   = r.teamLabel.toLowerCase();
+    const title    = r.title.toLowerCase();
+    const snippet  = r.snippet.toLowerCase();
+    const label    = r.teamLabel.toLowerCase();
+    const keywords = r.keywords.toLowerCase();
 
-    // All words must match at least somewhere in the combined haystack
-    const haystack = `${title} ${snippet} ${label}`;
-    const allMatch = words.every((w) => haystack.includes(w));
-    if (!allMatch) return 0;
+    const haystack = `${title} ${snippet} ${label} ${keywords}`;
+    if (!words.every((w) => haystack.includes(w))) return 0;
 
-    // Score based on how many words hit the title specifically
     const titleMatches = words.filter((w) => title.includes(w)).length;
-    if (titleMatches === words.length) return 3; // full title match
-    if (titleMatches > 0)             return 2; // partial title match
-    return 1;                                    // snippet / label only
+    if (titleMatches === words.length) return 4;
+    if (titleMatches > 0)             return 3;
+
+    const metaHaystack = `${snippet} ${label}`;
+    if (words.every((w) => metaHaystack.includes(w))) return 2;
+
+    return 1; // match is inside keywords (content body)
+  }
+
+  /** Find the first matching word in the keywords string and return ±80 chars of context. */
+  private _matchContext(keywords: string, words: string[]): string {
+    const lower = keywords.toLowerCase();
+    for (const word of words) {
+      const idx = lower.indexOf(word);
+      if (idx === -1) continue;
+      const start = Math.max(0, idx - 50);
+      const end   = Math.min(keywords.length, idx + word.length + 90);
+      let excerpt = keywords.slice(start, end).trim();
+      if (start > 0)               excerpt = '…' + excerpt;
+      if (end < keywords.length)   excerpt += '…';
+      return excerpt;
+    }
+    return keywords.slice(0, 140);
   }
 }
 
