@@ -5,21 +5,29 @@
 
   <!-- Main Content -->
   <main class="shell__main">
-    @if (isTeamPage()) {
-      <app-team-page />
-    }
-    @if (isAppsPage()) {
-      <app-apps-page />
+    @if (isLoading()) {
+      <app-skeleton />
+    } @else {
+      @if (isTeamPage()) {
+        <app-team-page class="shell__page" />
+      }
+      @if (isAppsPage()) {
+        <app-apps-page class="shell__page" />
+      }
+      @if (isToolPage()) {
+        <app-tool-page class="shell__page" />
+      }
     }
   </main>
 
-  <!-- Fixed Right Rail -->
+  <!-- Fixed Right Rail (only for team pages) -->
   @if (isTeamPage()) {
     <div class="shell__rail">
       <app-right-rail />
     </div>
   }
 
-  <!-- Global Search Overlay (rendered at root to layer above everything) -->
+  <!-- Global Search Overlay -->
+  <!-- Rendered here but host is display:contents so it never joins the flex layout -->
   <app-search-overlay />
 </div>

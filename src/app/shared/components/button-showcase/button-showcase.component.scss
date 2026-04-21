@@ -1,0 +1,154 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/button-showcase/button-showcase.component.scss ──
+
+:host { @apply block; }
+
+// ════════════════════════════════════════════════════════════════════════
+// TAB BAR
+// ════════════════════════════════════════════════════════════════════════
+
+.bs__bar {
+  @apply flex flex-row border-b border-[var(--border)] mb-8;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.bs__tab {
+  @apply px-5 py-[10px] font-['Syne',_sans-serif] text-[13px] font-semibold
+         text-[var(--muted)] bg-transparent border-b-2 border-transparent
+         cursor-pointer transition-all duration-150 outline-none whitespace-nowrap;
+
+  &--active {
+    @apply text-[var(--navy)] border-[var(--green)];
+  }
+
+  &:hover:not(.bs__tab--active) {
+    @apply text-[var(--navy)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// TITLE
+// ════════════════════════════════════════════════════════════════════════
+
+.bs__title {
+  @apply m-0 mb-5 font-['Syne',_sans-serif] text-[22px] font-bold text-[var(--navy)];
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// GRID WRAPPER (horizontal scroll fallback)
+// ════════════════════════════════════════════════════════════════════════
+
+.bs__grid-wrapper {
+  @apply flex flex-col;
+  overflow-x: auto;
+}
+
+// ── Column size headers ────────────────────────────────────────────────
+
+.bs__col-row {
+  display: grid;
+  grid-template-columns: 100px repeat(5, 1fr);
+  @apply mb-2;
+}
+
+.bs__col-label {
+  @apply text-center font-['Syne',_sans-serif] text-[11px] font-bold
+         uppercase tracking-[0.08em] text-[var(--muted)];
+}
+
+// ── State rows ──────────────────────────────────────────────────────────────
+
+.bs__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+// ── State row ──────────────────────────────────────────────────────────
+
+.bs__row {
+  display: grid;
+  grid-template-columns: 100px repeat(5, 1fr);
+  align-items: center;
+  min-height: 68px;
+  gap: 8px;
+}
+
+.bs__row-label {
+  @apply font-['DM_Sans',_sans-serif] text-[11px] text-[var(--muted)] pr-2;
+}
+
+.bs__cell {
+  @apply flex justify-center items-center;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// BUTTON BASE
+// ════════════════════════════════════════════════════════════════════════
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+  border: none;
+
+  // ── SIZES ──────────────────────────────────────────────────────────────────
+
+  &--xs  { height: 28px; padding: 0 10px; font-size: 11px; }
+  &--s   { height: 32px; padding: 0 12px; font-size: 12px; }
+  &--m   { height: 38px; padding: 0 16px; font-size: 13px; }
+  &--l   { height: 44px; padding: 0 20px; font-size: 14px; }
+  &--xl  { height: 52px; padding: 0 24px; font-size: 15px; }
+
+  // ── BORDER RADIUS per variant ──────────────────────────────────────────────
+
+  &--primary,
+  &--secondary { border-radius: 8px; }
+  &--soft-rounded { border-radius: 9999px; }
+
+  // ── PRIMARY ────────────────────────────────────────────────────────────────
+
+  &--primary {
+    &.btn--default  { background: #8DCB2C; color: #fff; }
+    &.btn--hover    { background: #9fd93a; color: #fff; }
+    &.btn--active   { background: #091635; color: #fff; }
+    &.btn--disabled { background: #edf2f7; color: #a0aec0; border: 1px solid #e2e8f0; cursor: default; }
+    &.btn--ghost    { background: transparent; color: #a0aec0; border: 1px solid #e2e8f0; cursor: default; }
+    &.btn--danger   { background: #ef4444; color: #fff; }
+  }
+
+  // ── SECONDARY ──────────────────────────────────────────────────────────────
+
+  &--secondary {
+    &.btn--default  { background: transparent; color: #8DCB2C; border: 1.5px solid #8DCB2C; }
+    &.btn--hover    { background: #f4fce8;     color: #8DCB2C; border: 1.5px solid #8DCB2C; }
+    &.btn--active   { background: #091635;     color: #fff;    border: 1.5px solid #091635; }
+    &.btn--disabled { background: transparent; color: #cbd5e1; border: 1px solid #e2e8f0; cursor: default; }
+    &.btn--ghost    { background: transparent; color: #a0aec0; border: 1px solid #e2e8f0; cursor: default; }
+    &.btn--danger   { background: #ef4444;     color: #fff;    border: none; }
+  }
+
+  // ── SOFT ROUNDED ───────────────────────────────────────────────────────────
+
+  &--soft-rounded {
+    &.btn--default  { background: #8DCB2C; color: #fff; }
+    &.btn--hover    { background: #9fd93a; color: #fff; }
+    &.btn--active   { background: #091635; color: #fff; }
+    &.btn--disabled { background: #edf2f7; color: #a0aec0; border: 1px solid #e2e8f0; cursor: default; }
+    &.btn--ghost    { background: transparent; color: #a0aec0; border: 1px solid #e2e8f0; cursor: default; }
+    &.btn--danger   { background: #ef4444; color: #fff; }
+  }
+}
+
+.bs__chevron {
+  font-size: 0.8em;
+}

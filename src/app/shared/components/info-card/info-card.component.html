@@ -1,5 +1,10 @@
 <!-- FILE: src/app/shared/components/info-card/info-card.component.html -->
-<div class="info-card">
+<div class="info-card" [class.info-card--accented]="!!data().accent" [style.--ic-accent]="data().accent ?? null">
+  @if (data().icon) {
+    <div class="info-card__icon-wrap" [style.background]="(data().accent ?? '#8a8a8a') + '22'">
+      <span class="info-card__icon">{{ data().icon }}</span>
+    </div>
+  }
   <h4 class="info-card__title">{{ data().title }}</h4>
   <p class="info-card__body">{{ data().body }}</p>
 </div>

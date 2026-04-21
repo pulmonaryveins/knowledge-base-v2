@@ -1,0 +1,150 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/typography-scale/typography-scale.component.scss ──
+
+:host { @apply block; }
+
+// ════════════════════════════════════════════════════════════════
+// TABBED LAYOUT  (UI/UX)
+// ════════════════════════════════════════════════════════════════
+
+.tscale-tabs {
+  @apply flex flex-col gap-0;
+
+  // ── Tab bar ────────────────────────────────────────────────────
+  &__bar {
+    @apply flex flex-row gap-0 border-b border-[var(--border)] mb-8;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__tab {
+    @apply px-5 py-[10px] font-['Syne',_sans-serif] text-[13px] font-semibold
+           text-[var(--muted)] bg-transparent border-b-2 border-transparent
+           cursor-pointer transition-all duration-150 whitespace-nowrap;
+
+    &--active {
+      @apply text-[var(--navy)] border-[var(--green)];
+    }
+
+    &:hover:not(&--active) {
+      @apply text-[var(--navy)];
+    }
+  }
+
+  // ── Panel ──────────────────────────────────────────────────────
+  &__panel {
+    @apply flex flex-col gap-10;
+  }
+
+  // ── Heading row: font name + Aa badge ─────────────────────────
+  &__heading-row {
+    @apply flex flex-row items-start justify-between;
+  }
+
+  &__font-name {
+    @apply m-0 font-['Nunito',_sans-serif] text-[36px] font-bold text-[var(--navy)] leading-none;
+  }
+
+  &__preview {
+    @apply m-0 mt-2 font-['Nunito',_sans-serif] text-[16px] font-normal text-[var(--muted)];
+  }
+
+  &__aa-badge {
+    @apply w-[72px] h-[72px] rounded-[14px] bg-[var(--green)] flex items-center justify-center
+           font-['Nunito',_sans-serif] text-[28px] font-bold text-white;
+  }
+
+  // ── Two-column specimen grid ───────────────────────────────────
+  &__columns {
+    @apply grid gap-10;
+    grid-template-columns: 1fr 1fr;
+
+    @media (max-width: 640px) { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  &__column {
+    @apply flex flex-col gap-4;
+  }
+
+  &__col-heading {
+    @apply m-0 font-['Nunito',_sans-serif] text-[18px] font-bold text-[var(--navy)]
+           border-b border-[var(--border)] pb-3;
+  }
+
+  &__rows {
+    @apply flex flex-col gap-1;
+  }
+
+  &__row {
+    @apply py-[6px] border-b border-[var(--border)] last:border-b-0;
+  }
+
+  &__specimen {
+    @apply block text-[var(--navy)] font-['Nunito',_sans-serif] leading-[1.3];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// LEGACY FLAT LAYOUT  (other teams)
+// ════════════════════════════════════════════════════════════════
+
+.tscale {
+  @apply flex flex-col rounded-[14px] border border-[var(--border)] bg-[var(--card)];
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &__header {
+    @apply flex items-center gap-4 px-5 py-3 bg-[var(--navy)] border-b border-[var(--border)];
+  }
+
+  &__col {
+    @apply font-['Syne',_sans-serif] text-[11px] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.5)];
+
+    &--tag     { @apply w-[64px] shrink-0; }
+    &--preview { @apply flex-1; }
+    &--spec    { @apply w-[200px] shrink-0 text-right; }
+  }
+
+  &__row {
+    @apply flex items-center gap-4 px-5 py-4 border-b border-[var(--border)] last:border-b-0;
+    transition: background 0.12s ease;
+
+    &:hover { @apply bg-[var(--bg)]; }
+  }
+
+  &__tag {
+    @apply w-[64px] shrink-0 font-['DM_Mono',_monospace] text-[11px] font-bold
+           text-[var(--ux)] bg-[#EC489922] rounded-[6px] px-[6px] py-[3px] text-center;
+  }
+
+  &__body {
+    @apply flex-1 flex flex-col gap-[2px] min-w-0 overflow-hidden;
+  }
+
+  &__preview {
+    @apply text-[var(--navy)] leading-[1.2] block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__usecase {
+    @apply text-[12px] text-[var(--muted)] font-['DM_Sans',_sans-serif] leading-[1.4] mt-1;
+  }
+
+  &__spec {
+    @apply w-[200px] shrink-0 flex justify-end flex-wrap gap-1;
+  }
+
+  &__spec-pill {
+    @apply font-['DM_Mono',_monospace] text-[10px] px-[6px] py-[2px] rounded-[5px]
+           bg-[var(--bg)] border border-[var(--border)] text-[var(--muted)];
+
+    &--font {
+      @apply bg-[#8DCB2C22] border-[#8DCB2C55] text-[#5a8a00];
+    }
+  }
+}

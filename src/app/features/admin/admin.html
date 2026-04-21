@@ -1,0 +1,880 @@
+<div class="adm">
+
+  <!-- ── Header ────────────────────────────────────────────────────────────── -->
+  <header class="adm__header">
+    <div class="adm__header-inner">
+      <div class="adm__brand">
+        <img src="logo.png" alt="NCompassTV" class="adm__logo" />
+        <div class="adm__brand-text">
+          <div class="adm__brand-row">
+            <span class="adm__brand-name">NCompassTV</span>
+            <span class="adm__brand-sep" aria-hidden="true">/</span>
+            <span class="adm__brand-panel">Admin Panel</span>
+          </div>
+          <span class="adm__brand-sub">DEV PORTAL</span>
+        </div>
+      </div>
+      <div class="adm__header-actions">
+        <button class="adm__btn adm__btn--ghost" (click)="goToPortal()">
+          <lucide-icon [img]="ArrowLeftIcon" [size]="13" />
+          Portal
+        </button>
+        <button class="adm__btn adm__btn--ghost adm__btn--icon-only" (click)="signOut()" title="Sign out" aria-label="Sign out">
+          <lucide-icon [img]="LogOutIcon" [size]="15" />
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main ──────────────────────────────────────────────────────────────── -->
+  <main class="adm__main">
+
+    <!-- ── Tab switcher ────────────────────────────────────────────────────── -->
+    <div class="adm__tabs">
+      <button class="adm__tab" [class.adm__tab--active]="activeTab() === 'users'" (click)="switchTab('users')">
+        <lucide-icon [img]="UsersIcon" [size]="14" />
+        Users
+      </button>
+      <button class="adm__tab" [class.adm__tab--active]="activeTab() === 'documents'" (click)="switchTab('documents')">
+        <lucide-icon [img]="FileTextIcon" [size]="14" />
+        R&amp;D Documents
+      </button>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- USERS TAB                                                              -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    @if (activeTab() === 'users') {
+
+    <!-- Page title + create button -->
+    <div class="adm__page-header">
+      <div>
+        <h1 class="adm__page-title">User Management</h1>
+        <p class="adm__page-sub">Create, edit, and remove portal users.</p>
+      </div>
+      <button class="adm__btn adm__btn--primary" (click)="openCreateModal()">
+        <lucide-icon [img]="UserPlusIcon" [size]="14" />
+        New User
+      </button>
+    </div>
+
+    <!-- Stats bar -->
+    @if (!isLoading() && users().length > 0) {
+      <div class="adm__stats">
+        <div class="adm__stat">
+          <div class="adm__stat-icon adm__stat-icon--neutral">
+            <lucide-icon [img]="UsersIcon" [size]="16" />
+          </div>
+          <div class="adm__stat-content">
+            <span class="adm__stat-val">{{ users().length }}</span>
+            <span class="adm__stat-label">Total Users</span>
+          </div>
+        </div>
+        <div class="adm__stat">
+          <div class="adm__stat-icon adm__stat-icon--green">
+            <lucide-icon [img]="ShieldIcon" [size]="16" />
+          </div>
+          <div class="adm__stat-content">
+            <span class="adm__stat-val adm__stat-val--green">{{ adminCount() }}</span>
+            <span class="adm__stat-label">Admins</span>
+          </div>
+        </div>
+        <div class="adm__stat">
+          <div class="adm__stat-icon adm__stat-icon--neutral">
+            <lucide-icon [img]="UserIcon" [size]="16" />
+          </div>
+          <div class="adm__stat-content">
+            <span class="adm__stat-val">{{ memberCount() }}</span>
+            <span class="adm__stat-label">Members</span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Error banner -->
+    @if (tableError()) {
+      <div class="adm__banner adm__banner--error">{{ tableError() }}</div>
+    }
+
+    <!-- Search / filter toolbar -->
+    @if (!isLoading() && users().length > 0) {
+      <div class="adm__toolbar">
+        <div class="adm__search-wrap">
+          <lucide-icon [img]="SearchIcon" [size]="14" class="adm__search-icon" />
+          <input
+            type="search"
+            class="adm__search-input"
+            placeholder="Search users…"
+            [value]="searchQuery()"
+            (input)="searchQuery.set($any($event.target).value)" />
+        </div>
+        <div class="adm__filter-pills">
+          <button class="adm__filter-pill" [class.adm__filter-pill--active]="roleFilter() === 'all'"    (click)="roleFilter.set('all')">
+            All <span class="adm__filter-count">{{ users().length }}</span>
+          </button>
+          <button class="adm__filter-pill" [class.adm__filter-pill--active]="roleFilter() === 'member'" (click)="roleFilter.set('member')">
+            Members <span class="adm__filter-count">{{ memberCount() }}</span>
+          </button>
+          <button class="adm__filter-pill" [class.adm__filter-pill--active]="roleFilter() === 'admin'"  (click)="roleFilter.set('admin')">
+            Admins <span class="adm__filter-count">{{ adminCount() }}</span>
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Table -->
+    <div class="adm__table-wrap">
+      @if (isLoading()) {
+        <div class="adm__skeleton-table">
+          @for (_ of [1,2,3,4,5]; track $index) {
+            <div class="adm__skeleton-row">
+              <div class="adm__skeleton-cell--user">
+                <div class="adm__skel adm__skel--circle"></div>
+                <div class="adm__skel-wrap">
+                  <div class="adm__skel adm__skel--name"></div>
+                  <div class="adm__skel adm__skel--email"></div>
+                </div>
+              </div>
+              <div class="adm__skel adm__skel--badge"></div>
+              <div class="adm__skel adm__skel--date"></div>
+              <div class="adm__skel adm__skel--date"></div>
+              <div class="adm__skel adm__skel--actions"></div>
+            </div>
+          }
+        </div>
+      } @else if (users().length === 0) {
+        <div class="adm__empty">
+          <lucide-icon [img]="UsersIcon" [size]="28" />
+          <span>No users found. Create one to get started.</span>
+        </div>
+      } @else if (filteredUsers().length === 0) {
+        <div class="adm__empty">
+          <lucide-icon [img]="SearchIcon" [size]="28" />
+          <span>No users match your search.</span>
+        </div>
+      } @else {
+        <table class="adm__table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th>Created</th>
+              <th>Last Sign In</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of paginatedUsers(); track user.id) {
+              <tr class="adm__row" [class.adm__row--current]="user.id === currentUserId()">
+                <td class="adm__cell--user">
+                  <div class="adm__avatar" [class.adm__avatar--admin]="user.role === 'admin'">
+                    {{ (user.full_name || user.email)[0].toUpperCase() }}
+                  </div>
+                  <div class="adm__user-info">
+                    <span class="adm__user-name">
+                      {{ user.full_name || '—' }}
+                      @if (user.id === currentUserId()) {
+                        <span class="adm__you-tag">you</span>
+                      }
+                    </span>
+                    <span class="adm__user-email">{{ user.email }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="adm__role-badge" [class.adm__role-badge--admin]="user.role === 'admin'">
+                    <span class="adm__role-badge-dot" aria-hidden="true"></span>
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td class="adm__cell--dim">{{ formatDate(user.created_at) }}</td>
+                <td class="adm__cell--dim">{{ formatDate(user.last_sign_in_at) }}</td>
+                <td class="adm__cell--actions">
+                  <button class="adm__action adm__action--edit" (click)="openEditModal(user)" title="Edit user" aria-label="Edit user">
+                    <lucide-icon [img]="PencilIcon" [size]="13" />
+                  </button>
+                  @if (user.id !== currentUserId()) {
+                    <button class="adm__action adm__action--delete" (click)="confirmDelete(user)" title="Delete user" aria-label="Delete user">
+                      <lucide-icon [img]="Trash2Icon" [size]="13" />
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        @if (totalPages() > 1) {
+          <div class="adm__pagination">
+            <span class="adm__page-showing">Showing {{ pageStart() }}–{{ pageEnd() }} of {{ filteredUsers().length }}</span>
+            <div class="adm__page-controls">
+              <button class="adm__page-btn" [disabled]="pageIndex() === 0" (click)="prevPage()" aria-label="Previous page">
+                <lucide-icon [img]="ChevronLeftIcon" [size]="14" />
+              </button>
+              <span class="adm__page-info">{{ pageIndex() + 1 }} / {{ totalPages() }}</span>
+              <button class="adm__page-btn" [disabled]="pageIndex() === totalPages() - 1" (click)="nextPage()" aria-label="Next page">
+                <lucide-icon [img]="ChevronRightIcon" [size]="14" />
+              </button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    } <!-- end @if users tab -->
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- DOCUMENTS TAB                                                          -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    @if (activeTab() === 'documents') {
+
+    <!-- Page title + add button -->
+    <div class="adm__page-header">
+      <div>
+        <h1 class="adm__page-title">R&amp;D Documents</h1>
+        <p class="adm__page-sub">Manage document links displayed on the R&amp;D team page.</p>
+      </div>
+      <div class="adm__page-header-actions">
+        <button class="adm__btn adm__btn--secondary" (click)="openSecMgmt()">
+          <lucide-icon [img]="FolderPlusIcon" [size]="14" />
+          Manage Sections
+        </button>
+        <button class="adm__btn adm__btn--primary" (click)="openCreateDocModal()">
+          <lucide-icon [img]="FileTextIcon" [size]="14" />
+          Add Document
+        </button>
+      </div>
+    </div>
+
+    <!-- Error banner -->
+    @if (docsError()) {
+      <div class="adm__banner adm__banner--error">{{ docsError() }}</div>
+    }
+
+    <!-- Documents toolbar: search + section filter -->
+    @if (!docsLoading() && documents().length > 0) {
+      <div class="adm__toolbar">
+        <div class="adm__search-wrap">
+          <lucide-icon [img]="SearchIcon" [size]="14" class="adm__search-icon" />
+          <input
+            type="search"
+            class="adm__search-input"
+            placeholder="Search documents…"
+            [value]="docSearchQuery()"
+            (input)="onDocSearch($any($event.target).value)" />
+        </div>
+        <div class="adm__dd" [class.adm__dd--open]="docDropdownOpen()">
+          <button type="button" class="adm__dd-trigger" (click)="toggleDocDropdown()">
+            <span class="adm__dd-label">
+              {{ docSectionFilter() === 'all' ? 'All sections' : docSectionFilter() }}
+            </span>
+            <span class="adm__dd-count">
+              {{ docSectionFilter() === 'all' ? documents().length : (docsBySection().get(docSectionFilter())?.length ?? 0) }}
+            </span>
+            <lucide-icon [img]="ChevronDownIcon" [size]="13" class="adm__dd-chevron" />
+          </button>
+          @if (docDropdownOpen()) {
+            <div class="adm__dd-menu">
+              <button type="button" class="adm__dd-opt" [class.adm__dd-opt--active]="docSectionFilter() === 'all'"
+                      (click)="pickDocSection('all')">
+                <span class="adm__dd-opt-label">All sections</span>
+                <span class="adm__dd-opt-count">{{ documents().length }}</span>
+              </button>
+              @for (sec of docFilterSections(); track sec) {
+                <button type="button" class="adm__dd-opt" [class.adm__dd-opt--active]="docSectionFilter() === sec"
+                        (click)="pickDocSection(sec)">
+                  <span class="adm__dd-opt-label">{{ sec }}</span>
+                  <span class="adm__dd-opt-count">{{ docsBySection().get(sec)?.length ?? 0 }}</span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Documents list -->
+    <div class="adm__table-wrap">
+      @if (docsLoading()) {
+        <div class="adm__skeleton-table">
+          @for (_ of [1,2,3,4]; track $index) {
+            <div class="adm__skeleton-row">
+              <div class="adm__skel adm__skel--name" style="flex:2"></div>
+              <div class="adm__skel adm__skel--date" style="flex:3"></div>
+              <div class="adm__skel adm__skel--actions"></div>
+            </div>
+          }
+        </div>
+      } @else if (documents().length === 0) {
+        <div class="adm__empty">
+          <lucide-icon [img]="FileTextIcon" [size]="28" />
+          <span>No documents yet. Add one to get started.</span>
+        </div>
+      } @else if (filteredDocs().length === 0) {
+        <div class="adm__empty">
+          <lucide-icon [img]="SearchIcon" [size]="28" />
+          <span>No documents match your search.</span>
+        </div>
+      } @else {
+        <table class="adm__table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Section</th>
+              <th>URL</th>
+              <th>Type</th>
+              <th>Added</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (doc of paginatedDocs(); track doc.id) {
+              <tr class="adm__row">
+                <td class="adm__cell--doc-title">{{ doc.title }}</td>
+                <td class="adm__cell--dim">{{ doc.section || '—' }}</td>
+                <td class="adm__cell--doc-url">
+                  <a [href]="doc.url" target="_blank" rel="noopener noreferrer" class="adm__doc-link">
+                    <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+                    {{ doc.url.length > 40 ? doc.url.slice(0, 40) + '…' : doc.url }}
+                  </a>
+                </td>
+                <td>
+                  <span class="adm__doc-type-badge" [class.adm__doc-type-badge--file]="!!doc.file_path">
+                    @if (doc.file_path) {
+                      <lucide-icon [img]="UploadIcon" [size]="11" /> File
+                    } @else {
+                      <lucide-icon [img]="LinkIcon" [size]="11" /> Link
+                    }
+                  </span>
+                </td>
+                <td class="adm__cell--dim">{{ formatDate(doc.created_at) }}</td>
+                <td class="adm__cell--actions">
+                  <button class="adm__action adm__action--edit" (click)="openEditDocModal(doc)" title="Edit" aria-label="Edit document">
+                    <lucide-icon [img]="PencilIcon" [size]="13" />
+                  </button>
+                  <button class="adm__action adm__action--delete" (click)="confirmDeleteDoc(doc)" title="Delete" aria-label="Delete document">
+                    <lucide-icon [img]="Trash2Icon" [size]="13" />
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        @if (docTotalPages() > 1) {
+          <div class="adm__pagination">
+            <span class="adm__page-showing">Showing {{ docPageStart() }}–{{ docPageEnd() }} of {{ filteredDocs().length }}</span>
+            <div class="adm__page-controls">
+              <button class="adm__page-btn" [disabled]="docPageIndex() === 0" (click)="prevDocPage()" aria-label="Previous page">
+                <lucide-icon [img]="ChevronLeftIcon" [size]="14" />
+              </button>
+              <span class="adm__page-info">{{ docPageIndex() + 1 }} / {{ docTotalPages() }}</span>
+              <button class="adm__page-btn" [disabled]="docPageIndex() === docTotalPages() - 1" (click)="nextDocPage()" aria-label="Next page">
+                <lucide-icon [img]="ChevronRightIcon" [size]="14" />
+              </button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    } <!-- end @if documents tab -->
+
+  </main>
+
+  <!-- ── Create / Edit Modal ───────────────────────────────────────────────── -->
+  @if (modalOpen()) {
+    <div class="adm__overlay" (click)="closeModal()">
+      <div class="adm__modal" (click)="$event.stopPropagation()">
+
+        <div class="adm__modal-header">
+          <div class="adm__modal-title-row">
+            <div class="adm__modal-icon">
+              <lucide-icon [img]="modalMode() === 'create' ? UserPlusIcon : PencilIcon" [size]="16" />
+            </div>
+            <h2 class="adm__modal-title">
+              {{ modalMode() === 'create' ? 'Create user' : 'Edit user' }}
+            </h2>
+          </div>
+          <button class="adm__modal-close" (click)="closeModal()" aria-label="Close">
+            <lucide-icon [img]="XIcon" [size]="16" />
+          </button>
+        </div>
+
+        @if (modalError()) {
+          <div class="adm__banner adm__banner--error adm__banner--sm">{{ modalError() }}</div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="onSave()" class="adm__modal-form" novalidate>
+
+          <div class="adm__field">
+            <label class="adm__label" for="adm-fullName">Full name</label>
+            <input id="adm-fullName" type="text" class="adm__input" formControlName="fullName" placeholder="Jane Smith"
+              [class.adm__input--error]="form.controls.fullName.invalid && form.controls.fullName.touched" />
+            @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+              <span class="adm__field-error">Full name is required.</span>
+            }
+          </div>
+
+          <div class="adm__field">
+            <label class="adm__label" for="adm-email">Email address</label>
+            <input id="adm-email" type="email" class="adm__input" formControlName="email" placeholder="jane@ncompasstv.com"
+              [class.adm__input--error]="form.controls.email.invalid && form.controls.email.touched" />
+            @if (form.controls.email.touched) {
+              @if (form.controls.email.hasError('required')) {
+                <span class="adm__field-error">Email address is required.</span>
+              } @else if (form.controls.email.hasError('email')) {
+                <span class="adm__field-error">Enter a valid email address.</span>
+              }
+            }
+          </div>
+
+          <div class="adm__field">
+            <label class="adm__label" for="adm-password">
+              Password
+              @if (modalMode() === 'edit') {
+                <span class="adm__label-hint">(leave blank to keep current)</span>
+              }
+            </label>
+            <input id="adm-password" type="password" class="adm__input" formControlName="password" placeholder="Min. 8 characters"
+              [class.adm__input--error]="form.controls.password.invalid && form.controls.password.touched" />
+            @if (form.controls.password.touched) {
+              @if (form.controls.password.hasError('required')) {
+                <span class="adm__field-error">Password is required.</span>
+              } @else if (form.controls.password.hasError('minlength')) {
+                <span class="adm__field-error">Password must be at least 8 characters.</span>
+              }
+            }
+          </div>
+
+          <!-- Role picker -->
+          <div class="adm__field">
+            <label class="adm__label">Role</label>
+            <div class="adm__role-picker">
+
+              <label class="adm__role-opt" [class.adm__role-opt--active]="form.controls.role.value === 'member'">
+                <input class="adm__role-opt-radio" type="radio" formControlName="role" value="member" />
+                <div class="adm__role-opt-icon adm__role-opt-icon--member">
+                  <lucide-icon [img]="UserIcon" [size]="15" />
+                </div>
+                <div class="adm__role-opt-body">
+                  <span class="adm__role-opt-name">Member</span>
+                  <span class="adm__role-opt-desc">Read-only access</span>
+                </div>
+                @if (form.controls.role.value === 'member') {
+                  <div class="adm__role-opt-check">
+                    <lucide-icon [img]="CheckIcon" [size]="11" />
+                  </div>
+                }
+              </label>
+
+              <label class="adm__role-opt adm__role-opt--admin-variant" [class.adm__role-opt--active]="form.controls.role.value === 'admin'">
+                <input class="adm__role-opt-radio" type="radio" formControlName="role" value="admin" />
+                <div class="adm__role-opt-icon adm__role-opt-icon--admin">
+                  <lucide-icon [img]="ShieldIcon" [size]="15" />
+                </div>
+                <div class="adm__role-opt-body">
+                  <span class="adm__role-opt-name">Admin</span>
+                  <span class="adm__role-opt-desc">Full access</span>
+                </div>
+                @if (form.controls.role.value === 'admin') {
+                  <div class="adm__role-opt-check adm__role-opt-check--admin">
+                    <lucide-icon [img]="CheckIcon" [size]="11" />
+                  </div>
+                }
+              </label>
+
+            </div>
+          </div>
+
+          <div class="adm__modal-footer">
+            <button type="button" class="adm__btn adm__btn--ghost" (click)="closeModal()">Cancel</button>
+            <button type="submit" class="adm__btn adm__btn--primary" [disabled]="isSaving()">
+              @if (isSaving()) {
+                <span class="adm__spinner adm__spinner--sm"></span> Saving…
+              } @else {
+                {{ modalMode() === 'create' ? 'Create user' : 'Save changes' }}
+              }
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- ── Document Create / Edit Modal ────────────────────────────────────── -->
+  @if (docModalOpen()) {
+    <div class="adm__overlay" (click)="closeDocModal()">
+      <div class="adm__modal" (click)="$event.stopPropagation()">
+
+        <div class="adm__modal-header">
+          <div class="adm__modal-title-row">
+            <div class="adm__modal-icon">
+              <lucide-icon [img]="FileTextIcon" [size]="16" />
+            </div>
+            <h2 class="adm__modal-title">
+              {{ docModalMode() === 'create' ? 'Add document' : 'Edit document' }}
+            </h2>
+          </div>
+          <button class="adm__modal-close" (click)="closeDocModal()" aria-label="Close">
+            <lucide-icon [img]="XIcon" [size]="16" />
+          </button>
+        </div>
+
+        @if (docModalError()) {
+          <div class="adm__banner adm__banner--error adm__banner--sm">{{ docModalError() }}</div>
+        }
+
+        <form [formGroup]="docForm" (ngSubmit)="onDocSave()" class="adm__modal-form" novalidate>
+
+          <!-- Title -->
+          <div class="adm__field">
+            <label class="adm__label" for="doc-title">Title</label>
+            <input id="doc-title" type="text" class="adm__input" formControlName="title"
+              placeholder="e.g. Q1 2025 Research Report"
+              [class.adm__input--error]="docForm.controls.title.invalid && docForm.controls.title.touched" />
+            @if (docForm.controls.title.invalid && docForm.controls.title.touched) {
+              <span class="adm__field-error">Title is required.</span>
+            }
+          </div>
+
+          <!-- Section -->
+          <div class="adm__field">
+            <label class="adm__label">Section <span class="adm__label-required">*</span></label>
+            <div class="adm__dd adm__dd--modal" [class.adm__dd--open]="docSectionModalDropdownOpen()"
+                 [class.adm__dd--error]="docSectionTouched() && !docSectionSelect()">
+              <button type="button" class="adm__dd-trigger" (click)="toggleDocSectionModal()">
+                <span class="adm__dd-label" [class.adm__dd-label--placeholder]="!docSectionSelect()">
+                  {{ docSectionSelect() || '— Select a section —' }}
+                </span>
+                <lucide-icon [img]="ChevronDownIcon" [size]="13" class="adm__dd-chevron" />
+              </button>
+              @if (docSectionModalDropdownOpen()) {
+                <div class="adm__dd-menu">
+                  @for (s of availableSections(); track s) {
+                    <button type="button" class="adm__dd-opt" [class.adm__dd-opt--active]="docSectionSelect() === s"
+                            (click)="pickDocSectionModal(s)">
+                      <span class="adm__dd-opt-label">{{ s }}</span>
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+            @if (docSectionTouched() && !docSectionSelect()) {
+              <span class="adm__field-error">Section is required.</span>
+            }
+          </div>
+
+          <!-- Link type toggle -->
+          <div class="adm__field">
+            <label class="adm__label">Source</label>
+            <div class="adm__doc-type-picker">
+              <button type="button" class="adm__doc-type-opt"
+                [class.adm__doc-type-opt--active]="docLinkType() === 'url'"
+                (click)="docLinkType.set('url')">
+                <lucide-icon [img]="LinkIcon" [size]="14" />
+                External URL
+              </button>
+              <button type="button" class="adm__doc-type-opt"
+                [class.adm__doc-type-opt--active]="docLinkType() === 'upload'"
+                (click)="docLinkType.set('upload')">
+                <lucide-icon [img]="UploadIcon" [size]="14" />
+                Upload File
+              </button>
+            </div>
+          </div>
+
+          <!-- URL input -->
+          @if (docLinkType() === 'url') {
+            <div class="adm__field">
+              <label class="adm__label" for="doc-url">URL</label>
+              <input id="doc-url" type="url" class="adm__input" formControlName="externalUrl"
+                placeholder="https://example.com/document.pdf" />
+            </div>
+          }
+
+          <!-- File upload -->
+          @if (docLinkType() === 'upload') {
+            <div class="adm__field">
+              <label class="adm__label">File</label>
+              <label class="adm__file-drop" [class.adm__file-drop--has-file]="!!stagedFileName()">
+                <input type="file" class="adm__file-input" (change)="onFileChange($event)" />
+                @if (stagedFileName()) {
+                  <lucide-icon [img]="FileTextIcon" [size]="18" class="adm__file-icon" />
+                  <span class="adm__file-name">{{ stagedFileName() }}</span>
+                  <span class="adm__file-hint">Click to replace</span>
+                } @else {
+                  <lucide-icon [img]="UploadIcon" [size]="18" class="adm__file-icon" />
+                  <span class="adm__file-name">Click to choose a file</span>
+                  @if (docModalMode() === 'edit') {
+                    <span class="adm__file-hint">Leave empty to keep the current file</span>
+                  }
+                }
+              </label>
+            </div>
+          }
+
+          <div class="adm__modal-footer">
+            <button type="button" class="adm__btn adm__btn--ghost" (click)="closeDocModal()">Cancel</button>
+            <button type="submit" class="adm__btn adm__btn--primary" [disabled]="docSaving()">
+              @if (docSaving()) {
+                <span class="adm__spinner adm__spinner--sm"></span> Saving…
+              } @else {
+                {{ docModalMode() === 'create' ? 'Add document' : 'Save changes' }}
+              }
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- ── Section Management Modal ────────────────────────────────────────── -->
+  @if (secMgmtOpen()) {
+    <div class="adm__overlay" (click)="closeSecMgmt()">
+      <div class="adm__modal adm__modal--sec" (click)="$event.stopPropagation()">
+
+        <!-- Sticky top: header + add row -->
+        <div class="adm__sec-modal-top">
+          <div class="adm__modal-header">
+            <div class="adm__modal-title-row">
+              <div class="adm__modal-icon">
+                <lucide-icon [img]="FolderPlusIcon" [size]="16" />
+              </div>
+              <div>
+                <h2 class="adm__modal-title">Manage Sections</h2>
+                @if (!sectionsLoading()) {
+                  <p class="adm__sec-modal-meta">
+                    {{ sections().length }} section{{ sections().length !== 1 ? 's' : '' }}&nbsp;·&nbsp;{{ documents().length }} document{{ documents().length !== 1 ? 's' : '' }}
+                  </p>
+                }
+              </div>
+            </div>
+            <button class="adm__modal-close" (click)="closeSecMgmt()" aria-label="Close">
+              <lucide-icon [img]="XIcon" [size]="16" />
+            </button>
+          </div>
+
+          @if (secMgmtError()) {
+            <div class="adm__banner adm__banner--error adm__banner--sm">{{ secMgmtError() }}</div>
+          }
+
+          <div class="adm__sec-add">
+            <input
+              class="adm__sec-add-input"
+              type="text"
+              placeholder="New section name…"
+              [value]="newSectionInput()"
+              (input)="newSectionInput.set($any($event.target).value)"
+              (keydown.enter)="createSection()"
+            />
+            <button
+              class="adm__btn adm__btn--primary adm__btn--sm"
+              (click)="createSection()"
+              [disabled]="!newSectionInput().trim() || secMgmtSaving()"
+            >
+              <lucide-icon [img]="PlusIcon" [size]="13" />
+              Add Section
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable sections list -->
+        <div class="adm__sec-list">
+          @if (sectionsLoading()) {
+            <div class="adm__sec-empty">
+              <span class="adm__spinner adm__spinner--sm"></span> Loading…
+            </div>
+          } @else if (sections().length === 0) {
+            <div class="adm__sec-empty">No sections yet. Add one above.</div>
+          } @else {
+            @for (sec of sections(); track sec.id) {
+              <div class="adm__sec-item"
+                   [class.adm__sec-item--dragging]="dragSectionId() === sec.id"
+                   [class.adm__sec-item--drag-over]="dragOverSecId() === sec.id"
+                   [class.adm__sec-item--expanded]="expandedSecId() === sec.id"
+                   (dragover)="onSecDragOver($event, sec.id)"
+                   (dragleave)="onSecDragLeave($event, sec.id)"
+                   (drop)="onSecDrop($event, sec.id)"
+                   (dragend)="onSecDragEnd()">
+                @if (editingSecId() === sec.id) {
+                  <!-- Inline rename row -->
+                  <div class="adm__sec-item-row adm__sec-item-row--editing">
+                    <input
+                      class="adm__sec-rename-input"
+                      type="text"
+                      [value]="editingSecInput()"
+                      (input)="editingSecInput.set($any($event.target).value)"
+                      (keydown.enter)="commitRenameSection()"
+                      (keydown.escape)="cancelRenameSection()"
+                      autofocus
+                    />
+                    <div class="adm__sec-actions">
+                      <button class="adm__sec-move-btn adm__sec-move-btn--confirm" (click)="commitRenameSection()" [disabled]="!editingSecInput().trim() || secMgmtSaving()" title="Save">
+                        <lucide-icon [img]="CheckIcon" [size]="13" />
+                      </button>
+                      <button class="adm__sec-move-btn" (click)="cancelRenameSection()" title="Cancel">
+                        <lucide-icon [img]="XIcon" [size]="13" />
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <!-- Normal row -->
+                  <div class="adm__sec-item-row" (dragover)="onSecDragOver($event, sec.id)">
+                    <span class="adm__sec-drag-handle"
+                          title="Drag to reorder"
+                          draggable="true"
+                          (dragstart)="onSecDragStart($event, sec.id)"
+                          (dragend)="onSecDragEnd()">
+                      <lucide-icon [img]="GripVerticalIcon" [size]="14" />
+                    </span>
+                    <button class="adm__sec-expand-btn"
+                            (click)="toggleSecExpand(sec.id)"
+                            [class.adm__sec-expand-btn--open]="expandedSecId() === sec.id"
+                            title="Show documents">
+                      <lucide-icon [img]="ChevronDownIcon" [size]="13" />
+                    </button>
+                    <lucide-icon [img]="FolderIcon" [size]="14" class="adm__sec-folder-icon" />
+                    <span class="adm__sec-name">{{ sec.name }}</span>
+                    <span class="adm__sec-doc-count" [class.adm__sec-doc-count--empty]="(docsBySection().get(sec.name)?.length ?? 0) === 0">
+                      {{ docsBySection().get(sec.name)?.length ?? 0 }}
+                    </span>
+                    <div class="adm__sec-actions">
+                      <button class="adm__sec-move-btn" (click)="startRenameSection(sec.id, sec.name)" [disabled]="secMgmtSaving()" title="Rename">
+                        <lucide-icon [img]="PencilIcon" [size]="13" />
+                      </button>
+                      <button class="adm__sec-delete-btn" (click)="deleteSection(sec.id, sec.name)" [disabled]="secMgmtSaving()" title="Delete">
+                        <lucide-icon [img]="Trash2Icon" [size]="13" />
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Expanded documents list -->
+                  @if (expandedSecId() === sec.id) {
+                    <div class="adm__sec-docs-list">
+                      @if ((docsBySection().get(sec.name)?.length ?? 0) === 0) {
+                        <div class="adm__sec-docs-empty">No documents in this section. Drag one here.</div>
+                      } @else {
+                        @for (doc of docsBySection().get(sec.name) ?? []; track doc.id) {
+                          <div class="adm__sec-doc-item"
+                               [class.adm__sec-doc-item--dragging]="dragDocId() === doc.id"
+                               [class.adm__sec-doc-item--drag-over]="dragDocOverId() === doc.id"
+                               draggable="true"
+                               (dragstart)="onDocDragStart($event, doc.id)"
+                               (dragover)="onDocDragOver($event, doc.id)"
+                               (dragleave)="onDocDragLeave(doc.id)"
+                               (drop)="onDocDrop($event, sec.id, doc.id)"
+                               (dragend)="onDocDragEnd()">
+                            <span class="adm__sec-doc-grip">
+                              <lucide-icon [img]="GripVerticalIcon" [size]="12" />
+                            </span>
+                            <span class="adm__sec-doc-icon">
+                              <lucide-icon [img]="FileTextIcon" [size]="12" />
+                            </span>
+                            <span class="adm__sec-doc-title">{{ doc.title }}</span>
+                          </div>
+                        }
+                      }
+                    </div>
+                  }
+                }
+              </div>
+            }
+          }
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- ── Document Delete Confirmation ─────────────────────────────────────── -->
+  @if (deleteDocTarget()) {
+    <div class="adm__overlay" (click)="cancelDeleteDoc()">
+      <div class="adm__modal adm__modal--sm" (click)="$event.stopPropagation()">
+        <div class="adm__modal-header">
+          <div class="adm__modal-title-row">
+            <div class="adm__modal-icon adm__modal-icon--danger">
+              <lucide-icon [img]="Trash2Icon" [size]="16" />
+            </div>
+            <h2 class="adm__modal-title">Delete document?</h2>
+          </div>
+          <button class="adm__modal-close" (click)="cancelDeleteDoc()" aria-label="Close">
+            <lucide-icon [img]="XIcon" [size]="16" />
+          </button>
+        </div>
+
+        @if (deleteDocError()) {
+          <div class="adm__banner adm__banner--error adm__banner--sm">{{ deleteDocError() }}</div>
+        }
+
+        <p class="adm__modal-body">
+          <strong>{{ deleteDocTarget()!.title }}</strong> will be removed from the R&amp;D page.
+          @if (deleteDocTarget()!.file_path) {
+            The uploaded file will also be deleted from storage.
+          }
+          This cannot be undone.
+        </p>
+        <div class="adm__modal-footer">
+          <button class="adm__btn adm__btn--ghost" (click)="cancelDeleteDoc()">Cancel</button>
+          <button class="adm__btn adm__btn--danger" (click)="executeDeleteDoc()" [disabled]="docDeleting()">
+            @if (docDeleting()) {
+              <span class="adm__spinner adm__spinner--sm"></span> Deleting…
+            } @else {
+              Delete document
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ── User Delete Confirmation ─────────────────────────────────────────── -->
+  @if (deleteTarget()) {
+    <div class="adm__overlay" (click)="cancelDelete()">
+      <div class="adm__modal adm__modal--sm" (click)="$event.stopPropagation()">
+        <div class="adm__modal-header">
+          <div class="adm__modal-title-row">
+            <div class="adm__modal-icon adm__modal-icon--danger">
+              <lucide-icon [img]="Trash2Icon" [size]="16" />
+            </div>
+            <h2 class="adm__modal-title">Delete user?</h2>
+          </div>
+          <button class="adm__modal-close" (click)="cancelDelete()" aria-label="Close">
+            <lucide-icon [img]="XIcon" [size]="16" />
+          </button>
+        </div>
+
+        <!-- Last-admin block error -->
+        @if (deleteError()) {
+          <div class="adm__banner adm__banner--error adm__banner--sm">{{ deleteError() }}</div>
+        }
+
+        <!-- Admin demotion warning -->
+        @if (deleteTargetIsAdmin() && !isLastAdmin()) {
+          <div class="adm__banner adm__banner--warn adm__banner--sm">
+            <lucide-icon [img]="ShieldIcon" [size]="13" />
+            This user is an admin. Deleting them will remove their admin access permanently.
+          </div>
+        }
+
+        <p class="adm__modal-body">
+          <strong>{{ deleteTarget()!.full_name || deleteTarget()!.email }}</strong> will lose
+          all portal access immediately. This cannot be undone.
+        </p>
+        <div class="adm__modal-footer">
+          <button class="adm__btn adm__btn--ghost" (click)="cancelDelete()">Cancel</button>
+          <button
+            class="adm__btn adm__btn--danger"
+            (click)="executeDelete()"
+            [disabled]="isDeleting() || (deleteTargetIsAdmin() && isLastAdmin())"
+          >
+            @if (isDeleting()) {
+              <span class="adm__spinner adm__spinner--sm"></span> Deleting…
+            } @else {
+              Delete user
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

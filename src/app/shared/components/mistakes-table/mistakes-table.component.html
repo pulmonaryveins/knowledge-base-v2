@@ -1,0 +1,35 @@
+<!-- FILE: src/app/shared/components/mistakes-table/mistakes-table.component.html -->
+<div class="mk">
+
+  <!-- Column header labels -->
+  <div class="mk__header">
+    <div class="mk__header-cell mk__header-cell--wrong">
+      <span class="mk__header-icon">✕</span>
+      <span>Don't</span>
+    </div>
+    <div class="mk__header-cell mk__header-cell--right">
+      <span class="mk__header-icon">✓</span>
+      <span>Do This Instead</span>
+    </div>
+  </div>
+
+  <!-- Comparison rows -->
+  @for (row of table().rows; track $index) {
+    <div class="mk__row">
+      <span class="mk__num">{{ ($index + 1).toString().padStart(2, '0') }}</span>
+
+      <div class="mk__wrong">
+        <span class="mk__icon mk__icon--wrong">✕</span>
+        <p class="mk__text">{{ row.cells[0] }}</p>
+      </div>
+
+      <div class="mk__arrow">→</div>
+
+      <div class="mk__right">
+        <span class="mk__icon mk__icon--right">✓</span>
+        <p class="mk__text">{{ row.cells[1] }}</p>
+      </div>
+    </div>
+  }
+
+</div>

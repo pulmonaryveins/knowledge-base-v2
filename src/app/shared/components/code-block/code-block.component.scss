@@ -2,34 +2,138 @@
 
 // ── FILE: src/app/shared/components/code-block/code-block.component.scss ──
 
-.code-block {
-  @apply rounded-xl overflow-hidden bg-[#0f1c38] shadow-[0_4px_24px_rgba(9,22,53,0.28)];
+// Token colour palette — tuned for the #0f1c38 (deep navy) background
+// Uses Material Ocean / Night Owl palette tones
+$tok-keyword:   #82aaff;   // blue  — const, import, class, etc.
+$tok-type:      #c3e88d;   // green — string, boolean, Array, etc.
+$tok-string:    #f0b87a;   // amber — "string literals"
+$tok-comment:   #4d6080;   // dim blue-grey — // comments
+$tok-number:    #f78c6c;   // coral — 42, 0xff
+$tok-decorator: #ffcb6b;   // gold  — @Component
+$tok-punct:     #89ddff;   // cyan  — => {} () : ,
 
-  &__header {
-    @apply flex items-center justify-between px-4 py-3 bg-[rgba(255,255,255,0.05)] border-b border-[rgba(255,255,255,0.07)];
+.code-block {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f1c38;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 4px 24px rgba(9, 22, 53, 0.35),
+    0 1px 4px  rgba(0, 0, 0, 0.3);
+
+  // ── Title bar ────────────────────────────────────────────────────────────
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   &__dots {
-    @apply flex items-center gap-2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
   }
 
   &__dot {
-    @apply inline-block rounded-full w-[10px] h-[10px];
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
 
-    &--red { @apply bg-[#ff5f57]; }
-    &--yellow { @apply bg-[#febc2e]; }
-    &--green { @apply bg-[#28c840]; }
+    &--red    { background: #ff5f57; }
+    &--yellow { background: #febc2e; }
+    &--green  { background: #28c840; }
   }
 
   &__lang {
-    @apply font-['DM_Mono',_monospace] text-[10px] text-[rgba(255,255,255,0.3)] lowercase;
+    flex: 1;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.22);
+    letter-spacing: 0.1em;
+    text-transform: lowercase;
   }
 
+  // ── Copy button ──────────────────────────────────────────────────────────
+
+  &__copy {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    &--done {
+      background: rgba(141, 203, 44, 0.1);
+      border-color: rgba(141, 203, 44, 0.28);
+      color: #8DCB2C;
+      pointer-events: none;
+    }
+  }
+
+  // ── Code body ────────────────────────────────────────────────────────────
+
+  &__body {
+    display: flex;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar { height: 4px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+  }
+
+  // ── Pre / code ───────────────────────────────────────────────────────────
+
   &__pre {
-    @apply m-0 overflow-x-auto py-[16px] px-[20px];
+    margin: 0;
+    padding: 16px 20px;
+    flex: 1;
+    overflow: visible;
   }
 
   &__code {
-    @apply font-['DM_Mono',_monospace] text-[12.5px] text-[#e2e8f0] leading-[1.7] whitespace-pre;
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    line-height: 21.875px;
+    white-space: pre;
+    display: block;
   }
+
+  &__line {
+    display: block;
+    min-height: 21.875px;
+  }
+
+  // ── Token colours ─────────────────────────────────────────────────────────
+
+  .tok-plain     { color: #cdd9e5; }
+  .tok-keyword   { color: $tok-keyword; font-weight: 500; }
+  .tok-type      { color: $tok-type; }
+  .tok-string    { color: $tok-string; }
+  .tok-comment   { color: $tok-comment; font-style: italic; }
+  .tok-number    { color: $tok-number; }
+  .tok-decorator { color: $tok-decorator; }
+  .tok-punct     { color: $tok-punct; }
+  .tok-ident     { color: #cdd9e5; }
 }

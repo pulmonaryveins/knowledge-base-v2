@@ -3,7 +3,7 @@
 // ── FILE: src/app/shared/components/section-header/section-header.component.scss ──
 
 .sec-header {
-  @apply flex items-center gap-3 mb-5;
+  @apply flex items-center gap-3 mb-2;
 
   &__num {
     @apply inline-flex items-center justify-center font-bold font-['DM_Mono',_monospace] text-[12px] text-[var(--green)] bg-[var(--green-bg)] border-[1.5px] border-[var(--green-dim)] rounded-[8px] min-w-[36px] h-[28px] px-[8px];
@@ -12,4 +12,8 @@
   &__title {
     @apply font-bold m-0 font-['Syne',_sans-serif] text-[20px] text-[var(--navy)];
   }
+}
+
+.sec-header__sub {
+  @apply m-0 mb-6 font-['DM_Sans',_sans-serif] text-[13px] text-[var(--muted)] leading-[1.6];
 }

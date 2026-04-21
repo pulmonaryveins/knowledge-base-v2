@@ -1,0 +1,59 @@
+$navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc;
+
+.brand-showcase { display: flex; flex-direction: column; gap: 40px; }
+.brand-section {
+  display: flex; flex-direction: column; gap: 14px;
+  &__label { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: $muted; margin: 0; }
+  &__desc  { font-family: 'Inter', sans-serif; font-size: 14px; color: $muted; margin: 0; line-height: 1.6; }
+}
+
+// Brand Identity
+.brand-identity { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+.brand-identity__logo-wrap {
+  background: $navy; border-radius: 12px; padding: 20px 28px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.brand-identity__logo { height: 56px; width: auto; object-fit: contain; }
+.brand-identity__swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+.brand-identity__swatch {
+  width: 76px; height: 76px; border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  padding-bottom: 8px; gap: 2px;
+  &--navy  { background: $navy; } &--green { background: $green; }
+  &--white { background: white; border: 1.5px solid $border; }
+  &--muted { background: $muted; }
+}
+.brand-identity__hex  { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700; color: white; letter-spacing: .03em; }
+.brand-identity__name { font-family: 'Inter', sans-serif; font-size: 9px; color: rgba(white, .75); }
+.brand-identity__swatch--white .brand-identity__hex,
+.brand-identity__swatch--white .brand-identity__name { color: $muted; }
+
+// Logo Types
+.brand-logo-types { display: flex; gap: 14px; flex-wrap: wrap; }
+.brand-logo-type {
+  flex: 1; min-width: 130px; display: flex; flex-direction: column; gap: 9px;
+  background: $bg; border: 1px solid $border; border-radius: 10px; padding: 16px;
+  &__preview {
+    height: 56px; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 7px;
+    &--wordmark    { background: $navy; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 800; color: white; letter-spacing: .04em; }
+    &--lettermark  { background: $green; font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 900; color: $navy; }
+    &--pictorial   { background: $bg; border: 1.5px solid $border; }
+    &--combination { background: $navy; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; color: white; }
+  }
+  &__name { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; color: $navy; }
+  &__desc { font-family: 'Inter', sans-serif; font-size: 11px; color: $muted; line-height: 1.5; }
+}
+
+// Storytelling Arc
+.brand-story {
+  display: flex; align-items: center; flex-wrap: wrap;
+  background: $bg; border: 1px solid $border; border-radius: 12px; padding: 20px 24px;
+  max-width: 640px; gap: 0;
+  &__step { display: flex; flex-direction: column; align-items: center; gap: 7px; flex: 1; min-width: 64px;
+    span { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: $navy; text-align: center; } }
+  &__icon {
+    width: 38px; height: 38px; border-radius: 50%; background: $navy; color: $green;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  &__line { flex: 1; height: 2px; background: $border; min-width: 14px; margin-top: -19px; }
+}

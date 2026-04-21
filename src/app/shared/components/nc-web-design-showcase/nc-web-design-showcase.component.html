@@ -1,0 +1,102 @@
+<div class="wd-showcase">
+
+  <!-- Device Frames -->
+  <div class="wd-section">
+    <h4 class="wd-section__label">Responsive Design — Device Targets</h4>
+    <p class="wd-section__desc">Design mobile first, then scale up. Constraints on small screens force clarity.</p>
+    <div class="wd-devices">
+      <div class="wd-device-wrap">
+        <div class="wd-device wd-device--mobile">
+          <div class="wd-device__notch"></div>
+          <div class="wd-device__screen">
+            <div class="wd-mock__bar"></div>
+            <div class="wd-mock__hero wd-mock__hero--sm"></div>
+            <div class="wd-mock__line"></div>
+            <div class="wd-mock__line wd-mock__line--short"></div>
+            <div class="wd-mock__cta"></div>
+          </div>
+          <div class="wd-device__home"></div>
+        </div>
+        <span class="wd-device__label">Mobile · 360px</span>
+      </div>
+      <div class="wd-device-wrap">
+        <div class="wd-device wd-device--tablet">
+          <div class="wd-device__screen">
+            <div class="wd-mock__bar"></div>
+            <div class="wd-mock__hero wd-mock__hero--md"></div>
+            <div class="wd-mock__grid-2">
+              <div class="wd-mock__col"></div>
+              <div class="wd-mock__col"></div>
+            </div>
+          </div>
+        </div>
+        <span class="wd-device__label">Tablet · 768px</span>
+      </div>
+      <div class="wd-device-wrap">
+        <div class="wd-device wd-device--desktop">
+          <div class="wd-device__screen">
+            <div class="wd-mock__bar"></div>
+            <div class="wd-mock__hero wd-mock__hero--lg"></div>
+            <div class="wd-mock__grid-3">
+              <div class="wd-mock__col"></div>
+              <div class="wd-mock__col"></div>
+              <div class="wd-mock__col"></div>
+            </div>
+          </div>
+          <div class="wd-device__stand"></div>
+        </div>
+        <span class="wd-device__label">Desktop · 1200px+</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12-Column Grid -->
+  <div class="wd-section">
+    <h4 class="wd-section__label">12-Column Grid System</h4>
+    <p class="wd-section__desc">Columns with consistent gutters create visual rhythm. Content spans multiples of columns.</p>
+    <div class="wd-grid-showcase">
+      <div class="wd-grid">
+        @for (c of [1,2,3,4,5,6,7,8,9,10,11,12]; track c) {
+          <div class="wd-grid__col"><span>{{ c }}</span></div>
+        }
+      </div>
+      <div class="wd-grid-spans">
+        <div class="wd-span wd-span--12">12 col — full width</div>
+        <div class="wd-span wd-span--6">6 col</div>
+        <div class="wd-span wd-span--6">6 col</div>
+        <div class="wd-span wd-span--4">4 col</div>
+        <div class="wd-span wd-span--4">4 col</div>
+        <div class="wd-span wd-span--4">4 col</div>
+        <div class="wd-span wd-span--3">3</div>
+        <div class="wd-span wd-span--3">3</div>
+        <div class="wd-span wd-span--3">3</div>
+        <div class="wd-span wd-span--3">3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Metrics -->
+  <div class="wd-section">
+    <h4 class="wd-section__label">Performance & Accessibility Targets</h4>
+    <p class="wd-section__desc">Performance is design — a slow page is a broken experience regardless of how it looks.</p>
+    <div class="wd-metrics">
+      <div class="wd-metric">
+        <div class="wd-metric__ring wd-metric__ring--green"><span class="wd-metric__val">95+</span></div>
+        <span class="wd-metric__label">Lighthouse Score</span>
+      </div>
+      <div class="wd-metric">
+        <div class="wd-metric__ring wd-metric__ring--blue"><span class="wd-metric__val">&lt;3s</span></div>
+        <span class="wd-metric__label">Page Load</span>
+      </div>
+      <div class="wd-metric">
+        <div class="wd-metric__ring wd-metric__ring--purple"><span class="wd-metric__val">AA</span></div>
+        <span class="wd-metric__label">WCAG Level</span>
+      </div>
+      <div class="wd-metric">
+        <div class="wd-metric__ring wd-metric__ring--amber"><span class="wd-metric__val">44px</span></div>
+        <span class="wd-metric__label">Min Touch Target</span>
+      </div>
+    </div>
+  </div>
+
+</div>

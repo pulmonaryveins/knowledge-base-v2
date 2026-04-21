@@ -1,0 +1,53 @@
+<!-- FILE: src/app/shared/components/spacing-guide/spacing-guide.component.html -->
+
+@if (description()) {
+  <p class="sg__desc">{{ description() }}</p>
+}
+
+@for (group of groups(); track group.label) {
+  <div class="sg__group">
+
+    <!-- Group header -->
+    <div class="sg__group-header">
+      <h3 class="sg__group-label">{{ group.label }}</h3>
+      @if (group.description) {
+        <p class="sg__group-desc">{{ group.description }}</p>
+      }
+    </div>
+
+    <!-- Token rows table (scroll wrapper handles overflow on mobile) -->
+    <div class="sg__table-wrap">
+    <div class="sg__table">
+
+      <!-- Column headers -->
+      <div class="sg__table-head">
+        <span class="sg__th">Token</span>
+        <span class="sg__th">px</span>
+        <span class="sg__th">rem</span>
+        <span class="sg__th">Tailwind</span>
+        <span class="sg__th sg__th--preview">Preview</span>
+        <span class="sg__th sg__th--usage">Usage</span>
+      </div>
+
+      <!-- Token rows -->
+      @for (token of group.tokens; track token.name) {
+        <div class="sg__row">
+          <code class="sg__token-name">{{ token.name }}</code>
+          <span class="sg__px">{{ token.px }}px</span>
+          <span class="sg__rem">{{ token.rem }}</span>
+          <code class="sg__tw">{{ token.tailwind }}</code>
+          <div class="sg__bar-cell">
+            <div class="sg__bar" [style.width.px]="barWidth(token.px)"></div>
+          </div>
+          <span class="sg__usage">{{ token.usage }}</span>
+        </div>
+      }
+
+    </div>
+    </div><!-- /.sg__table-wrap -->
+  </div>
+}
+
+@if (note()) {
+  <p class="sg__note">{{ note() }}</p>
+}

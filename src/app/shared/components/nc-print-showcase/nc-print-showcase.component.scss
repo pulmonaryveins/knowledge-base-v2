@@ -1,0 +1,80 @@
+$navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc;
+
+.print-showcase { display: flex; flex-direction: column; gap: 40px; }
+.print-section {
+  display: flex; flex-direction: column; gap: 14px;
+  &__label { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: $muted; margin: 0; }
+  &__desc  { font-family: 'Inter', sans-serif; font-size: 14px; color: $muted; margin: 0; line-height: 1.6; }
+}
+
+// Bleed/Safe Zone
+.print-zones-wrap { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+.print-zones { position: relative; flex-shrink: 0; }
+.print-zone {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  &__label {
+    position: absolute; top: 4px; right: 4px; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700;
+    padding: 2px 5px; border-radius: 3px;
+  }
+  &__content {
+    background: white; border: 1px solid $border; border-radius: 4px; padding: 10px 16px;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: $navy;
+  }
+  &--bleed { background: rgba(#EF4444, .1); border: 2px dashed #EF4444; border-radius: 4px; width: 220px; height: 180px;
+    .print-zone__label { background: #EF4444; color: white; } }
+  &--trim  { background: rgba(#F59E0B, .1); border: 2px solid #F59E0B; width: 180px; height: 144px;
+    .print-zone__label { background: #F59E0B; color: white; } }
+  &--safe  { background: rgba($green, .1); border: 2px dashed $green; width: 144px; height: 110px;
+    .print-zone__label { background: $green; color: $navy; } }
+}
+.print-zones__legend { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.print-zones__item {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Inter', sans-serif; font-size: 13px; color: $navy;
+}
+.print-zones__dot {
+  width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0;
+  &--red   { background: #EF4444; } &--amber { background: #F59E0B; } &--green { background: $green; }
+}
+
+// CMYK vs RGB
+.print-colormode {
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  background: $bg; border: 1px solid $border; border-radius: 12px; padding: 22px;
+  &__group { display: flex; align-items: center; gap: 18px; flex: 1; min-width: 200px; }
+  &__vs    { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; color: $muted; flex-shrink: 0; }
+  &__info  { display: flex; flex-direction: column; gap: 3px; }
+  &__title { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; color: $navy; }
+  &__sub   { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; color: $muted; text-transform: uppercase; letter-spacing: .06em; }
+  &__rule  { font-family: 'Inter', sans-serif; font-size: 11px; color: $muted; font-style: italic; }
+}
+
+// CMYK circles
+.print-cm {
+  position: relative; width: 68px; height: 68px; flex-shrink: 0;
+  div { position: absolute; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700; color: white; opacity: .85; }
+  &__c { background: #06B6D4; top: 0;  left: 0; }
+  &__m { background: #EC4899; top: 0;  right: 0; }
+  &__y { background: #EAB308; bottom: 0; left: 50%; transform: translateX(-50%); }
+  &__k { background: $navy;   bottom: 2px; right: 0; opacity: .95; }
+}
+
+// RGB circles
+.print-rgb {
+  position: relative; width: 58px; height: 58px; flex-shrink: 0;
+  div { position: absolute; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700; color: white; opacity: .82; }
+  &__r { background: #EF4444; top: 0; left: 50%; transform: translateX(-50%); }
+  &__g { background: $green;   bottom: 0; left: 0; }
+  &__b { background: #3B82F6; bottom: 0; right: 0; }
+}
+
+// Checklist
+.print-checklist {
+  display: flex; flex-direction: column; gap: 8px; max-width: 540px;
+  &__item  { display: flex; align-items: flex-start; gap: 10px; background: $bg; border: 1px solid $border; border-radius: 8px; padding: 10px 14px;
+    font-family: 'Inter', sans-serif; font-size: 13px; color: $navy; line-height: 1.5;
+    strong { font-weight: 700; } }
+  &__check { color: $green; font-weight: 800; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+}

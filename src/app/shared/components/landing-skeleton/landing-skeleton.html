@@ -1,0 +1,115 @@
+<div class="lsk">
+
+  <!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+  <div class="lsk__nav">
+    <div class="lsk__nav-inner">
+      <div class="lsk__bone lsk__bone--logo"></div>
+      <div class="lsk__nav-links">
+        <div class="lsk__bone lsk__bone--nav-link"></div>
+        <div class="lsk__bone lsk__bone--nav-link"></div>
+        <div class="lsk__bone lsk__bone--nav-link"></div>
+      </div>
+      <div class="lsk__bone lsk__bone--cta"></div>
+    </div>
+  </div>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <div class="lsk__hero">
+    <div class="lsk__hero-inner">
+
+      <!-- Left: text content -->
+      <div class="lsk__hero-left">
+        <div class="lsk__bone lsk__bone--badge"></div>
+        <div class="lsk__bone lsk__bone--h1"></div>
+        <div class="lsk__bone lsk__bone--h1 lsk__bone--h1-short"></div>
+        <div class="lsk__bone lsk__bone--sub"></div>
+        <div class="lsk__bone lsk__bone--sub lsk__bone--sub-short"></div>
+        <div class="lsk__hero-actions">
+          <div class="lsk__bone lsk__bone--btn"></div>
+          <div class="lsk__bone lsk__bone--btn-ghost"></div>
+        </div>
+        <div class="lsk__hero-stats">
+          <div class="lsk__bone lsk__bone--stat"></div>
+          <div class="lsk__hero-stat-div"></div>
+          <div class="lsk__bone lsk__bone--stat"></div>
+          <div class="lsk__hero-stat-div"></div>
+          <div class="lsk__bone lsk__bone--stat"></div>
+          <div class="lsk__hero-stat-div"></div>
+          <div class="lsk__bone lsk__bone--stat lsk__bone--stat-wide"></div>
+        </div>
+      </div>
+
+      <!-- Right: terminal mock -->
+      <div class="lsk__hero-right">
+        <div class="lsk__terminal">
+          <div class="lsk__terminal-bar">
+            <span class="lsk__terminal-dot"></span>
+            <span class="lsk__terminal-dot"></span>
+            <span class="lsk__terminal-dot"></span>
+          </div>
+          <div class="lsk__terminal-body">
+            @for (w of termWidths; track $index; let idx = $index) {
+              <div class="lsk__terminal-line" [style.width]="w" [style.animation-delay]="(idx * 0.08) + 's'"></div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Stack strip ───────────────────────────────────────────────────────── -->
+  <div class="lsk__strip">
+    @for (i of stripItems; track i; let idx = $index) {
+      <div class="lsk__strip-item" [style.animation-delay]="(idx * 0.05) + 's'">
+        <div class="lsk__bone lsk__bone--strip-icon"></div>
+        <div class="lsk__bone lsk__bone--strip-label"></div>
+      </div>
+    }
+  </div>
+
+  <!-- ── Teams ─────────────────────────────────────────────────────────────── -->
+  <div class="lsk__section">
+    <div class="lsk__section-header">
+      <div class="lsk__bone lsk__bone--eyebrow"></div>
+      <div class="lsk__bone lsk__bone--title"></div>
+      <div class="lsk__bone lsk__bone--desc"></div>
+    </div>
+    <div class="lsk__teams-grid">
+      @for (i of teamRows; track i; let idx = $index) {
+        <div class="lsk__team-card" [style.animation-delay]="(idx * 0.07) + 's'">
+          <div class="lsk__team-card-top">
+            <div class="lsk__bone lsk__bone--card-icon"></div>
+          </div>
+          <div class="lsk__bone lsk__bone--card-title"></div>
+          <div class="lsk__bone lsk__bone--card-sub"></div>
+          <div class="lsk__team-card-tags">
+            <div class="lsk__bone lsk__bone--chip"></div>
+            <div class="lsk__bone lsk__bone--chip"></div>
+            <div class="lsk__bone lsk__bone--chip"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ── Features ──────────────────────────────────────────────────────────── -->
+  <div class="lsk__section">
+    <div class="lsk__section-header">
+      <div class="lsk__bone lsk__bone--eyebrow"></div>
+      <div class="lsk__bone lsk__bone--title"></div>
+      <div class="lsk__bone lsk__bone--desc"></div>
+    </div>
+    <div class="lsk__feats-grid">
+      @for (i of featRows; track i; let idx = $index) {
+        <div class="lsk__feat-card" [style.animation-delay]="(idx * 0.08) + 's'">
+          <div class="lsk__bone lsk__bone--feat-icon"></div>
+          <div class="lsk__bone lsk__bone--card-title"></div>
+          <div class="lsk__bone lsk__bone--card-sub"></div>
+          <div class="lsk__bone lsk__bone--card-sub lsk__bone--short-60"></div>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>

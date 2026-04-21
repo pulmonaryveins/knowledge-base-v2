@@ -1,0 +1,98 @@
+<div class="proto-showcase">
+
+  <!-- User Flow Diagram -->
+  <div class="proto-section">
+    <h4 class="proto-section__label">User Flow</h4>
+    <p class="proto-section__desc">Every path a user can take — exposing dead ends and missed edge cases before design begins.</p>
+    <div class="proto-flow">
+      <div class="proto-flow__node proto-flow__node--start">Start</div>
+      <div class="proto-flow__arrow">→</div>
+      <div class="proto-flow__node">Login</div>
+      <div class="proto-flow__arrow">→</div>
+      <div class="proto-flow__node proto-flow__node--decision">Auth?</div>
+      <div class="proto-flow__branches">
+        <div class="proto-flow__branch">
+          <span class="proto-flow__branch-label proto-flow__branch-label--yes">Yes ↓</span>
+          <div class="proto-flow__node proto-flow__node--end">Dashboard</div>
+        </div>
+        <div class="proto-flow__branch">
+          <span class="proto-flow__branch-label proto-flow__branch-label--no">No ↓</span>
+          <div class="proto-flow__node proto-flow__node--error">Error</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fidelity Spectrum -->
+  <div class="proto-section">
+    <h4 class="proto-section__label">Prototype Fidelity Spectrum</h4>
+    <p class="proto-section__desc">Fidelity increases as confidence in the solution grows through testing.</p>
+    <div class="proto-fidelity">
+      <div class="proto-fidelity__track">
+        <div class="proto-fidelity__fill"></div>
+      </div>
+      <div class="proto-fidelity__labels">
+        <div class="proto-fidelity__point">
+          <div class="proto-fidelity__marker proto-fidelity__marker--1"></div>
+          <span>Sketch</span>
+        </div>
+        <div class="proto-fidelity__point">
+          <div class="proto-fidelity__marker proto-fidelity__marker--2"></div>
+          <span>Wireframe</span>
+        </div>
+        <div class="proto-fidelity__point">
+          <div class="proto-fidelity__marker proto-fidelity__marker--3"></div>
+          <span>Lo-Fi</span>
+        </div>
+        <div class="proto-fidelity__point">
+          <div class="proto-fidelity__marker proto-fidelity__marker--4"></div>
+          <span>Hi-Fi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wireframe vs Hi-Fi -->
+  <div class="proto-section">
+    <h4 class="proto-section__label">Wireframe → High Fidelity</h4>
+    <p class="proto-section__desc">Start with structure and flow, then layer visual design after validation.</p>
+    <div class="proto-compare">
+      <div class="proto-frame">
+        <div class="proto-frame__badge">Lo-Fi Wireframe</div>
+        <div class="proto-frame__screen">
+          <div class="proto-wf__nav"></div>
+          <div class="proto-wf__hero"></div>
+          <div class="proto-wf__row">
+            <div class="proto-wf__block"></div>
+            <div class="proto-wf__block"></div>
+            <div class="proto-wf__block"></div>
+          </div>
+          <div class="proto-wf__line"></div>
+          <div class="proto-wf__line proto-wf__line--short"></div>
+          <div class="proto-wf__btn"></div>
+        </div>
+      </div>
+      <div class="proto-compare__arrow">→</div>
+      <div class="proto-frame proto-frame--hifi">
+        <div class="proto-frame__badge">Hi-Fi Prototype</div>
+        <div class="proto-frame__screen proto-frame__screen--hifi">
+          <div class="proto-hf__nav">
+            <span class="proto-hf__logo"></span>
+            <span class="proto-hf__links"></span>
+          </div>
+          <div class="proto-hf__hero">
+            <div class="proto-hf__hero-h"></div>
+            <div class="proto-hf__hero-p"></div>
+          </div>
+          <div class="proto-hf__cards">
+            <div class="proto-hf__card"></div>
+            <div class="proto-hf__card"></div>
+            <div class="proto-hf__card"></div>
+          </div>
+          <div class="proto-hf__btn">Get Started</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

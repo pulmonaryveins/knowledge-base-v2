@@ -1,0 +1,303 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/color-palette/color-palette.component.scss ──
+
+:host { @apply block; }
+
+// ════════════════════════════════════════════════════════════════════════
+// TAB BAR
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-tabs {
+  @apply flex flex-col gap-0;
+
+  &__bar {
+    @apply flex flex-row border-b border-[var(--border)] mb-8;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__tab {
+    @apply px-5 py-[10px] font-['Syne',_sans-serif] text-[13px] font-semibold
+           text-[var(--muted)] bg-transparent border-b-2 border-transparent
+           cursor-pointer transition-all duration-150 outline-none whitespace-nowrap;
+
+    &--active {
+      @apply text-[var(--navy)] border-[var(--green)];
+    }
+
+    &:hover:not(.cp-tabs__tab--active) {
+      @apply text-[var(--navy)];
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// OVERVIEW TAB
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-overview {
+  @apply flex flex-col gap-8;
+
+  &__row {
+    @apply flex flex-row items-start gap-8 flex-wrap;
+  }
+
+  &__group {
+    @apply flex flex-col gap-3;
+  }
+
+  &__group-label {
+    @apply m-0 font-['Syne',_sans-serif] text-[13px] font-semibold text-[var(--navy)];
+  }
+
+  &__swatches {
+    @apply flex flex-row flex-wrap gap-3;
+  }
+
+  &__swatch {
+    @apply flex flex-col gap-[5px];
+  }
+
+  &__swatch-color {
+    @apply rounded-[10px];
+    width: 88px;
+    height: 56px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+    @media (max-width: 480px) {
+      width: 70px;
+      height: 48px;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    &--bordered {
+      box-shadow: 0 0 0 1px var(--border);
+    }
+  }
+
+  &__swatch-name {
+    @apply m-0 font-['Syne',_sans-serif] text-[11px] font-semibold text-[var(--navy)];
+  }
+
+  &__swatch-hex {
+    @apply m-0 font-['DM_Mono',_monospace] text-[10px] text-[var(--muted)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// SHADES TAB
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-shades {
+  @apply flex flex-col gap-6;
+
+  &__meta {
+    @apply flex flex-col gap-1;
+  }
+
+  &__heading {
+    @apply m-0 font-['Syne',_sans-serif] text-[15px] font-bold uppercase
+           tracking-[0.1em] text-[var(--navy)];
+  }
+
+  &__note {
+    @apply m-0 font-['DM_Sans',_sans-serif] text-[12px] text-[var(--muted)];
+  }
+
+  &__grid {
+    @apply grid gap-6;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    @media (max-width: 900px)  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 640px)  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 400px)  { grid-template-columns: 1fr; }
+  }
+
+  &__col {
+    @apply flex flex-col gap-2;
+  }
+
+  &__col-label {
+    @apply m-0 font-['Syne',_sans-serif] text-[11px] font-bold text-[var(--navy)]
+           border-b border-[var(--border)] pb-2 mb-1 uppercase tracking-[0.06em];
+  }
+
+  &__swatches {
+    @apply flex flex-col gap-[6px];
+  }
+
+  &__shade {
+    @apply flex flex-row items-center gap-[10px];
+  }
+
+  &__shade-color {
+    @apply rounded-[6px] shrink-0;
+    width: 32px;
+    height: 32px;
+  }
+
+  &__shade-info {
+    @apply flex flex-col gap-0 min-w-0;
+  }
+
+  &__shade-name {
+    @apply font-['DM_Sans',_sans-serif] text-[11px] text-[var(--navy)] truncate;
+  }
+
+  &__shade-hex {
+    @apply font-['DM_Mono',_monospace] text-[10px] text-[var(--muted)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// WCAG TAB
+// ════════════════════════════════════════════════════════════════════════
+
+.cp-wcag {
+  @apply flex flex-col gap-6;
+
+  &__heading {
+    @apply m-0 font-['Syne',_sans-serif] text-[18px] font-bold text-[var(--navy)];
+  }
+
+  // Wrap table in a scroll container so it doesn't break narrow viewports
+  &__table {
+    @apply rounded-[12px] border border-[var(--border)];
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__table-head {
+    @apply grid bg-[var(--navy)] px-5 py-3 gap-4;
+    grid-template-columns: minmax(180px, 2fr) 80px 90px 90px 100px 100px;
+    min-width: 760px;
+  }
+
+  &__table-col {
+    @apply font-['Syne',_sans-serif] text-[10px] font-bold uppercase tracking-[0.1em]
+           text-[rgba(255,255,255,0.5)];
+  }
+
+  &__row {
+    @apply grid px-5 py-[14px] gap-4 border-b border-[var(--border)] last:border-b-0
+           items-center;
+    grid-template-columns: minmax(180px, 2fr) 80px 90px 90px 100px 100px;
+    min-width: 760px;
+    transition: background 0.12s ease;
+
+    &:hover { @apply bg-[var(--bg)]; }
+  }
+
+  &__colors {
+    @apply flex flex-row items-center gap-2;
+  }
+
+  &__swatch {
+    @apply rounded-[5px] shrink-0;
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+  }
+
+  &__pair-label {
+    @apply font-['DM_Sans',_sans-serif] text-[12px] text-[var(--navy)] truncate;
+  }
+
+  &__ratio {
+    @apply font-['DM_Mono',_monospace] text-[14px] font-bold text-[var(--navy)];
+  }
+
+  &__pass {
+    @apply font-['DM_Sans',_sans-serif] text-[12px] font-semibold text-[#16a34a];
+  }
+
+  &__fail {
+    @apply font-['DM_Sans',_sans-serif] text-[12px] font-semibold text-[#dc2626];
+  }
+
+  &__note {
+    @apply m-0 font-['DM_Sans',_sans-serif] text-[13px] text-[var(--muted)] leading-[1.7]
+           border border-[var(--border)] rounded-[10px] p-5 bg-[var(--card)];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// LEGACY FLAT LAYOUT (other teams)
+// ════════════════════════════════════════════════════════════════════════
+
+.cp {
+  @apply flex flex-col gap-10;
+
+  &__group {
+    @apply flex flex-col gap-4;
+  }
+
+  &__group-label {
+    @apply m-0 font-['Syne',_sans-serif] text-[13px] font-bold uppercase tracking-[0.1em]
+           text-[var(--muted)] border-b border-[var(--border)] pb-2;
+  }
+
+  &__main-row {
+    @apply flex flex-wrap gap-4;
+  }
+
+  &__main-swatch {
+    @apply relative flex-1 min-w-[100px] max-w-[200px] h-[100px] rounded-[12px]
+           overflow-hidden flex items-end p-3 shadow-sm;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    @media (max-width: 480px) {
+      @apply min-w-[80px] h-[80px];
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__main-meta {
+    @apply flex flex-col gap-0.5 w-full;
+  }
+
+  &__main-name {
+    @apply font-['Syne',_sans-serif] text-[11px] font-bold leading-none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+
+  &__main-hex {
+    @apply font-['DM_Mono',_monospace] text-[10px] opacity-80;
+  }
+
+  &__shades-grid {
+    @apply grid gap-2;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  &__shade {
+    @apply relative h-[64px] rounded-[8px] flex flex-col justify-end p-2 overflow-hidden cursor-default;
+    transition: transform 0.12s ease;
+
+    &:hover { transform: scale(1.04); }
+  }
+
+  &__shade-meta {
+    @apply flex flex-col gap-[1px];
+  }
+
+  &__shade-name {
+    @apply font-['Syne',_sans-serif] text-[9px] font-bold leading-none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  &__shade-hex {
+    @apply font-['DM_Mono',_monospace] text-[8px] opacity-75;
+  }
+}

@@ -1,0 +1,90 @@
+<!-- FILE: src/app/shared/components/typography-scale/typography-scale.component.html -->
+
+<!-- ── Tabbed layout (UI/UX) ─────────────────────────────────────────── -->
+@if (tabs()) {
+  <div class="tscale-tabs">
+
+    <!-- Tab bar -->
+    <div class="tscale-tabs__bar" role="tablist">
+      @for (tab of tabs()!; track tab.label; let i = $index) {
+        <button
+          class="tscale-tabs__tab"
+          [class.tscale-tabs__tab--active]="activeTabIndex() === i"
+          (click)="selectTab(i)"
+          role="tab"
+          [attr.aria-selected]="activeTabIndex() === i"
+        >{{ tab.label }}</button>
+      }
+    </div>
+
+    <!-- Active tab content -->
+    @if (activeTab(); as tab) {
+      <div class="tscale-tabs__panel">
+
+        <!-- Header: font name + Aa badge -->
+        <div class="tscale-tabs__heading-row">
+          <div>
+            <h2 class="tscale-tabs__font-name">{{ tab.fontName }}</h2>
+            <p class="tscale-tabs__preview">{{ tab.preview }}</p>
+          </div>
+          <div class="tscale-tabs__aa-badge">Aa</div>
+        </div>
+
+        <!-- Two-column specimen -->
+        <div class="tscale-tabs__columns">
+          @for (col of tab.columns; track col.label) {
+            <div class="tscale-tabs__column">
+              <h3 class="tscale-tabs__col-heading">{{ col.label }}</h3>
+              <div class="tscale-tabs__rows">
+                @for (row of col.rows; track row.tag) {
+                  <div class="tscale-tabs__row">
+                    <span
+                      class="tscale-tabs__specimen"
+                      [style.font-size]="row.size"
+                      [style.font-weight]="col.weight"
+                      style="font-family: 'Nunito', sans-serif;"
+                    >{{ row.tag }} - {{ col.label }} Nunito - {{ row.size }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+      </div>
+    }
+  </div>
+}
+
+<!-- ── Legacy flat layout (other teams) ──────────────────────────────── -->
+@if (samples()) {
+  <div class="tscale">
+    <div class="tscale__header">
+      <span class="tscale__col tscale__col--tag">Tag</span>
+      <span class="tscale__col tscale__col--preview">Preview &amp; Use-case</span>
+      <span class="tscale__col tscale__col--spec">Size / Weight / Font</span>
+    </div>
+
+    @for (sample of samples()!; track sample.tag) {
+      <div class="tscale__row">
+        <span class="tscale__tag">{{ sample.tag }}</span>
+
+        <div class="tscale__body">
+          <span
+            class="tscale__preview"
+            [style.font-size]="sample.size"
+            [style.font-weight]="sample.weight"
+            [style.font-family]="sample.font === 'Syne' ? '\'Syne\', sans-serif' : '\'DM Sans\', sans-serif'"
+          >{{ sample.label }}</span>
+          <span class="tscale__usecase">{{ sample.useCase }}</span>
+        </div>
+
+        <div class="tscale__spec">
+          <span class="tscale__spec-pill">{{ sample.size }}</span>
+          <span class="tscale__spec-pill">{{ sample.weight }}</span>
+          <span class="tscale__spec-pill tscale__spec-pill--font">{{ sample.font }}</span>
+        </div>
+      </div>
+    }
+  </div>
+}

@@ -1,163 +1,236 @@
 @reference "tailwindcss";
 
-// ── FILE: src/app/features/apps-page/apps-page.component.scss ──
-
 :host { @apply block; }
 
-.apps-page {
+// ── Page layout ────────────────────────────────────────────────────────────────
+
+.rd-page {
   &__content {
-    @apply flex flex-col gap-12 pt-[40px] pr-[240px] pb-[80px] pl-[48px]; // Increased right padding for rail clearance
-  }
+    padding: 48px 52px 80px;
 
-  &__section {
-    @apply flex flex-col gap-6 scroll-mt-[80px];
-  }
-
-  // ── All Apps Grid ──────────────────────────────────────────────────────────
-
-  &__apps-grid {
-    @apply grid gap-4 grid-cols-2;
-  }
-
-  // ── Projects by Team ──────────────────────────────────────────────────────
-
-  &__by-team {
-    @apply flex flex-col gap-6;
-  }
-
-  // ── Ownership Matrix ──────────────────────────────────────────────────────
-
-  &__matrix-wrap {
-    @apply rounded-xl border border-[var(--border)] overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.06)];
-  }
-
-  // ── Shared Infra Grid ─────────────────────────────────────────────────────
-
-  &__infra-grid {
-    @apply grid gap-4 grid-cols-3;
+    @media (max-width: 768px) { padding: 24px 20px 60px; }
   }
 }
 
-// ── App Card ───────────────────────────────────────────────────────────────
+// ── Document groups ────────────────────────────────────────────────────────────
 
-.app-card {
-  @apply flex flex-col gap-2 p-5 rounded-2xl border bg-[var(--card)] border-[var(--border)] transition-shadow duration-[0.15s] hover:shadow-[0_2px_12px_rgba(0,0,0,0.07)];
+.rd-docs {
 
-  &__header {
-    @apply flex items-center justify-between;
-  }
+  &__groups {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 56px 64px;
 
-  &__icon {
-    @apply text-[22px];
-  }
-
-  &__name {
-    @apply font-bold m-0 font-['Syne',_sans-serif] text-[14px] text-[var(--navy)];
-  }
-
-  &__desc {
-    @apply m-0 text-[13px] text-[var(--muted)] leading-[1.5];
-  }
-
-  &__tags {
-    @apply flex flex-wrap gap-1.5;
-  }
-
-  &__tag {
-    @apply font-['DM_Mono',_monospace] text-[10px] py-[2px] px-[7px] rounded-[5px] bg-[var(--bg)] text-[var(--muted)] border border-[var(--border)];
-  }
-
-  &__notes {
-    @apply m-0 text-[11.5px] text-[var(--light)] italic;
-  }
-}
-
-// ── Team Block ──────────────────────────────────────────────────────────────
-
-.team-block {
-  @apply flex flex-col gap-4;
-
-  &__header {
-    @apply flex items-center gap-2;
-  }
-
-  &__dot {
-    @apply rounded-full flex-shrink-0 w-[10px] h-[10px];
-  }
-
-  &__name {
-    @apply font-bold m-0 font-['Syne',_sans-serif] text-[15px] text-[var(--navy)];
-  }
-
-  &__projects {
-    @apply grid gap-3 grid-cols-3;
-  }
-}
-
-// ── Mini Project Card ──────────────────────────────────────────────────────
-
-.mini-project-card {
-  @apply flex items-start gap-3 p-4 rounded-xl border bg-[var(--card)] border-[var(--border)];
-
-  &__icon {
-    @apply text-[18px] shrink-0 mt-[2px];
-  }
-
-  &__info {
-    @apply flex flex-col gap-1 flex-[1_1_0%];
-  }
-
-  &__name {
-    @apply font-['Syne',_sans-serif] text-[13px] font-bold text-[var(--navy)];
-  }
-
-  &__desc {
-    @apply text-[11.5px] text-[var(--muted)] leading-[1.4];
-  }
-}
-
-// ── Ownership Matrix ────────────────────────────────────────────────────────
-
-.matrix {
-  @apply w-full border-collapse;
-
-  &__head {
-    @apply bg-[var(--navy)];
-  }
-
-  &__th {
-    @apply text-left py-[11px] px-[20px] font-['Syne',_sans-serif] text-[10.5px] font-semibold uppercase tracking-[0.05em] text-[rgba(255,255,255,0.7)] whitespace-nowrap;
-
-    &--app {
-      @apply text-[rgba(255,255,255,0.5)];
+    @media (max-width: 960px) {
+      grid-template-columns: 1fr;
+      gap: 56px;
     }
   }
 
-  &__row {
-    @apply border-b border-[var(--border)] transition-colors duration-[0.1s] hover:bg-[#f9fafb] last:border-b-0;
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
-  &__td {
-    @apply py-[11px] px-[20px] text-[13.5px] text-[var(--muted)];
+  // ── Section banner ─────────────────────────────────────────────────────────
 
-    &--app {
-      @apply flex items-center gap-2 font-['DM_Mono',_monospace] text-[12.5px] text-[var(--navy)] font-medium;
+  &__section-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 4px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  &__section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(141, 203, 44, 0.25);
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    margin-top: 4px;
+    user-select: none;
+  }
+
+  &__section-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 4px;
+  }
+
+  &__section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  &__section-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6da81a;
+    background: rgba(141, 203, 44, 0.1);
+    border: 1px solid rgba(141, 203, 44, 0.22);
+    border-radius: 20px;
+    padding: 3px 10px;
+    width: fit-content;
+  }
+
+  // ── Article list ────────────────────────────────────────────────────────────
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__article {
+    border-bottom: 1px solid var(--border);
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__article-link {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 8px 22px 0;
+    text-decoration: none;
+    transition: background 0.15s ease;
+
+    &:hover {
+      .rd-docs__article-num   { color: #8DCB2C; }
+      .rd-docs__article-title { color: #1a3a04; }
+      .rd-docs__article-cta   {
+        opacity: 1;
+        transform: translateX(0);
+        color: #6da81a;
+      }
     }
-
-    &--check {
-      @apply text-center;
-    }
   }
 
-  &__app-icon {
-    @apply text-[14px];
+  &__article-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.18);
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    width: 24px;
+    transition: color 0.2s ease;
+    user-select: none;
   }
 
-  &__check {
-    @apply text-[14px] font-bold;
+  &__article-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
 
-  &__dash {
-    @apply text-[14px] text-[var(--border)];
+  &__article-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.35;
+    transition: color 0.18s ease;
+  }
+
+  &__article-meta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  &__article-cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    background: rgba(141, 203, 44, 0.08);
+    border: 1px solid rgba(141, 203, 44, 0.2);
+    border-radius: 20px;
+    padding: 5px 13px;
+    opacity: 0.4;
+    transform: translateX(-4px);
+    transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+  }
+
+  // ── Empty state ─────────────────────────────────────────────────────────────
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-top: 16px;
+  }
+
+  &__empty-icon {
+    color: var(--border);
+    margin-bottom: 4px;
+  }
+
+  &__empty-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0;
+  }
+
+  &__empty-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  // ── Loading skeleton ─────────────────────────────────────────────────────────
+
+  &__skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__skel-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__skel {
+    border-radius: 4px;
+    background: var(--border);
+    animation: pulse 1.4s ease-in-out infinite;
+
+    &--icon { width: 24px; height: 14px; flex-shrink: 0; }
+    &--text { height: 16px; flex: 1; border-radius: 4px; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
   }
 }

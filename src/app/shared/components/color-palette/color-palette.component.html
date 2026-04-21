@@ -1,0 +1,159 @@
+<!-- FILE: src/app/shared/components/color-palette/color-palette.component.html -->
+
+<!-- ══ TABBED LAYOUT (UI/UX) ════════════════════════════════════════════ -->
+@if (tabs()) {
+  <div class="cp-tabs">
+
+    <!-- Tab bar -->
+    <div class="cp-tabs__bar" role="tablist">
+      @for (tab of tabs()!; track tab.label; let i = $index) {
+        <button
+          class="cp-tabs__tab"
+          [class.cp-tabs__tab--active]="activeTabIndex() === i"
+          (click)="selectTab(i)"
+          role="tab"
+          [attr.aria-selected]="activeTabIndex() === i"
+        >{{ tab.label }}</button>
+      }
+    </div>
+
+    @if (activeTab(); as tab) {
+
+      <!-- ── OVERVIEW TAB ──────────────────────────────────────── -->
+      @if (tab.type === 'overview') {
+        <div class="cp-overview">
+          <div class="cp-overview__row">
+            @for (group of tab.groups!; track group.label) {
+              <div class="cp-overview__group">
+                <p class="cp-overview__group-label">{{ group.label }}</p>
+                <div class="cp-overview__swatches">
+                  @for (swatch of group.main!; track swatch.hex) {
+                    <div class="cp-overview__swatch">
+                      <div
+                        class="cp-overview__swatch-color"
+                        [class.cp-overview__swatch-color--bordered]="isLight(swatch.hex)"
+                        [style.background]="swatch.hex"
+                      ></div>
+                      <p class="cp-overview__swatch-name">{{ swatch.name }}</p>
+                      <p class="cp-overview__swatch-hex">{{ swatch.hex }}</p>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- ── SHADES TAB ────────────────────────────────────────── -->
+      @if (tab.type === 'shades') {
+        <div class="cp-shades">
+          <div class="cp-shades__meta">
+            <h3 class="cp-shades__heading">Shades of Accent Color</h3>
+            <p class="cp-shades__note">This is based on Accessible Web for WCAG Color Contrast Checker</p>
+          </div>
+          <div class="cp-shades__grid">
+            @for (group of tab.groups!; track group.label) {
+              <div class="cp-shades__col">
+                <h4 class="cp-shades__col-label">{{ group.label }}</h4>
+                <div class="cp-shades__swatches">
+                  @for (shade of group.shades!; track shade.hex) {
+                    <div class="cp-shades__shade">
+                      <div class="cp-shades__shade-color" [style.background]="shade.hex"></div>
+                      <div class="cp-shades__shade-info">
+                        <span class="cp-shades__shade-name">{{ shade.name }}</span>
+                        <span class="cp-shades__shade-hex">{{ shade.hex }}</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- ── WCAG TAB ──────────────────────────────────────────── -->
+      @if (tab.type === 'wcag') {
+        <div class="cp-wcag">
+          <h3 class="cp-wcag__heading">Key Contrast Ratios</h3>
+          <div class="cp-wcag__table">
+            <div class="cp-wcag__table-head">
+              <span class="cp-wcag__table-col">Colors</span>
+              <span class="cp-wcag__table-col">Ratio</span>
+              <span class="cp-wcag__table-col">AA Normal</span>
+              <span class="cp-wcag__table-col">AA Large</span>
+              <span class="cp-wcag__table-col">AAA Normal</span>
+              <span class="cp-wcag__table-col">AAA Large</span>
+            </div>
+            @for (pair of tab.wcagPairs!; track pair.label) {
+              <div class="cp-wcag__row">
+                <div class="cp-wcag__colors">
+                  <span class="cp-wcag__swatch" [style.background]="pair.foreground"
+                        [style.border]="isLight(pair.foreground) ? '1px solid var(--border)' : 'none'"></span>
+                  <span class="cp-wcag__swatch" [style.background]="pair.background"
+                        [style.border]="isLight(pair.background) ? '1px solid var(--border)' : 'none'"></span>
+                  <span class="cp-wcag__pair-label">{{ pair.label }}</span>
+                </div>
+                <span class="cp-wcag__ratio">{{ pair.ratio }}</span>
+                <span [class]="pair.aaNormal ? 'cp-wcag__pass' : 'cp-wcag__fail'">
+                  {{ pair.aaNormal ? '✓ Pass' : '✗ Fail' }}
+                </span>
+                <span [class]="pair.aaLarge ? 'cp-wcag__pass' : 'cp-wcag__fail'">
+                  {{ pair.aaLarge ? '✓ Pass' : '✗ Fail' }}
+                </span>
+                <span [class]="pair.aaaNormal ? 'cp-wcag__pass' : 'cp-wcag__fail'">
+                  {{ pair.aaaNormal ? '✓ Pass' : '✗ Fail' }}
+                </span>
+                <span [class]="pair.aaaLarge ? 'cp-wcag__pass' : 'cp-wcag__fail'">
+                  {{ pair.aaaLarge ? '✓ Pass' : '✗ Fail' }}
+                </span>
+              </div>
+            }
+          </div>
+          @if (tab.wcagNote) {
+            <p class="cp-wcag__note">{{ tab.wcagNote }}</p>
+          }
+        </div>
+      }
+
+    }
+  </div>
+}
+
+<!-- ══ LEGACY FLAT LAYOUT (other teams) ════════════════════════════════ -->
+@if (groups()) {
+  <div class="cp">
+    @for (group of groups()!; track group.label) {
+      <div class="cp__group">
+        <h3 class="cp__group-label">{{ group.label }}</h3>
+
+        @if (group.main && group.main.length > 0) {
+          <div class="cp__main-row">
+            @for (swatch of group.main; track swatch.hex) {
+              <div class="cp__main-swatch" [style.background]="swatch.hex">
+                <span class="cp__main-meta" [style.color]="textColor(swatch.hex)">
+                  <span class="cp__main-name">{{ swatch.name }}</span>
+                  <span class="cp__main-hex">{{ swatch.hex }}</span>
+                </span>
+              </div>
+            }
+          </div>
+        }
+
+        @if (group.shades && group.shades.length > 0) {
+          <div class="cp__shades-grid">
+            @for (swatch of group.shades; track swatch.hex) {
+              <div class="cp__shade" [style.background]="swatch.hex" [title]="swatch.name + ' ' + swatch.hex">
+                <span class="cp__shade-meta" [style.color]="textColor(swatch.hex)">
+                  <span class="cp__shade-name">{{ swatch.name }}</span>
+                  <span class="cp__shade-hex">{{ swatch.hex }}</span>
+                </span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

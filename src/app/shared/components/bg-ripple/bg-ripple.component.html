@@ -1,0 +1,17 @@
+<div
+  class="bg-ripple"
+  [style.--border-color]="borderColor()"
+  [style.--fill-color]="fillColor()"
+>
+  @for (row of rowArray(); track row) {
+    <div class="bg-ripple__row">
+      @for (col of colArray(); track col) {
+        <div
+          class="bg-ripple__cell"
+          [style.width.px]="cellSize()"
+          [style.height.px]="cellSize()"
+        ></div>
+      }
+    </div>
+  }
+</div>

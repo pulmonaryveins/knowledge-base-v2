@@ -6,4 +6,6 @@ export { uiuxTeam } from './uiux.data';
 export { qaTeam } from './qa.data';
 export { rdTeam } from './rd.data';
 export { webdevTeam } from './webdev.data';
+export { piPlayerTeam } from './pi-player.data';
 export { appEntries } from './apps.data';
+export { tools } from './tools.data';

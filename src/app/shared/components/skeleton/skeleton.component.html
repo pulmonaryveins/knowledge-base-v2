@@ -1,0 +1,90 @@
+<!-- FILE: src/app/shared/components/skeleton/skeleton.component.html -->
+<div class="sk">
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <div class="sk__hero">
+    <div class="sk__hero-inner">
+      <div class="sk__pill"></div>
+      <div class="sk__bar sk__bar--h1"></div>
+      <div class="sk__bar sk__bar--sub"></div>
+      <div class="sk__bar sk__bar--sub sk__bar--60"></div>
+      <div class="sk__hero-chips">
+        <div class="sk__chip"></div>
+        <div class="sk__chip sk__chip--wide"></div>
+        <div class="sk__chip"></div>
+        <div class="sk__chip sk__chip--wide"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Content ───────────────────────────────────────────────────────────── -->
+  <div class="sk__content">
+
+    <!-- Section 01 — list rows (mirrors tech-stack / data-table) -->
+    <div class="sk__section">
+      <div class="sk__section-head">
+        <div class="sk__num-badge"></div>
+        <div>
+          <div class="sk__bar sk__bar--label"></div>
+          <div class="sk__bar sk__bar--caption sk__bar--40"></div>
+        </div>
+      </div>
+      <div class="sk__list-block">
+        @for (i of rows6; track i; let idx = $index) {
+          <div class="sk__list-row" [style.animation-delay]="(idx * 0.07) + 's'">
+            <div class="sk__list-icon"></div>
+            <div class="sk__list-body">
+              <div class="sk__bar sk__bar--name"></div>
+              <div class="sk__bar sk__bar--caption sk__bar--70"></div>
+            </div>
+            <div class="sk__chip sk__chip--status"></div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Section 02 — step list (mirrors getting-started) -->
+    <div class="sk__section">
+      <div class="sk__section-head">
+        <div class="sk__num-badge"></div>
+        <div>
+          <div class="sk__bar sk__bar--label sk__bar--50"></div>
+          <div class="sk__bar sk__bar--caption sk__bar--80"></div>
+        </div>
+      </div>
+      <div class="sk__steps-block">
+        @for (i of rows4; track i; let idx = $index) {
+          <div class="sk__step-row" [style.animation-delay]="(idx * 0.09) + 's'">
+            <div class="sk__step-circle"></div>
+            <div class="sk__step-line"></div>
+            <div class="sk__step-body">
+              <div class="sk__bar sk__bar--name sk__bar--50"></div>
+              <div class="sk__bar sk__bar--caption"></div>
+              <div class="sk__bar sk__bar--caption sk__bar--70"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Section 03 — code block (mirrors folder-arch) -->
+    <div class="sk__section">
+      <div class="sk__section-head">
+        <div class="sk__num-badge"></div>
+        <div>
+          <div class="sk__bar sk__bar--label sk__bar--40"></div>
+        </div>
+      </div>
+      <div class="sk__code-block">
+        <div class="sk__code-bar"></div>
+        @for (i of rows8; track i; let idx = $index) {
+          <div class="sk__code-line"
+               [style.width]="codeWidths[idx % codeWidths.length]"
+               [style.animation-delay]="(idx * 0.06) + 's'">
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

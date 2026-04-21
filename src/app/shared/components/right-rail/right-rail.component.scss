@@ -2,14 +2,72 @@
 
 // ── FILE: src/app/shared/components/right-rail/right-rail.component.scss ──
 
-:host { @apply block w-[216px] shrink-0; }
+// Host fills the entire fixed shell__rail column (216px × 100vh).
+// Hovering anywhere in this column triggers the rail reveal.
+:host {
+  @apply block w-full relative;
+  height: 100vh;
+
+  &:hover .rail {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  &:hover .rail__peek {
+    opacity: 0;
+    transform: translateX(12px);
+    pointer-events: none;
+  }
+}
+
+// ── Peek / hover-hint tab ────────────────────────────────────────────────────
+// Visible when the rail is idle; fades out when the host is hovered.
+.rail__peek {
+  @apply absolute top-1/2 right-0 -translate-y-1/2;
+  @apply flex flex-col items-center justify-center gap-[6px];
+  @apply bg-white border border-[var(--border)] border-r-0;
+  @apply rounded-[8px_0_0_8px] cursor-default;
+  @apply py-[14px] px-[9px];
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.06);
+  transition:
+    opacity   0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &-icon {
+    @apply font-['Syne',_sans-serif] text-[16px] font-bold text-[var(--green)] leading-none;
+  }
+
+  &-label {
+    @apply font-['Syne',_sans-serif] text-[9px] font-extrabold uppercase tracking-[0.12em] text-[var(--navy)] opacity-40;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+}
 
 .rail {
-  @apply flex flex-col gap-5 sticky top-[440px] py-[24px] px-[20px] bg-[rgba(255,255,255,0.8)] backdrop-blur-[12px] border border-[var(--border)] border-r-0 rounded-[12px_0_0_12px] shadow-[-4px_0_20px_rgba(0,0,0,0.05)] transition-all duration-[0.4s] ease-[cubic-bezier(0.4,0,0.2,1)];
+  // Positioned at the top of the fixed column with padding
+  @apply flex flex-col gap-4 mt-[80px] py-[20px] px-[16px];
+  @apply bg-white border border-[var(--border)] border-r-0;
+  @apply rounded-[12px_0_0_12px];
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.07);
 
+  // ── Hover-reveal defaults ────────────────────────────────────────────────
+  // Hidden by default — slides in from the right on hover.
+  opacity: 0;
+  transform: translateX(32px);
+  pointer-events: none;
+  transition:
+    opacity   0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s ease;
+
+  // After scrolling past the hero the shadow deepens slightly
   &--snapped {
-    @apply top-[80px] bg-[#ffffff] shadow-[-4px_0_30px_rgba(0,0,0,0.08)];
+    box-shadow: -2px 0 28px rgba(0, 0, 0, 0.11);
   }
+
+  // ── Header ───────────────────────────────────────────────────────────────
 
   &__header {
     @apply flex items-center gap-3 mb-2;
@@ -23,10 +81,22 @@
     }
   }
 
+  // ── Section list ─────────────────────────────────────────────────────────
+
   &__list {
     @apply list-none m-0 p-0 flex flex-col relative;
+    // Cap the list so it never pushes below the viewport.
+    // 80px top margin + 40px top/bottom padding + ~90px header+footer = ~210px
+    max-height: calc(100vh - 260px);
+    overflow-y: auto;
 
-    // Vertical line behind all items
+    // thin scrollbar
+    &::-webkit-scrollbar { width: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+
     &::before {
       @apply content-[''] absolute left-0 top-0 bottom-0 w-[1px] bg-[var(--border)];
     }
@@ -55,7 +125,9 @@
   }
 
   &__btn {
-    @apply flex items-center gap-3 w-full text-left bg-transparent border-0 cursor-pointer py-[10px] px-[12px] transition-all duration-[0.15s] ease-in-out rounded-[0_8px_8px_0];
+    @apply flex items-center gap-3 w-full text-left bg-transparent border-0 cursor-pointer;
+    @apply py-[7px] px-[10px] rounded-[0_8px_8px_0];
+    @apply transition-all duration-[0.15s] ease-in-out;
 
     &:hover:not(.rail__item--active &) {
       @apply bg-[rgba(0,0,0,0.03)];
@@ -64,12 +136,15 @@
   }
 
   &__num {
-    @apply font-['DM_Mono',_monospace] text-[10px] font-semibold text-[var(--navy)] opacity-25 shrink-0 w-[20px] transition-all duration-[0.15s] ease-in-out;
+    @apply font-['DM_Mono',_monospace] text-[9.5px] font-semibold text-[var(--navy)] opacity-25 shrink-0 w-[18px];
+    @apply transition-all duration-[0.15s] ease-in-out;
   }
 
   &__label {
-    @apply text-[13px] text-[var(--muted)] leading-[1.4] transition-all duration-[0.15s] ease-in-out;
+    @apply text-[11.5px] text-[var(--muted)] leading-[1.35] transition-all duration-[0.15s] ease-in-out;
   }
+
+  // ── Footer ───────────────────────────────────────────────────────────────
 
   &__footer {
     @apply flex flex-col gap-3 mt-2 pt-[16px] px-[12px] pb-0 border-t border-[var(--border)];
@@ -80,7 +155,8 @@
   }
 
   &__progress-fill {
-    @apply h-full bg-[var(--green)] rounded-[2px] transition-all duration-[0.4s] ease-[cubic-bezier(0.4,0,0.2,1)] shadow-[0_0_8px_rgba(141,203,44,0.3)];
+    @apply h-full bg-[var(--green)] rounded-[2px] shadow-[0_0_8px_rgba(141,203,44,0.3)];
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &__counter {

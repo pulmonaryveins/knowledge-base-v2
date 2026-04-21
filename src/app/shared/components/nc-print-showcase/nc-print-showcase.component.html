@@ -1,0 +1,75 @@
+<div class="print-showcase">
+
+  <!-- Bleed / Safe Zone Diagram -->
+  <div class="print-section">
+    <h4 class="print-section__label">Print Zones: Bleed, Trim & Safe Area</h4>
+    <p class="print-section__desc">Every print file needs three zones — content that gets cut must account for press tolerance.</p>
+    <div class="print-zones-wrap">
+      <div class="print-zones">
+        <div class="print-zone print-zone--bleed">
+          <span class="print-zone__label">Bleed +3mm</span>
+          <div class="print-zone print-zone--trim">
+            <span class="print-zone__label">Trim Line</span>
+            <div class="print-zone print-zone--safe">
+              <span class="print-zone__label">Safe Zone</span>
+              <div class="print-zone__content">Content Here</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="print-zones__legend">
+        <div class="print-zones__item"><span class="print-zones__dot print-zones__dot--red"></span>Bleed — artwork extends 3mm past trim</div>
+        <div class="print-zones__item"><span class="print-zones__dot print-zones__dot--amber"></span>Trim Line — where paper is cut</div>
+        <div class="print-zones__item"><span class="print-zones__dot print-zones__dot--green"></span>Safe Zone — keep critical content inside</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CMYK vs RGB -->
+  <div class="print-section">
+    <h4 class="print-section__label">CMYK vs RGB Colour Mode</h4>
+    <p class="print-section__desc">Colour mode determines how colours are reproduced — screen colours can't always be replicated on press.</p>
+    <div class="print-colormode">
+      <div class="print-colormode__group">
+        <div class="print-cm">
+          <div class="print-cm__c">C</div>
+          <div class="print-cm__m">M</div>
+          <div class="print-cm__y">Y</div>
+          <div class="print-cm__k">K</div>
+        </div>
+        <div class="print-colormode__info">
+          <span class="print-colormode__title">CMYK</span>
+          <span class="print-colormode__sub">Subtractive · Print</span>
+          <span class="print-colormode__rule">Use for all print outputs</span>
+        </div>
+      </div>
+      <div class="print-colormode__vs">vs</div>
+      <div class="print-colormode__group">
+        <div class="print-rgb">
+          <div class="print-rgb__r">R</div>
+          <div class="print-rgb__g">G</div>
+          <div class="print-rgb__b">B</div>
+        </div>
+        <div class="print-colormode__info">
+          <span class="print-colormode__title">RGB</span>
+          <span class="print-colormode__sub">Additive · Screen</span>
+          <span class="print-colormode__rule">Use for web &amp; digital</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checklist -->
+  <div class="print-section">
+    <h4 class="print-section__label">Pre-Press Checklist</h4>
+    <p class="print-section__desc">Non-negotiable requirements before sending any file to press.</p>
+    <div class="print-checklist">
+      <div class="print-checklist__item"><span class="print-checklist__check">✓</span><span><strong>300 DPI minimum</strong> — all images and raster elements</span></div>
+      <div class="print-checklist__item"><span class="print-checklist__check">✓</span><span><strong>CMYK colour profile</strong> — convert from RGB before export</span></div>
+      <div class="print-checklist__item"><span class="print-checklist__check">✓</span><span><strong>3mm bleed</strong> on all edges — artwork extends past trim</span></div>
+      <div class="print-checklist__item"><span class="print-checklist__check">✓</span><span><strong>Fonts outlined or embedded</strong> — no missing typeface errors</span></div>
+      <div class="print-checklist__item"><span class="print-checklist__check">✓</span><span><strong>PDF/X-1a export</strong> — industry-standard press-ready format</span></div>
+    </div>
+  </div>
+
+</div>

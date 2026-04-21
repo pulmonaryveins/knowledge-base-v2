@@ -2,8 +2,9 @@
 
 import { Injectable } from '@angular/core';
 import { Team, AppEntry } from '../models/team.model';
+import { Tool } from '../models/tool.model';
 import { SearchResult } from '../models/search.model';
-import { frontendTeam, backendTeam, uiuxTeam, qaTeam, rdTeam, webdevTeam, appEntries } from '../data';
+import { frontendTeam, backendTeam, uiuxTeam, qaTeam, rdTeam, webdevTeam, piPlayerTeam, appEntries, tools } from '../data';
 
 /**
  * DocsDataService is the single source of truth for all portal content.
@@ -19,9 +20,11 @@ export class DocsDataService {
     qaTeam,
     rdTeam,
     uiuxTeam,
+    piPlayerTeam,
   ];
 
   private readonly _appEntries: ReadonlyArray<AppEntry> = appEntries;
+  private readonly _tools: ReadonlyArray<Tool> = tools;
 
   /**
    * Return the full array of team objects including all sections and projects.
@@ -29,6 +32,14 @@ export class DocsDataService {
    */
   public getTeams(): ReadonlyArray<Team> {
     return this._teams;
+  }
+
+  /**
+   * Return all tool entries for the TOOLS navigation section.
+   * @returns All registered tools
+   */
+  public getTools(): ReadonlyArray<Tool> {
+    return this._tools;
   }
 
   /**
@@ -45,22 +56,27 @@ export class DocsDataService {
    */
   public getSearchIndex(): ReadonlyArray<SearchResult> {
     const results: SearchResult[] = [];
+
     for (const team of this._teams) {
       for (const section of team.sections) {
         results.push({
           id: `${team.key}-${section.id}`,
+          type: 'section',
           teamKey: team.key,
+          toolKey: '',
           teamColor: team.color,
           teamLabel: team.label,
           title: section.label,
-          snippet: `${team.label} documentation — ${section.label} (section ${section.num})`,
+          snippet: `${team.label} — ${section.label} (section ${section.num})`,
           sectionId: section.id,
         });
       }
       for (const project of team.projects) {
         results.push({
           id: `project-${project.id}`,
+          type: 'project',
           teamKey: team.key,
+          toolKey: '',
           teamColor: team.color,
           teamLabel: team.label,
           title: project.name,
@@ -69,6 +85,21 @@ export class DocsDataService {
         });
       }
     }
+
+    for (const tool of this._tools) {
+      results.push({
+        id: `tool-${tool.key}`,
+        type: 'tool',
+        teamKey: '',
+        toolKey: tool.key,
+        teamColor: tool.color,
+        teamLabel: tool.category,
+        title: tool.label,
+        snippet: tool.description,
+        sectionId: '',
+      });
+    }
+
     return results;
   }
 }

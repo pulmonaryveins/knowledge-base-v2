@@ -1,0 +1,274 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/features/tool-page/tool-page.component.scss ──
+
+:host {
+  @apply block;
+}
+
+// ── Hero Banner ─────────────────────────────────────────────────────────────
+// Full-bleed section — mirrors hero.component.scss layout exactly
+
+.tool-page {
+  &__hero {
+    @apply w-full relative overflow-hidden py-[64px] px-[48px] min-h-[240px] transition-all duration-[0.3s] ease-in-out;
+
+    @media (max-width: 768px) {
+      @apply py-[40px] px-[20px] min-h-[180px];
+    }
+
+    &::after {
+      @apply content-[''] absolute bottom-0 left-0 right-0 h-[1px]
+             bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)];
+    }
+  }
+
+  &__hero-inner {
+    @apply flex flex-col gap-6 max-w-[1200px] relative z-[2];
+  }
+
+  &__hero-badge {
+    @apply inline-flex items-center gap-2 self-start py-[6px] px-[14px] rounded-full border border-solid backdrop-blur-[8px];
+    background: color-mix(in srgb, var(--tool-color) 20%, transparent);
+    border-color: color-mix(in srgb, var(--tool-color) 40%, transparent);
+    color: var(--tool-color);
+  }
+
+  &__hero-badge-icon {
+    @apply flex items-center;
+  }
+
+  &__hero-badge-logo {
+    @apply w-[14px] h-[14px] object-contain block;
+  }
+
+  &__hero-badge-label {
+    @apply font-['DM_Mono',_monospace] text-[11px] font-extrabold uppercase tracking-[0.1em];
+  }
+
+  &__hero-title {
+    @apply font-extrabold m-0 font-['Syne',_sans-serif] text-[48px] text-white leading-[1.1] tracking-[-0.02em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.1)];
+    @media (max-width: 768px) { @apply text-[32px]; }
+  }
+
+  &__hero-subtitle {
+    @apply m-0 text-[17px] text-[rgba(255,255,255,0.7)] leading-[1.6] font-['DM_Sans',_sans-serif] max-w-[600px];
+    @media (max-width: 768px) { @apply text-[14px] max-w-full; }
+  }
+
+  &__hero-meta {
+    @apply flex items-center gap-[10px] flex-wrap mt-2;
+  }
+
+  &__version-badge {
+    @apply inline-flex items-center px-[10px] py-[4px] rounded-full text-[11px] font-['DM_Mono',_monospace] font-semibold;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  &__used-by {
+    @apply flex items-center gap-[8px] flex-wrap;
+  }
+
+  &__used-by-label {
+    @apply text-[11.5px] text-[rgba(255,255,255,0.45)] font-['DM_Sans',_sans-serif];
+  }
+
+  &__team-chip {
+    @apply inline-flex items-center px-[10px] py-[3px] rounded-full text-[11px] font-['DM_Mono',_monospace] font-semibold;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  // ── Content Area ─────────────────────────────────────────────────────────
+  // Mirrors .team-page__content spacing (no right rail on tool pages)
+
+  &__content {
+    @apply flex flex-col gap-12 pt-[40px] pr-[48px] pb-[80px] pl-[48px];
+
+    @media (max-width: 768px) { @apply pt-[24px] pr-[20px] pb-[60px] pl-[20px]; }
+  }
+
+  &__section {
+    @apply flex flex-col gap-6 scroll-mt-[80px];
+  }
+
+  // ── Features Grid ──────────────────────────────────────────────────────
+
+  &__features-grid {
+    @apply grid grid-cols-2 gap-4;
+
+    @media (max-width: 900px) { @apply grid-cols-1; }
+  }
+
+  &__feature-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 22px 20px;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+
+    // Top accent bar (always visible, tool color)
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--tc);
+      opacity: 0.6;
+      transition: opacity 0.18s ease;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+      border-color: color-mix(in srgb, var(--tc) 28%, var(--border));
+
+      &::before { opacity: 1; }
+    }
+  }
+
+  &__feature-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--tc);
+    opacity: 0.85;
+  }
+
+  &__feature-title {
+    margin: 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  &__feature-body {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  // ── Why We Use It ──────────────────────────────────────────────────────
+
+  &__why-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--tool-color) 22%, var(--border));
+    background: color-mix(in srgb, var(--tool-color) 4%, var(--card));
+
+    // Decorative large quote mark
+    &::before {
+      content: '"';
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      font-size: 140px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--tool-color);
+      opacity: 0.07;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  &__why-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 28px 20px;
+  }
+
+  &__why-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--tool-color) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tool-color) 22%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  &__why-logo {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+  }
+
+  &__why-text {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--navy);
+    line-height: 1.75;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__why-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-top: 1px solid color-mix(in srgb, var(--tool-color) 14%, var(--border));
+    background: color-mix(in srgb, var(--tool-color) 3%, transparent);
+  }
+
+  &__why-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--tool-color);
+  }
+
+  &__why-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--light);
+    background: rgba(9, 22, 53, 0.05);
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  // ── Installation (Section 03) rendered via <app-step-list> ─────────────
+
+  // ── Basic Usage (Section 04) ───────────────────────────────────────────
+
+  &__usage-item {
+    @apply flex flex-col gap-[10px] pt-[8px];
+
+    & + & {
+      @apply border-t border-[var(--border)] pt-[24px];
+    }
+  }
+
+  &__usage-title {
+    @apply m-0 font-['Syne',_sans-serif] text-[13.5px] font-bold text-[var(--navy)];
+  }
+
+  &__usage-desc {
+    @apply m-0 text-[12.5px] text-[var(--muted)] leading-[1.6];
+  }
+}

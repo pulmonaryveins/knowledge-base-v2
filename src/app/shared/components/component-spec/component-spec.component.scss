@@ -1,0 +1,69 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/component-spec/component-spec.component.scss ──
+
+:host { @apply block; }
+
+.cspec {
+  @apply flex flex-col gap-6;
+
+  &__desc {
+    @apply text-[14px] text-[var(--muted)] leading-[1.6] font-['DM_Sans',_sans-serif]
+           bg-[var(--card)] border border-[var(--border)] rounded-[12px] px-5 py-4
+           border-l-4 border-l-[var(--ux)];
+  }
+
+  // ── Variant grid ──────────────────────────────────────────────────────
+  &__grid {
+    @apply grid gap-5 grid-cols-2;
+
+    @media (max-width: 768px) { @apply grid-cols-1; }
+  }
+
+  &__card {
+    @apply flex flex-col gap-4 bg-[var(--card)] border border-[var(--border)]
+           rounded-[14px] p-5 overflow-hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      border-color: rgba(236, 72, 153, 0.35);
+      box-shadow: 0 4px 20px rgba(236, 72, 153, 0.08);
+    }
+  }
+
+  // ── Live preview pane ─────────────────────────────────────────────────
+  &__preview {
+    @apply bg-[var(--bg)] rounded-[10px] flex items-center justify-center p-4 min-h-[70px];
+  }
+
+  &__accordion {
+    @apply w-full flex items-center justify-between bg-[var(--card)] border
+           border-[var(--border)] cursor-default select-none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  &__accordion-label {
+    @apply font-['DM_Sans',_sans-serif] text-[13px] text-[var(--navy)] font-medium;
+  }
+
+  &__accordion-chevron {
+    @apply font-['Syne',_sans-serif] text-[18px] text-[var(--ux)] font-bold rotate-90 leading-none;
+  }
+
+  // ── Spec rows ─────────────────────────────────────────────────────────
+  &__specs {
+    @apply flex flex-col gap-[6px];
+  }
+
+  &__spec-row {
+    @apply flex flex-wrap gap-x-4 gap-y-[3px];
+  }
+
+  &__spec-key {
+    @apply w-[110px] text-[11px] text-[var(--muted)] font-['DM_Sans',_sans-serif];
+  }
+
+  &__spec-val {
+    @apply flex-1 text-[11px] font-bold text-[var(--navy)] font-['DM_Mono',_monospace];
+  }
+}

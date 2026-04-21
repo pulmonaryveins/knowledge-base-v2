@@ -1,2 +1,5 @@
 <!-- FILE: src/app/shared/components/status-badge/status-badge.component.html -->
-<span class="badge" [class]="'badge--' + modifier()">{{ status() }}</span>
+<span class="badge" [class]="'badge--' + modifier()">
+  <span class="badge__dot"></span>
+  {{ status() }}
+</span>

@@ -1,0 +1,64 @@
+<!-- FILE: src/app/shared/components/iconography-guide/iconography-guide.component.html -->
+
+<!-- ── Description ──────────────────────────────────────────────────── -->
+@if (description()) {
+  <p class="ig__desc">{{ description() }}</p>
+}
+
+<!-- ── Properties: Sizes reference grid ─────────────────────────────── -->
+<section class="ig__sizes-section">
+  <h3 class="ig__section-heading">Properties</h3>
+
+  <div class="ig__sizes-block">
+    <p class="ig__sizes-label">Sizes</p>
+    <p class="ig__sizes-note">
+      Icon buttons are compact clickable icons used to trigger actions quickly and visually.
+    </p>
+    <!-- Size preview strip: ascending icon row -->
+    <div class="ig__sizes-preview">
+      @for (size of sizes(); track size.px) {
+        <div class="ig__size-chip">
+          <span class="ig__size-px">{{ size.px }}</span>
+          <i class="fa-solid fa-circle-user ig__preview-icon" [style.font-size.px]="size.px"></i>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ── Icon Catalog ──────────────────────────────────────────────────── -->
+<section class="ig__catalog-section">
+  <h3 class="ig__section-heading">Components</h3>
+
+  <!-- Column size headers -->
+  <div class="ig__catalog-grid">
+    <div class="ig__catalog-header">
+      <!-- Icon name column (empty header) -->
+      <span></span>
+      @for (size of sizes(); track size.px) {
+        <span class="ig__col-size">{{ size.px }}</span>
+      }
+    </div>
+
+    <!-- Icon rows -->
+    @for (icon of icons(); track icon.name) {
+      <div class="ig__catalog-row">
+        <div class="ig__catalog-name">
+          <span class="ig__icon-name">{{ icon.name }}</span>
+          @if (icon.description) {
+            <span class="ig__icon-desc">{{ icon.description }}</span>
+          }
+        </div>
+        @for (size of sizes(); track size.px) {
+          <div class="ig__catalog-cell">
+            <div class="ig__icon-preview-box">
+              <i [class]="icon.faClass + ' ig__catalog-icon'"
+                 [style.font-size.px]="size.px"></i>
+            </div>
+            <span class="ig__cell-meta">{{ size.px }}px × {{ size.px }}px</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>

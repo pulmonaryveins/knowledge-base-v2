@@ -7,6 +7,7 @@
 
   &__item {
     @apply flex gap-4;
+
   }
 
   &__marker {
@@ -22,11 +23,23 @@
   }
 
   &__content {
-    @apply flex flex-col gap-2 pb-6 pt-[6px] min-h-[34px];
+    @apply flex flex-col gap-2 pb-7 pt-[5px] min-h-[34px];
   }
 
   &__title {
-    @apply font-semibold m-0 text-[14px] text-[var(--navy)];
+    @apply font-semibold m-0 text-[14px] text-[var(--navy)] flex items-center gap-[8px];
+  }
+
+  &__icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: rgba(141, 203, 44, 0.12);
+    color: var(--green);
+    flex-shrink: 0;
   }
 
   &__desc {

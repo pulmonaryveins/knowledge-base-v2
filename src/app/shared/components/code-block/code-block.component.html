@@ -1,12 +1,34 @@
 <!-- FILE: src/app/shared/components/code-block/code-block.component.html -->
 <div class="code-block">
-  <div class="code-block__header">
+
+  <div class="code-block__bar">
     <div class="code-block__dots">
       <span class="code-block__dot code-block__dot--red"></span>
       <span class="code-block__dot code-block__dot--yellow"></span>
       <span class="code-block__dot code-block__dot--green"></span>
     </div>
+
     <span class="code-block__lang">{{ data().language }}</span>
+
+    <button
+      class="code-block__copy"
+      [class.code-block__copy--done]="copied()"
+      (click)="copyCode()"
+      [attr.aria-label]="copied() ? 'Copied!' : 'Copy code'"
+    >
+      @if (copied()) {
+        <lucide-icon [img]="CheckIcon" [size]="12" />
+        <span>Copied!</span>
+      } @else {
+        <lucide-icon [img]="CopyIcon" [size]="12" />
+        <span>Copy</span>
+      }
+    </button>
   </div>
-  <pre class="code-block__pre"><code class="code-block__code">{{ data().code }}</code></pre>
+
+  <div class="code-block__body">
+    <pre class="code-block__pre"><code class="code-block__code">@for (tokens of tokenLines(); track $index) {<span class="code-block__line">@for (t of tokens; track $index) {<span [class]="t.cls">{{ t.text }}</span>}</span>
+}</code></pre>
+  </div>
+
 </div>
