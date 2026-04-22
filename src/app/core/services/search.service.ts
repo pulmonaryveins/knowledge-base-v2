@@ -3,6 +3,7 @@
 import { Injectable, inject } from '@angular/core';
 import { SearchResult } from '../models';
 import { DocsDataService } from './docs-data.service';
+import { RdDocumentsService } from './rd-documents.service';
 
 /**
  * SearchService exposes a single search() method that queries the
@@ -21,6 +22,7 @@ import { DocsDataService } from './docs-data.service';
 @Injectable({ providedIn: 'root' })
 export class SearchService {
   private readonly _docsData = inject(DocsDataService);
+  private readonly _rdDocs   = inject(RdDocumentsService);
 
   public search(query: string): ReadonlyArray<SearchResult> {
     const q = query.trim().toLowerCase();
@@ -28,8 +30,10 @@ export class SearchService {
 
     const words = q.split(/\s+/).filter(Boolean);
 
-    const scored = this._docsData
-      .getSearchIndex()
+    const scored = [
+      ...this._docsData.getSearchIndex(),
+      ...this._buildRdDocIndex(),
+    ]
       .map((r) => ({ result: r, score: this._score(r, words) }))
       .filter(({ score }) => score > 0);
 
@@ -78,6 +82,27 @@ export class SearchService {
       return excerpt;
     }
     return keywords.slice(0, 140);
+  }
+
+  /** Build live search entries from the Supabase-backed R&D document cache. */
+  private _buildRdDocIndex(): SearchResult[] {
+    return this._rdDocs.cachedDocs().map((doc) => ({
+      id:          `rd-doc-${doc.id}`,
+      type:        'section' as const,
+      teamKey:     'rd',
+      toolKey:     '',
+      teamColor:   '#0D9488',
+      teamLabel:   'Research & Development',
+      title:       doc.title,
+      snippet:     doc.section ?? 'R&D Document',
+      sectionId:   doc.section ? `rd-sec-${this._slug(doc.section)}` : '',
+      keywords:    [doc.title, doc.section].filter(Boolean).join(' '),
+      parentLabel: doc.section ?? '',
+    }));
+  }
+
+  private _slug(s: string): string {
+    return s.toLowerCase().replace(/\W+/g, '-').replace(/(^-|-$)/g, '');
   }
 }
 

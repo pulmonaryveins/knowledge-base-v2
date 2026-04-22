@@ -37,7 +37,9 @@
       <div class="rd-docs__groups">
         @for (group of groupedDocs(); track group.section; let gi = $index) {
 
-          <div class="rd-docs__group" [appReveal]="'up'" [appRevealDelay]="gi * 60">
+          <div class="rd-docs__group"
+               [id]="group.section ? 'rd-sec-' + rdSectionSlug(group.section) : null"
+               [appReveal]="'up'" [appRevealDelay]="gi * 60">
 
             <!-- Section banner -->
             @if (group.section) {

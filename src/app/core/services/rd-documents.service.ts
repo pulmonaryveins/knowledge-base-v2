@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import type { RdDocument, RdDocumentPayload } from '../models/rd-document.model';
 
@@ -17,6 +17,14 @@ import type { RdDocument, RdDocumentPayload } from '../models/rd-document.model'
 @Injectable({ providedIn: 'root' })
 export class RdDocumentsService {
   private readonly _sb = inject(SupabaseService);
+
+  /** Cached document list — updated on every successful fetch. Read by SearchService. */
+  readonly cachedDocs = signal<RdDocument[]>([]);
+
+  constructor() {
+    // Eagerly warm the cache so search results include RD documents on first query.
+    this.listDocuments();
+  }
 
   private readonly BUCKET = 'rd-documents';
 
@@ -38,7 +46,9 @@ export class RdDocumentsService {
       console.error('[RdDocumentsService] listDocuments failed:', error);
       return [];
     }
-    return (data as RdDocument[]) ?? [];
+    const docs = (data as RdDocument[]) ?? [];
+    this.cachedDocs.set(docs);
+    return docs;
   }
 
   /** Batch-updates the `position` for a set of documents after a drag reorder. */

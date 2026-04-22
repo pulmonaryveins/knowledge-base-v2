@@ -69,6 +69,11 @@ export class AppsPageComponent implements OnInit, OnDestroy {
       .map(key => ({ section: key || null, docs: map.get(key)! }));
   });
 
+  /** Deterministic slug for a section name — must match the formula used in SearchService. */
+  protected rdSectionSlug(section: string): string {
+    return section.toLowerCase().replace(/\W+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
   async ngOnInit(): Promise<void> {
     await this._fetchAll();
     this._subscribeRealtime();

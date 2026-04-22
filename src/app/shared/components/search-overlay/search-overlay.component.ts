@@ -142,11 +142,27 @@ export class SearchOverlayComponent implements OnInit, AfterViewInit {
       this._nav.switchToTool(result.toolKey);
       this.close();
     } else {
-      // Queue the scroll BEFORE switching team so DocsShellComponent
-      // picks it up after the 420ms skeleton clears and the DOM is ready.
-      this._nav.setPendingScroll(result.sectionId);
-      this._nav.switchTeam(result.teamKey);
+      // Check whether we are already on the target team so we can skip
+      // the team-switch (setting the same signal value does not re-trigger
+      // the DocsShell effect, so pendingScrollId would never be consumed).
+      const alreadyOnTeam =
+        this._nav.activeView() === 'team' &&
+        this._nav.activeTeamKey() === result.teamKey;
+
       this.close();
+
+      if (alreadyOnTeam) {
+        // DOM is already rendered — scroll directly after the overlay closes
+        setTimeout(() => {
+          const el = document.getElementById(result.sectionId);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      } else {
+        // Queue the scroll BEFORE switching team so DocsShellComponent
+        // picks it up after the skeleton clears and the DOM is ready.
+        this._nav.setPendingScroll(result.sectionId);
+        this._nav.switchTeam(result.teamKey);
+      }
     }
   }
 
