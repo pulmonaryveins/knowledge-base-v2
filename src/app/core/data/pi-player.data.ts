@@ -14,47 +14,9 @@ export const piPlayerTeam: Team = {
   projects: [],
   sections: [
     {
-      id: 'pp-ecosystem',
-      label: 'Ecosystem Architecture',
-      num: '01',
-      subHeader: 'How the core NTV repositories communicate with each other.',
-      content: {
-        type: 'folder-arch',
-        cards: [
-          {
-            title: 'api-v1 (Central API)',
-            body: 'The central brain and database interface for the entire NTV ecosystem. Acts as the middleman — serves data to both the web dashboard and the individual player devices deployed in the field.',
-          },
-          {
-            title: 'dashboard-v1 (Web Dashboard)',
-            body: 'The user-facing web application used by administrators and clients to manage content, screens, and settings. Makes HTTP requests to api-v1 to read and write data. Does not communicate directly with the players.',
-          },
-          {
-            title: 'player-server (Local Pi Backend)',
-            body: 'The local backend service running on each Raspberry Pi device. Connects upstream to api-v1 (via api.n-compass.online and socket servers) to download schedules, media, and programmatic ads, and report uptime/status. Serves local content and commands downstream to the player-ui.',
-          },
-          {
-            title: 'player-ui / player-ui-v2 (Local Pi Frontend)',
-            body: 'The actual visual interface displayed on the TV screens. Runs locally on the Pi and talks exclusively to the player-server to know what to play, when to play it, and to report playback verification. Does not talk directly to api-v1.',
-          },
-        ],
-        codeBlock: {
-          language: 'bash',
-          code: `api-v1 (AWS RDS)
-  ↕  ↕
-  ↕  socket.io server
-  ↕       ↕
-dashboard-v1     Raspberry Pi 3/4 | player-v1
-(Angular)         ├── player-server  (Node.js v12)
-                  │       ↕  socket.io
-                  └── player-ui      (Angular 18 · Chromium Kiosk)`,
-        },
-      },
-    },
-    {
       id: 'pp-tech-stack',
       label: 'Tech Stack',
-      num: '02',
+      num: '01',
       subHeader: 'Technologies running on each Raspberry Pi player device.',
       content: {
         type: 'tech-stack',
@@ -73,6 +35,15 @@ dashboard-v1     Raspberry Pi 3/4 | player-v1
             { cells: ['MeshCentral', 'Latest', 'Remote monitoring and management agent on each Pi', 'Live'] },
           ],
         },
+      },
+    },
+    {
+      id: 'pp-ecosystem',
+      label: 'Ecosystem Architecture',
+      num: '02',
+      subHeader: 'How the core NTV repositories communicate with each other.',
+      content: {
+        type: 'pi-ecosystem',
       },
     },
     {
