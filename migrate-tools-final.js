@@ -1,8 +1,14 @@
-// â”€â”€ FILE: src/app/core/data/tools.data.ts â”€â”€
+// ── FILE: c:\Users\ocliasa\knowledge-base-v2\migrate-tools-final.js ──
 
-import { Tool } from '../models/tool.model';
+/**
+ * FINAL SELF-CONTAINED MIGRATION SCRIPT
+ * This script contains the hardcoded data to bypass all environment/import issues.
+ */
 
-export const tools: ReadonlyArray<Tool> = [
+const STRAPI_URL = 'http://localhost:1337/api/tools';
+const TOKEN = process.env.STRAPI_ADMIN_TOKEN;
+
+const tools = [
   {
     key: 'angular',
     label: 'Angular',
@@ -67,37 +73,14 @@ export const tools: ReadonlyArray<Tool> = [
       {
         title: 'Signals & Computed Values',
         description:
-          'Use signal() and computed() for reactive, zone-free state â€” the standard pattern in Angular 17+.',
-        code: `import { Component, signal, computed } from '@angular/core';
-
-@Component({
-  selector: 'app-counter',
-  standalone: true,
-  template: \`
-    <button (click)="count.update(v => v + 1)">Increment</button>
-    <p>Count: {{ count() }}  |  Double: {{ double() }}</p>
-  \`,
-})
-export class CounterComponent {
-  protected readonly count = signal(0);
-  protected readonly double = computed(() => this.count() * 2);
-}`,
+          'Use signal() and computed() for reactive, zone-free state — the standard pattern in Angular 17+.',
+        code: `import { Component, signal, computed } from '@angular/core';\n\n@Component({\n  selector: 'app-counter',\n  standalone: true,\n  template: \\\`\n    <button (click)="count.update(v => v + 1)">Increment</button>\n    <p>Count: {{ count() }}  |  Double: {{ double() }}</p>\n  \\\`,\n})\nexport class CounterComponent {\n  protected readonly count = signal(0);\n  protected readonly double = computed(() => this.count() * 2);\n}`,
         language: 'typescript',
       },
       {
         title: 'HTTP Client with inject()',
         description: "Use Angular's inject() in a service to fetch typed data from the NestJS API.",
-        code: `import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-@Injectable({ providedIn: 'root' })
-export class UsersService {
-  private readonly http = inject(HttpClient);
-
-  getUsers() {
-    return this.http.get<User[]>('/api/users');
-  }
-}`,
+        code: `import { Injectable, inject } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\n\n@Injectable({ providedIn: 'root' })\nexport class UsersService {\n  private readonly http = inject(HttpClient);\n\n  getUsers() {\n    return this.http.get<User[]>('/api/users');\n  }\n}`,
         language: 'typescript',
       },
     ],
@@ -159,33 +142,14 @@ export class UsersService {
       {
         title: 'Server Component Page',
         description:
-          'App Router pages are React Server Components by default â€” fetch data directly in the component body.',
-        code: `// app/page.tsx
-export default async function HomePage() {
-  const data = await fetch('https://api.example.com/items').then(r => r.json());
-
-  return (
-    <main>
-      <h1>NCompassTV Portal</h1>
-      <ul>
-        {data.map((item: { id: number; name: string }) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-    </main>
-  );
-}`,
+          'App Router pages are React Server Components by default — fetch data directly in the component body.',
+        code: `// app/page.tsx\nexport default async function HomePage() {\n  const data = await fetch('https://api.example.com/items').then(r => r.json());\n\n  return (\n    <main>\n      <h1>NCompassTV Portal</h1>\n      <ul>\n        {data.map((item: { id: number; name: string }) => (\n          <li key={item.id}>{item.name}</li>\n        ))}\n      </ul>\n    </main>\n  );\n}`,
         language: 'tsx',
       },
       {
         title: 'API Route Handler',
         description: 'Define a lightweight REST endpoint using App Router route handlers.',
-        code: `// app/api/status/route.ts
-import { NextResponse } from 'next/server';
-
-export async function GET() {
-  return NextResponse.json({ status: 'ok', timestamp: Date.now() });
-}`,
+        code: `// app/api/status/route.ts\nimport { NextResponse } from 'next/server';\n\nexport async function GET() {\n  return NextResponse.json({ status: 'ok', timestamp: Date.now() });\n}`,
         language: 'typescript',
       },
     ],
@@ -234,30 +198,13 @@ export async function GET() {
         title: 'Enable Decorator Metadata',
         description:
           'Add these two options to your tsconfig.json to allow TypeORM decorators to work.',
-        code: `// tsconfig.json
-{
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
-}`,
+        code: `// tsconfig.json\n{\n  "compilerOptions": {\n    "experimentalDecorators": true,\n    "emitDecoratorMetadata": true\n  }\n}`,
         language: 'json',
       },
       {
         title: 'Configure DataSource',
         description: 'Create a DataSource that connects TypeORM to your MySQL database.',
-        code: `import { DataSource } from 'typeorm';
-
-export const AppDataSource = new DataSource({
-  type: 'mysql',
-  host: process.env.DB_HOST,
-  port: 3306,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  entities: [__dirname + '/entities/**/*.entity.ts'],
-  synchronize: false, // use migrations in production
-});`,
+        code: `import { DataSource } from 'typeorm';\n\nexport const AppDataSource = new DataSource({\n  type: 'mysql',\n  host: process.env.DB_HOST,\n  port: 3306,\n  username: process.env.DB_USER,\n  password: process.env.DB_PASS,\n  database: process.env.DB_NAME,\n  entities: [__dirname + '/entities/**/*.entity.ts'],\n  synchronize: false, // use migrations in production\n});`,
         language: 'typescript',
       },
     ],
@@ -265,48 +212,14 @@ export const AppDataSource = new DataSource({
       {
         title: 'Define an Entity',
         description:
-          'Use decorator-based schema definition â€” TypeORM synchronises the class with the database table.',
-        code: `import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
-
-@Entity('users')
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ length: 100 })
-  name: string;
-
-  @Column({ unique: true })
-  email: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-}`,
+          'Use decorator-based schema definition — TypeORM synchronises the class with the database table.',
+        code: `import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';\n\n@Entity('users')\nexport class User {\n  @PrimaryGeneratedColumn()\n  id: number;\n\n  @Column({ length: 100 })\n  name: string;\n\n  @Column({ unique: true })\n  email: string;\n\n  @CreateDateColumn()\n  createdAt: Date;\n}`,
         language: 'typescript',
       },
       {
         title: 'Repository Queries',
         description: 'Inject a repository to run typed queries without writing raw SQL.',
-        code: `import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './user.entity';
-
-@Injectable()
-export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private readonly users: Repository<User>,
-  ) {}
-
-  findAll() {
-    return this.users.find({ order: { createdAt: 'DESC' } });
-  }
-
-  findByEmail(email: string) {
-    return this.users.findOneBy({ email });
-  }
-}`,
+        code: `import { Injectable } from '@nestjs/common';\nimport { InjectRepository } from '@nestjs/typeorm';\nimport { Repository } from 'typeorm';\nimport { User } from './user.entity';\n\n@Injectable()\nexport class UsersService {\n  constructor(\n    @InjectRepository(User)\n    private readonly users: Repository<User>,\n  ) {}\n\n  findAll() {\n    return this.users.find({ order: { createdAt: 'DESC' } });\n  }\n\n  findByEmail(email: string) {\n    return this.users.findOneBy({ email });\n  }\n}`,
         language: 'typescript',
       },
     ],
@@ -360,12 +273,7 @@ export class UsersService {
       {
         title: 'Connect & Create Database',
         description: 'Log in as root and create the application database and a dedicated user.',
-        code: `mysql -u root -p
-
-CREATE DATABASE ncompass CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'nctv'@'localhost' IDENTIFIED BY 'strongpassword';
-GRANT ALL PRIVILEGES ON ncompass.* TO 'nctv'@'localhost';
-FLUSH PRIVILEGES;`,
+        code: `mysql -u root -p\n\nCREATE DATABASE ncompass CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\nCREATE USER 'nctv'@'localhost' IDENTIFIED BY 'strongpassword';\nGRANT ALL PRIVILEGES ON ncompass.* TO 'nctv'@'localhost';\nFLUSH PRIVILEGES;`,
         language: 'sql',
       },
     ],
@@ -373,32 +281,13 @@ FLUSH PRIVILEGES;`,
       {
         title: 'Create Tables & Insert Data',
         description: 'Basic DDL and DML to define a table and insert a row.',
-        code: `USE ncompass;
-
-CREATE TABLE users (
-  id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  name       VARCHAR(100)        NOT NULL,
-  email      VARCHAR(255) UNIQUE NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO users (name, email) VALUES ('Alice', 'alice@nctv.com');`,
+        code: `USE ncompass;\n\nCREATE TABLE users (\n  id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,\n  name       VARCHAR(100)        NOT NULL,\n  email      VARCHAR(255) UNIQUE NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nINSERT INTO users (name, email) VALUES ('Alice', 'alice@nctv.com');`,
         language: 'sql',
       },
       {
         title: 'Queries & Joins',
         description: 'Filter, sort, and join tables using standard SQL syntax.',
-        code: `-- Filter with LIKE
-SELECT id, name, email FROM users
-WHERE name LIKE '%alice%'
-ORDER BY created_at DESC
-LIMIT 10;
-
--- Inner join example
-SELECT u.name, o.total
-FROM users u
-JOIN orders o ON o.user_id = u.id
-WHERE o.total > 100;`,
+        code: `-- Filter with LIKE\nSELECT id, name, email FROM users\nWHERE name LIKE '%alice%'\nORDER BY created_at DESC\nLIMIT 10;\n\n-- Inner join example\nSELECT u.name, o.total\nFROM users u\nJOIN orders o ON o.user_id = u.id\nWHERE o.total > 100;`,
         language: 'sql',
       },
     ],
@@ -426,7 +315,7 @@ WHERE o.total > 100;`,
       },
       {
         title: 'Multi-Framework Support',
-        body: 'Use React, Vue, Svelte, or plain HTML in the same project â€” each island can run a different framework without conflicts.',
+        body: 'Use React, Vue, Svelte, or plain HTML in the same project — each island can run a different framework without conflicts.',
       },
       {
         title: 'Content Collections',
@@ -439,7 +328,7 @@ WHERE o.total > 100;`,
       {
         title: 'Scaffold a New Site',
         description:
-          'Run the interactive CLI wizard â€” choose the "Minimal" template and enable TypeScript.',
+          'Run the interactive CLI wizard — choose the "Minimal" template and enable TypeScript.',
         code: `npm create astro@latest my-site`,
         language: 'bash',
       },
@@ -463,43 +352,13 @@ WHERE o.total > 100;`,
         title: 'Astro Page Component',
         description:
           'Pages live in src/pages/. The frontmatter fence (---) is server-only JavaScript.',
-        code: `---
-// src/pages/index.astro
-const title = 'NCompassTV Docs';
-const items = await fetch('/api/products').then(r => r.json());
----
-<html lang="en">
-  <head><title>{title}</title></head>
-  <body>
-    <h1>{title}</h1>
-    <ul>
-      {items.map((item: { id: number; name: string }) => (
-        <li>{item.name}</li>
-      ))}
-    </ul>
-  </body>
-</html>`,
+        code: `---\n// src/pages/index.astro\nconst title = 'NCompassTV Docs';\nconst items = await fetch('/api/products').then(r => r.json());\n---\n<html lang="en">\n  <head><title>{title}</title></head>\n  <body>\n    <h1>{title}</h1>\n    <ul>\n      {items.map((item: { id: number; name: string }) => (\n        <li>{item.name}</li>\n      ))}\n    </ul>\n  </body>\n</html>`,
         language: 'astro',
       },
       {
         title: 'Content Collections',
         description: 'Define a type-safe schema for Markdown content and query it at build time.',
-        code: `// src/content/config.ts
-import { z, defineCollection } from 'astro:content';
-
-const blog = defineCollection({
-  schema: z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { blog };
-
-// Usage in a page:
-import { getCollection } from 'astro:content';
-const posts = await getCollection('blog', ({ data }) => !data.draft);`,
+        code: `// src/content/config.ts\nimport { z, defineCollection } from 'astro:content';\n\nconst blog = defineCollection({\n  schema: z.object({\n    title: z.string(),\n    date: z.coerce.date(),\n    draft: z.boolean().default(false),\n  }),\n});\n\nexport const collections = { blog };\n\n// Usage in a page:\nimport { getCollection } from 'astro:content';\nconst posts = await getCollection('blog', ({ data }) => !data.draft);`,
         language: 'typescript',
       },
     ],
@@ -546,35 +405,13 @@ const posts = await getCollection('blog', ({ data }) => !data.draft);`,
       {
         title: 'Configure Content Paths',
         description: 'Tell Tailwind where your templates live so it can tree-shake unused classes.',
-        code: `// tailwind.config.ts
-import type { Config } from 'tailwindcss';
-
-export default {
-  content: [
-    './src/**/*.{html,ts,tsx,astro}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        navy: 'var(--navy)',
-        green: 'var(--green)',
-      },
-    },
-  },
-} satisfies Config;`,
+        code: `// tailwind.config.ts\nimport type { Config } from 'tailwindcss';\n\nexport default {\n  content: [\n    './src/**/*.{html,ts,tsx,astro}',\n  ],\n  theme: {\n    extend: {\n      colors: {\n        navy: 'var(--navy)',\n        green: 'var(--green)',\n      },\n    },\n  },\n} satisfies Config;`,
         language: 'typescript',
       },
       {
         title: 'Add Directives to CSS',
         description: 'Import Tailwind base, components, and utilities into your global stylesheet.',
-        code: `/* src/styles.scss */
-@import "tailwindcss";
-
-/* Your global custom properties */
-:root {
-  --navy: #091635;
-  --green: #8DCB2C;
-}`,
+        code: `/* src/styles.scss */\n@import "tailwindcss";\n\n/* Your global custom properties */\n:root {\n  --navy: #091635;\n  --green: #8DCB2C;\n}`,
         language: 'scss',
       },
     ],
@@ -583,24 +420,14 @@ export default {
         title: 'Utility Classes in HTML',
         description:
           'Compose layouts and visual styles directly in markup without leaving your template.',
-        code: `<button class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600
-               text-white font-semibold text-sm px-4 py-2 rounded-lg
-               transition-colors duration-150 focus:outline-none
-               focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-  Save Changes
-</button>`,
+        code: `<button class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600\n               text-white font-semibold text-sm px-4 py-2 rounded-lg\n               transition-colors duration-150 focus:outline-none\n               focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">\n  Save Changes\n</button>`,
         language: 'html',
       },
       {
         title: 'Responsive & State Variants',
         description:
           'Use responsive prefixes and state variants for adaptive, interactive designs.',
-        code: `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-  <div class="p-6 rounded-lg bg-white hover:shadow-lg transition-shadow
-              dark:bg-gray-800 dark:text-white">
-    Card content
-  </div>
-</div>`,
+        code: `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">\n  <div class="p-6 rounded-lg bg-white hover:shadow-lg transition-shadow\n              dark:bg-gray-800 dark:text-white">\n    Card content\n  </div>\n</div>`,
         language: 'html',
       },
     ],
@@ -624,7 +451,7 @@ export default {
       },
       {
         title: 'Docker Compose',
-        body: 'Multi-service orchestration with docker-compose.yml spins up the full NCompassTV stack â€” API, MySQL, and Redis â€” with a single command.',
+        body: 'Multi-service orchestration with docker-compose.yml spins up the full NCompassTV stack — API, MySQL, and Redis — with a single command.',
       },
       {
         title: 'Layer Caching',
@@ -654,9 +481,7 @@ export default {
         title: 'Install Docker Desktop (Windows / macOS)',
         description:
           'Download and install Docker Desktop which bundles the engine, CLI, and Compose.',
-        code: `# Download from https://docs.docker.com/get-started/get-docker/
-# After install, verify:
-docker version`,
+        code: `# Download from https://docs.docker.com/get-started/get-docker/\n# After install, verify:\ndocker version`,
         language: 'bash',
       },
     ],
@@ -665,48 +490,14 @@ docker version`,
         title: 'Dockerfile for a Node.js API',
         description:
           'Multi-stage build that keeps the production image small by discarding dev dependencies.',
-        code: `# Build stage
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Production stage
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-EXPOSE 3000
-CMD ["node", "dist/main.js"]`,
+        code: `# Build stage\nFROM node:20-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\n# Production stage\nFROM node:20-alpine\nWORKDIR /app\nCOPY --from=builder /app/dist ./dist\nCOPY --from=builder /app/node_modules ./node_modules\nEXPOSE 3000\nCMD ["node", "dist/main.js"]`,
         language: 'dockerfile',
       },
       {
         title: 'Docker Compose Stack',
         description:
-          'Define the full NCompassTV local stack â€” API + MySQL â€” in a single compose file.',
-        code: `services:
-  api:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      DB_HOST: db
-      DB_NAME: ncompass
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: mysql:8
-    environment:
-      MYSQL_DATABASE: ncompass
-      MYSQL_ROOT_PASSWORD: secret
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      retries: 5`,
+          'Define the full NCompassTV local stack — API + MySQL — in a single compose file.',
+        code: `services:\n  api:\n    build: .\n    ports:\n      - "3000:3000"\n    environment:\n      DB_HOST: db\n      DB_NAME: ncompass\n    depends_on:\n      db:\n        condition: service_healthy\n\n  db:\n    image: mysql:8\n    environment:\n      MYSQL_DATABASE: ncompass\n      MYSQL_ROOT_PASSWORD: secret\n    healthcheck:\n      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]\n      interval: 10s\n      retries: 5`,
         language: 'yaml',
       },
     ],
@@ -747,30 +538,19 @@ CMD ["node", "dist/main.js"]`,
       {
         title: 'Download Figma Desktop',
         description: 'Install the native desktop app for the best performance and offline access.',
-        code: `# Visit https://www.figma.com/downloads/
-# Available for Windows, macOS, and Linux (Snap/AppImage)
-
-# Linux (Snap):
-sudo snap install figma-linux`,
+        code: `# Visit https://www.figma.com/downloads/\n# Available for Windows, macOS, and Linux (Snap/AppImage)\n\n# Linux (Snap):\nsudo snap install figma-linux`,
         language: 'bash',
       },
       {
         title: 'Access the NCompassTV Workspace',
         description: 'Request access to the shared team workspace from the UI/UX lead.',
-        code: `# 1. Sign in at https://figma.com with your @ncompasstv.com email
-# 2. Ask @lena-morozova or @carlos-vega to invite you to:
-#    "NCompassTV Design System" team
-# 3. You will receive an email invite â€” click to join`,
+        code: `# 1. Sign in at https://figma.com with your @ncompasstv.com email\n# 2. Ask @lena-morozova or @carlos-vega to invite you to:\n#    "NCompassTV Design System" team\n# 3. You will receive an email invite — click to join`,
         language: 'bash',
       },
       {
         title: 'Install Required Plugins',
         description: 'Install these plugins from the Figma Community for the team workflow.',
-        code: `# Essential plugins (search in: Main Menu > Plugins > Browse plugins):
-# - Tokens Studio for Figma  (design token sync)
-# - Figma Contrast           (WCAG 2.1 contrast checker)
-# - Iconify                  (icon library browser)
-# - Unsplash                 (stock photo placeholder images)`,
+        code: `# Essential plugins (search in: Main Menu > Plugins > Browse plugins):\n# - Tokens Studio for Figma  (design token sync)\n# - Figma Contrast           (WCAG 2.1 contrast checker)\n# - Iconify                  (icon library browser)\n# - Unsplash                 (stock photo placeholder images)`,
         language: 'bash',
       },
     ],
@@ -778,21 +558,15 @@ sudo snap install figma-linux`,
       {
         title: 'Create a Component',
         description:
-          "Select a frame and convert it to a reusable component â€” it will appear in the team's asset panel.",
-        code: `# Create component:   Ctrl+Alt+K  (Windows) / Cmd+Option+K (Mac)
-# Duplicate instance:  Ctrl+D              / Cmd+D
-# Edit main component: Dbl-click instance â†’ "Go to main component"
-# Add variant:         Select component â†’ "Add variant" in right panel`,
+          "Select a frame and convert it to a reusable component — it will appear in the team's asset panel.",
+        code: `# Create component:   Ctrl+Alt+K  (Windows) / Cmd+Option+K (Mac)\n# Duplicate instance:  Ctrl+D              / Cmd+D\n# Edit main component: Dbl-click instance → "Go to main component"\n# Add variant:         Select component → "Add variant" in right panel`,
         language: 'bash',
       },
       {
         title: 'Inspect & Export for Dev Handoff',
         description:
           'Switch to Dev Mode to let engineers copy CSS values, spacing, and exported assets.',
-        code: `# Enter Dev Mode:    Press D  (or toggle top-right toolbar)
-# Copy CSS:           Select any layer â†’ "Code" panel â†’ copy CSS snippet
-# Export asset:       Select layer â†’ right panel "Export" â†’ choose SVG/PNG
-# View token values:  Hover a colour/spacing â†’ Tokens Studio panel shows variable name`,
+        code: `# Enter Dev Mode:    Press D  (or toggle top-right toolbar)\n# Copy CSS:           Select any layer → "Code" panel → copy CSS snippet\n# Export asset:       Select layer → right panel "Export" → choose SVG/PNG\n# View token values:  Hover a colour/spacing → Tokens Studio panel shows variable name`,
         language: 'bash',
       },
     ],
@@ -833,38 +607,21 @@ sudo snap install figma-linux`,
       {
         title: 'Install Python 3.12',
         description: 'Install via the system package manager or from python.org.',
-        code: `# Ubuntu / Debian
-sudo apt update && sudo apt install -y python3.12 python3-pip python3.12-venv
-
-# macOS (Homebrew)
-brew install python@3.12
-
-# Verify
-python3 --version && pip3 --version`,
+        code: `# Ubuntu / Debian\nsudo apt update && sudo apt install -y python3.12 python3-pip python3.12-venv\n\n# macOS (Homebrew)\nbrew install python@3.12\n\n# Verify\npython3 --version && pip3 --version`,
         language: 'bash',
       },
       {
         title: 'Create a Virtual Environment',
         description:
           'Always isolate project dependencies in a venv to avoid polluting the system Python.',
-        code: `python3 -m venv .venv
-
-# Activate (Linux / macOS)
-source .venv/bin/activate
-
-# Activate (Windows PowerShell)
-.\.venv\Scripts\Activate.ps1
-
-# Install deps
-pip install -r requirements.txt`,
+        code: `python3 -m venv .venv\n\n# Activate (Linux / macOS)\nsource .venv/bin/activate\n\n# Activate (Windows PowerShell)\n.\\.venv\\Scripts\\Activate.ps1\n\n# Install deps\npip install -r requirements.txt`,
         language: 'bash',
       },
       {
         title: 'Install Common QA Packages',
         description:
           'Install the packages used by the NCompassTV QA team for API and browser testing.',
-        code: `pip install pytest pytest-asyncio requests playwright
-python -m playwright install chromium`,
+        code: `pip install pytest pytest-asyncio requests playwright\npython -m playwright install chromium`,
         language: 'bash',
       },
     ],
@@ -872,44 +629,84 @@ python -m playwright install chromium`,
       {
         title: 'Pytest API Test',
         description: 'Write a simple Pytest test that validates the NestJS health endpoint.',
-        code: `# tests/test_health.py
-import requests
-
-BASE_URL = "http://localhost:3000"
-
-def test_health_endpoint():
-    resp = requests.get(f"{BASE_URL}/api/health")
-    assert resp.status_code == 200
-    body = resp.json()
-    assert body["status"] == "ok"
-
-def test_users_returns_list():
-    resp = requests.get(f"{BASE_URL}/api/users")
-    assert resp.status_code == 200
-    assert isinstance(resp.json(), list)
-
-# Run with: pytest tests/ -v`,
+        code: `# tests/test_health.py\nimport requests\n\nBASE_URL = "http://localhost:3000"\n\ndef test_health_endpoint():\n    resp = requests.get(f"{BASE_URL}/api/health")\n    assert resp.status_code == 200\n    body = resp.json()\n    assert body["status"] == "ok"\n\ndef test_users_returns_list():\n    resp = requests.get(f"{BASE_URL}/api/users")\n    assert resp.status_code == 200\n    assert isinstance(resp.json(), list)\n\n# Run with: pytest tests/ -v`,
         language: 'python',
       },
       {
         title: 'Data Fixture Generator',
         description: 'Generate seeded JSON fixtures for backend integration tests.',
-        code: `import json, random, pathlib
-from datetime import datetime, timedelta
-
-def make_user(i: int) -> dict:
-    return {
-        "id": i,
-        "name": f"User {i}",
-        "email": f"user{i}@nctv.com",
-        "createdAt": (datetime.now() - timedelta(days=i)).isoformat(),
-    }
-
-fixtures = [make_user(i) for i in range(1, 51)]
-pathlib.Path("fixtures/users.json").write_text(json.dumps(fixtures, indent=2))
-print(f"Generated {len(fixtures)} user fixtures")`,
+        code: `import json, random, pathlib\nfrom datetime import datetime, timedelta\n\ndef make_user(i: int) -> dict:\n    return {\n        "id": i,\n        "name": f"User {i}",\n        "email": f"user{i}@nctv.com",\n        "createdAt": (datetime.now() - timedelta(days=i)).isoformat(),\n    }\n\nfixtures = [make_user(i) for i in range(1, 51)]\npathlib.Path("fixtures/users.json").write_text(json.dumps(fixtures, indent=2))\nprint(f"Generated {len(fixtures)} user fixtures")`,
         language: 'python',
       },
     ],
   },
 ];
+
+async function run() {
+  if (!TOKEN) {
+    console.error('❌ Error: STRAPI_ADMIN_TOKEN is missing.');
+    return;
+  }
+
+  console.log(`🚀 Starting migration of ${tools.length} tools...`);
+
+  for (const tool of tools) {
+    try {
+      const { usedBy, ...restOfTool } = tool;
+      const payload = {
+        data: {
+          ...restOfTool,
+          usedBy: tool.usedBy,
+          features: tool.features,
+          install: tool.install,
+          basicUse: tool.basicUse,
+        },
+      };
+
+      // 1. Check if tool already exists
+      const checkResponse = await fetch(`${STRAPI_URL}?filters[key][$eq]=${tool.key}`, {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      });
+      const checkData = await checkResponse.json();
+      const existing = checkData.data && checkData.data.length > 0 ? checkData.data[0] : null;
+
+      let response;
+      if (existing) {
+        // 2. Update existing entry
+        console.log(`🔄 Updating: ${tool.label}...`);
+        response = await fetch(`${STRAPI_URL}/${existing.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          body: JSON.stringify(payload),
+        });
+      } else {
+        // 3. Create new entry
+        console.log(`🚀 Creating: ${tool.label}...`);
+        response = await fetch(STRAPI_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          body: JSON.stringify(payload),
+        });
+      }
+
+      if (response.ok) {
+        console.log(`✅ Success: ${tool.label}`);
+      } else {
+        const err = await response.json();
+        console.error(`❌ Failed: ${tool.label}`, JSON.stringify(err, null, 2));
+      }
+    } catch (e) {
+      console.error(`💥 Error migrating ${tool.label}:`, e.message);
+    }
+  }
+
+  console.log('🏁 Migration complete!');
+}
+
+run();
