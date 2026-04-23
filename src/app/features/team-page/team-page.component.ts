@@ -47,6 +47,7 @@ import { NcWebDesignShowcaseComponent } from '../../shared/components/nc-web-des
 import { NcPrintShowcaseComponent } from '../../shared/components/nc-print-showcase/nc-print-showcase.component';
 import { NcBrandShowcaseComponent } from '../../shared/components/nc-brand-showcase/nc-brand-showcase.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
+import { PiEcosystemComponent } from '../../shared/components/pi-ecosystem/pi-ecosystem.component';
 
 /**
  * TeamPageComponent renders the full documentation page for the active team.
@@ -82,6 +83,7 @@ import { RevealDirective } from '../../shared/directives/reveal.directive';
     NcWebDesignShowcaseComponent,
     NcPrintShowcaseComponent,
     NcBrandShowcaseComponent,
+    PiEcosystemComponent,
     RevealDirective,
   ],
   templateUrl: './team-page.component.html',

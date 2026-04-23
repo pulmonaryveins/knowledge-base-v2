@@ -59,11 +59,12 @@ export class DocsShellComponent implements OnInit {
         const targetId = this._nav.pendingScrollId();
         if (targetId) {
           this._nav.setPendingScroll(null);
-          // Small extra tick to ensure Angular has rendered the section elements
+          // Wait for Angular to finish rendering the new page sections
+          // before attempting getElementById (80ms was too tight on slower devices).
           setTimeout(() => {
             const el = document.getElementById(targetId);
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 80);
+          }, 160);
         }
       }, 420);
     });

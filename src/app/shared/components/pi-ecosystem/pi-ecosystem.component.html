@@ -1,0 +1,143 @@
+<!-- FILE: src/app/shared/components/pi-ecosystem/pi-ecosystem.component.html -->
+<div class="pi-eco">
+
+  <!-- ── Layer 1: api-v1 ←→ RDS ─────────────────────────────────────────── -->
+  <div class="pi-eco__api-row">
+    <div class="pi-eco__node pi-eco__node--api">
+      <div class="pi-eco__node-icon pi-eco__node-icon--api">
+        <lucide-icon [img]="iconServer" [size]="18" [strokeWidth]="1.75" />
+      </div>
+      <div class="pi-eco__node-body">
+        <span class="pi-eco__node-name">api-v1</span>
+        <span class="pi-eco__node-sub">.NET 2.2 REST API</span>
+        <span class="pi-eco__node-desc">Central brain &amp; database interface for the entire NTV ecosystem. Acts as the middleman — serves data to both the web dashboard and all deployed Pi player devices.</span>
+      </div>
+      <span class="pi-eco__node-tag pi-eco__node-tag--web">API</span>
+    </div>
+
+    <div class="pi-eco__hconn">
+      <div class="pi-eco__hline"></div>
+      <span class="pi-eco__hbadge">↔</span>
+      <div class="pi-eco__hline"></div>
+    </div>
+
+    <div class="pi-eco__node pi-eco__node--rds">
+      <div class="pi-eco__node-icon pi-eco__node-icon--rds">
+        <lucide-icon [img]="iconDb" [size]="18" [strokeWidth]="1.75" />
+      </div>
+      <div class="pi-eco__node-body">
+        <span class="pi-eco__node-name">RDS</span>
+        <span class="pi-eco__node-sub">AWS · MySQL</span>
+        <span class="pi-eco__node-desc">AWS-hosted relational database. Stores all schedules, content metadata, device configuration, and playback records for api-v1.</span>
+      </div>
+      <span class="pi-eco__node-tag">DB</span>
+    </div>
+  </div>
+
+  <!-- ── RDS trunk: vline in right col, drops from RDS down to socket.io ── -->
+  <div class="pi-eco__api-trunk">
+    <div></div>
+    <div class="pi-eco__conn-drop">
+      <div class="pi-eco__vline"></div>
+      <div class="pi-eco__vtip"></div>
+    </div>
+  </div>
+
+  <!-- ── Mobile-only flow arrow: api-group → socket.io ────────────────── -->
+  <div class="pi-eco__mobile-arrow"></div>
+
+  <!-- ── Layer 2: socket.io hub (spans full width) ──────────────────────── -->
+  <div class="pi-eco__hub-row">
+    <div class="pi-eco__node pi-eco__node--socket">
+      <div class="pi-eco__node-icon pi-eco__node-icon--socket">
+        <lucide-icon [img]="iconHub" [size]="18" [strokeWidth]="1.75" />
+      </div>
+      <div class="pi-eco__node-body">
+        <span class="pi-eco__node-name">socket.io server</span>
+        <span class="pi-eco__node-sub">Real-time event relay — connects all services</span>
+        <span class="pi-eco__node-desc">Bridges api-v1 with the dashboard and all Pi player-servers. Relays live schedule updates, device commands, and uptime events in real time.</span>
+      </div>
+      <span class="pi-eco__node-tag pi-eco__node-tag--socket">HUB</span>
+    </div>
+  </div>
+
+  <!-- ── Center trunk: socket.io bottom-center → fork H-bar ────────────────── -->
+  <div class="pi-eco__hub-trunk">
+    <div class="pi-eco__vline"></div>
+  </div>
+
+  <!-- ── Mobile-only flow arrow: socket.io → clients ────────────────────── -->
+  <div class="pi-eco__mobile-arrow"></div>
+
+  <!-- ── Fork: H-bar + left and right drops ────────────────────────────── -->
+  <div class="pi-eco__fork-row">
+    <div class="pi-eco__conn-drop">
+      <div class="pi-eco__vline"></div>
+      <div class="pi-eco__vtip"></div>
+    </div>
+    <div class="pi-eco__conn-drop">
+      <div class="pi-eco__vline"></div>
+      <div class="pi-eco__vtip"></div>
+    </div>
+  </div>
+
+  <!-- ── Layer 3: dashboard-v1 | Raspberry Pi ───────────────────────────── -->
+  <div class="pi-eco__clients">
+
+    <!-- dashboard-v1 -->
+    <div class="pi-eco__node pi-eco__node--dashboard">
+        <div class="pi-eco__node-icon pi-eco__node-icon--dash">
+          <lucide-icon [img]="iconDash" [size]="18" [strokeWidth]="1.75" />
+        </div>
+        <div class="pi-eco__node-body">
+          <span class="pi-eco__node-name">dashboard-v1</span>
+          <span class="pi-eco__node-sub">Angular · Web Dashboard</span>
+          <span class="pi-eco__node-desc">User-facing app for administrators and clients to manage content, screens, and settings. Makes HTTP requests to api-v1 only — no direct communication with players.</span>
+        </div>
+        <span class="pi-eco__node-tag pi-eco__node-tag--web">WEB</span>
+    </div>
+
+    <!-- Raspberry Pi boundary -->
+    <div class="pi-eco__pi-box">
+      <div class="pi-eco__pi-label">
+        <div class="pi-eco__node-icon pi-eco__node-icon--pi pi-eco__node-icon--sm">
+          <lucide-icon [img]="iconCpu" [size]="13" [strokeWidth]="2" />
+        </div>
+        Raspberry Pi 3/4 · player-v1
+      </div>
+
+      <div class="pi-eco__node pi-eco__node--server">
+        <div class="pi-eco__node-icon pi-eco__node-icon--pi">
+          <lucide-icon [img]="iconServer" [size]="18" [strokeWidth]="1.75" />
+        </div>
+        <div class="pi-eco__node-body">
+          <span class="pi-eco__node-name">player-server</span>
+          <span class="pi-eco__node-sub">Node.js v12 · PM2</span>
+          <span class="pi-eco__node-desc">Upstream: connects to api-v1 via socket servers to download schedules, media, and programmatic ads, and to report uptime/status. Downstream: serves local content and commands to player-ui.</span>
+        </div>
+        <span class="pi-eco__node-tag pi-eco__node-tag--pi">NODE</span>
+      </div>
+
+      <div class="pi-eco__inner-conn">
+        <div class="pi-eco__inner-line"></div>
+        <span class="pi-eco__inner-badge">socket.io</span>
+        <div class="pi-eco__inner-line"></div>
+        <div class="pi-eco__vtip pi-eco__vtip--pi"></div>
+      </div>
+
+      <div class="pi-eco__node pi-eco__node--ui">
+        <div class="pi-eco__node-icon pi-eco__node-icon--pi">
+          <lucide-icon [img]="iconUi" [size]="18" [strokeWidth]="1.75" />
+        </div>
+        <div class="pi-eco__node-body">
+          <span class="pi-eco__node-name">player-ui</span>
+          <span class="pi-eco__node-sub">Angular 18 · Chromium Kiosk</span>
+          <span class="pi-eco__node-desc">The visual interface shown on TV screens. Talks exclusively to player-server to know what to play, when to play it, and to report playback verification. Does not communicate directly with api-v1.</span>
+        </div>
+        <span class="pi-eco__node-tag pi-eco__node-tag--pi">UI</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>

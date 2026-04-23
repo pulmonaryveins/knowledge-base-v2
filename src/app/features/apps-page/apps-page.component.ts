@@ -69,6 +69,11 @@ export class AppsPageComponent implements OnInit, OnDestroy {
       .map(key => ({ section: key || null, docs: map.get(key)! }));
   });
 
+  /** Deterministic slug for a section name — must match the formula used in SearchService. */
+  protected rdSectionSlug(section: string): string {
+    return section.toLowerCase().replace(/\W+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
   async ngOnInit(): Promise<void> {
     await this._fetchAll();
     this._subscribeRealtime();
@@ -90,6 +95,23 @@ export class AppsPageComponent implements OnInit, OnDestroy {
     this.rdDocuments.set(docs);
     this.rdSections.set(sections);
     this.rdDocsLoading.set(false);
+  }
+
+  /** Derive a human-readable document type label from the file path or URL. */
+  protected docType(doc: RdDocument): string {
+    const source = doc.file_path ?? doc.url ?? '';
+    const ext = source.split('?')[0].split('.').pop()?.toLowerCase();
+    switch (ext) {
+      case 'pdf':          return 'PDF';
+      case 'doc':
+      case 'docx':         return 'Word Document';
+      case 'md':           return 'Markdown';
+      case 'ppt':
+      case 'pptx':         return 'Presentation';
+      case 'xls':
+      case 'xlsx':         return 'Spreadsheet';
+      default:             return 'URL';
+    }
   }
 
   /**

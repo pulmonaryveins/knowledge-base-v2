@@ -23,4 +23,8 @@ export interface SearchResult {
   readonly snippet: string;
   /** Section ID to scroll to when this result is selected */
   readonly sectionId: string;
+  /** Full text dump of all content inside this result — used for keyword matching only, not displayed */
+  readonly keywords: string;
+  /** Parent section label — set for sub-item results (tech rows, steps, patterns); empty for section-level results */
+  readonly parentLabel: string;
 }

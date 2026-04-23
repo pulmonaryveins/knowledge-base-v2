@@ -1,0 +1,294 @@
+@reference "tailwindcss";
+
+// ── FILE: src/app/shared/components/pi-ecosystem/pi-ecosystem.component.scss ──
+
+$pi-color:  #C2185B;
+$pi-bg:     #fff5f8;
+$pi-border: rgba(194, 24, 91, 0.2);
+
+$api-color:  #0891B2;
+$api-bg:     #f0f9ff;
+$api-border: rgba(8, 145, 178, 0.35);
+
+$socket-color:  #7C3AED;
+$socket-bg:     #faf5ff;
+$socket-border: rgba(124, 58, 237, 0.25);
+
+$line-color: #94A3B8;
+$col-gap:    24px;
+$row-width:  88%;
+
+@mixin dashed-v($color: $line-color) {
+  background: repeating-linear-gradient(
+    to bottom,
+    #{$color} 0, #{$color} 5px,
+    transparent 5px, transparent 10px
+  );
+}
+
+@mixin dashed-h($color: $line-color) {
+  background: repeating-linear-gradient(
+    to right,
+    #{$color} 0, #{$color} 5px,
+    transparent 5px, transparent 10px
+  );
+}
+
+@mixin two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $col-gap;
+  width: $row-width;
+}
+
+.pi-eco {
+  @apply flex flex-col items-center w-full py-[8px];
+
+  // ── Shared node ───────────────────────────────────────────────────────────
+  &__node {
+    @apply flex items-start gap-[14px] px-[16px] py-[14px] rounded-[10px] w-full box-border;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+
+    &--api       { border-color: $api-border;              background: $api-bg;    }
+    &--rds       { border-color: $api-border;              background: $api-bg;    }
+    &--socket    { border-color: $socket-border;           background: $socket-bg; }
+    &--dashboard { border-color: rgba(99, 102, 241, 0.2);  background: #f5f5ff;    }
+
+    &--server,
+    &--ui {
+      border-color: $pi-border;
+      background: white;
+    }
+  }
+
+  &__node-body {
+    @apply flex flex-col gap-[2px] flex-1 min-w-0;
+  }
+
+  &__node-name {
+    @apply font-bold text-[14px] text-[var(--navy)] font-['Syne',_sans-serif] leading-tight;
+  }
+
+  &__node-sub {
+    @apply text-[11.5px] text-[var(--muted)] leading-snug;
+  }
+
+  &__node-desc {
+    @apply text-[11.5px] text-[var(--muted)] leading-[1.55] mt-[7px] pt-[7px];
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  // ── Node icon circles ─────────────────────────────────────────────────────
+  &__node-icon {
+    @apply flex items-center justify-center w-[36px] h-[36px] rounded-lg shrink-0 self-start mt-[1px];
+
+    &--api    { background: rgba(8, 145, 178, 0.15);  color: $api-color;    }
+    &--rds    { background: rgba(8, 145, 178, 0.15);  color: $api-color;    }
+    &--socket { background: rgba(124, 58, 237, 0.15); color: $socket-color; }
+    &--dash   { background: rgba(99, 102, 241, 0.12); color: #6366F1;       }
+    &--pi     { background: rgba(194, 24, 91, 0.15);  color: $pi-color;     }
+
+    &--sm {
+      @apply w-[22px] h-[22px] rounded-[5px];
+    }
+  }
+
+  // ── Tag badges ────────────────────────────────────────────────────────────
+  &__node-tag {
+    @apply text-[9px] font-bold tracking-[0.08em] px-[8px] py-[2px] rounded-full shrink-0 self-start ml-auto;
+    background: var(--border);
+    color: var(--muted);
+
+    &--socket { background: rgba(124, 58, 237, 0.12); color: $socket-color; }
+    &--web    { background: rgba(8, 145, 178, 0.12);  color: $api-color;    }
+    &--pi     { background: $pi-border;               color: $pi-color;     }
+  }
+
+  // ── Layer 1: api-v1 ←→ RDS row ───────────────────────────────────────────
+  &__api-row {
+    @apply flex flex-row items-stretch;
+    width: $row-width;
+
+    .pi-eco__node--api,
+    .pi-eco__node--rds {
+      @apply flex-1 min-w-0;
+    }
+  }
+
+  &__hconn {
+    @apply flex items-center shrink-0;
+    width: 56px;
+  }
+
+  &__hline {
+    @apply flex-1 h-[2px];
+    @include dashed-h();
+  }
+
+  &__hbadge {
+    @apply text-[11px] font-bold shrink-0 leading-[1.4] tracking-[0.02em] px-[5px] py-[1px] rounded-full;
+    color: $api-color;
+    background: $api-bg;
+    border: 1px solid $api-border;
+  }
+
+  // ── Connector rows ────────────────────────────────────────────────────────
+  &__api-trunk {
+    @include two-col();
+  }
+
+  &__hub-trunk {
+    @apply flex flex-col items-center;
+    width: $row-width;
+  }
+
+  // ── Fork row: H-bar connecting both drop lines ────────────────────────────
+  &__fork-row {
+    @include two-col();
+    position: relative;
+
+    &::before {
+      content: '';
+      @apply absolute top-0 pointer-events-none;
+      left:  calc((100% - #{$col-gap}) / 4);
+      right: calc((100% - #{$col-gap}) / 4);
+      height: 0;
+      border-top: 2px dashed $line-color;
+    }
+  }
+
+  // ── Drop cell ─────────────────────────────────────────────────────────────
+  &__conn-drop {
+    @apply flex flex-col justify-start items-center h-[34px];
+  }
+
+  &__vline {
+    @apply shrink-0;
+    width: 2px;
+    height: 24px;
+    @include dashed-v();
+  }
+
+  // ── Arrowhead tip ─────────────────────────────────────────────────────────
+  &__vtip {
+    @apply shrink-0;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid $line-color;
+
+    &--pi { border-top-color: $pi-color; }
+  }
+
+  // ── Layer 2: socket.io hub row ────────────────────────────────────────────
+  &__hub-row {
+    @apply flex;
+    width: $row-width;
+  }
+
+  // ── Layer 3: client columns ───────────────────────────────────────────────
+  &__clients {
+    @include two-col();
+    align-items: flex-start;
+  }
+
+  // ── Raspberry Pi boundary ─────────────────────────────────────────────────
+  &__pi-box {
+    @apply flex flex-col box-border rounded-[14px] p-[16px];
+    gap: 0;
+    border: 2px solid $pi-border;
+    background: linear-gradient(160deg, #fff8fb 0%, #fff5f8 100%);
+  }
+
+  &__pi-label {
+    @apply flex items-center gap-[7px] text-[10px] font-bold uppercase tracking-[0.1em] mb-[14px] pb-[10px];
+    color: $pi-color;
+    border-bottom: 1px solid $pi-border;
+  }
+
+  // ── Inner connector: player-server → socket.io → player-ui ───────────────
+  &__inner-conn {
+    @apply flex flex-col items-center py-[6px];
+  }
+
+  &__inner-line {
+    width: 2px;
+    height: 16px;
+    @include dashed-v($pi-border);
+  }
+
+  &__inner-badge {
+    @apply text-[9.5px] font-bold relative z-[1] px-[11px] py-[3px] rounded-full tracking-[0.04em];
+    color: $pi-color;
+    background: white;
+    border: 1.5px solid $pi-border;
+  }
+
+  // ── Mobile-only flow arrow ────────────────────────────────────────────────
+  &__mobile-arrow {
+    @apply hidden;
+  }
+
+  // ── Responsive ────────────────────────────────────────────────────────────
+  @media (max-width: 768px) {
+    @apply pb-[16px];
+
+    &__api-row,
+    &__hub-row,
+    &__clients {
+      @apply w-full;
+    }
+
+    &__api-trunk,
+    &__hub-trunk,
+    &__fork-row {
+      @apply hidden;
+    }
+
+    &__api-row {
+      @apply flex-col items-stretch gap-[10px] rounded-[12px] p-[12px];
+      background: $api-bg;
+      border: 1.5px solid $api-border;
+
+      .pi-eco__hconn { @apply hidden; }
+
+      .pi-eco__node--api,
+      .pi-eco__node--rds {
+        flex: none;
+        border-color: rgba(8, 145, 178, 0.18);
+        background: white;
+      }
+    }
+
+    &__mobile-arrow {
+      @apply flex flex-col items-center;
+
+      &::before {
+        content: '';
+        @apply block w-[2px] h-[24px];
+        background: repeating-linear-gradient(
+          to bottom,
+          #{$line-color} 0, #{$line-color} 5px,
+          transparent 5px, transparent 10px
+        );
+      }
+
+      &::after {
+        content: '';
+        @apply block mb-[8px];
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid $line-color;
+      }
+    }
+
+    &__clients {
+      @apply flex flex-col gap-[12px];
+    }
+  }
+}
