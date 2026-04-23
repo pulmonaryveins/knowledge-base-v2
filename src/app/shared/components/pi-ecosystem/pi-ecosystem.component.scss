@@ -14,37 +14,26 @@ $socket-color:  #7C3AED;
 $socket-bg:     #faf5ff;
 $socket-border: rgba(124, 58, 237, 0.25);
 
-// Diagram line color — explicit, visible on both light and dark backgrounds
 $line-color: #94A3B8;
+$col-gap:    24px;
+$row-width:  88%;
 
-// The two core layout constants must match between conn-row, fork-row, clients
-$col-gap:   24px;
-$row-width: 88%;
-
-// ── Dashed line helpers ───────────────────────────────────────────────────────
 @mixin dashed-v($color: $line-color) {
   background: repeating-linear-gradient(
     to bottom,
-    #{$color} 0,
-    #{$color} 5px,
-    transparent 5px,
-    transparent 10px
+    #{$color} 0, #{$color} 5px,
+    transparent 5px, transparent 10px
   );
 }
 
 @mixin dashed-h($color: $line-color) {
   background: repeating-linear-gradient(
     to right,
-    #{$color} 0,
-    #{$color} 5px,
-    transparent 5px,
-    transparent 10px
+    #{$color} 0, #{$color} 5px,
+    transparent 5px, transparent 10px
   );
 }
 
-// ── Shared 2-column grid (conn-row, fork-row, clients all use this) ───────────
-// By sharing the same grid template, conn-drop vlines and client columns
-// are guaranteed to be at matching X positions.
 @mixin two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -53,29 +42,19 @@ $row-width: 88%;
 }
 
 .pi-eco {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 4px 0 8px;
+  @apply flex flex-col items-center w-full py-[8px];
 
   // ── Shared node ───────────────────────────────────────────────────────────
   &__node {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 16px;
-    border-radius: 10px;
+    @apply flex items-start gap-[14px] px-[16px] py-[14px] rounded-[10px] w-full box-border;
     border: 1.5px solid var(--border);
     background: var(--card);
-    width: 100%;
-    box-sizing: border-box;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 
-    &--api        { border-color: $api-border;              background: $api-bg;       }
-    &--rds        { border-color: $api-border;              background: $api-bg;        }
-    &--socket     { border-color: $socket-border;           background: $socket-bg;  }
-    &--dashboard  { border-color: rgba(99, 102, 241, 0.2); background: #f5f5ff;         }
+    &--api       { border-color: $api-border;              background: $api-bg;    }
+    &--rds       { border-color: $api-border;              background: $api-bg;    }
+    &--socket    { border-color: $socket-border;           background: $socket-bg; }
+    &--dashboard { border-color: rgba(99, 102, 241, 0.2);  background: #f5f5ff;    }
 
     &--server,
     &--ui {
@@ -85,11 +64,7 @@ $row-width: 88%;
   }
 
   &__node-body {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    min-width: 0;
+    @apply flex flex-col gap-[2px] flex-1 min-w-0;
   }
 
   &__node-name {
@@ -101,25 +76,13 @@ $row-width: 88%;
   }
 
   &__node-desc {
-    font-size: 11.5px;
-    line-height: 1.55;
-    color: var(--muted);
-    margin-top: 7px;
-    padding-top: 7px;
+    @apply text-[11.5px] text-[var(--muted)] leading-[1.55] mt-[7px] pt-[7px];
     border-top: 1px solid rgba(0, 0, 0, 0.07);
   }
 
   // ── Node icon circles ─────────────────────────────────────────────────────
   &__node-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    flex-shrink: 0;
-    align-self: flex-start;
-    margin-top: 1px;
+    @apply flex items-center justify-center w-[36px] h-[36px] rounded-lg shrink-0 self-start mt-[1px];
 
     &--api    { background: rgba(8, 145, 178, 0.15);  color: $api-color;    }
     &--rds    { background: rgba(8, 145, 178, 0.15);  color: $api-color;    }
@@ -128,22 +91,13 @@ $row-width: 88%;
     &--pi     { background: rgba(194, 24, 91, 0.15);  color: $pi-color;     }
 
     &--sm {
-      width: 22px;
-      height: 22px;
-      border-radius: 5px;
+      @apply w-[22px] h-[22px] rounded-[5px];
     }
   }
 
   // ── Tag badges ────────────────────────────────────────────────────────────
   &__node-tag {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    padding: 2px 8px;
-    border-radius: 100px;
-    flex-shrink: 0;
-    align-self: flex-start;
-    margin-left: auto;
+    @apply text-[9px] font-bold tracking-[0.08em] px-[8px] py-[2px] rounded-full shrink-0 self-start ml-auto;
     background: var(--border);
     color: var(--muted);
 
@@ -154,116 +108,84 @@ $row-width: 88%;
 
   // ── Layer 1: api-v1 ←→ RDS row ───────────────────────────────────────────
   &__api-row {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    @apply flex flex-row items-stretch;
     width: $row-width;
 
     .pi-eco__node--api,
     .pi-eco__node--rds {
-      flex: 1 1 0;
-      min-width: 0;
+      @apply flex-1 min-w-0;
     }
   }
 
   &__hconn {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
+    @apply flex items-center shrink-0;
     width: 56px;
   }
 
   &__hline {
-    flex: 1;
-    height: 2px;
+    @apply flex-1 h-[2px];
     @include dashed-h();
   }
 
   &__hbadge {
-    font-size: 11px;
-    font-weight: 700;
+    @apply text-[11px] font-bold shrink-0 leading-[1.4] tracking-[0.02em] px-[5px] py-[1px] rounded-full;
     color: $api-color;
     background: $api-bg;
     border: 1px solid $api-border;
-    border-radius: 100px;
-    padding: 1px 5px;
-    flex-shrink: 0;
-    line-height: 1.4;
-    letter-spacing: 0.02em;
   }
 
-  // ── Connector rows ─────────────────────────────────────────────────────────────
-  // __api-trunk: left-col drop from api-v1 → socket.io
-  // __hub-trunk: center drop from socket.io → fork H-bar
-  // Both use the same 2-col grid as __clients so vlines align with columns.
+  // ── Connector rows ────────────────────────────────────────────────────────
   &__api-trunk {
     @include two-col();
   }
 
-  // Center trunk: drops from socket.io bottom-center to the fork H-bar.
-  // Flex+center ensures the vline sits exactly at 50% of the row width,
-  // which is also the midpoint of the fork H-bar below.
   &__hub-trunk {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @apply flex flex-col items-center;
     width: $row-width;
   }
 
-  // ── Fork row adds a horizontal bar at the top connecting both drop lines ──
+  // ── Fork row: H-bar connecting both drop lines ────────────────────────────
   &__fork-row {
     @include two-col();
     position: relative;
 
-    // H-bar spans from center of left col to center of right col.
-    // With grid-template-columns: 1fr 1fr and gap: $col-gap:
-    //   left col center  = (100% - gap) / 4
-    //   right col center = same distance from right edge
     &::before {
       content: '';
-      position: absolute;
-      top: 0;
+      @apply absolute top-0 pointer-events-none;
       left:  calc((100% - #{$col-gap}) / 4);
       right: calc((100% - #{$col-gap}) / 4);
       height: 0;
       border-top: 2px dashed $line-color;
-      pointer-events: none;
     }
   }
 
-  // ── Drop cell: centers a vline + arrowhead within its grid column ─────────
+  // ── Drop cell ─────────────────────────────────────────────────────────────
   &__conn-drop {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 34px;
+    @apply flex flex-col justify-start items-center h-[34px];
   }
 
   &__vline {
+    @apply shrink-0;
     width: 2px;
     height: 24px;
     @include dashed-v();
-    flex-shrink: 0;
   }
 
-  // ── Downward arrowhead tip for connector lines ────────────────────────────
+  // ── Arrowhead tip ─────────────────────────────────────────────────────────
   &__vtip {
+    @apply shrink-0;
     width: 0;
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 6px solid $line-color;
-    flex-shrink: 0;
 
-    &--pi {
-      border-top-color: $pi-color;
-    }
+    &--pi { border-top-color: $pi-color; }
   }
 
   // ── Layer 2: socket.io hub row ────────────────────────────────────────────
   &__hub-row {
-    display: flex;
+    @apply flex;
     width: $row-width;
   }
 
@@ -272,38 +194,24 @@ $row-width: 88%;
     @include two-col();
     align-items: flex-start;
   }
+
   // ── Raspberry Pi boundary ─────────────────────────────────────────────────
   &__pi-box {
-    border: 2px solid $pi-border;
-    border-radius: 14px;
-    padding: 16px;
-    background: linear-gradient(160deg, #fff8fb 0%, #fff5f8 100%);
-    display: flex;
-    flex-direction: column;
+    @apply flex flex-col box-border rounded-[14px] p-[16px];
     gap: 0;
-    box-sizing: border-box;
+    border: 2px solid $pi-border;
+    background: linear-gradient(160deg, #fff8fb 0%, #fff5f8 100%);
   }
 
   &__pi-label {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 10px;
-    font-weight: 700;
+    @apply flex items-center gap-[7px] text-[10px] font-bold uppercase tracking-[0.1em] mb-[14px] pb-[10px];
     color: $pi-color;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
     border-bottom: 1px solid $pi-border;
   }
 
   // ── Inner connector: player-server → socket.io → player-ui ───────────────
   &__inner-conn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 6px 0;
+    @apply flex flex-col items-center py-[6px];
   }
 
   &__inner-line {
@@ -313,52 +221,40 @@ $row-width: 88%;
   }
 
   &__inner-badge {
-    font-size: 9.5px;
-    font-weight: 700;
+    @apply text-[9.5px] font-bold relative z-[1] px-[11px] py-[3px] rounded-full tracking-[0.04em];
     color: $pi-color;
     background: white;
     border: 1.5px solid $pi-border;
-    border-radius: 100px;
-    padding: 3px 11px;
-    letter-spacing: 0.04em;
-    position: relative;
-    z-index: 1;
   }
 
-  // ── Mobile-only flow arrow (hidden on desktop) ────────────────────────────
+  // ── Mobile-only flow arrow ────────────────────────────────────────────────
   &__mobile-arrow {
-    display: none;
+    @apply hidden;
   }
 
-  // ── Responsive ──────────────────────────────────────────────────────────
+  // ── Responsive ────────────────────────────────────────────────────────────
   @media (max-width: 768px) {
-    padding: 4px 0 16px;
+    @apply pb-[16px];
 
-    // All rows expand to full width
     &__api-row,
     &__hub-row,
     &__clients {
-      width: 100%;
+      @apply w-full;
     }
 
-    // Hide all desktop diagram connectors
     &__api-trunk,
     &__hub-trunk,
     &__fork-row {
-      display: none;
+      @apply hidden;
     }
 
-    // api-v1 ↔ RDS: group in a soft box, stack vertically
     &__api-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 10px;
+      @apply flex-col items-stretch gap-[10px] rounded-[12px] p-[12px];
       background: $api-bg;
       border: 1.5px solid $api-border;
-      border-radius: 12px;
-      padding: 12px;
 
-      .pi-eco__hconn { display: none; }
+      .pi-eco__hconn { @apply hidden; }
+
       .pi-eco__node--api,
       .pi-eco__node--rds {
         flex: none;
@@ -367,43 +263,32 @@ $row-width: 88%;
       }
     }
 
-    // Show mobile flow arrows between sections
     &__mobile-arrow {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      @apply flex flex-col items-center;
 
       &::before {
         content: '';
-        display: block;
-        width: 2px;
-        height: 24px;
+        @apply block w-[2px] h-[24px];
         background: repeating-linear-gradient(
           to bottom,
-          #{$line-color} 0,
-          #{$line-color} 5px,
-          transparent 5px,
-          transparent 10px
+          #{$line-color} 0, #{$line-color} 5px,
+          transparent 5px, transparent 10px
         );
       }
 
       &::after {
         content: '';
-        display: block;
+        @apply block mb-[8px];
         width: 0;
         height: 0;
         border-left: 5px solid transparent;
         border-right: 5px solid transparent;
         border-top: 6px solid $line-color;
-        margin-bottom: 8px;
       }
     }
 
-    // Single-column client stack
     &__clients {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      @apply flex flex-col gap-[12px];
     }
   }
 }

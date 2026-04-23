@@ -21,9 +21,18 @@ import { RdDocumentsService } from './rd-documents.service';
  */
 @Injectable({ providedIn: 'root' })
 export class SearchService {
+  /** Provides the pre-built search index from all static team documentation. */
   private readonly _docsData = inject(DocsDataService);
+
+  /** Provides the live Supabase-backed R&D document cache. */
   private readonly _rdDocs   = inject(RdDocumentsService);
 
+  /**
+   * Run a full-text search across all indexed sections and R&D documents.
+   *
+   * @param query - Raw user input; whitespace-trimmed and lowercased internally.
+   * @returns Scored results sorted highest-first. Empty array when query is blank.
+   */
   public search(query: string): ReadonlyArray<SearchResult> {
     const q = query.trim().toLowerCase();
     if (!q) return [];
@@ -49,6 +58,13 @@ export class SearchService {
     });
   }
 
+  /**
+   * Score a single search result against the query words.
+   *
+   * @param r     - The candidate result from the index.
+   * @param words - Lowercased, space-split query tokens.
+   * @returns 0 if any word is absent from the combined haystack; otherwise 1–4.
+   */
   private _score(r: SearchResult, words: string[]): number {
     const title    = r.title.toLowerCase();
     const snippet  = r.snippet.toLowerCase();
@@ -101,6 +117,12 @@ export class SearchService {
     }));
   }
 
+  /**
+   * Convert a section label to a URL-safe slug for building anchor `sectionId` values.
+   *
+   * @param s - Raw section label string.
+   * @returns Lowercase hyphen-separated slug with no leading/trailing hyphens.
+   */
   private _slug(s: string): string {
     return s.toLowerCase().replace(/\W+/g, '-').replace(/(^-|-$)/g, '');
   }
