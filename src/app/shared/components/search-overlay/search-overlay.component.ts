@@ -14,6 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { SearchService } from '../../../core/services/search.service';
 import { SearchResult } from '../../../core/models';
@@ -33,11 +34,9 @@ import { LucideAngularModule, Search, FileText, FolderGit2, Wrench, ArrowRight }
   styleUrl: './search-overlay.component.scss',
 })
 export class SearchOverlayComponent implements OnInit, AfterViewInit {
-  /** Navigation service for overlay open/close state */
-  private readonly _nav = inject(NavigationService);
-  /** Search service for querying the index */
-  private readonly _search = inject(SearchService);
-  /** DestroyRef for automatic RxJS cleanup */
+  private readonly _nav       = inject(NavigationService);
+  private readonly _search    = inject(SearchService);
+  private readonly _sanitizer = inject(DomSanitizer);
   private readonly _destroyRef = inject(DestroyRef);
 
   /** The search input element for auto-focus */
@@ -102,6 +101,21 @@ export class SearchOverlayComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * Wrap every query word in the text with a <mark> for highlight rendering.
+   * HTML special chars are escaped first to prevent injection.
+   */
+  protected highlight(text: string): SafeHtml {
+    const q = this.query().trim();
+    const safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (!q) return this._sanitizer.bypassSecurityTrustHtml(safe);
+
+    const words   = q.split(/\s+/).filter(Boolean);
+    const pattern = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const html    = safe.replace(new RegExp(`(${pattern})`, 'gi'), '<mark class="search-hl">$1</mark>');
+    return this._sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  /**
    * Close the search overlay and reset state.
    */
   protected close(): void {
@@ -128,11 +142,27 @@ export class SearchOverlayComponent implements OnInit, AfterViewInit {
       this._nav.switchToTool(result.toolKey);
       this.close();
     } else {
-      // Queue the scroll BEFORE switching team so DocsShellComponent
-      // picks it up after the 420ms skeleton clears and the DOM is ready.
-      this._nav.setPendingScroll(result.sectionId);
-      this._nav.switchTeam(result.teamKey);
+      // Check whether we are already on the target team so we can skip
+      // the team-switch (setting the same signal value does not re-trigger
+      // the DocsShell effect, so pendingScrollId would never be consumed).
+      const alreadyOnTeam =
+        this._nav.activeView() === 'team' &&
+        this._nav.activeTeamKey() === result.teamKey;
+
       this.close();
+
+      if (alreadyOnTeam) {
+        // DOM is already rendered — scroll directly after the overlay closes
+        setTimeout(() => {
+          const el = document.getElementById(result.sectionId);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      } else {
+        // Queue the scroll BEFORE switching team so DocsShellComponent
+        // picks it up after the skeleton clears and the DOM is ready.
+        this._nav.setPendingScroll(result.sectionId);
+        this._nav.switchTeam(result.teamKey);
+      }
     }
   }
 

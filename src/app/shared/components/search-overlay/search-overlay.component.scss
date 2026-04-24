@@ -110,8 +110,34 @@
     @apply shrink-0 inline-flex items-center font-['Syne',_sans-serif] text-[9.5px] font-bold py-[2px] px-[7px] rounded-[6px] border border-solid whitespace-nowrap;
   }
 
+  &__result-meta {
+    @apply flex items-baseline gap-[5px] min-w-0 overflow-hidden;
+  }
+
+  &__result-parent {
+    @apply shrink-0 text-[10.5px] font-['DM_Mono',_monospace] font-medium whitespace-nowrap;
+    color: var(--navy);
+    opacity: 0.45;
+  }
+
+  &__result-meta-sep {
+    @apply shrink-0 text-[10px];
+    color: var(--light);
+  }
+
   &__result-snippet {
     @apply text-[11.5px] text-[var(--muted)] leading-[1.45] truncate;
+  }
+
+  // Keyword highlight mark injected via [innerHTML] — needs ::ng-deep since
+  // Angular's emulated encapsulation doesn't scope dynamically injected nodes.
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::ng-deep .search-hl {
+    background: rgba(255, 196, 0, 0.28);
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-style: normal;
   }
 
   &__result-arrow {

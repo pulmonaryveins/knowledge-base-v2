@@ -94,7 +94,7 @@
   }
 
   &__pattern-header {
-    @apply flex items-center gap-3 mb-[10px];
+    @apply flex items-center gap-3 mb-[12px];
   }
 
   &__pattern-num {
@@ -106,19 +106,19 @@
   }
 
   &__pattern-desc {
-    @apply m-0 mb-[12px] text-[13px] text-[var(--muted)] leading-[1.55];
+    @apply m-0 mb-[20px] text-[13px] text-[var(--muted)] leading-[1.65];
   }
 
   &__pattern-rules {
-    @apply m-0 pl-0 flex flex-col gap-[8px] list-none;
+    @apply m-0 pl-0 flex flex-col gap-[14px] list-none mb-[20px];
   }
 
   &__pattern-rule {
-    @apply flex gap-[8px] items-start text-[12.5px] text-[var(--muted)] leading-[1.5];
+    @apply flex gap-[10px] items-start text-[13px] text-[var(--muted)] leading-[1.65];
   }
 
   &__pattern-rule-icon {
-    @apply text-[var(--green)] text-[10px] flex-shrink-0 mt-[3px];
+    @apply text-[var(--green)] text-[10px] flex-shrink-0 mt-[4px];
   }
 
   // ── Projects ──────────────────────────────────────────────────────────────

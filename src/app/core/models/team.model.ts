@@ -184,6 +184,11 @@ export interface TeamContactsSection {
   readonly contacts: ReadonlyArray<TeamContact>;
 }
 
+/** Pi Player ecosystem architecture diagram section */
+export interface PiEcosystemSection {
+  readonly type: 'pi-ecosystem';
+}
+
 /** Discriminated union of all possible section content types */
 export type SectionContent =
   | TechStackSection
@@ -206,7 +211,8 @@ export type SectionContent =
   | NcWebDesignSection
   | NcPrintSection
   | NcBrandSection
-  | TeamContactsSection;
+  | TeamContactsSection
+  | PiEcosystemSection;
 
 /** A single documentation section within a team page */
 export interface TeamSection {
