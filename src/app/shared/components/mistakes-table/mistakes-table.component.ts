@@ -15,5 +15,5 @@ import { DataTable } from '../../../core/models';
   styleUrl: './mistakes-table.component.scss',
 })
 export class MistakesTableComponent {
-  public readonly table = input.required<DataTable>();
+  public readonly table = input.required<DataTable | null>();
 }

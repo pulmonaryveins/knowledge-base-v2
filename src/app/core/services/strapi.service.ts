@@ -61,12 +61,45 @@ export class StrapiService {
    */
   public getTeams(): Observable<any[]> {
     const headers = this._getHeaders();
-    // populate=sections allows us to get the dynamic zone
-    // populate=projects allows us to get the linked projects
+    // Deep populate: sections need per-component field population since
+    // nested components (dataTable.headers, steps.code, etc.) are not
+    // included with a shallow populate=*
+    const query = [
+      'populate[projects][populate]=*',
+      'populate[projects][sort]=name:asc',
+      'sort=label:asc',
+      // tech-stack
+      'populate[sections][on][sections.tech-stack][populate][dataTable][populate]=*',
+      // getting-started
+      'populate[sections][on][sections.getting-started][populate][steps][populate]=*',
+      'populate[sections][on][sections.getting-started][populate][mainCode][populate]=*',
+      // folder-arch
+      'populate[sections][on][sections.folder-arch][populate][cards][populate]=*',
+      'populate[sections][on][sections.folder-arch][populate][mainCode][populate]=*',
+      // mistakes
+      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate]=*',
+      // contact-list
+      'populate[sections][on][sections.contact-list][populate][contacts][populate]=*',
+      // shared.coding-patterns
+      'populate[sections][on][shared.coding-patterns][populate][patterns][populate]=*',
+      // marker sections (no nested fields needed)
+      'populate[sections][on][sections.projects][populate]=*',
+      'populate[sections][on][sections.nc-design-basics][populate]=*',
+      'populate[sections][on][sections.nc-ux-design][populate]=*',
+      'populate[sections][on][sections.nc-prototype][populate]=*',
+      'populate[sections][on][sections.nc-web-design][populate]=*',
+      'populate[sections][on][sections.branding][populate]=*',
+      'populate[sections][on][sections.color-palette][populate]=*',
+      'populate[sections][on][sections.grid][populate]=*',
+      'populate[sections][on][sections.iconography][populate]=*',
+      'populate[sections][on][sections.spacing][populate]=*',
+      'populate[sections][on][sections.typography][populate]=*',
+      'populate[sections][on][shared.simple-text][populate]=*',
+    ].join('&');
     return this._http
       .get<
         StrapiResponse<StrapiEntity<TeamStrapi>[]>
-      >(`${this._baseUrl}/api/teams?populate=sections,projects&sort=label:asc`, { headers })
+      >(`${this._baseUrl}/api/teams?${query}`, { headers })
       .pipe(map((response) => response.data.map((entity) => this._mapStrapiTeam(entity))));
   }
 
@@ -98,43 +131,140 @@ export class StrapiService {
     return {
       ...data,
       key: data.key || '',
-      projects: data.projects?.data?.map((p: any) => p.attributes || p) || [],
-      sections: (data.sections || []).map((s: any) => this._mapSection(s)),
+      projects:
+        (Array.isArray(data.projects) ? data.projects : data.projects?.data || []).map((p: any) => {
+          const pData = p.attributes || p;
+          return {
+            ...pData,
+            id: pData.key || p.id?.toString() || pData.id?.toString(),
+            status: pData.projectStatus || pData.status,
+            teamKey: data.key || '',
+            teamColor: data.color || '#000000',
+            doc: {
+              meta: pData.projectMeta || { stack: '', repo: '', deploy: '', sprint: '' },
+              purpose: pData.purpose || '',
+              features: pData.features || [],
+              folderStructure: pData.folderStructure || { code: '', language: 'bash' },
+              gettingStarted: pData.gettingStarted || [],
+              contacts: pData.contacts || [],
+              links: pData.links || [],
+            },
+          };
+        }) || [],
+      sections: (data.sections || []).map((s: any) => this._mapSection(s)).filter((s: any) => !!s),
     };
   }
 
   private _mapSection(s: any): any {
-    // Map Strapi's component naming back to our "type" discriminants
     const typeMap: Record<string, string> = {
       'sections.tech-stack': 'tech-stack',
       'sections.getting-started': 'getting-started',
       'sections.folder-arch': 'folder-arch',
       'sections.coding-patterns': 'coding-patterns',
+      'shared.coding-patterns': 'coding-patterns', // Also support shared.coding-patterns
       'sections.mistakes': 'mistakes',
       'sections.contact-list': 'team-contacts',
       'sections.projects': 'projects',
     };
 
-    const type = typeMap[s.__component] || s.__component.replace('sections.', '');
+    const type = typeMap[s.__component] || s.__component?.replace('sections.', '') || 'unknown';
 
-    // Construct the "content" payload that the UI expects
-    return {
-      id: s.key || `sec-${s.id}`,
-      label: s.title || s.label || '',
+    // Base section structure
+    const section: any = {
+      // Use component name + id for guaranteed unique keys
+      id: s.key || `sec-${s.__component?.replace('.', '-')}-${s.id}`,
+      label: s.title || s.label || s.sectionTitle || '',
       num: s.num || '01',
       subHeader: s.subHeader || '',
-      content: {
-        type,
-        ...s,
-        // Handle nested table structure if present
-        table: s.dataTable || s.table || s.mistakeTable || undefined,
-        // Rename some fields if Strapi uses different names
-        steps: s.steps || [],
-        cards: s.cards || [],
-        patterns: s.patterns || [],
-        contacts: s.contacts || [],
-      },
+      content: { type },
     };
+
+    // Deep mapping handlers
+    switch (type) {
+      case 'tech-stack':
+        const dt = Array.isArray(s.dataTable) ? s.dataTable[0] : s.dataTable;
+        section.content.table = dt
+          ? {
+              headers: dt.headers?.map((h: any) => h.value) || [],
+              rows:
+                dt.rows?.map((r: any) => ({
+                  cells: r.cells?.map((c: any) => c.value) || [],
+                })) || [],
+            }
+          : null;
+        break;
+
+      case 'mistakes':
+        // Support both mistakeTable (migration) and dataTable (legacy)
+        const mt = s.mistakeTable || s.dataTable;
+        const mtData = Array.isArray(mt) ? mt[0] : mt;
+        section.content.table = mtData
+          ? {
+              headers: mtData.headers?.map((h: any) => h.value) || [],
+              rows:
+                mtData.rows?.map((r: any) => ({
+                  cells: r.cells?.map((c: any) => c.value) || [],
+                })) || [],
+            }
+          : null;
+        break;
+
+      case 'getting-started':
+        section.content.steps = (s.steps || []).map((step: any) => ({
+          title: step.title,
+          description: step.description,
+          icon: step.icon,
+          codeBlock: step.code
+            ? { code: step.code.code || '', language: step.code.language || 'bash' }
+            : null,
+        }));
+        const mc = Array.isArray(s.mainCode) ? s.mainCode[0] : s.mainCode;
+        section.content.codeBlock = mc
+          ? { code: mc.code || '', language: mc.language || 'bash' }
+          : null;
+        break;
+
+      case 'folder-arch':
+        section.content.cards = (s.cards || []).map((c: any) => ({ title: c.title, body: c.body }));
+        // Note: Strapi returns 'maincode' (lowercase) for folder-arch
+        const fcRaw = s.maincode || s.mainCode;
+        const fc = Array.isArray(fcRaw) ? fcRaw[0] : fcRaw;
+        section.content.codeBlock = fc
+          ? { code: fc.code || '', language: fc.language || 'bash' }
+          : null;
+        break;
+
+      case 'coding-patterns':
+        section.content.patterns = (s.patterns || []).map((p: any) => ({
+          title: p.title,
+          description: p.description,
+          rules: p.rules?.map((r: any) => r.value) || [],
+          codeBlock: p.code
+            ? { code: p.code.code || '', language: p.code.language || 'typescript' }
+            : null,
+          callout: p.callout ? { type: p.callout.type, message: p.callout.message } : null,
+        }));
+        section.content.layout = s.layout || 'grid';
+        break;
+
+      case 'team-contacts':
+        section.content.contacts = (s.contacts || []).map((c: any) => ({
+          name: c.name,
+          role: c.role,
+          initials: c.initials,
+          color: c.color,
+        }));
+        break;
+
+      case 'projects':
+        // No specific mapping needed, triggers related projects list
+        break;
+
+      default:
+        section.content = { ...section.content, ...s };
+    }
+
+    return section;
   }
 
   private _getHeaders(): HttpHeaders | undefined {

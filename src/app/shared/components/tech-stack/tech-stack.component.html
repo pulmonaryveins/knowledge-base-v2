@@ -1,6 +1,6 @@
-<!-- FILE: src/app/shared/components/tech-stack/tech-stack.component.html -->
 <div class="ts">
-  @for (row of table().rows; track $index) {
+  @if (table()) {
+    @for (row of table()!.rows; track $index) {
     <div class="ts__card">
 
       <!-- Logo / initials -->
@@ -30,4 +30,5 @@
 
     </div>
   }
+}
 </div>
