@@ -16,26 +16,37 @@
       <a class="lp__nav-brand" (click)="navOpen.set(false)">
         <img class="lp__nav-logo" src="logo.png" alt="NCompassTV" />
         <div class="lp__nav-brand-text">
-          <span class="lp__nav-brand-name">NCompassTV</span>
-          <span class="lp__nav-brand-sub">DEV PORTAL</span>
+          <span class="lp__nav-brand-name">{{ navbar()?.logoText ?? 'NCompassTV' }}</span>
+          <span class="lp__nav-brand-sub">{{ navbar()?.logoSubtext ?? 'DEV PORTAL' }}</span>
         </div>
       </a>
 
       <!-- Desktop links -->
       <nav class="lp__nav-links">
-        <a class="lp__nav-link" href="#teams">Teams</a>
-        <a class="lp__nav-link" href="#features">Features</a>
-        <a class="lp__nav-link" href="#about">About</a>
-        <a class="lp__nav-link" href="#company">Company</a>
-        <a class="lp__nav-link lp__nav-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
-          Official Site
-          <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
-        </a>
+        @for (link of navLinks(); track link.label) {
+          @if (link.type === 'external') {
+            <a class="lp__nav-link lp__nav-link--official" [href]="link.url" target="_blank" rel="noopener">
+              {{ link.label }}
+              <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+            </a>
+          } @else {
+            <a class="lp__nav-link" [href]="link.url">{{ link.label }}</a>
+          }
+        }
+        @if (!navLinks().length) {
+          <a class="lp__nav-link" href="#teams">Teams</a>
+          <a class="lp__nav-link" href="#features">Features</a>
+          <a class="lp__nav-link" href="#about">About</a>
+          <a class="lp__nav-link" href="#company">Company</a>
+          <a class="lp__nav-link lp__nav-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+            Official Site <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+          </a>
+        }
       </nav>
 
       <!-- CTA -->
       <button class="lp__nav-cta" (click)="navigateToLogin()">
-        Login
+        {{ navbar()?.cta?.label ?? 'Login' }}
         <lucide-icon [img]="ArrowRightIcon" [size]="14" />
       </button>
 
@@ -49,29 +60,36 @@
 
     <!-- Mobile drawer -->
     <div class="lp__nav-drawer" [class.lp__nav-drawer--open]="navOpen()">
-      <a class="lp__nav-drawer-link" href="#teams" (click)="navOpen.set(false)">Teams</a>
-      <a class="lp__nav-drawer-link" href="#features" (click)="navOpen.set(false)">Features</a>
-      <a class="lp__nav-drawer-link" href="#about" (click)="navOpen.set(false)">About</a>
-      <a class="lp__nav-drawer-link lp__nav-drawer-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
-        Official Site <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
-      </a>
+      @for (link of navLinks(); track link.label) {
+        @if (link.type === 'external') {
+          <a class="lp__nav-drawer-link lp__nav-drawer-link--official" [href]="link.url" target="_blank" rel="noopener" (click)="navOpen.set(false)">
+            {{ link.label }} <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+          </a>
+        } @else {
+          <a class="lp__nav-drawer-link" [href]="link.url" (click)="navOpen.set(false)">{{ link.label }}</a>
+        }
+      }
+      @if (!navLinks().length) {
+        <a class="lp__nav-drawer-link" href="#teams" (click)="navOpen.set(false)">Teams</a>
+        <a class="lp__nav-drawer-link" href="#features" (click)="navOpen.set(false)">Features</a>
+        <a class="lp__nav-drawer-link" href="#about" (click)="navOpen.set(false)">About</a>
+        <a class="lp__nav-drawer-link lp__nav-drawer-link--official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+          Official Site <lucide-icon [img]="ExternalLinkIcon" [size]="11" />
+        </a>
+      }
       <button class="lp__nav-cta lp__nav-cta--drawer" (click)="navigateToLogin()">
-        Login <lucide-icon [img]="ArrowRightIcon" [size]="14" />
+        {{ navbar()?.cta?.label ?? 'Login' }} <lucide-icon [img]="ArrowRightIcon" [size]="14" />
       </button>
     </div>
   </header>
 
   <!-- ── Hero ────────────────────────────────────────────────────────────── -->
   <section class="lp__hero">
-    <!-- Background ripple grid -->
     <app-bg-ripple aria-hidden="true" />
-
-    <!-- Glow orbs -->
     <div class="lp__hero-orb lp__hero-orb--1" aria-hidden="true"></div>
     <div class="lp__hero-orb lp__hero-orb--2" aria-hidden="true"></div>
     <div class="lp__hero-orb lp__hero-orb--3" aria-hidden="true"></div>
 
-    <!-- Floating tech logos -->
     <div class="lp__hero-floats" aria-hidden="true">
       <div class="lp__hero-float lp__hero-float--1" style="--fc: #8DCB2C">
         <img src="https://cdn.simpleicons.org/angular/8DCB2C" alt="" width="28" height="28" draggable="false" />
@@ -97,56 +115,66 @@
       <div class="lp__hero-content">
         <div class="lp__hero-badge">
           <span class="lp__hero-badge-dot"></span>
-          Internal Developer Platform
+          {{ hero()?.eyebrow ?? 'Internal Developer Platform' }}
         </div>
 
         <h1 class="lp__hero-title">
-          One portal for<br>
-          <span class="lp__hero-title-accent">every team.</span>
+          {{ hero()?.headline ?? 'One portal for' }}<br>
+          <span class="lp__hero-title-accent">{{ hero()?.headlineAccent ?? 'every team.' }}</span>
         </h1>
 
         <p class="lp__hero-subtitle">
-          The NCompassTV Dev Portal centralises documentation, project registries,
-          coding standards, and onboarding guides for all engineering and design teams —
-          so everyone ships faster.
+          {{ hero()?.subheadline ?? 'The NCompassTV Dev Portal centralises documentation, project registries, coding standards, and onboarding guides for all engineering and design teams — so everyone ships faster.' }}
         </p>
 
         <div class="lp__hero-actions">
-          <button class="lp__btn lp__btn--primary" (click)="navigateToLogin()">
-            Login to Portal
-            <lucide-icon [img]="ArrowRightIcon" [size]="16" />
-          </button>
-          <a class="lp__btn lp__btn--ghost" href="#teams">
-            Explore Teams
-            <lucide-icon [img]="ChevronRightIcon" [size]="16" />
-          </a>
+          @if (hero()?.links?.length) {
+            @for (link of hero().links; track link.label; let first = $first) {
+              @if (first) {
+                <button class="lp__btn lp__btn--primary" (click)="navigateToLogin()">
+                  {{ link.label }}
+                  <lucide-icon [img]="ArrowRightIcon" [size]="16" />
+                </button>
+              } @else {
+                <a class="lp__btn lp__btn--ghost" href="#teams">
+                  {{ link.label }}
+                  <lucide-icon [img]="ChevronRightIcon" [size]="16" />
+                </a>
+              }
+            }
+          } @else {
+            <button class="lp__btn lp__btn--primary" (click)="navigateToLogin()">
+              Login to Portal <lucide-icon [img]="ArrowRightIcon" [size]="16" />
+            </button>
+            <a class="lp__btn lp__btn--ghost" href="#teams">
+              Explore Teams <lucide-icon [img]="ChevronRightIcon" [size]="16" />
+            </a>
+          }
         </div>
 
         <!-- Stats row -->
         <div class="lp__hero-stats">
-          <div class="lp__hero-stat">
-            <span class="lp__hero-stat-val">7</span>
-            <span class="lp__hero-stat-label">Teams</span>
-          </div>
-          <div class="lp__hero-stat-divider" aria-hidden="true"></div>
-          <div class="lp__hero-stat">
-            <span class="lp__hero-stat-val">20+</span>
-            <span class="lp__hero-stat-label">Projects</span>
-          </div>
-          <div class="lp__hero-stat-divider" aria-hidden="true"></div>
-          <div class="lp__hero-stat">
-            <span class="lp__hero-stat-val">8</span>
-            <span class="lp__hero-stat-label">Tools</span>
-          </div>
-          <div class="lp__hero-stat-divider" aria-hidden="true"></div>
-          <div class="lp__hero-stat">
-            <span class="lp__hero-stat-val">Angular 21</span>
-            <span class="lp__hero-stat-label">Core Stack</span>
-          </div>
+          @if (stats().length) {
+            @for (stat of stats(); track stat.label; let last = $last) {
+              <div class="lp__hero-stat">
+                <span class="lp__hero-stat-val">{{ stat.value }}</span>
+                <span class="lp__hero-stat-label">{{ stat.label }}</span>
+              </div>
+              @if (!last) { <div class="lp__hero-stat-divider" aria-hidden="true"></div> }
+            }
+          } @else {
+            <div class="lp__hero-stat"><span class="lp__hero-stat-val">7</span><span class="lp__hero-stat-label">Teams</span></div>
+            <div class="lp__hero-stat-divider" aria-hidden="true"></div>
+            <div class="lp__hero-stat"><span class="lp__hero-stat-val">20+</span><span class="lp__hero-stat-label">Projects</span></div>
+            <div class="lp__hero-stat-divider" aria-hidden="true"></div>
+            <div class="lp__hero-stat"><span class="lp__hero-stat-val">8</span><span class="lp__hero-stat-label">Tools</span></div>
+            <div class="lp__hero-stat-divider" aria-hidden="true"></div>
+            <div class="lp__hero-stat"><span class="lp__hero-stat-val">Angular 21</span><span class="lp__hero-stat-label">Core Stack</span></div>
+          }
         </div>
       </div>
 
-      <!-- Hero visual — terminal window mock -->
+      <!-- Hero visual -->
       <div class="lp__hero-visual" aria-hidden="true">
         <div class="lp__terminal">
           <div class="lp__terminal-bar">
@@ -160,9 +188,7 @@
               <p class="lp__terminal-line lp__terminal-line--in">
                 <span [class]="line.prefixCls">{{ line.prefix }}</span>
                 <span [class]="line.contentCls"> {{ line.content }}</span>
-                @if (line.isTyping) {
-                  <span class="lp__t-cursor lp__t-cursor--active">▋</span>
-                }
+                @if (line.isTyping) { <span class="lp__t-cursor lp__t-cursor--active">▋</span> }
               </p>
             }
             @if (termDone()) {
@@ -171,7 +197,6 @@
               </p>
             }
           </div>
-          <!-- Floating stat badges -->
           <div class="lp__terminal-badge lp__terminal-badge--top">
             <span class="lp__terminal-badge-dot"></span>7 teams online
           </div>
@@ -182,7 +207,6 @@
       </div>
     </div>
 
-    <!-- Scroll hint -->
     <div class="lp__hero-scroll-hint" aria-hidden="true">
       <span class="lp__hero-scroll-line"></span>
       <span class="lp__hero-scroll-text">Scroll</span>
@@ -209,21 +233,16 @@
   <section class="lp__section lp__section--dark" id="teams">
     <div class="lp__section-inner">
       <div class="lp__section-header" [appReveal]="'left'">
-        <span class="lp__section-eyebrow">Our Seven Teams</span>
-        <h2 class="lp__section-title">Every team. Every stack.</h2>
-        <p class="lp__section-desc">Click any team card to jump directly to their documentation inside the portal.</p>
+        <span class="lp__section-eyebrow">{{ teamShowcase()?.eyebrow ?? 'Our Seven Teams' }}</span>
+        <h2 class="lp__section-title">{{ teamShowcase()?.title ?? 'Every team. Every stack.' }}</h2>
+        <p class="lp__section-desc">{{ teamShowcase()?.description ?? 'Click any team card to jump directly to their documentation inside the portal.' }}</p>
       </div>
 
       <div class="lp__teams-grid">
         @for (team of teams(); track team.key; let i = $index) {
           <button class="lp__team-card" [appReveal]="'zoom'" [appRevealDelay]="i * 60" (click)="goToTeam(team.key)" [style.--tc]="team.color" [style.--tg]="team.gradient">
-            <!-- Decorative number -->
             <span class="lp__team-card-num">{{ (i + 1).toString().padStart(2, '0') }}</span>
-
-            <!-- Gradient fill + glow layer -->
             <div class="lp__team-card-glow" [style.background]="team.color" aria-hidden="true"></div>
-
-            <!-- Icon row -->
             <div class="lp__team-card-top">
               <div class="lp__team-card-icon" [style.background]="team.color + '22'" [style.border-color]="team.color + '44'">
                 <lucide-icon [img]="team.icon" [size]="22" [style.color]="team.color" />
@@ -232,8 +251,6 @@
                 <lucide-icon [img]="ArrowRightIcon" [size]="13" />
               </div>
             </div>
-
-            <!-- Body -->
             <div class="lp__team-card-body">
               <h3 class="lp__team-card-name">{{ team.label }}</h3>
               <p class="lp__team-card-tagline">{{ team.tagline }}</p>
@@ -243,8 +260,6 @@
                 }
               </div>
             </div>
-
-            <!-- Bottom color accent bar -->
             <div class="lp__team-card-bar" [style.background]="team.color" aria-hidden="true"></div>
           </button>
         }
@@ -256,13 +271,13 @@
   <section class="lp__section lp__section--dark lp__section--features" id="features">
     <div class="lp__section-inner">
       <div class="lp__section-header" [appReveal]="'left'">
-        <span class="lp__section-eyebrow">What's Inside</span>
-        <h2 class="lp__section-title">Everything a dev needs.</h2>
-        <p class="lp__section-desc">From onboarding to production — one place for all the context that usually lives in people's heads.</p>
+        <span class="lp__section-eyebrow">{{ featuresGrid()?.eyebrow ?? "What's Inside" }}</span>
+        <h2 class="lp__section-title">{{ featuresGrid()?.title ?? 'Everything a dev needs.' }}</h2>
+        <p class="lp__section-desc">{{ featuresGrid()?.description ?? "From onboarding to production — one place for all the context that usually lives in people's heads." }}</p>
       </div>
 
       <div class="lp__features-grid">
-        @for (feat of features; track feat.title; let i = $index) {
+        @for (feat of featureItems(); track feat.title; let i = $index) {
           <div class="lp__feature-card" [appReveal]="'up'" [appRevealDelay]="i * 65" [style.--fa]="feat.accent">
             <div class="lp__feature-icon" [style.background]="feat.accent + '1a'">
               <lucide-icon [img]="feat.icon" [size]="20" [style.color]="feat.accent" />
@@ -277,8 +292,6 @@
 
   <!-- ── Company info ─────────────────────────────────────────────────────── -->
   <section class="lp__company" id="company">
-
-    <!-- top: logo bar -->
     <div class="lp__company-logo-bar" [appReveal]="'fade'">
       <img src="logo.png" alt="NCompassTV" class="lp__company-logo" />
       <div class="lp__company-logo-text">
@@ -289,53 +302,41 @@
       <span class="lp__company-logo-tagline">Indoor Digital Billboards · Community Advertising · Franchise Network</span>
     </div>
 
-    <!-- main grid: left bio | right facts -->
     <div class="lp__company-inner">
-
-      <!-- Left: description + highlights + sectors -->
       <div class="lp__company-left" [appReveal]="'left'">
         <div class="lp__company-header">
-          <span class="lp__section-eyebrow">About the Company</span>
-          <h2 class="lp__company-title">Your brand, seen<br>where it matters.</h2>
+          <span class="lp__section-eyebrow">{{ companyAbout()?.eyebrow ?? 'About the Company' }}</span>
+          <h2 class="lp__company-title">{{ companyAbout()?.title ?? 'Your brand, seen where it matters.' }}</h2>
         </div>
-        <p class="lp__company-desc">
-          N-Compass TV is a US-based indoor digital billboard company placing
-          high-impact advertising screens in the high-traffic venues your customers
-          already visit — restaurants, gyms, medical offices, and auto shops.
-          Headquartered in Lakewood, Colorado, the company connects local
-          businesses to their communities through a nationwide franchise dealership network.
-        </p>
+        <p class="lp__company-desc">{{ companyAbout()?.description ?? '' }}</p>
 
-        <!-- Highlight list -->
         <ul class="lp__company-highlights">
-          @for (h of companyHighlights; track h) {
+          @for (b of (companyAbout()?.bullets ?? []); track b.text) {
             <li class="lp__company-highlight">
               <span class="lp__company-highlight-dot" aria-hidden="true"></span>
-              {{ h }}
+              {{ b.text }}
             </li>
           }
         </ul>
 
-        <!-- Sectors served -->
         <div class="lp__company-sectors">
-          <span class="lp__company-sectors-label">Venues & industries</span>
+          <span class="lp__company-sectors-label">{{ companyAbout()?.venuesLabel ?? 'Venues & Industries' }}</span>
           <div class="lp__company-sector-chips">
-            @for (s of companySectors; track s) {
-              <span class="lp__company-sector-chip">{{ s }}</span>
+            @for (v of (companyAbout()?.venues ?? []); track v.label) {
+              <span class="lp__company-sector-chip">{{ v.label }}</span>
             }
           </div>
         </div>
 
-        <a class="lp__company-link" href="https://n-compass.tv/" target="_blank" rel="noopener">
-          Visit n-compass.tv
+        <a class="lp__company-link" [href]="companyAbout()?.link?.url ?? 'https://n-compass.tv/'" target="_blank" rel="noopener">
+          {{ companyAbout()?.link?.label ?? 'Visit n-compass.tv' }}
           <lucide-icon [img]="ExternalLinkIcon" [size]="13" />
         </a>
       </div>
 
-      <!-- Right: fact cards grid -->
       <div class="lp__company-right">
         <div class="lp__company-facts">
-          @for (fact of companyFacts; track fact.label; let i = $index) {
+          @for (fact of companyFactItems(); track fact.label; let i = $index) {
             <div class="lp__company-fact" [appReveal]="'up'" [appRevealDelay]="i * 60">
               <div class="lp__company-fact-icon">
                 <lucide-icon [img]="fact.icon" [size]="17" />
@@ -348,34 +349,41 @@
           }
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- ── About / CTA ──────────────────────────────────────────────────────── -->
+  <!-- ── CTA ──────────────────────────────────────────────────────────────── -->
   <section class="lp__cta-section" id="about">
     <div class="lp__cta-orb" aria-hidden="true"></div>
     <div class="lp__cta-orb lp__cta-orb--2" aria-hidden="true"></div>
 
     <div class="lp__cta-inner" [appReveal]="'zoom'">
-      <span class="lp__section-eyebrow lp__section-eyebrow--light">Ready to explore?</span>
-      <h2 class="lp__cta-title">Built by the team,<br />for the team.</h2>
-      <p class="lp__cta-desc">
-        The NCompassTV Dev Portal is maintained by all seven engineering and design teams.
-        Documentation is updated every sprint — if something is missing, raise a ticket and own it.
-      </p>
+      <span class="lp__section-eyebrow lp__section-eyebrow--light">{{ ctaBanner()?.eyebrow ?? 'Ready to explore?' }}</span>
+      <h2 class="lp__cta-title">{{ ctaBanner()?.title ?? 'Built by the team, for the team.' }}</h2>
+      <p class="lp__cta-desc">{{ ctaBanner()?.description ?? '' }}</p>
       <div class="lp__cta-actions">
-        <button class="lp__btn lp__btn--primary lp__btn--lg" (click)="enterPortal()">
-          Enter the Portal
-          <lucide-icon [img]="ArrowRightIcon" [size]="18" />
-        </button>
-        <a class="lp__btn lp__btn--ghost lp__btn--lg" href="#teams">
-          View Teams
-          <lucide-icon [img]="ChevronRightIcon" [size]="18" />
-        </a>
+        @if (ctaBanner()?.links?.length) {
+          @for (link of ctaBanner().links; track link.label; let first = $first) {
+            @if (first) {
+              <button class="lp__btn lp__btn--primary lp__btn--lg" (click)="enterPortal()">
+                {{ link.label }} <lucide-icon [img]="ArrowRightIcon" [size]="18" />
+              </button>
+            } @else {
+              <a class="lp__btn lp__btn--ghost lp__btn--lg" href="#teams">
+                {{ link.label }} <lucide-icon [img]="ChevronRightIcon" [size]="18" />
+              </a>
+            }
+          }
+        } @else {
+          <button class="lp__btn lp__btn--primary lp__btn--lg" (click)="enterPortal()">
+            Enter the Portal <lucide-icon [img]="ArrowRightIcon" [size]="18" />
+          </button>
+          <a class="lp__btn lp__btn--ghost lp__btn--lg" href="#teams">
+            View Teams <lucide-icon [img]="ChevronRightIcon" [size]="18" />
+          </a>
+        }
       </div>
 
-      <!-- Decorative team color dots -->
       <div class="lp__cta-dots" aria-hidden="true">
         @for (team of teams(); track team.key) {
           <span class="lp__cta-dot" [style.background]="team.color"></span>
@@ -387,13 +395,11 @@
   <!-- ── Footer ─────────────────────────────────────────────────────────── -->
   <footer class="lp__footer">
     <div class="lp__footer-inner">
-
-      <!-- Brand + official site -->
       <div class="lp__footer-left">
         <div class="lp__footer-brand">
           <img class="lp__footer-logo" src="logo.png" alt="NCompassTV" />
           <div>
-            <span class="lp__footer-brand-name">NCompassTV</span>
+            <span class="lp__footer-brand-name">{{ navbar()?.logoText ?? 'NCompassTV' }}</span>
             <span class="lp__footer-brand-sub">Dev Portal · 2026 · Angular 21</span>
           </div>
         </div>
@@ -409,7 +415,6 @@
         <a class="lp__footer-link" href="#about">About</a>
         <button class="lp__footer-link lp__footer-link--btn" (click)="enterPortal()">Open Portal</button>
       </nav>
-
     </div>
   </footer>
 

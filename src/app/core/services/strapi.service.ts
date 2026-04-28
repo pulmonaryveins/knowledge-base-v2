@@ -133,6 +133,41 @@ export class StrapiService {
       );
   }
 
+  /**
+   * Fetch the landing page with all sections populated.
+   */
+  public getLandingPage(): Observable<any> {
+    const headers = this._getHeaders();
+    const query = [
+      'populate[sections][on][landing.hero][populate][links]=*',
+      'populate[sections][on][landing.stats-item]=*',
+      'populate[sections][on][landing.team-showcase]=*',
+      'populate[sections][on][landing.features-grid][populate][items]=*',
+      'populate[sections][on][landing.company-about][populate][bullets]=*',
+      'populate[sections][on][landing.company-about][populate][metaItems]=*',
+      'populate[sections][on][landing.company-about][populate][venues]=*',
+      'populate[sections][on][landing.company-about][populate][link]=*',
+      'populate[sections][on][landing.cta-banner][populate][links]=*',
+    ].join('&');
+
+    return this._http
+      .get<any>(`${this._baseUrl}/api/landing-page?${query}`, { headers })
+      .pipe(map((r) => r.data));
+  }
+
+  /**
+   * Fetch the navbar with links and CTA populated.
+   */
+  public getNavbar(): Observable<any> {
+    const headers = this._getHeaders();
+    return this._http
+      .get<any>(
+        `${this._baseUrl}/api/navbar?populate[links]=*&populate[cta]=*`,
+        { headers },
+      )
+      .pipe(map((r) => r.data));
+  }
+
   private _mapStrapiTeam(entity: StrapiEntity<TeamStrapi>): any {
     const data: any = entity.attributes || entity;
     return {
