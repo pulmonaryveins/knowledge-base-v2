@@ -1,6 +1,6 @@
 // ── FILE: src/app/features/landing-page/landing-page.component.ts ──
 
-import { Component, HostListener, OnInit, OnDestroy, signal, inject } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, signal, inject, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { LucideAngularModule } from 'lucide-angular';
@@ -13,6 +13,8 @@ import {
   MapPin, Building2, Tv2, Wifi,
   LucideIconData,
 } from 'lucide-angular';
+import { DocsDataService } from '../../core/services/docs-data.service';
+import { getTeamIcon } from '../../core/utils/icons';
 
 interface TermLine {
   id: number;
@@ -36,6 +38,7 @@ interface TermLine {
 export class LandingPageComponent implements OnInit, OnDestroy {
   private readonly _router = inject(Router);
   private readonly _auth   = inject(AuthService);
+  private readonly _docsData = inject(DocsDataService);
 
   // ── Icons ────────────────────────────────────────────────────────────────
   protected readonly ArrowRightIcon    = ArrowRight;
@@ -127,79 +130,17 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   }
 
   // ── Teams data ───────────────────────────────────────────────────────────
-  protected readonly teams: ReadonlyArray<{
-    key: string;
-    label: string;
-    color: string;
-    gradient: string;
-    icon: LucideIconData;
-    tagline: string;
-    tags: ReadonlyArray<string>;
-  }> = [
-    {
-      key: 'frontend',
-      label: 'Frontend',
-      color: '#8DCB2C',
-      gradient: 'linear-gradient(135deg, #1a2e05, #2d5016)',
-      icon: Monitor,
-      tagline: 'Angular 21 · Signals · Tailwind v4',
-      tags: ['Angular', 'TypeScript', 'Tailwind', 'Vitest'],
-    },
-    {
-      key: 'backend',
-      label: 'Backend',
-      color: '#7C3AED',
-      gradient: 'linear-gradient(135deg, #1e0a4a, #3b0f8c)',
-      icon: Server,
-      tagline: 'NestJS · MySQL · TypeORM',
-      tags: ['NestJS', 'MySQL', 'TypeORM', 'Docker'],
-    },
-    {
-      key: 'webdev',
-      label: 'Web Development',
-      color: '#3B82F6',
-      gradient: 'linear-gradient(135deg, #0a1e4a, #0f3b8c)',
-      icon: Globe,
-      tagline: 'Astro · Next.js · Edge Functions',
-      tags: ['Astro', 'Next.js', 'Cloudflare', 'SCSS'],
-    },
-    {
-      key: 'qa',
-      label: 'Quality Assurance',
-      color: '#0891B2',
-      gradient: 'linear-gradient(135deg, #042f3a, #075e75)',
-      icon: TestTube,
-      tagline: 'Playwright · Selenium · pytest',
-      tags: ['Playwright', 'Python', 'Selenium', 'Maze'],
-    },
-    {
-      key: 'rd',
-      label: 'Research & Development',
-      color: '#F59E0B',
-      gradient: 'linear-gradient(135deg, #3a1f00, #7a3e00)',
-      icon: Microscope,
-      tagline: 'Prototypes · Experiments · Innovation',
-      tags: ['Experiments', 'PoC', 'AI/ML', 'Research'],
-    },
-    {
-      key: 'uiux',
-      label: 'UI / UX',
-      color: '#EC4899',
-      gradient: 'linear-gradient(135deg, #4a0a2e, #831843)',
-      icon: Palette,
-      tagline: 'Figma · WCAG 2.1 · Design Tokens',
-      tags: ['Figma', 'Storybook', 'WCAG', 'Maze'],
-    },
-    {
-      key: 'pi-player',
-      label: 'Pi Player',
-      color: '#C51A4A',
-      gradient: 'linear-gradient(135deg, #3a0515, #7a0f2e)',
-      icon: Tv,
-      tagline: 'Raspberry Pi · Digital Signage · CMS',
-      tags: ['Raspberry Pi', 'Node.js', 'HDMI', 'Linux'],
-    },
-  ];
+  protected readonly teams = computed(() => {
+    return this._docsData.getTeams().map(t => ({
+      key: t.key,
+      label: t.label,
+      color: t.color,
+      gradient: t.gradient || `linear-gradient(135deg, #1a2e05, #2d5016)`,
+      icon: getTeamIcon(t.key),
+      tagline: t.subtitle,
+      tags: t.projects.map(p => p.name).slice(0, 4) // Or some other logic for tags
+    }));
+  });
 
   // ── Feature highlights ────────────────────────────────────────────────────
   protected readonly features: ReadonlyArray<{

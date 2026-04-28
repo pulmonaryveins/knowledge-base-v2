@@ -215,7 +215,7 @@
       </div>
 
       <div class="lp__teams-grid">
-        @for (team of teams; track team.key; let i = $index) {
+        @for (team of teams(); track team.key; let i = $index) {
           <button class="lp__team-card" [appReveal]="'zoom'" [appRevealDelay]="i * 60" (click)="goToTeam(team.key)" [style.--tc]="team.color" [style.--tg]="team.gradient">
             <!-- Decorative number -->
             <span class="lp__team-card-num">{{ (i + 1).toString().padStart(2, '0') }}</span>
@@ -377,7 +377,7 @@
 
       <!-- Decorative team color dots -->
       <div class="lp__cta-dots" aria-hidden="true">
-        @for (team of teams; track team.key) {
+        @for (team of teams(); track team.key) {
           <span class="lp__cta-dot" [style.background]="team.color"></span>
         }
       </div>

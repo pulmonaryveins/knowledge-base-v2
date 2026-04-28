@@ -39,7 +39,8 @@ export class DocsDataService {
   /** Signal holding the current list of teams (initially populated from static fallback) */
   private readonly _teams = signal<ReadonlyArray<Team>>(this._staticTeams);
 
-  private readonly _appEntries: ReadonlyArray<AppEntry> = appEntries;
+  /** Signal holding the current list of app entries (initially populated from static fallback) */
+  private readonly _appEntries = signal<ReadonlyArray<AppEntry>>(appEntries);
 
   /** Signal holding the current list of tools (initially populated from static fallback) */
   private readonly _tools = signal<ReadonlyArray<Tool>>(staticTools);
@@ -53,11 +54,14 @@ export class DocsDataService {
       .pipe(takeUntilDestroyed())
       .subscribe({
         next: (liveTools: Tool[]) => {
+          console.log('[DocsDataService] Live tools from Strapi:', liveTools);
           if (liveTools && liveTools.length > 0) {
             this._tools.set(liveTools);
           }
         },
-        error: (err: unknown) => console.error('Failed to load live tools from Strapi:', err),
+        error: (err: unknown) => {
+          console.error('[DocsDataService] Failed to load live tools from Strapi:', err);
+        },
       });
 
     // 2. Fetch live teams
@@ -66,11 +70,38 @@ export class DocsDataService {
       .pipe(takeUntilDestroyed())
       .subscribe({
         next: (liveTeams: any[]) => {
+          console.log('[DocsDataService] Live teams from Strapi:', liveTeams);
           if (liveTeams && liveTeams.length > 0) {
             this._teams.set(liveTeams);
           }
         },
-        error: (err: unknown) => console.error('Failed to load live teams from Strapi:', err),
+        error: (err: unknown) => {
+          console.error('[DocsDataService] Failed to load live teams from Strapi:', err);
+        },
+      });
+
+    // 3. Fetch live projects for appEntries
+    strapi
+      .getProjects()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (liveProjects: any[]) => {
+          console.log('[DocsDataService] Live projects from Strapi:', liveProjects);
+          if (liveProjects && liveProjects.length > 0) {
+            this._appEntries.set(liveProjects.map(p => ({
+              name: p.name,
+              description: p.description,
+              status: p.status,
+              tags: (p.projectMeta?.stack || '').split('·').map((s: string) => s.trim()).filter(Boolean),
+              ownerTeam: p.teamKey || '',
+              icon: p.icon || 'package',
+              notes: p.description || ''
+            })));
+          }
+        },
+        error: (err: unknown) => {
+          console.error('[DocsDataService] Failed to load live projects from Strapi:', err);
+        },
       });
   }
 
@@ -95,7 +126,7 @@ export class DocsDataService {
    * @returns All application entries
    */
   public getAppEntries(): ReadonlyArray<AppEntry> {
-    return this._appEntries;
+    return this._appEntries();
   }
 
   /**

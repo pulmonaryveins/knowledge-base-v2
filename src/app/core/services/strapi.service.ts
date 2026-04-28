@@ -68,39 +68,43 @@ export class StrapiService {
       'populate[projects][populate]=*',
       'populate[projects][sort]=name:asc',
       'sort=label:asc',
-      // tech-stack
-      'populate[sections][on][sections.tech-stack][populate][dataTable][populate]=*',
-      // getting-started
-      'populate[sections][on][sections.getting-started][populate][steps][populate]=*',
-      'populate[sections][on][sections.getting-started][populate][mainCode][populate]=*',
-      // folder-arch
+      'populate[sections][populate]=*',
+      // Deeply populated sections
+      'populate[sections][on][sections.tech-stack][populate][dataTable][populate][headers][populate]=*',
+      'populate[sections][on][sections.tech-stack][populate][dataTable][populate][rows][populate][cells][populate]=*',
+      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate][headers][populate]=*',
+      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate][rows][populate][cells][populate]=*',
+      'populate[sections][on][sections.getting-started][populate][steps][populate][code][populate]=*',
+      'populate[sections][on][shared.coding-patterns][populate][patterns][populate][rules][populate]=*',
+      'populate[sections][on][shared.coding-patterns][populate][patterns][populate][code][populate]=*',
+      'populate[sections][on][shared.coding-patterns][populate][patterns][populate][callout][populate]=*',
       'populate[sections][on][sections.folder-arch][populate][cards][populate]=*',
-      'populate[sections][on][sections.folder-arch][populate][mainCode][populate]=*',
-      // mistakes
-      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate]=*',
-      // contact-list
+      'populate[sections][on][sections.folder-arch][populate][maincode][populate]=*',
       'populate[sections][on][sections.contact-list][populate][contacts][populate]=*',
-      // shared.coding-patterns
-      'populate[sections][on][shared.coding-patterns][populate][patterns][populate]=*',
-      // marker sections (no nested fields needed)
       'populate[sections][on][sections.projects][populate]=*',
-      'populate[sections][on][sections.nc-design-basics][populate]=*',
-      'populate[sections][on][sections.nc-ux-design][populate]=*',
-      'populate[sections][on][sections.nc-prototype][populate]=*',
-      'populate[sections][on][sections.nc-web-design][populate]=*',
-      'populate[sections][on][sections.branding][populate]=*',
-      'populate[sections][on][sections.color-palette][populate]=*',
+      'populate[sections][on][sections.branding][populate][mainLogos][populate]=*',
+      'populate[sections][on][sections.branding][populate][favicon][populate]=*',
+      'populate[sections][on][sections.branding][populate][sidebarCollapsed][populate]=*',
+      'populate[sections][on][sections.branding][populate][sidebarExpanded][populate]=*',
+      'populate[sections][on][sections.color-palette][populate][tabs][populate][groups][populate][swatches][populate]=*',
+      'populate[sections][on][sections.color-palette][populate][tabs][populate][wcagPairs][populate]=*',
       'populate[sections][on][sections.grid][populate]=*',
       'populate[sections][on][sections.iconography][populate]=*',
       'populate[sections][on][sections.spacing][populate]=*',
-      'populate[sections][on][sections.typography][populate]=*',
-      'populate[sections][on][shared.simple-text][populate]=*',
+      'populate[sections][on][sections.typography-scale][populate][tabs][populate][columns][populate][rows][populate]=*',
+      'populate[sections][on][sections.qa-stages][populate][steps][populate][code][populate]=*',
+      'populate[sections][on][sections.nc-phase][populate]=*',
     ].join('&');
     return this._http
       .get<
         StrapiResponse<StrapiEntity<TeamStrapi>[]>
       >(`${this._baseUrl}/api/teams?${query}`, { headers })
-      .pipe(map((response) => response.data.map((entity) => this._mapStrapiTeam(entity))));
+      .pipe(
+        map((response) => {
+          console.log('[StrapiService] Raw teams response:', response);
+          return response.data.map((entity) => this._mapStrapiTeam(entity));
+        }),
+      );
   }
 
   /**
@@ -113,16 +117,19 @@ export class StrapiService {
         StrapiResponse<StrapiEntity<ProjectStrapi>[]>
       >(`${this._baseUrl}/api/projects?populate=*`, { headers })
       .pipe(
-        map((response) =>
-          response.data.map((entity) => {
+        map((response) => {
+          console.log('[StrapiService] Raw projects response:', response);
+          return response.data.map((entity) => {
             const data: any = entity.attributes || entity;
+            const teamData = data.team?.data?.attributes || data.team?.data || data.team;
             return {
               ...data,
               id: data.key || entity.id?.toString() || data.id?.toString(),
               status: data.projectStatus || data.status,
+              teamKey: teamData?.key || '',
             };
-          }),
-        ),
+          });
+        }),
       );
   }
 
@@ -151,13 +158,23 @@ export class StrapiService {
             },
           };
         }) || [],
-      sections: (data.sections || []).map((s: any) => this._mapSection(s)).filter((s: any) => !!s),
+      sections: (data.sections || [])
+        .map((s: any, idx: number) => this._mapSection(s, idx))
+        .filter((s: any) => !!s),
     };
   }
 
-  private _mapSection(s: any): any {
+  private _mapSection(s: any, idx: number): any {
+    if (!s || !s.__component) return null;
+
+    // Resolve centralized NC Phase to its specific type
+    const componentName = s.__component === 'sections.nc-phase' 
+      ? `sections.${s.phase || 'nc-design-basics'}` 
+      : s.__component;
+
     const typeMap: Record<string, string> = {
       'sections.tech-stack': 'tech-stack',
+      'sections.qa-stages': 'getting-started',
       'sections.getting-started': 'getting-started',
       'sections.folder-arch': 'folder-arch',
       'sections.coding-patterns': 'coding-patterns',
@@ -167,14 +184,14 @@ export class StrapiService {
       'sections.projects': 'projects',
     };
 
-    const type = typeMap[s.__component] || s.__component?.replace('sections.', '') || 'unknown';
+    const type = typeMap[componentName] || componentName?.replace('sections.', '') || 'unknown';
 
     // Base section structure
     const section: any = {
       // Use component name + id for guaranteed unique keys
-      id: s.key || `sec-${s.__component?.replace('.', '-')}-${s.id}`,
-      label: s.title || s.label || s.sectionTitle || '',
-      num: s.num || '01',
+      id: s.key || `sec-${componentName.replace('.', '-')}-${s.id}`,
+      label: s.title || s.label || s.sectionTitle || this._getDefaultLabel(type),
+      num: (idx + 1).toString().padStart(2, '0'),
       subHeader: s.subHeader || '',
       content: { type },
     };
@@ -214,10 +231,10 @@ export class StrapiService {
           title: step.title,
           description: step.description,
           icon: step.icon,
-          codeBlock: step.code
-            ? { code: step.code.code || '', language: step.code.language || 'bash' }
-            : null,
+          code: step.code?.code || '',
+          language: step.code?.language || 'bash',
         }));
+        section.content.layout = s.layout || 'list';
         const mc = Array.isArray(s.mainCode) ? s.mainCode[0] : s.mainCode;
         section.content.codeBlock = mc
           ? { code: mc.code || '', language: mc.language || 'bash' }
@@ -260,11 +277,122 @@ export class StrapiService {
         // No specific mapping needed, triggers related projects list
         break;
 
+      case 'branding':
+        const mapAsset = (a: any) => {
+          const media = a.asset;
+          let url = '';
+          if (media) {
+            // Strapi 5 / 4 simplified or flattened media
+            url = media.url || media.data?.attributes?.url || media.data?.url || '';
+          }
+          
+          return {
+            label: a.label,
+            src: url ? (url.startsWith('/') ? `${this._baseUrl}${url}` : url) : '',
+            background: a.background,
+            bordered: a.bordered,
+            width: a.width,
+            height: a.height,
+            color: a.color,
+          };
+        };
+
+        section.content.mainLogos = (s.mainLogos || []).map(mapAsset);
+        section.content.favicon = s.favicon ? mapAsset(s.favicon) : null;
+        section.content.sidebarCollapsed = (s.sidebarCollapsed || []).map(mapAsset);
+        section.content.sidebarExpanded = (s.sidebarExpanded || []).map(mapAsset);
+        break;
+
+      case 'color-palette':
+        section.content.tabs = (s.tabs || []).map((t: any) => {
+          const tab: any = {
+            label: t.label,
+            type: t.type,
+          };
+          if (t.type === 'wcag') {
+            tab.wcagPairs = (t.wcagPairs || []).map((p: any) => ({
+              label: p.label,
+              foreground: p.foreground,
+              background: p.background,
+              ratio: p.ratio,
+              aaNormal: p.aaNormal,
+              aaLarge: p.aaLarge,
+              aaaNormal: p.aaaNormal,
+              aaaLarge: p.aaaLarge,
+            }));
+            tab.wcagNote = t.wcagNote || '';
+          } else {
+            tab.groups = (t.groups || []).map((g: any) => {
+              const group: any = { label: g.label };
+              const swatches = (g.swatches || []).map((sw: any) => ({
+                name: sw.name,
+                hex: sw.hex,
+              }));
+              if (t.type === 'overview') {
+                group.main = swatches;
+              } else {
+                group.shades = swatches;
+              }
+              return group;
+            });
+          }
+          return tab;
+        });
+        break;
+
+      case 'typography-scale':
+        section.content.tabs = (s.tabs || []).map((t: any) => ({
+          label: t.label,
+          fontName: t.fontName,
+          preview: t.preview,
+          columns: (t.columns || []).map((col: any) => ({
+            label: col.label,
+            weight: col.weight,
+            rows: (col.rows || []).map((row: any) => ({
+              tag: row.tag,
+              size: row.size,
+            })),
+          })),
+        }));
+        break;
+
       default:
         section.content = { ...section.content, ...s };
     }
 
     return section;
+  }
+
+  private _getDefaultLabel(type: string): string {
+    const labels: Record<string, string> = {
+      'tech-stack': 'Tech Stack Overview',
+      'getting-started': 'Getting Started',
+      'folder-arch': 'Folder Architecture',
+      'coding-patterns': 'Coding Patterns',
+      mistakes: 'Common Mistakes',
+      projects: 'Projects',
+      'team-contacts': 'Team Contacts',
+      branding: 'Brand Guide',
+      'color-palette': 'Color Palette',
+      grid: 'Grid & Breakpoints',
+      iconography: 'Iconography',
+      spacing: 'Spacing & Layout',
+      typography: 'Typography Scale',
+      'nc-design-basics': 'Phase 1 - Design Basics',
+      'nc-ux-design': 'Phase 2 - UX Design',
+      'nc-wireframing': 'Phase 3 - Wireframing',
+      'nc-prototype': 'Phase 4 - Prototyping',
+      'nc-web-design': 'Phase 5 - Web Design',
+      'nc-print-design': 'Phase 6 - Print Design',
+      'nc-brand-storytelling': 'Phase 7 - Brand & Storytelling',
+    };
+    return (
+      labels[type] ||
+      type
+        .split('-')
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ')
+    );
   }
 
   private _getHeaders(): HttpHeaders | undefined {

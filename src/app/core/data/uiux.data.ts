@@ -9,30 +9,109 @@ export const uiuxTeam: Team = {
   gradient: 'linear-gradient(135deg, #4a0a2e, #831843)',
   icon: 'palette',
   subtitle: 'Figma · WCAG 2.1 · Design Tokens · Storybook 7 · Maze',
-  description: 'Design system, Figma workflows, component specifications, accessibility standards, and UX research practices used across NCompassTV products.',
+  description:
+    'Design system, Figma workflows, component specifications, accessibility standards, and UX research practices used across NCompassTV products.',
   projects: [],
   sections: [
     {
       id: 'ux-tech-stack',
       label: 'Tech Stack Overview',
       num: '01',
-      subHeader: 'A breakdown of the design tools and platforms used across every phase of the NCompassTV design workflow.',
+      subHeader:
+        'A breakdown of the design tools and platforms used across every phase of the NCompassTV design workflow.',
       content: {
         type: 'tech-stack',
         table: {
           headers: ['Tool', 'Version', 'Purpose', 'Status'],
           rows: [
-            { cells: ['Figma', 'Enterprise', 'Primary design, prototyping, and handoff tool for all teams', 'Live'] },
-            { cells: ['FigJam', 'Enterprise', 'Collaborative whiteboarding for user research, flows, and workshops', 'Live'] },
-            { cells: ['Sketch', '100+', 'Alternative wireframing and component design (legacy projects)', 'Live'] },
-            { cells: ['Adobe XD', 'Latest', 'Cross-platform prototyping and handoff for select workflows', 'Live'] },
-            { cells: ['Framer', 'Latest', 'High-fidelity interactive prototyping with code components', 'Dev'] },
-            { cells: ['Storybook', '7.x', 'Component documentation and visual regression testing', 'Live'] },
-            { cells: ['Style Dictionary', '3.x', 'Transforms design tokens into CSS, SCSS, and JSON outputs', 'Live'] },
-            { cells: ['Chromatic', '11.x', 'Automated visual regression on Storybook stories per PR', 'Live'] },
-            { cells: ['Maze', '2.x', 'Remote usability testing, heatmaps, and task completion metrics', 'Live'] },
-            { cells: ['UserTesting', '3.x', 'Moderated and unmoderated user research sessions', 'Live'] },
-            { cells: ['Lottie', '5.x', 'JSON-format animations for loading states and transitions', 'Dev'] },
+            {
+              cells: [
+                'Figma',
+                'Enterprise',
+                'Primary design, prototyping, and handoff tool for all teams',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'FigJam',
+                'Enterprise',
+                'Collaborative whiteboarding for user research, flows, and workshops',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'Sketch',
+                '100+',
+                'Alternative wireframing and component design (legacy projects)',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'Adobe XD',
+                'Latest',
+                'Cross-platform prototyping and handoff for select workflows',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'Framer',
+                'Latest',
+                'High-fidelity interactive prototyping with code components',
+                'Dev',
+              ],
+            },
+            {
+              cells: [
+                'Storybook',
+                '7.x',
+                'Component documentation and visual regression testing',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'Style Dictionary',
+                '3.x',
+                'Transforms design tokens into CSS, SCSS, and JSON outputs',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'Chromatic',
+                '11.x',
+                'Automated visual regression on Storybook stories per PR',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'Maze',
+                '2.x',
+                'Remote usability testing, heatmaps, and task completion metrics',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'UserTesting',
+                '3.x',
+                'Moderated and unmoderated user research sessions',
+                'Live',
+              ],
+            },
+            {
+              cells: [
+                'Lottie',
+                '5.x',
+                'JSON-format animations for loading states and transitions',
+                'Dev',
+              ],
+            },
           ],
         },
       },
@@ -41,44 +120,52 @@ export const uiuxTeam: Team = {
       id: 'ux-getting-started',
       label: 'Getting Started',
       num: '02',
-      subHeader: 'Follow the 7-phase curriculum to build your foundation in UX principles, prototyping, accessibility, and production-ready design.',
+      subHeader:
+        'Follow the 7-phase curriculum to build your foundation in UX principles, prototyping, accessibility, and production-ready design.',
       content: {
         type: 'getting-started',
         steps: [
           {
             icon: 'layers',
             title: 'Phase 1 — Design Basics: Core Structure & Consistency',
-            description: 'Study the foundational balance between aesthetic appeal and functional utility. Understand how visual hierarchy, consistent standardized components, and mental-model alignment reduce cognitive load. Explore simplicity as a design virtue — stripping decorative clutter empowers users to achieve goals efficiently. Duration: 4–6 hours.',
+            description:
+              'Study the foundational balance between aesthetic appeal and functional utility. Understand how visual hierarchy, consistent standardized components, and mental-model alignment reduce cognitive load. Explore simplicity as a design virtue — stripping decorative clutter empowers users to achieve goals efficiently. Duration: 4–6 hours.',
           },
           {
             icon: 'compass',
             title: 'Phase 2 — UX Design Fundamentals',
-            description: 'Explore core UX concepts including the Golden Ratio, Design Aesthetics, Centered Design, Product Design, and Design Ethics. Learn Research Methods, Lateral Thinking, and Design Thinking frameworks. Study Gestalt Principles, Skeuomorphism, Visual Hierarchy, and how Human–Computer Interaction shapes inclusive, accessible design. Duration: 8 hours.',
+            description:
+              'Explore core UX concepts including the Golden Ratio, Design Aesthetics, Centered Design, Product Design, and Design Ethics. Learn Research Methods, Lateral Thinking, and Design Thinking frameworks. Study Gestalt Principles, Skeuomorphism, Visual Hierarchy, and how Human–Computer Interaction shapes inclusive, accessible design. Duration: 8 hours.',
           },
           {
             icon: 'pen-tool',
             title: 'Phase 3 — Wireframing: The Foundation of Blueprinting',
-            description: 'Master wireframing as the architectural phase of design. Using low-fidelity skeletons, map user flows and information architecture without the distraction of typography or color. This stage is critical for identifying usability issues early and ensuring the interface hierarchy supports user objectives before any high-fidelity assets are created. Duration: 8 hours.',
+            description:
+              'Master wireframing as the architectural phase of design. Using low-fidelity skeletons, map user flows and information architecture without the distraction of typography or color. This stage is critical for identifying usability issues early and ensuring the interface hierarchy supports user objectives before any high-fidelity assets are created. Duration: 8 hours.',
           },
           {
             icon: 'play-circle',
             title: 'Phase 4 — Prototyping: Validation Through Motion',
-            description: 'Transform static wireframes into interactive experiences, bridging the gap between design concept and finished product. Add transitions and functional interactions to simulate actual user flows. This iterative process allows teams to validate the interface, gather meaningful feedback, and ensure the final developer handoff is a tested, refined flow. Duration: 8 hours.',
+            description:
+              'Transform static wireframes into interactive experiences, bridging the gap between design concept and finished product. Add transitions and functional interactions to simulate actual user flows. This iterative process allows teams to validate the interface, gather meaningful feedback, and ensure the final developer handoff is a tested, refined flow. Duration: 8 hours.',
           },
           {
             icon: 'globe-2',
             title: 'Phase 5 — Web Design: Responsive Architecture & Accessibility',
-            description: 'Apply responsive grids and flexible layouts to ensure seamless experiences across all devices. Incorporate accessibility standards — high color contrast, keyboard navigability, WCAG 2.1 AA compliance — so the digital environment is inclusive and usable regardless of physical or technical constraints. Balance aesthetic impact with technical performance and strategic whitespace. Duration: 8 hours.',
+            description:
+              'Apply responsive grids and flexible layouts to ensure seamless experiences across all devices. Incorporate accessibility standards — high color contrast, keyboard navigability, WCAG 2.1 AA compliance — so the digital environment is inclusive and usable regardless of physical or technical constraints. Balance aesthetic impact with technical performance and strategic whitespace. Duration: 8 hours.',
           },
           {
             icon: 'type',
             title: 'Phase 6 — Typography & Color Theory',
-            description: 'Use font weight, size, and line height to establish clear visual hierarchy and guide users through content in logical order. Understand how kerning and letter-spacing affect readability and brand personality. Apply color psychology (trust from blue, energy from red) and the color wheel (monochromatic, analogous, complementary) to create harmony and meet accessibility contrast standards. Duration: 6 hours.',
+            description:
+              'Use font weight, size, and line height to establish clear visual hierarchy and guide users through content in logical order. Understand how kerning and letter-spacing affect readability and brand personality. Apply color psychology (trust from blue, energy from red) and the color wheel (monochromatic, analogous, complementary) to create harmony and meet accessibility contrast standards. Duration: 6 hours.',
           },
           {
             icon: 'rocket',
             title: 'Phase 7 — UI Design Principles & N-Compass Contribution',
-            description: 'Apply all learned principles to production work. Pick up real Jira design tasks from the active sprint. Collaborate with Frontend and Backend teams via Figma Dev Mode annotations. Deliver annotated, accessible, token-driven screens that reflect the full curriculum: hierarchy, consistency, wireframe-first discipline, responsive layouts, readable typography, and WCAG-compliant color. Duration: Ongoing.',
+            description:
+              'Apply all learned principles to production work. Pick up real Jira design tasks from the active sprint. Collaborate with Frontend and Backend teams via Figma Dev Mode annotations. Deliver annotated, accessible, token-driven screens that reflect the full curriculum: hierarchy, consistency, wireframe-first discipline, responsive layouts, readable typography, and WCAG-compliant color. Duration: Ongoing.',
           },
         ],
       },
@@ -87,115 +174,128 @@ export const uiuxTeam: Team = {
       id: 'ux-design-basics-showcase',
       label: 'Phase 1 — Design Basics',
       num: '03',
-      subHeader: 'Part of the 8-phase design process · Visual hierarchy, Gestalt principles, Design Thinking, the Golden Ratio, and grid structure — the foundations every designer at NCompassTV must master.',
+      subHeader:
+        'Part of the 8-phase design process · Visual hierarchy, Gestalt principles, Design Thinking, the Golden Ratio, and grid structure — the foundations every designer at NCompassTV must master.',
       content: { type: 'nc-design-basics' },
     },
     {
       id: 'ux-ux-design-showcase',
       label: 'Phase 2 — UX Design',
       num: '04',
-      subHeader: 'The Double Diamond process, core research methods, and the user journey — turning insights into validated design decisions.',
+      subHeader:
+        'The Double Diamond process, core research methods, and the user journey — turning insights into validated design decisions.',
       content: { type: 'nc-ux-design' },
     },
     {
       id: 'ux-prototype-showcase',
       label: 'Phase 3 — Prototype',
       num: '05',
-      subHeader: 'From user flows to lo-fi wireframes to hi-fi interactive prototypes — validating experiences before a single line of code is written.',
+      subHeader:
+        'From user flows to lo-fi wireframes to hi-fi interactive prototypes — validating experiences before a single line of code is written.',
       content: { type: 'nc-prototype' },
     },
     {
       id: 'ux-web-design-showcase',
-      label: 'Phase 5 — Web Design',
+      label: 'Phase 4 — Web Design',
       num: '06',
-      subHeader: 'Responsive layouts across every device, 12-column grid usage, and performance benchmarks — designing for the real web.',
+      subHeader:
+        'Responsive layouts across every device, 12-column grid usage, and performance benchmarks — designing for the real web.',
       content: { type: 'nc-web-design' },
     },
     {
       id: 'ux-print-showcase',
-      label: 'Phase 6 — Print Design',
+      label: 'Phase 5 — Print Design',
       num: '07',
-      subHeader: 'Bleed, trim, and safe zones; CMYK vs RGB colour models; and the pre-press checklist for production-ready print assets.',
+      subHeader:
+        'Bleed, trim, and safe zones; CMYK vs RGB colour models; and the pre-press checklist for production-ready print assets.',
       content: { type: 'nc-print-design' },
     },
     {
       id: 'ux-brand-showcase',
-      label: 'Phase 7 — Brand & Storytelling',
+      label: 'Phase 6 — Brand & Storytelling',
       num: '08',
-      subHeader: 'The NCompassTV logo system, brand colour palette, typography variants, and the narrative arc that ties every design to the company story.',
+      subHeader:
+        'The NCompassTV logo system, brand colour palette, typography variants, and the narrative arc that ties every design to the company story.',
       content: { type: 'nc-brand-storytelling' },
     },
     {
       id: 'ux-coding-patterns',
       label: 'Design Patterns',
       num: '09',
-      subHeader: 'Reusable approaches for design tokens, component variants, visual hierarchy, accessibility, and usability testing that all designers on the team follow.',
+      subHeader:
+        'Reusable approaches for design tokens, component variants, visual hierarchy, accessibility, and usability testing that all designers on the team follow.',
       content: {
         type: 'coding-patterns',
         patterns: [
           {
             title: 'Design Token Usage',
-            description: 'All colours, spacing, and typography must reference design tokens — never raw hex values or pixel sizes in Figma or code.',
+            description:
+              'All colours, spacing, and typography must reference design tokens — never raw hex values or pixel sizes in Figma or code.',
             rules: [
-              "Reference CSS variable tokens for every colour, spacing, and font value — e.g. var(--color-accent), var(--spacing-3)",
-              "Never hardcode hex values (#8DCB2C) or raw pixel sizes (12px) directly in components or Figma frames",
-              "Sync tokens from Figma via Tokens Studio and run npm run tokens:build after any Figma token update",
-              "Apply the same token names in both Figma variables and CSS custom properties for a consistent handoff",
+              'Reference CSS variable tokens for every colour, spacing, and font value — e.g. var(--color-accent), var(--spacing-3)',
+              'Never hardcode hex values (#8DCB2C) or raw pixel sizes (12px) directly in components or Figma frames',
+              'Sync tokens from Figma via Tokens Studio and run npm run tokens:build after any Figma token update',
+              'Apply the same token names in both Figma variables and CSS custom properties for a consistent handoff',
             ],
           },
           {
             title: 'Component Variant Naming',
-            description: 'Figma component variants must follow the same naming used in code to enable automatic Figma-to-Code mapping and friction-free engineering handoff.',
+            description:
+              'Figma component variants must follow the same naming used in code to enable automatic Figma-to-Code mapping and friction-free engineering handoff.',
             rules: [
               "Match Figma variant property names to Angular input() types exactly — e.g. 'primary' | 'secondary'",
               "Use consistent size labels: Small / Medium / Large in Figma maps to 'sm' | 'md' | 'lg' in code",
-              "Name Figma components using slash notation: Button / Primary / Large / Default",
-              "Annotate all variant constraints in Figma Dev Mode so engineers can reference them without back-and-forth",
+              'Name Figma components using slash notation: Button / Primary / Large / Default',
+              'Annotate all variant constraints in Figma Dev Mode so engineers can reference them without back-and-forth',
             ],
           },
           {
             title: 'Visual Hierarchy',
-            description: 'Every screen must establish a clear visual hierarchy using size, weight, contrast, and spacing. Users should identify the primary action within 3 seconds.',
+            description:
+              'Every screen must establish a clear visual hierarchy using size, weight, contrast, and spacing. Users should identify the primary action within 3 seconds.',
             rules: [
-              "One dominant H1 per screen — largest text size with the highest contrast against the background",
-              "Supporting H2/H3 headings at 60–80% of the H1 size to create readable content tiering",
-              "Body text minimum 16px with line-height 1.5 for comfortable, accessible reading",
-              "Isolate the primary CTA with high contrast, generous padding, and clear whitespace separation from secondary elements",
-              "Secondary elements use muted colour and reduced font weight to remain visually recessive",
+              'One dominant H1 per screen — largest text size with the highest contrast against the background',
+              'Supporting H2/H3 headings at 60–80% of the H1 size to create readable content tiering',
+              'Body text minimum 16px with line-height 1.5 for comfortable, accessible reading',
+              'Isolate the primary CTA with high contrast, generous padding, and clear whitespace separation from secondary elements',
+              'Secondary elements use muted colour and reduced font weight to remain visually recessive',
             ],
           },
           {
             title: 'Accessibility — WCAG 2.1 AA',
-            description: 'Every design deliverable must be evaluated for WCAG 2.1 AA compliance before handoff. Inclusive design is not optional — it is a team standard.',
+            description:
+              'Every design deliverable must be evaluated for WCAG 2.1 AA compliance before handoff. Inclusive design is not optional — it is a team standard.',
             rules: [
-              "Contrast ratio ≥ 4.5:1 for body text — verify with the Figma Contrast plugin before every handoff",
-              "Contrast ratio ≥ 3:1 for large text (18px+ bold or 24px+ regular)",
-              "All interactive elements must have a minimum 44×44 px touch target area",
-              "Focus states must be visible on every interactive element — never suppress the outline without a replacement",
-              "Never convey information by colour alone — always pair with an icon, label, or pattern",
-              "Include alt text annotations on all images in Figma Dev Mode for the engineering handoff",
+              'Contrast ratio ≥ 4.5:1 for body text — verify with the Figma Contrast plugin before every handoff',
+              'Contrast ratio ≥ 3:1 for large text (18px+ bold or 24px+ regular)',
+              'All interactive elements must have a minimum 44×44 px touch target area',
+              'Focus states must be visible on every interactive element — never suppress the outline without a replacement',
+              'Never convey information by colour alone — always pair with an icon, label, or pattern',
+              'Include alt text annotations on all images in Figma Dev Mode for the engineering handoff',
             ],
           },
           {
             title: 'Usability Testing Protocol',
-            description: 'Every major UX flow must be validated through at least one round of remote usability testing via Maze before engineering begins implementation.',
+            description:
+              'Every major UX flow must be validated through at least one round of remote usability testing via Maze before engineering begins implementation.',
             rules: [
-              "Export the Figma prototype link and set the correct starting frame before building the Maze study",
+              'Export the Figma prototype link and set the correct starting frame before building the Maze study',
               "Create a Maze project using the 'Usability Test' template",
-              "Define 2–5 tasks that directly map to real user goals; set success criteria at ≥ 80% task completion",
-              "Recruit ≥ 5 participants that match the target persona before launching the study",
-              "Analyse heatmaps and misclick rates after 48 hours before drawing conclusions",
+              'Define 2–5 tasks that directly map to real user goals; set success criteria at ≥ 80% task completion',
+              'Recruit ≥ 5 participants that match the target persona before launching the study',
+              'Analyse heatmaps and misclick rates after 48 hours before drawing conclusions',
             ],
           },
           {
             title: 'Handoff & Annotation Standards',
-            description: 'Every Figma file delivered to engineering must be fully annotated and review-ready — incomplete handoffs block sprint velocity.',
+            description:
+              'Every Figma file delivered to engineering must be fully annotated and review-ready — incomplete handoffs block sprint velocity.',
             rules: [
-              "Use Figma Dev Mode to annotate all spacing, sizing, colour tokens, and interaction notes before marking a ticket design-complete",
-              "Group and name every layer logically — engineers should be able to navigate the file without a walkthrough",
-              "Include a dedicated Handoff Checklist frame in each file: contrast check, token check, responsive frames, and interaction spec",
-              "Link the Figma file, prototype, and Maze results directly in the Jira ticket before moving to the engineering queue",
-              "Never deliver a WIP file — all placeholder content, temp colours, and auto-layout breaks must be resolved first",
+              'Use Figma Dev Mode to annotate all spacing, sizing, colour tokens, and interaction notes before marking a ticket design-complete',
+              'Group and name every layer logically — engineers should be able to navigate the file without a walkthrough',
+              'Include a dedicated Handoff Checklist frame in each file: contrast check, token check, responsive frames, and interaction spec',
+              'Link the Figma file, prototype, and Maze results directly in the Jira ticket before moving to the engineering queue',
+              'Never deliver a WIP file — all placeholder content, temp colours, and auto-layout breaks must be resolved first',
             ],
           },
         ],
@@ -205,23 +305,94 @@ export const uiuxTeam: Team = {
       id: 'ux-branding',
       label: 'Company Branding',
       num: '10',
-      subHeader: 'Official NCompassTV logo assets, favicon, and sidebar variants — use these files for all digital touchpoints and never alter the brand colours or proportions.',
+      subHeader:
+        'Official NCompassTV logo assets, favicon, and sidebar variants — use these files for all digital touchpoints and never alter the brand colours or proportions.',
       content: {
         type: 'branding',
         mainLogos: [
-          { label: 'Lime Green', src: '/LOGO-GREEN.png', background: '#091635', width: '124.8px', height: '123.8px', color: '#8DC63F' },
-          { label: 'Midnight Blue', src: '/LOGO-BLUE.png', background: '#ffffff', bordered: true, width: '124.8px', height: '123.8px', color: '#091635' },
-          { label: 'White', src: '/LOGO-WHITE.png', background: '#091635', bordered: true, width: '124.8px', height: '123.8px', color: '#ffffff' },
+          {
+            label: 'Lime Green',
+            src: '/LOGO-GREEN.png',
+            background: '#091635',
+            width: '124.8px',
+            height: '123.8px',
+            color: '#8DC63F',
+          },
+          {
+            label: 'Midnight Blue',
+            src: '/LOGO-BLUE.png',
+            background: '#ffffff',
+            bordered: true,
+            width: '124.8px',
+            height: '123.8px',
+            color: '#091635',
+          },
+          {
+            label: 'White',
+            src: '/LOGO-WHITE.png',
+            background: '#091635',
+            bordered: true,
+            width: '124.8px',
+            height: '123.8px',
+            color: '#ffffff',
+          },
         ],
-        favicon: { label: 'Favicon', src: '/GREEN-SINGLE.png', background: 'transparent', width: '16px', height: '16px', color: '#8DC63F' },
+        favicon: {
+          label: 'Favicon',
+          src: '/GREEN-SINGLE.png',
+          background: 'transparent',
+          width: '16px',
+          height: '16px',
+          color: '#8DC63F',
+        },
         sidebarCollapsed: [
-          { label: 'Dark',  src: '/BLUE-SINGLE.png',    background: '#ffffff', bordered: true, width: '32px', height: '32px', color: '#091635' },
-          { label: 'Light', src: '/WHITE%20SINGLE.png', background: '#8DC63F', bordered: true, width: '32px', height: '32px', color: '#ffffff' },
-          { label: 'Green', src: '/GREEN-SINGLE.png',   background: '#ffffff', bordered: true, width: '32px', height: '32px', color: '#8DC63F' },
+          {
+            label: 'Dark',
+            src: '/BLUE-SINGLE.png',
+            background: '#ffffff',
+            bordered: true,
+            width: '32px',
+            height: '32px',
+            color: '#091635',
+          },
+          {
+            label: 'Light',
+            src: '/WHITE%20SINGLE.png',
+            background: '#8DC63F',
+            bordered: true,
+            width: '32px',
+            height: '32px',
+            color: '#ffffff',
+          },
+          {
+            label: 'Green',
+            src: '/GREEN-SINGLE.png',
+            background: '#ffffff',
+            bordered: true,
+            width: '32px',
+            height: '32px',
+            color: '#8DC63F',
+          },
         ],
         sidebarExpanded: [
-          { label: 'Dark',  src: '/LOGO-BLUE.png',  background: '#ffffff', bordered: true, width: '160px', height: '40px', color: '#091635' },
-          { label: 'Light', src: '/LOGO-WHITE.png', background: '#091635', bordered: true, width: '160px', height: '40px', color: '#ffffff' },
+          {
+            label: 'Dark',
+            src: '/LOGO-BLUE.png',
+            background: '#ffffff',
+            bordered: true,
+            width: '160px',
+            height: '40px',
+            color: '#091635',
+          },
+          {
+            label: 'Light',
+            src: '/LOGO-WHITE.png',
+            background: '#091635',
+            bordered: true,
+            width: '160px',
+            height: '40px',
+            color: '#ffffff',
+          },
         ],
       },
     },
@@ -229,7 +400,8 @@ export const uiuxTeam: Team = {
       id: 'ux-color-palette',
       label: 'Color Palette',
       num: '11',
-      subHeader: 'The NCompassTV color system — primary, accent, and semantic swatches with full tint/shade scales and WCAG 2.1 contrast compliance ratios.',
+      subHeader:
+        'The NCompassTV color system — primary, accent, and semantic swatches with full tint/shade scales and WCAG 2.1 contrast compliance ratios.',
       content: {
         type: 'color-palette',
         tabs: [
@@ -364,15 +536,79 @@ export const uiuxTeam: Team = {
             label: 'WCAG',
             type: 'wcag',
             wcagPairs: [
-              { label: 'White on Midnight Blue', foreground: '#ffffff', background: '#091635', ratio: '17.83:1', aaNormal: true, aaLarge: true, aaaNormal: true, aaaLarge: true },
-              { label: 'Midnight Blue on Apple Green', foreground: '#091635', background: '#8DCB2C', ratio: '8.63:1', aaNormal: true, aaLarge: true, aaaNormal: true, aaaLarge: true },
-              { label: 'White on Danger Red', foreground: '#ffffff', background: '#E73535', ratio: '4.62:1', aaNormal: true, aaLarge: true, aaaNormal: false, aaaLarge: false },
-              { label: 'Midnight Blue on White', foreground: '#091635', background: '#ffffff', ratio: '17.83:1', aaNormal: true, aaLarge: true, aaaNormal: true, aaaLarge: true },
-              { label: 'White on Hot Pink', foreground: '#ffffff', background: '#BE0064', ratio: '5.56:1', aaNormal: true, aaLarge: true, aaaNormal: false, aaaLarge: false },
-              { label: 'White on Purple', foreground: '#ffffff', background: '#3808A6', ratio: '9.32:1', aaNormal: true, aaLarge: true, aaaNormal: true, aaaLarge: true },
-              { label: 'White on Info Alert', foreground: '#ffffff', background: '#26A8BA', ratio: '3.21:1', aaNormal: false, aaLarge: true, aaaNormal: false, aaaLarge: false },
+              {
+                label: 'White on Midnight Blue',
+                foreground: '#ffffff',
+                background: '#091635',
+                ratio: '17.83:1',
+                aaNormal: true,
+                aaLarge: true,
+                aaaNormal: true,
+                aaaLarge: true,
+              },
+              {
+                label: 'Midnight Blue on Apple Green',
+                foreground: '#091635',
+                background: '#8DCB2C',
+                ratio: '8.63:1',
+                aaNormal: true,
+                aaLarge: true,
+                aaaNormal: true,
+                aaaLarge: true,
+              },
+              {
+                label: 'White on Danger Red',
+                foreground: '#ffffff',
+                background: '#E73535',
+                ratio: '4.62:1',
+                aaNormal: true,
+                aaLarge: true,
+                aaaNormal: false,
+                aaaLarge: false,
+              },
+              {
+                label: 'Midnight Blue on White',
+                foreground: '#091635',
+                background: '#ffffff',
+                ratio: '17.83:1',
+                aaNormal: true,
+                aaLarge: true,
+                aaaNormal: true,
+                aaaLarge: true,
+              },
+              {
+                label: 'White on Hot Pink',
+                foreground: '#ffffff',
+                background: '#BE0064',
+                ratio: '5.56:1',
+                aaNormal: true,
+                aaLarge: true,
+                aaaNormal: false,
+                aaaLarge: false,
+              },
+              {
+                label: 'White on Purple',
+                foreground: '#ffffff',
+                background: '#3808A6',
+                ratio: '9.32:1',
+                aaNormal: true,
+                aaLarge: true,
+                aaaNormal: true,
+                aaaLarge: true,
+              },
+              {
+                label: 'White on Info Alert',
+                foreground: '#ffffff',
+                background: '#26A8BA',
+                ratio: '3.21:1',
+                aaNormal: false,
+                aaLarge: true,
+                aaaNormal: false,
+                aaaLarge: false,
+              },
             ],
-            wcagNote: 'Contrast ratios calculated per WCAG 2.1 standards. AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 for normal text and 4.5:1 for large text. Always verify with a contrast checker tool before production handoff.',
+            wcagNote:
+              'Contrast ratios calculated per WCAG 2.1 standards. AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 for normal text and 4.5:1 for large text. Always verify with a contrast checker tool before production handoff.',
           },
         ],
       },
@@ -381,7 +617,8 @@ export const uiuxTeam: Team = {
       id: 'ux-typography',
       label: 'Typography Scale',
       num: '12',
-      subHeader: 'Nunito type scale for Web, Web (Button), and Mobile contexts, showing Regular and Medium weight specimens at every heading and body level.',
+      subHeader:
+        'Nunito type scale for Web, Web (Button), and Mobile contexts, showing Regular and Medium weight specimens at every heading and body level.',
       content: {
         type: 'typography-scale',
         tabs: [
@@ -496,7 +733,8 @@ export const uiuxTeam: Team = {
       id: 'ux-button-showcase',
       label: 'Button Styles',
       num: '13',
-      subHeader: 'All interactive button variants — Primary, Secondary, and Soft Rounded — across six states (Default, Hover, Active, Disabled, Ghost, Danger) and five sizes.',
+      subHeader:
+        'All interactive button variants — Primary, Secondary, and Soft Rounded — across six states (Default, Hover, Active, Disabled, Ghost, Danger) and five sizes.',
       content: {
         type: 'button-showcase',
         tabs: [
@@ -523,10 +761,12 @@ export const uiuxTeam: Team = {
       id: 'ux-grid',
       label: 'Grid & Screen Sizes',
       num: '14',
-      subHeader: 'Supported viewport dimensions across Desktop, Tablet, and Mobile — every Figma frame must cover each listed size before moving to handoff.',
+      subHeader:
+        'Supported viewport dimensions across Desktop, Tablet, and Mobile — every Figma frame must cover each listed size before moving to handoff.',
       content: {
         type: 'grid',
-        description: 'NCompassTV designs target three breakpoint tiers. All frames in Figma must include every size listed here before moving to hand-off.',
+        description:
+          'NCompassTV designs target three breakpoint tiers. All frames in Figma must include every size listed here before moving to hand-off.',
         groups: [
           {
             sectionLabel: 'Section 1',
@@ -542,10 +782,10 @@ export const uiuxTeam: Team = {
             sectionLabel: 'Section 2',
             tierLabel: 'Tablet',
             screens: [
-              { width: 768,  height: 1024 },
+              { width: 768, height: 1024 },
               { width: 1280, height: 800 },
-              { width: 768,  height: 1026 },
-              { width: 820,  height: 1180 },
+              { width: 768, height: 1026 },
+              { width: 820, height: 1180 },
             ],
           },
           {
@@ -565,38 +805,72 @@ export const uiuxTeam: Team = {
       id: 'ux-iconography',
       label: 'Iconography',
       num: '15',
-      subHeader: 'Font Awesome icon catalog used across all NCompassTV interfaces, displayed at every supported size from 32px down to 8px.',
+      subHeader:
+        'Font Awesome icon catalog used across all NCompassTV interfaces, displayed at every supported size from 32px down to 8px.',
       content: {
         type: 'iconography',
-        description: "Iconography refers to the use of visual symbols or icons to represent actions, content, or ideas in a user interface. It's a key part of UI design that helps users quickly recognize and navigate functions without relying on text. Good iconography is simple, intuitive, and consistent — making the experience faster, cleaner, and more user-friendly.",
-        sizes: [
-          { px: 32 },
-          { px: 24 },
-          { px: 20 },
-          { px: 14 },
-          { px: 12 },
-          { px: 10 },
-          { px: 8 },
-        ],
+        description:
+          "Iconography refers to the use of visual symbols or icons to represent actions, content, or ideas in a user interface. It's a key part of UI design that helps users quickly recognize and navigate functions without relying on text. Good iconography is simple, intuitive, and consistent — making the experience faster, cleaner, and more user-friendly.",
+        sizes: [{ px: 32 }, { px: 24 }, { px: 20 }, { px: 14 }, { px: 12 }, { px: 10 }, { px: 8 }],
         icons: [
-          { name: 'fa-graduation-cap',  faClass: 'fa-solid fa-graduation-cap',  description: 'Education / learning' },
-          { name: 'fa-trash',           faClass: 'fa-solid fa-trash',           description: 'Delete / remove action' },
-          { name: 'fa-ban',             faClass: 'fa-solid fa-ban',             description: 'Prohibited / blocked state' },
-          { name: 'fa-circle-user',     faClass: 'fa-solid fa-circle-user',     description: 'User profile avatar' },
-          { name: 'fa-house',           faClass: 'fa-solid fa-house',           description: 'Home / dashboard' },
-          { name: 'fa-magnifying-glass',faClass: 'fa-solid fa-magnifying-glass',description: 'Search / filter' },
-          { name: 'fa-bell',            faClass: 'fa-solid fa-bell',            description: 'Notifications / alerts' },
-          { name: 'fa-gear',            faClass: 'fa-solid fa-gear',            description: 'Settings / configuration' },
-          { name: 'fa-pen-to-square',   faClass: 'fa-solid fa-pen-to-square',   description: 'Edit / modify' },
-          { name: 'fa-circle-check',    faClass: 'fa-solid fa-circle-check',    description: 'Success / confirmed state' },
-          { name: 'fa-triangle-exclamation', faClass: 'fa-solid fa-triangle-exclamation', description: 'Warning / caution' },
-          { name: 'fa-circle-info',     faClass: 'fa-solid fa-circle-info',     description: 'Info / help tooltip' },
-          { name: 'fa-arrow-right',     faClass: 'fa-solid fa-arrow-right',     description: 'Navigation / next' },
-          { name: 'fa-bars',            faClass: 'fa-solid fa-bars',            description: 'Hamburger menu / sidebar toggle' },
-          { name: 'fa-xmark',           faClass: 'fa-solid fa-xmark',           description: 'Close / dismiss' },
-          { name: 'fa-tv',              faClass: 'fa-solid fa-tv',              description: 'Display / channel' },
-          { name: 'fa-play',            faClass: 'fa-solid fa-play',            description: 'Play media' },
-          { name: 'fa-cloud-arrow-up',  faClass: 'fa-solid fa-cloud-arrow-up',  description: 'Upload / sync to cloud' },
+          {
+            name: 'fa-graduation-cap',
+            faClass: 'fa-solid fa-graduation-cap',
+            description: 'Education / learning',
+          },
+          { name: 'fa-trash', faClass: 'fa-solid fa-trash', description: 'Delete / remove action' },
+          { name: 'fa-ban', faClass: 'fa-solid fa-ban', description: 'Prohibited / blocked state' },
+          {
+            name: 'fa-circle-user',
+            faClass: 'fa-solid fa-circle-user',
+            description: 'User profile avatar',
+          },
+          { name: 'fa-house', faClass: 'fa-solid fa-house', description: 'Home / dashboard' },
+          {
+            name: 'fa-magnifying-glass',
+            faClass: 'fa-solid fa-magnifying-glass',
+            description: 'Search / filter',
+          },
+          { name: 'fa-bell', faClass: 'fa-solid fa-bell', description: 'Notifications / alerts' },
+          { name: 'fa-gear', faClass: 'fa-solid fa-gear', description: 'Settings / configuration' },
+          {
+            name: 'fa-pen-to-square',
+            faClass: 'fa-solid fa-pen-to-square',
+            description: 'Edit / modify',
+          },
+          {
+            name: 'fa-circle-check',
+            faClass: 'fa-solid fa-circle-check',
+            description: 'Success / confirmed state',
+          },
+          {
+            name: 'fa-triangle-exclamation',
+            faClass: 'fa-solid fa-triangle-exclamation',
+            description: 'Warning / caution',
+          },
+          {
+            name: 'fa-circle-info',
+            faClass: 'fa-solid fa-circle-info',
+            description: 'Info / help tooltip',
+          },
+          {
+            name: 'fa-arrow-right',
+            faClass: 'fa-solid fa-arrow-right',
+            description: 'Navigation / next',
+          },
+          {
+            name: 'fa-bars',
+            faClass: 'fa-solid fa-bars',
+            description: 'Hamburger menu / sidebar toggle',
+          },
+          { name: 'fa-xmark', faClass: 'fa-solid fa-xmark', description: 'Close / dismiss' },
+          { name: 'fa-tv', faClass: 'fa-solid fa-tv', description: 'Display / channel' },
+          { name: 'fa-play', faClass: 'fa-solid fa-play', description: 'Play media' },
+          {
+            name: 'fa-cloud-arrow-up',
+            faClass: 'fa-solid fa-cloud-arrow-up',
+            description: 'Upload / sync to cloud',
+          },
         ],
       },
     },
@@ -605,73 +879,230 @@ export const uiuxTeam: Team = {
       id: 'ux-spacing',
       label: 'Spacing & Layout Guide',
       num: '16',
-      subHeader: 'The 4px-base spacing scale — Micro (2–12px), Component (16–40px), and Layout (48–128px) tokens for consistent padding, margin, and gap across all screens.',
+      subHeader:
+        'The 4px-base spacing scale — Micro (2–12px), Component (16–40px), and Layout (48–128px) tokens for consistent padding, margin, and gap across all screens.',
       content: {
         type: 'spacing',
-        description: 'All spacing in the NCompassTV design system is built on Tailwind\'s 4px base grid. Use these tokens consistently for padding, margin, and gap to ensure visual rhythm across every screen.',
+        description:
+          "All spacing in the NCompassTV design system is built on Tailwind's 4px base grid. Use these tokens consistently for padding, margin, and gap to ensure visual rhythm across every screen.",
         groups: [
           // ── Micro Scale ────────────────────────────────────────────────
           {
             label: 'Micro Scale (2px – 12px)',
             description: 'Tight internal spacers for icons, badges, chips, and inline labels.',
             tokens: [
-              { name: '0.5', px: 2,  rem: '0.125rem', tailwind: '*-0.5', usage: 'Hairline gaps between stacked icons or divider offsets' },
-              { name: '1',   px: 4,  rem: '0.25rem',  tailwind: '*-1',   usage: 'Icon inner padding, badge border gap to text' },
-              { name: '1.5', px: 6,  rem: '0.375rem', tailwind: '*-1.5', usage: 'Dense list item row gap, tight chip padding' },
-              { name: '2',   px: 8,  rem: '0.5rem',   tailwind: '*-2',   usage: 'Button icon-to-label gap, inline label spacing' },
-              { name: '2.5', px: 10, rem: '0.625rem', tailwind: '*-2.5', usage: 'Status badge padding, table cell micro offset' },
-              { name: '3',   px: 12, rem: '0.75rem',  tailwind: '*-3',   usage: 'Small tag / pill padding, compact list row padding' },
+              {
+                name: '0.5',
+                px: 2,
+                rem: '0.125rem',
+                tailwind: '*-0.5',
+                usage: 'Hairline gaps between stacked icons or divider offsets',
+              },
+              {
+                name: '1',
+                px: 4,
+                rem: '0.25rem',
+                tailwind: '*-1',
+                usage: 'Icon inner padding, badge border gap to text',
+              },
+              {
+                name: '1.5',
+                px: 6,
+                rem: '0.375rem',
+                tailwind: '*-1.5',
+                usage: 'Dense list item row gap, tight chip padding',
+              },
+              {
+                name: '2',
+                px: 8,
+                rem: '0.5rem',
+                tailwind: '*-2',
+                usage: 'Button icon-to-label gap, inline label spacing',
+              },
+              {
+                name: '2.5',
+                px: 10,
+                rem: '0.625rem',
+                tailwind: '*-2.5',
+                usage: 'Status badge padding, table cell micro offset',
+              },
+              {
+                name: '3',
+                px: 12,
+                rem: '0.75rem',
+                tailwind: '*-3',
+                usage: 'Small tag / pill padding, compact list row padding',
+              },
             ],
           },
           // ── Component Scale ─────────────────────────────────────────────
           {
             label: 'Component Scale (16px – 40px)',
-            description: 'Primary token range for buttons, form fields, cards, and navigation items.',
+            description:
+              'Primary token range for buttons, form fields, cards, and navigation items.',
             tokens: [
-              { name: '4',  px: 16, rem: '1rem',    tailwind: '*-4',  usage: 'Default button padding-x, form input inner padding' },
-              { name: '5',  px: 20, rem: '1.25rem', tailwind: '*-5',  usage: 'Card body padding (compact variant), modal row gap' },
-              { name: '6',  px: 24, rem: '1.5rem',  tailwind: '*-6',  usage: 'Default card padding, sidebar item padding, section gaps' },
-              { name: '7',  px: 28, rem: '1.75rem', tailwind: '*-7',  usage: 'Popover / dropdown inner padding' },
-              { name: '8',  px: 32, rem: '2rem',    tailwind: '*-8',  usage: 'Large card padding, sidebar section margins' },
-              { name: '10', px: 40, rem: '2.5rem',  tailwind: '*-10', usage: 'Full-width panel inner padding, sheet top margin' },
+              {
+                name: '4',
+                px: 16,
+                rem: '1rem',
+                tailwind: '*-4',
+                usage: 'Default button padding-x, form input inner padding',
+              },
+              {
+                name: '5',
+                px: 20,
+                rem: '1.25rem',
+                tailwind: '*-5',
+                usage: 'Card body padding (compact variant), modal row gap',
+              },
+              {
+                name: '6',
+                px: 24,
+                rem: '1.5rem',
+                tailwind: '*-6',
+                usage: 'Default card padding, sidebar item padding, section gaps',
+              },
+              {
+                name: '7',
+                px: 28,
+                rem: '1.75rem',
+                tailwind: '*-7',
+                usage: 'Popover / dropdown inner padding',
+              },
+              {
+                name: '8',
+                px: 32,
+                rem: '2rem',
+                tailwind: '*-8',
+                usage: 'Large card padding, sidebar section margins',
+              },
+              {
+                name: '10',
+                px: 40,
+                rem: '2.5rem',
+                tailwind: '*-10',
+                usage: 'Full-width panel inner padding, sheet top margin',
+              },
             ],
           },
           // ── Layout Scale ────────────────────────────────────────────────
           {
             label: 'Layout Scale (48px – 128px)',
-            description: 'Page-level whitespace for section separation, hero areas, and viewport-spanning containers.',
+            description:
+              'Page-level whitespace for section separation, hero areas, and viewport-spanning containers.',
             tokens: [
-              { name: '12', px: 48,  rem: '3rem',  tailwind: '*-12', usage: 'Separation between major content blocks' },
-              { name: '16', px: 64,  rem: '4rem',  tailwind: '*-16', usage: 'Hero banner top/bottom padding' },
-              { name: '20', px: 80,  rem: '5rem',  tailwind: '*-20', usage: 'Page-level vertical gaps between sections' },
-              { name: '24', px: 96,  rem: '6rem',  tailwind: '*-24', usage: 'Full-page section padding (top / bottom)' },
-              { name: '32', px: 128, rem: '8rem',  tailwind: '*-32', usage: 'Maximum outer container inset on wide viewports' },
+              {
+                name: '12',
+                px: 48,
+                rem: '3rem',
+                tailwind: '*-12',
+                usage: 'Separation between major content blocks',
+              },
+              {
+                name: '16',
+                px: 64,
+                rem: '4rem',
+                tailwind: '*-16',
+                usage: 'Hero banner top/bottom padding',
+              },
+              {
+                name: '20',
+                px: 80,
+                rem: '5rem',
+                tailwind: '*-20',
+                usage: 'Page-level vertical gaps between sections',
+              },
+              {
+                name: '24',
+                px: 96,
+                rem: '6rem',
+                tailwind: '*-24',
+                usage: 'Full-page section padding (top / bottom)',
+              },
+              {
+                name: '32',
+                px: 128,
+                rem: '8rem',
+                tailwind: '*-32',
+                usage: 'Maximum outer container inset on wide viewports',
+              },
             ],
           },
         ],
-        note: 'Avoid arbitrary pixel values. When a standard token doesn\'t fit, choose the nearest step up and adjust via flex/grid alignment. For responsive layouts use responsive variants: md:*-8 lg:*-12.',
+        note: "Avoid arbitrary pixel values. When a standard token doesn't fit, choose the nearest step up and adjust via flex/grid alignment. For responsive layouts use responsive variants: md:*-8 lg:*-12.",
       },
     },
     {
       id: 'ux-mistakes',
       label: 'Common Mistakes',
       num: '17',
-      subHeader: 'Frequent design errors seen during review — paired with the correct approach to fix them before tickets reach engineering.',
+      subHeader:
+        'Frequent design errors seen during review — paired with the correct approach to fix them before tickets reach engineering.',
       content: {
         type: 'mistakes',
         table: {
           headers: ['❌ Mistake', '✅ Correct Approach'],
           rows: [
-            { cells: ['Raw hex in Figma frames or code', 'Use Figma Tokens Studio variables mapped to design tokens'] },
-            { cells: ['Duplicate component instances in Figma', 'Use main component in the library; create instances only'] },
-            { cells: ['Contrast ratio below 4.5:1 for body text', 'Check with Figma Contrast plugin; target WCAG AA minimum (4.5:1)'] },
-            { cells: ['Skipping mobile/tablet variants', 'Every frame needs 375px (mobile), 768px (tablet), 1440px (desktop)'] },
-            { cells: ['Handoff without redline annotations', 'Use Figma Dev Mode to annotate spacing, tokens, and interactions'] },
-            { cells: ['Jumping to high-fi before wireframes are reviewed', 'Always get wireframe sign-off from engineering before producing high-fidelity screens (Phase 2)'] },
-            { cells: ['Skipping usability testing entirely', 'Run at least one Maze test per major user flow before engineering picks up the ticket (Phase 3)'] },
-            { cells: ['Using colour alone to convey state or error', 'Pair colour with an icon, label, or pattern — required for WCAG 2.1 AA (Phase 5)'] },
-            { cells: ['Touch targets smaller than 44×44 px', 'All interactive elements must meet the minimum 44×44 px touch area for accessibility (Phase 5)'] },
-            { cells: ['Presenting at Phase 6 without incorporating feedback iterations', 'Gather and apply at least one round of team feedback before the final portfolio presentation (Phase 6)'] },
+            {
+              cells: [
+                'Raw hex in Figma frames or code',
+                'Use Figma Tokens Studio variables mapped to design tokens',
+              ],
+            },
+            {
+              cells: [
+                'Duplicate component instances in Figma',
+                'Use main component in the library; create instances only',
+              ],
+            },
+            {
+              cells: [
+                'Contrast ratio below 4.5:1 for body text',
+                'Check with Figma Contrast plugin; target WCAG AA minimum (4.5:1)',
+              ],
+            },
+            {
+              cells: [
+                'Skipping mobile/tablet variants',
+                'Every frame needs 375px (mobile), 768px (tablet), 1440px (desktop)',
+              ],
+            },
+            {
+              cells: [
+                'Handoff without redline annotations',
+                'Use Figma Dev Mode to annotate spacing, tokens, and interactions',
+              ],
+            },
+            {
+              cells: [
+                'Jumping to high-fi before wireframes are reviewed',
+                'Always get wireframe sign-off from engineering before producing high-fidelity screens (Phase 2)',
+              ],
+            },
+            {
+              cells: [
+                'Skipping usability testing entirely',
+                'Run at least one Maze test per major user flow before engineering picks up the ticket (Phase 3)',
+              ],
+            },
+            {
+              cells: [
+                'Using colour alone to convey state or error',
+                'Pair colour with an icon, label, or pattern — required for WCAG 2.1 AA (Phase 5)',
+              ],
+            },
+            {
+              cells: [
+                'Touch targets smaller than 44×44 px',
+                'All interactive elements must meet the minimum 44×44 px touch area for accessibility (Phase 5)',
+              ],
+            },
+            {
+              cells: [
+                'Presenting at Phase 6 without incorporating feedback iterations',
+                'Gather and apply at least one round of team feedback before the final portfolio presentation (Phase 6)',
+              ],
+            },
           ],
         },
       },
