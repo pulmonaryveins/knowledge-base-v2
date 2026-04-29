@@ -5,8 +5,38 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Tool } from '../models/tool.model';
-import { StrapiResponse, StrapiEntity, TeamStrapi, ProjectStrapi } from '../models/strapi.model';
+import { Team, TeamSection, SectionContent } from '../models/team.model';
+import { Project } from '../models/project.model';
+import {
+  StrapiResponse,
+  StrapiEntity,
+  StrapiComponent,
+  TeamStrapi,
+  ProjectStrapi,
+  StrapiDataTable,
+  StrapiStep,
+  StrapiCodingPattern,
+  StrapiInfoCard,
+  StrapiContact,
+  StrapiGridGroup,
+  StrapiIconSize,
+  StrapiIcon,
+  StrapiSpacingGroup,
+  StrapiButtonTab,
+  StrapiAssetEntry,
+  StrapiColorTab,
+  StrapiTypographyTab,
+  StrapiNavbar,
+  StrapiFooter,
+  StrapiLandingPage,
+  StrapiCodeBlock,
+} from '../models/strapi.model';
+import { ColorGroup, ColorTab, BrandingLogoItem } from '../models/ui.models';
 
+/**
+ * Service responsible for interacting with the Strapi CMS API.
+ * Handles fetching and mapping tools, teams, projects, landing page, and navbar data.
+ */
 @Injectable({ providedIn: 'root' })
 export class StrapiService {
   private readonly _http = inject(HttpClient);
@@ -15,6 +45,8 @@ export class StrapiService {
 
   /**
    * Fetch all registered tools from Strapi.
+   *
+   * @returns {Observable<Tool[]>} An observable containing an array of Tool objects.
    */
   public getTools(): Observable<Tool[]> {
     const headers = this._getHeaders();
@@ -25,12 +57,12 @@ export class StrapiService {
       >(`${this._baseUrl}/api/tools?populate=*`, { headers })
       .pipe(
         map((response) =>
-          response.data.map((entity: any) => {
-            const data = entity.attributes || entity;
+          response.data.map((entity: StrapiEntity<Tool>) => {
+            const data = entity.attributes || (entity as unknown as Tool);
             return {
               ...data,
               key: data.key || '',
-              usedBy: data.usedBy || data.useBy || [],
+              usedBy: data.usedBy || [],
             };
           }),
         ),
@@ -38,7 +70,10 @@ export class StrapiService {
   }
 
   /**
-   * Fetch a single tool by its key.
+   * Fetch a single tool by its unique key.
+   *
+   * @param {string} key - The unique identifier for the tool.
+   * @returns {Observable<Tool | undefined>} An observable containing the Tool object if found, otherwise undefined.
    */
   public getToolByKey(key: string): Observable<Tool | undefined> {
     const headers = this._getHeaders();
@@ -50,16 +85,18 @@ export class StrapiService {
       .pipe(
         map((response) => {
           if (!response.data || response.data.length === 0) return undefined;
-          const entity: any = response.data[0];
-          return entity.attributes || entity;
+          const entity: StrapiEntity<Tool> = response.data[0];
+          return (entity.attributes || entity) as unknown as Tool;
         }),
       );
   }
 
   /**
-   * Fetch all Teams from Strapi.
+   * Fetch all Teams from Strapi with deeply populated sections.
+   *
+   * @returns {Observable<Team[]>} An observable containing an array of mapped Team objects.
    */
-  public getTeams(): Observable<any[]> {
+  public getTeams(): Observable<Team[]> {
     const headers = this._getHeaders();
     // Deep populate: sections need per-component field population since
     // nested components (dataTable.headers, steps.code, etc.) are not
@@ -109,8 +146,10 @@ export class StrapiService {
 
   /**
    * Fetch all Projects from Strapi.
+   *
+   * @returns {Observable<Project[]>} An observable containing an array of mapped Project objects.
    */
-  public getProjects(): Observable<any[]> {
+  public getProjects(): Observable<Project[]> {
     const headers = this._getHeaders();
     return this._http
       .get<
@@ -120,23 +159,27 @@ export class StrapiService {
         map((response) => {
           console.log('[StrapiService] Raw projects response:', response);
           return response.data.map((entity) => {
-            const data: any = entity.attributes || entity;
-            const teamData = data.team?.data?.attributes || data.team?.data || data.team;
+            const data: ProjectStrapi = entity.attributes || (entity as unknown as ProjectStrapi);
+            const teamRelation = data.team?.data;
+            const teamData: TeamStrapi | undefined =
+              teamRelation?.attributes ?? (teamRelation as unknown as TeamStrapi | undefined);
             return {
               ...data,
-              id: data.key || entity.id?.toString() || data.id?.toString(),
-              status: data.projectStatus || data.status,
+              id: data.key || entity.id?.toString() || '',
+              status: data.projectStatus,
               teamKey: teamData?.key || '',
-            };
+            } as unknown as Project;
           });
         }),
       );
   }
 
   /**
-   * Fetch the landing page with all sections populated.
+   * Fetch the landing page content with all sections populated.
+   *
+   * @returns {Observable<StrapiLandingPage>} An observable containing the mapped StrapiLandingPage object.
    */
-  public getLandingPage(): Observable<any> {
+  public getLandingPage(): Observable<StrapiLandingPage> {
     const headers = this._getHeaders();
     const query = [
       'populate[sections][on][landing.hero][populate][links]=*',
@@ -151,68 +194,100 @@ export class StrapiService {
     ].join('&');
 
     return this._http
-      .get<any>(`${this._baseUrl}/api/landing-page?${query}`, { headers })
+      .get<
+        StrapiResponse<StrapiLandingPage>
+      >(`${this._baseUrl}/api/landing-page?${query}`, { headers })
       .pipe(map((r) => r.data));
   }
 
   /**
-   * Fetch the navbar with links and CTA populated.
+   * Fetch the navbar content with links and CTA populated.
+   *
+   * @returns {Observable<StrapiNavbar>} An observable containing the mapped StrapiNavbar object.
    */
-  public getNavbar(): Observable<any> {
+  public getNavbar(): Observable<StrapiNavbar> {
     const headers = this._getHeaders();
     return this._http
-      .get<any>(`${this._baseUrl}/api/navbar?populate[links]=*&populate[cta]=*`, { headers })
+      .get<
+        StrapiResponse<StrapiNavbar>
+      >(`${this._baseUrl}/api/navbar?populate[links]=*&populate[cta]=*`, { headers })
+      .pipe(map((r) => r.data));
+  }
+  /**
+   * Fetch the footer content with links populated.
+   *
+   * @returns {Observable<StrapiFooter>} An observable containing the mapped StrapiFooter object.
+   */
+  public getFooter(): Observable<StrapiFooter> {
+    const headers = this._getHeaders();
+    return this._http
+      .get<StrapiResponse<StrapiFooter>>(`${this._baseUrl}/api/footer?populate[links]=*`, { headers })
       .pipe(map((r) => r.data));
   }
 
   /**
-   * Fetch the footer with links populated.
+   * Maps a raw Strapi team entity to the frontend Team model.
+   *
+   * @param {StrapiEntity<TeamStrapi>} entity - The raw team entity from Strapi.
+   * @returns {Team} The mapped Team object.
+   * @private
    */
-  public getFooter(): Observable<any> {
-    const headers = this._getHeaders();
-    return this._http
-      .get<any>(`${this._baseUrl}/api/footer?populate[links]=*`, { headers })
-      .pipe(map((r) => r.data));
-  }
+  private _mapStrapiTeam(entity: StrapiEntity<TeamStrapi>): Team {
+    const data: TeamStrapi = entity.attributes || (entity as unknown as TeamStrapi);
+    const rawProjects: Array<StrapiEntity<ProjectStrapi> | ProjectStrapi> = Array.isArray(
+      data.projects,
+    )
+      ? (data.projects as Array<StrapiEntity<ProjectStrapi>>)
+      : (data.projects as { data: StrapiEntity<ProjectStrapi>[] })?.data || [];
 
-  private _mapStrapiTeam(entity: StrapiEntity<TeamStrapi>): any {
-    const data: any = entity.attributes || entity;
     return {
       ...data,
       key: data.key || '',
-      projects:
-        (Array.isArray(data.projects) ? data.projects : data.projects?.data || []).map((p: any) => {
-          const pData = p.attributes || p;
-          return {
-            ...pData,
-            id: pData.key || p.id?.toString() || pData.id?.toString(),
-            status: pData.projectStatus || pData.status,
-            teamKey: data.key || '',
-            teamColor: data.color || '#000000',
-            doc: {
-              meta: pData.projectMeta || { stack: '', repo: '', deploy: '', sprint: '' },
-              purpose: pData.purpose || '',
-              features: pData.features || [],
-              folderStructure: pData.folderStructure || { code: '', language: 'bash' },
-              gettingStarted: pData.gettingStarted || [],
-              contacts: pData.contacts || [],
-              links: pData.links || [],
-            },
-          };
-        }) || [],
+      projects: rawProjects.map((p) => {
+        const pData: ProjectStrapi =
+          (p as StrapiEntity<ProjectStrapi>).attributes || (p as unknown as ProjectStrapi);
+        return {
+          ...pData,
+          id: pData.key || (p as StrapiEntity<ProjectStrapi>).id?.toString() || '',
+          status: pData.projectStatus,
+          teamKey: data.key || '',
+          teamColor: data.color || '#000000',
+          doc: {
+            meta: pData.projectMeta || { stack: '', repo: '', deploy: '', sprint: '' },
+            purpose: pData.purpose || '',
+            features: pData.features || [],
+            folderStructure: pData.folderStructure || { code: '', language: 'bash' },
+            gettingStarted: pData.gettingStarted || [],
+            contacts: pData.contacts || [],
+            links: pData.links || [],
+          },
+        } as unknown as Project;
+      }),
       sections: (data.sections || [])
-        .map((s: any, idx: number) => this._mapSection(s, idx))
-        .filter((s: any) => !!s),
-    };
+        .map((s: StrapiComponent, idx: number) => this._mapSection(s, idx))
+        .filter((s): s is TeamSection => !!s),
+    } as unknown as Team;
   }
 
-  private _mapSection(s: any, idx: number): any {
+  /**
+   * Maps a raw Strapi dynamic zone component to a TeamSection.
+   * Resolves component names to internal types and deep-maps nested fields.
+   *
+   * @param {StrapiComponent} s - The raw Strapi component data.
+   * @param {number} idx - The index of the section in the ordered list.
+   * @returns {TeamSection | null} The mapped TeamSection object or null if invalid.
+   *
+   * @example
+   * const section = this._mapSection({ __component: 'sections.tech-stack', ... }, 0);
+   * @private
+   */
+  private _mapSection(s: StrapiComponent, idx: number): TeamSection | null {
     if (!s || !s.__component) return null;
 
     // Resolve centralized NC Phase to its specific type
     const componentName =
       s.__component === 'sections.nc-phase'
-        ? `sections.${s.phase || 'nc-design-basics'}`
+        ? `sections.${(s['phase'] as string) || 'nc-design-basics'}`
         : s.__component;
 
     const typeMap: Record<string, string> = {
@@ -221,7 +296,7 @@ export class StrapiService {
       'sections.getting-started': 'getting-started',
       'sections.folder-arch': 'folder-arch',
       'sections.coding-patterns': 'coding-patterns',
-      'shared.coding-patterns': 'coding-patterns', // Also support shared.coding-patterns
+      'shared.coding-patterns': 'coding-patterns',
       'sections.mistakes': 'mistakes',
       'sections.contact-list': 'team-contacts',
       'sections.projects': 'projects',
@@ -229,151 +304,219 @@ export class StrapiService {
 
     const type = typeMap[componentName] || componentName?.replace('sections.', '') || 'unknown';
 
-    // Base section structure
-    const section: any = {
-      // Use component name + id for guaranteed unique keys
-      id: s.key || `sec-${componentName.replace('.', '-')}-${s.id}`,
-      label: s.title || s.label || s.sectionTitle || this._getDefaultLabel(type),
+    /** Shared base fields reused in every case */
+    const base = {
+      id: (s['key'] as string) || `sec-${componentName.replace('.', '-')}-${s.id}`,
+      label:
+        (s['title'] as string) ||
+        (s['label'] as string) ||
+        (s['sectionTitle'] as string) ||
+        this._getDefaultLabel(type),
       num: (idx + 1).toString().padStart(2, '0'),
-      subHeader: s.subHeader || '',
-      content: { type },
-    };
+      subHeader: (s['subHeader'] as string) || '',
+    } as const;
 
-    // Deep mapping handlers
+    // Each case constructs and returns the full TeamSection so readonly fields
+    // are satisfied at object-literal creation time (not via post-hoc assignment).
     switch (type) {
-      case 'grid':
-        section.content.groups = (s.groups || []).map((g: any) => ({
-          sectionLabel: g.sectionLabel,
-          tierLabel: g.tierLabel,
-          screens: (g.screens || []).map((sc: any) => ({
-            width: sc.width,
-            height: sc.height,
-          })),
-        }));
-        section.content.description = s.description || '';
-        break;
+      case 'grid': {
+        const groups = (s['groups'] as StrapiGridGroup[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'grid',
+            description: (s['description'] as string) || '',
+            groups: groups.map((g) => ({
+              sectionLabel: g.sectionLabel,
+              tierLabel: g.tierLabel,
+              screens: (g.screens || []).map((sc) => ({ width: sc.width, height: sc.height })),
+            })),
+          },
+        };
+      }
 
-      case 'iconography':
-        section.content.sizes = (s.sizes || []).map((sz: any) => ({ px: sz.px }));
-        section.content.icons = (s.icons || []).map((i: any) => ({
-          name: i.name,
-          faClass: i.faClass,
-          description: i.description,
-        }));
-        section.content.description = s.description || '';
-        break;
+      case 'iconography': {
+        const sizes = (s['sizes'] as StrapiIconSize[] | undefined) || [];
+        const icons = (s['icons'] as StrapiIcon[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'iconography',
+            description: (s['description'] as string) || '',
+            sizes: sizes.map((sz) => ({ px: sz.px })),
+            icons: icons.map((i) => ({
+              name: i.name,
+              faClass: i.faClass,
+              description: i.description,
+            })),
+          },
+        };
+      }
 
-      case 'spacing':
-        section.content.groups = (s.groups || []).map((g: any) => ({
-          label: g.label,
-          description: g.description,
-          tokens: (g.tokens || []).map((t: any) => ({
-            name: t.name,
-            px: t.px,
-            rem: t.rem,
-            tailwind: t.tailwind,
-            usage: t.usage,
-          })),
-        }));
-        section.content.note = s.note || '';
-        section.content.description = s.description || '';
-        break;
+      case 'spacing': {
+        const groups = (s['groups'] as StrapiSpacingGroup[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'spacing',
+            description: (s['description'] as string) || '',
+            note: (s['note'] as string) || '',
+            groups: groups.map((g) => ({
+              label: g.label,
+              description: g.description,
+              tokens: (g.tokens || []).map((t) => ({
+                name: t.name,
+                px: t.px,
+                rem: t.rem,
+                tailwind: t.tailwind,
+                usage: t.usage,
+              })),
+            })),
+          },
+        };
+      }
 
-      case 'button-showcase':
-        section.content.tabs = (s.tabs || []).map((t: any) => ({
-          label: t.label,
-          variant: t.variant,
-          defaultTag: t.defaultTag,
-        }));
-        break;
+      case 'button-showcase': {
+        const tabs = (s['tabs'] as StrapiButtonTab[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'button-showcase',
+            tabs: tabs.map((t) => ({
+              label: t.label,
+              variant: t.variant,
+              defaultTag: t.defaultTag,
+            })),
+          },
+        };
+      }
 
-      case 'tech-stack':
-        const dt = Array.isArray(s.dataTable) ? s.dataTable[0] : s.dataTable;
-        section.content.table = dt
-          ? {
-              headers: dt.headers?.map((h: any) => h.value) || [],
-              rows:
-                dt.rows?.map((r: any) => ({
-                  cells: r.cells?.map((c: any) => c.value) || [],
-                })) || [],
-            }
-          : null;
-        break;
+      case 'tech-stack': {
+        const rawDt = s['dataTable'] as StrapiDataTable | StrapiDataTable[] | undefined;
+        const dt: StrapiDataTable | undefined = Array.isArray(rawDt) ? rawDt[0] : rawDt;
+        return {
+          ...base,
+          content: {
+            type: 'tech-stack',
+            table: dt
+              ? {
+                  headers: dt.headers?.map((h) => h.value) || [],
+                  rows: dt.rows?.map((r) => ({ cells: r.cells?.map((c) => c.value) || [] })) || [],
+                }
+              : { headers: [], rows: [] },
+          },
+        };
+      }
 
-      case 'mistakes':
+      case 'mistakes': {
         // Support both mistakeTable (migration) and dataTable (legacy)
-        const mt = s.mistakeTable || s.dataTable;
-        const mtData = Array.isArray(mt) ? mt[0] : mt;
-        section.content.table = mtData
-          ? {
-              headers: mtData.headers?.map((h: any) => h.value) || [],
-              rows:
-                mtData.rows?.map((r: any) => ({
-                  cells: r.cells?.map((c: any) => c.value) || [],
-                })) || [],
-            }
-          : null;
-        break;
+        const rawMt = (s['mistakeTable'] || s['dataTable']) as
+          | StrapiDataTable
+          | StrapiDataTable[]
+          | undefined;
+        const mtData: StrapiDataTable | undefined = Array.isArray(rawMt) ? rawMt[0] : rawMt;
+        return {
+          ...base,
+          content: {
+            type: 'mistakes',
+            table: mtData
+              ? {
+                  headers: mtData.headers?.map((h) => h.value) || [],
+                  rows:
+                    mtData.rows?.map((r) => ({ cells: r.cells?.map((c) => c.value) || [] })) || [],
+                }
+              : { headers: [], rows: [] },
+          },
+        };
+      }
 
-      case 'getting-started':
-        section.content.steps = (s.steps || []).map((step: any) => ({
-          title: step.title,
-          description: step.description,
-          icon: step.icon,
-          code: step.code?.code || '',
-          language: step.code?.language || 'bash',
-        }));
-        section.content.layout = s.layout || 'list';
-        const mc = Array.isArray(s.mainCode) ? s.mainCode[0] : s.mainCode;
-        section.content.codeBlock = mc
-          ? { code: mc.code || '', language: mc.language || 'bash' }
-          : null;
-        break;
+      case 'getting-started': {
+        const steps = (s['steps'] as StrapiStep[] | undefined) || [];
+        const rawMc = s['mainCode'] as StrapiCodeBlock | StrapiCodeBlock[] | undefined;
+        const mc: StrapiCodeBlock | undefined = Array.isArray(rawMc) ? rawMc[0] : rawMc;
+        return {
+          ...base,
+          content: {
+            type: 'getting-started',
+            layout: ((s['layout'] as string) || 'list') as 'grid',
+            steps: steps.map((step) => ({
+              title: step.title,
+              description: step.description,
+              icon: step.icon,
+              code: step.code?.code || '',
+              language: step.code?.language || 'bash',
+            })),
+            codeBlock: mc ? { code: mc.code || '', language: mc.language || 'bash' } : undefined,
+          },
+        };
+      }
 
-      case 'folder-arch':
-        section.content.cards = (s.cards || []).map((c: any) => ({ title: c.title, body: c.body }));
+      case 'folder-arch': {
+        const cards = (s['cards'] as StrapiInfoCard[] | undefined) || [];
         // Note: Strapi returns 'maincode' (lowercase) for folder-arch in this version
-        const fc = s.maincode || s.mainCode;
-        section.content.codeBlock = fc
-          ? { code: fc.code || '', language: fc.language || 'bash' }
-          : null;
-        break;
+        const fc = (s['maincode'] || s['mainCode']) as StrapiCodeBlock | undefined;
+        return {
+          ...base,
+          content: {
+            type: 'folder-arch',
+            cards: cards.map((c) => ({ title: c.title, body: c.body })),
+            codeBlock: fc ? { code: fc.code || '', language: fc.language || 'bash' } : undefined,
+          },
+        };
+      }
 
-      case 'coding-patterns':
-        section.content.patterns = (s.patterns || []).map((p: any) => ({
-          title: p.title,
-          description: p.description,
-          rules: p.rules?.map((r: any) => r.value) || [],
-          codeBlock: p.code
-            ? { code: p.code.code || '', language: p.code.language || 'typescript' }
-            : null,
-          callout: p.callout ? { type: p.callout.type, message: p.callout.message } : null,
-        }));
-        section.content.layout = s.layout || 'grid';
-        break;
+      case 'coding-patterns': {
+        const patterns = (s['patterns'] as StrapiCodingPattern[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'coding-patterns',
+            layout: (s['layout'] as 'stack' | undefined) || undefined,
+            patterns: patterns.map((p) => ({
+              title: p.title,
+              description: p.description,
+              rules: p.rules?.map((r) => r.value) || [],
+              codeBlock: p.code
+                ? { code: p.code.code || '', language: p.code.language || 'typescript' }
+                : undefined,
+              callout: p.callout
+                ? {
+                    type: p.callout.type as 'tip' | 'warning' | 'info' | 'danger',
+                    body: p.callout.message,
+                  }
+                : undefined,
+            })),
+          },
+        };
+      }
 
-      case 'team-contacts':
-        section.content.contacts = (s.contacts || []).map((c: any) => ({
-          name: c.name,
-          role: c.role,
-          initials: c.initials,
-          color: c.color,
-        }));
-        break;
+      case 'team-contacts': {
+        const contacts = (s['contacts'] as StrapiContact[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'team-contacts',
+            contacts: contacts.map((c) => ({
+              name: c.name,
+              role: c.role,
+              initials: c.initials,
+              color: c.color,
+            })),
+          },
+        };
+      }
 
       case 'projects':
-        // No specific mapping needed, triggers related projects list
-        break;
+        return { ...base, content: { type: 'projects' } };
 
-      case 'branding':
-        const mapAsset = (a: any) => {
+      case 'branding': {
+        const mapAsset = (a: StrapiAssetEntry): BrandingLogoItem => {
           const media = a.asset;
           let url = '';
           if (media) {
             // Strapi 5 / 4 simplified or flattened media
             url = media.url || media.data?.attributes?.url || media.data?.url || '';
           }
-
           return {
             label: a.label,
             src: url ? (url.startsWith('/') ? `${this._baseUrl}${url}` : url) : '',
@@ -385,72 +528,92 @@ export class StrapiService {
           };
         };
 
-        section.content.mainLogos = (s.mainLogos || []).map(mapAsset);
-        section.content.favicon = s.favicon ? mapAsset(s.favicon) : null;
-        section.content.sidebarCollapsed = (s.sidebarCollapsed || []).map(mapAsset);
-        section.content.sidebarExpanded = (s.sidebarExpanded || []).map(mapAsset);
-        break;
+        const mainLogos = (s['mainLogos'] as StrapiAssetEntry[] | undefined) || [];
+        const faviconEntry = s['favicon'] as StrapiAssetEntry | undefined;
+        const sidebarCollapsed = (s['sidebarCollapsed'] as StrapiAssetEntry[] | undefined) || [];
+        const sidebarExpanded = (s['sidebarExpanded'] as StrapiAssetEntry[] | undefined) || [];
 
-      case 'color-palette':
-        section.content.tabs = (s.tabs || []).map((t: any) => {
-          const tab: any = {
-            label: t.label,
-            type: t.type,
-          };
-          if (t.type === 'wcag') {
-            tab.wcagPairs = (t.wcagPairs || []).map((p: any) => ({
-              label: p.label,
-              foreground: p.foreground,
-              background: p.background,
-              ratio: p.ratio,
-              aaNormal: p.aaNormal,
-              aaLarge: p.aaLarge,
-              aaaNormal: p.aaaNormal,
-              aaaLarge: p.aaaLarge,
-            }));
-            tab.wcagNote = t.wcagNote || '';
-          } else {
-            tab.groups = (t.groups || []).map((g: any) => {
-              const group: any = { label: g.label };
-              const swatches = (g.swatches || []).map((sw: any) => ({
-                name: sw.name,
-                hex: sw.hex,
-              }));
-              if (t.type === 'overview') {
-                group.main = swatches;
-              } else {
-                group.shades = swatches;
+        return {
+          ...base,
+          content: {
+            type: 'branding',
+            mainLogos: mainLogos.map(mapAsset),
+            favicon: faviconEntry ? mapAsset(faviconEntry) : undefined,
+            sidebarCollapsed: sidebarCollapsed.map(mapAsset),
+            sidebarExpanded: sidebarExpanded.map(mapAsset),
+          },
+        };
+      }
+
+      case 'color-palette': {
+        const tabs = (s['tabs'] as StrapiColorTab[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'color-palette',
+            tabs: tabs.map((t): ColorTab => {
+              if (t.type === 'wcag') {
+                return {
+                  label: t.label,
+                  type: 'wcag',
+                  wcagPairs: (t.wcagPairs || []).map((p) => ({
+                    label: p.label,
+                    foreground: p.foreground,
+                    background: p.background,
+                    ratio: p.ratio,
+                    aaNormal: p.aaNormal,
+                    aaLarge: p.aaLarge,
+                    aaaNormal: p.aaaNormal,
+                    aaaLarge: p.aaaLarge,
+                  })),
+                  wcagNote: t.wcagNote || '',
+                };
               }
-              return group;
-            });
-          }
-          return tab;
-        });
-        break;
+              const groups: ColorGroup[] = (t.groups || []).map((g) => {
+                const swatches = (g.swatches || []).map((sw) => ({ name: sw.name, hex: sw.hex }));
+                return t.type === 'overview'
+                  ? { label: g.label, main: swatches }
+                  : { label: g.label, shades: swatches };
+              });
+              return { label: t.label, type: t.type, groups };
+            }),
+          },
+        };
+      }
 
-      case 'typography-scale':
-        section.content.tabs = (s.tabs || []).map((t: any) => ({
-          label: t.label,
-          fontName: t.fontName,
-          preview: t.preview,
-          columns: (t.columns || []).map((col: any) => ({
-            label: col.label,
-            weight: col.weight,
-            rows: (col.rows || []).map((row: any) => ({
-              tag: row.tag,
-              size: row.size,
+      case 'typography-scale': {
+        const tabs = (s['tabs'] as StrapiTypographyTab[] | undefined) || [];
+        return {
+          ...base,
+          content: {
+            type: 'typography-scale',
+            tabs: tabs.map((t) => ({
+              label: t.label,
+              fontName: t.fontName,
+              preview: t.preview,
+              columns: (t.columns || []).map((col) => ({
+                label: col.label,
+                weight: col.weight,
+                rows: (col.rows || []).map((row) => ({ tag: row.tag, size: row.size })),
+              })),
             })),
-          })),
-        }));
-        break;
+          },
+        };
+      }
 
       default:
-        section.content = { ...section.content, ...s };
+        // Unknown section type — pass through raw data cast to the expected shape
+        return { ...base, content: { type, ...s } as unknown as SectionContent };
     }
-
-    return section;
   }
 
+  /**
+   * Returns a default display label for a section type if no custom label is provided.
+   *
+   * @param {string} type - The section type identifier.
+   * @returns {string} The human-readable default label.
+   * @private
+   */
   private _getDefaultLabel(type: string): string {
     const labels: Record<string, string> = {
       'tech-stack': 'Tech Stack Overview',
@@ -483,6 +646,12 @@ export class StrapiService {
     );
   }
 
+  /**
+   * Generates HttpHeaders for Strapi API requests, including Authorization token if available.
+   *
+   * @returns {HttpHeaders | undefined} The configured HttpHeaders or undefined if no token exists.
+   * @private
+   */
   private _getHeaders(): HttpHeaders | undefined {
     return this._token
       ? new HttpHeaders().set('Authorization', `Bearer ${this._token}`)
