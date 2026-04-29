@@ -72,14 +72,22 @@ export class StrapiService {
       // Deeply populated sections
       'populate[sections][on][sections.tech-stack][populate][dataTable][populate][headers][populate]=*',
       'populate[sections][on][sections.tech-stack][populate][dataTable][populate][rows][populate][cells][populate]=*',
-      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate][headers][populate]=*',
-      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate][rows][populate][cells][populate]=*',
       'populate[sections][on][sections.getting-started][populate][steps][populate][code][populate]=*',
       'populate[sections][on][shared.coding-patterns][populate][patterns][populate][rules][populate]=*',
       'populate[sections][on][shared.coding-patterns][populate][patterns][populate][code][populate]=*',
       'populate[sections][on][shared.coding-patterns][populate][patterns][populate][callout][populate]=*',
       'populate[sections][on][sections.folder-arch][populate][cards][populate]=*',
       'populate[sections][on][sections.folder-arch][populate][maincode][populate]=*',
+      'populate[sections][on][sections.grid][populate][groups][populate][screens][populate]=*',
+      'populate[sections][on][sections.iconography][populate][sizes][populate]=*',
+      'populate[sections][on][sections.iconography][populate][icons][populate]=*',
+      'populate[sections][on][sections.spacing][populate][groups][populate][tokens][populate]=*',
+      'populate[sections][on][sections.typography-scale][populate][tabs][populate][columns][populate][rows][populate]=*',
+      'populate[sections][on][sections.qa-stages][populate][steps][populate][code][populate]=*',
+      'populate[sections][on][sections.nc-phase][populate]=*',
+      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate][headers][populate]=*',
+      'populate[sections][on][sections.mistakes][populate][mistakeTable][populate][rows][populate][cells][populate]=*',
+      'populate[sections][on][sections.button-showcase][populate][tabs][populate]=*',
       'populate[sections][on][sections.contact-list][populate][contacts][populate]=*',
       'populate[sections][on][sections.projects][populate]=*',
       'populate[sections][on][sections.branding][populate][mainLogos][populate]=*',
@@ -88,12 +96,6 @@ export class StrapiService {
       'populate[sections][on][sections.branding][populate][sidebarExpanded][populate]=*',
       'populate[sections][on][sections.color-palette][populate][tabs][populate][groups][populate][swatches][populate]=*',
       'populate[sections][on][sections.color-palette][populate][tabs][populate][wcagPairs][populate]=*',
-      'populate[sections][on][sections.grid][populate]=*',
-      'populate[sections][on][sections.iconography][populate]=*',
-      'populate[sections][on][sections.spacing][populate]=*',
-      'populate[sections][on][sections.typography-scale][populate][tabs][populate][columns][populate][rows][populate]=*',
-      'populate[sections][on][sections.qa-stages][populate][steps][populate][code][populate]=*',
-      'populate[sections][on][sections.nc-phase][populate]=*',
     ].join('&');
     return this._http
       .get<
@@ -203,9 +205,10 @@ export class StrapiService {
     if (!s || !s.__component) return null;
 
     // Resolve centralized NC Phase to its specific type
-    const componentName = s.__component === 'sections.nc-phase' 
-      ? `sections.${s.phase || 'nc-design-basics'}` 
-      : s.__component;
+    const componentName =
+      s.__component === 'sections.nc-phase'
+        ? `sections.${s.phase || 'nc-design-basics'}`
+        : s.__component;
 
     const typeMap: Record<string, string> = {
       'sections.tech-stack': 'tech-stack',
@@ -233,6 +236,52 @@ export class StrapiService {
 
     // Deep mapping handlers
     switch (type) {
+      case 'grid':
+        section.content.groups = (s.groups || []).map((g: any) => ({
+          sectionLabel: g.sectionLabel,
+          tierLabel: g.tierLabel,
+          screens: (g.screens || []).map((sc: any) => ({
+            width: sc.width,
+            height: sc.height,
+          })),
+        }));
+        section.content.description = s.description || '';
+        break;
+
+      case 'iconography':
+        section.content.sizes = (s.sizes || []).map((sz: any) => ({ px: sz.px }));
+        section.content.icons = (s.icons || []).map((i: any) => ({
+          name: i.name,
+          faClass: i.faClass,
+          description: i.description,
+        }));
+        section.content.description = s.description || '';
+        break;
+
+      case 'spacing':
+        section.content.groups = (s.groups || []).map((g: any) => ({
+          label: g.label,
+          description: g.description,
+          tokens: (g.tokens || []).map((t: any) => ({
+            name: t.name,
+            px: t.px,
+            rem: t.rem,
+            tailwind: t.tailwind,
+            usage: t.usage,
+          })),
+        }));
+        section.content.note = s.note || '';
+        section.content.description = s.description || '';
+        break;
+
+      case 'button-showcase':
+        section.content.tabs = (s.tabs || []).map((t: any) => ({
+          label: t.label,
+          variant: t.variant,
+          defaultTag: t.defaultTag,
+        }));
+        break;
+
       case 'tech-stack':
         const dt = Array.isArray(s.dataTable) ? s.dataTable[0] : s.dataTable;
         section.content.table = dt
@@ -278,9 +327,8 @@ export class StrapiService {
 
       case 'folder-arch':
         section.content.cards = (s.cards || []).map((c: any) => ({ title: c.title, body: c.body }));
-        // Note: Strapi returns 'maincode' (lowercase) for folder-arch
-        const fcRaw = s.maincode || s.mainCode;
-        const fc = Array.isArray(fcRaw) ? fcRaw[0] : fcRaw;
+        // Note: Strapi returns 'maincode' (lowercase) for folder-arch in this version
+        const fc = s.maincode || s.mainCode;
         section.content.codeBlock = fc
           ? { code: fc.code || '', language: fc.language || 'bash' }
           : null;
@@ -320,7 +368,7 @@ export class StrapiService {
             // Strapi 5 / 4 simplified or flattened media
             url = media.url || media.data?.attributes?.url || media.data?.url || '';
           }
-          
+
           return {
             label: a.label,
             src: url ? (url.startsWith('/') ? `${this._baseUrl}${url}` : url) : '',
