@@ -1,3 +1,4 @@
+@use 'sass:color';
 $navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc;
 
 .wd-showcase { display: flex; flex-direction: column; gap: 40px; }
@@ -23,7 +24,7 @@ $navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc
   &--desktop { width: 190px; border-radius: 6px; .wd-device__screen { padding: 4px 5px 0; } }
 }
 .wd-mock__bar  { height: 7px; border-radius: 3px; background: $bg; border: 1px solid $border; }
-.wd-mock__hero { border-radius: 4px; background: linear-gradient(135deg, lighten($navy, 30%), $navy);
+.wd-mock__hero { border-radius: 4px; background: linear-gradient(135deg, color.adjust($navy, $lightness: 30%), $navy);
   &--sm { height: 26px; } &--md { height: 36px; } &--lg { height: 44px; } }
 .wd-mock__line { height: 4px; background: $border; border-radius: 2px; &--short { width: 60%; } }
 .wd-mock__cta  { height: 10px; width: 36px; background: $green; border-radius: 3px; }
@@ -39,14 +40,14 @@ $navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc
   display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px;
   &__col { height: 18px; background: rgba($green, .25); border: 1px solid rgba($green, .4); border-radius: 2px;
     display: flex; align-items: center; justify-content: center;
-    span { font-family: 'Inter', sans-serif; font-size: 9px; color: darken($green, 20%); font-weight: 700; } }
+    span { font-family: 'Inter', sans-serif; font-size: 9px; color: color.adjust($green, $lightness: -20%); font-weight: 700; } }
 }
 .wd-grid-spans { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
 .wd-span {
   height: 24px; border-radius: 3px; display: flex; align-items: center; justify-content: center;
   font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; color: white; background: $navy;
   &--12 { grid-column: span 12; }
-  &--6  { grid-column: span 6; background: darken($green, 5%); color: $navy; }
+  &--6  { grid-column: span 6; background: color.adjust($green, $lightness: -5%); color: $navy; }
   &--4  { grid-column: span 4; background: #3B82F6; }
   &--3  { grid-column: span 3; background: #7C3AED; }
 }
