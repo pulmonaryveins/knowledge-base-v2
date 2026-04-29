@@ -22,7 +22,7 @@ export class StrapiService {
     return this._http
       .get<
         StrapiResponse<StrapiEntity<Tool>[]>
-      >(`${this._baseUrl}/api/tools?populate=*&sort=label:asc`, { headers })
+      >(`${this._baseUrl}/api/tools?populate=*`, { headers })
       .pipe(
         map((response) =>
           response.data.map((entity: any) => {
@@ -66,8 +66,6 @@ export class StrapiService {
     // included with a shallow populate=*
     const query = [
       'populate[projects][populate]=*',
-      'populate[projects][sort]=name:asc',
-      'sort=label:asc',
       'populate[sections][populate]=*',
       // Deeply populated sections
       'populate[sections][on][sections.tech-stack][populate][dataTable][populate][headers][populate]=*',
@@ -163,10 +161,7 @@ export class StrapiService {
   public getNavbar(): Observable<any> {
     const headers = this._getHeaders();
     return this._http
-      .get<any>(
-        `${this._baseUrl}/api/navbar?populate[links]=*&populate[cta]=*`,
-        { headers },
-      )
+      .get<any>(`${this._baseUrl}/api/navbar?populate[links]=*&populate[cta]=*`, { headers })
       .pipe(map((r) => r.data));
   }
 

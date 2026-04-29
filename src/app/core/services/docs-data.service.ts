@@ -36,6 +36,26 @@ export class DocsDataService {
     piPlayerTeam,
   ];
 
+  /** Canonical key order derived from the hardcoded team data */
+  private readonly _teamKeyOrder: ReadonlyArray<string> = this._staticTeams.map(t => t.key);
+
+  /** Canonical key order derived from the hardcoded tools data */
+  private readonly _toolKeyOrder: ReadonlyArray<string> = staticTools.map(t => t.key);
+
+  /**
+   * Sort an array by a canonical key order list.
+   * Items whose key is not in the reference list are appended at the end
+   * in their original relative order.
+   */
+  private _sortByKeyOrder<T extends { key: string }>(items: T[], order: ReadonlyArray<string>): T[] {
+    const indexed = new Map(order.map((k, i) => [k, i]));
+    return [...items].sort((a, b) => {
+      const ia = indexed.has(a.key) ? indexed.get(a.key)! : order.length;
+      const ib = indexed.has(b.key) ? indexed.get(b.key)! : order.length;
+      return ia - ib;
+    });
+  }
+
   /** Signal holding the current list of teams (initially populated from static fallback) */
   private readonly _teams = signal<ReadonlyArray<Team>>(this._staticTeams);
 
@@ -56,7 +76,7 @@ export class DocsDataService {
         next: (liveTools: Tool[]) => {
           console.log('[DocsDataService] Live tools from Strapi:', liveTools);
           if (liveTools && liveTools.length > 0) {
-            this._tools.set(liveTools);
+            this._tools.set(this._sortByKeyOrder(liveTools, this._toolKeyOrder));
           }
         },
         error: (err: unknown) => {
@@ -72,7 +92,17 @@ export class DocsDataService {
         next: (liveTeams: any[]) => {
           console.log('[DocsDataService] Live teams from Strapi:', liveTeams);
           if (liveTeams && liveTeams.length > 0) {
-            this._teams.set(liveTeams);
+            // Sort teams to match hardcoded order; also sort each team's projects
+            // to match the hardcoded project order for that team.
+            const sortedTeams = this._sortByKeyOrder(liveTeams, this._teamKeyOrder).map(team => {
+              const staticTeam = this._staticTeams.find(st => st.key === team.key);
+              if (staticTeam && Array.isArray(team.projects) && team.projects.length > 0) {
+                const projectKeyOrder = staticTeam.projects.map((p: any) => p.id);
+                team = { ...team, projects: this._sortByKeyOrder(team.projects, projectKeyOrder) };
+              }
+              return team;
+            });
+            this._teams.set(sortedTeams);
           }
         },
         error: (err: unknown) => {
