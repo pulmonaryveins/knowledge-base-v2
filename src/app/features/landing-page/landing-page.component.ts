@@ -108,6 +108,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   private readonly _companyAbout  = signal<any>(null);
   private readonly _ctaBanner     = signal<any>(null);
   private readonly _navbar        = signal<any>(null);
+  private readonly _footer        = signal<any>(null);
 
   // ── Public computed accessors ─────────────────────────────────────────────
   protected readonly hero         = computed(() => this._hero());
@@ -117,9 +118,14 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   protected readonly companyAbout = computed(() => this._companyAbout());
   protected readonly ctaBanner    = computed(() => this._ctaBanner());
   protected readonly navbar       = computed(() => this._navbar());
+  protected readonly footer       = computed(() => this._footer());
 
   protected readonly navLinks = computed(() =>
     (this._navbar()?.links ?? []) as Array<{ label: string; url: string; type: string }>
+  );
+
+  protected readonly footerLinks = computed(() =>
+    (this._footer()?.links ?? []) as Array<{ label: string; url: string; type: string }>
   );
 
   protected readonly featureItems = computed(() => {
@@ -181,6 +187,11 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     // Load navbar (non-blocking)
     this._strapi.getNavbar().pipe(catchError(() => of(null))).subscribe(data => {
       if (data) this._navbar.set(data);
+    });
+
+    // Load footer (non-blocking)
+    this._strapi.getFooter().pipe(catchError(() => of(null))).subscribe(data => {
+      if (data) this._footer.set(data);
     });
 
     // Load landing page sections

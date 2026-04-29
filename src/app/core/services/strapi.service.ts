@@ -165,6 +165,16 @@ export class StrapiService {
       .pipe(map((r) => r.data));
   }
 
+  /**
+   * Fetch the footer with links populated.
+   */
+  public getFooter(): Observable<any> {
+    const headers = this._getHeaders();
+    return this._http
+      .get<any>(`${this._baseUrl}/api/footer?populate[links]=*`, { headers })
+      .pipe(map((r) => r.data));
+  }
+
   private _mapStrapiTeam(entity: StrapiEntity<TeamStrapi>): any {
     const data: any = entity.attributes || entity;
     return {

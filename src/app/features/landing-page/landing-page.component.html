@@ -400,20 +400,24 @@
           <img class="lp__footer-logo" src="logo.png" alt="NCompassTV" />
           <div>
             <span class="lp__footer-brand-name">{{ navbar()?.logoText ?? 'NCompassTV' }}</span>
-            <span class="lp__footer-brand-sub">Dev Portal · 2026 · Angular 21</span>
+            <span class="lp__footer-brand-sub">{{ footer()?.brandSub ?? 'Dev Portal · 2026 · Angular 21' }}</span>
           </div>
         </div>
-        <a class="lp__footer-official" href="https://n-compass.tv/" target="_blank" rel="noopener">
+        <a class="lp__footer-official" [href]="footer()?.officialUrl ?? 'https://n-compass.tv/'" target="_blank" rel="noopener">
           <lucide-icon [img]="ExternalLinkIcon" [size]="10" />
-          n-compass.tv
+          {{ footer()?.officialLabel ?? 'n-compass.tv' }}
         </a>
       </div>
 
       <nav class="lp__footer-links">
-        <a class="lp__footer-link" href="#teams">Teams</a>
-        <a class="lp__footer-link" href="#features">Features</a>
-        <a class="lp__footer-link" href="#about">About</a>
-        <button class="lp__footer-link lp__footer-link--btn" (click)="enterPortal()">Open Portal</button>
+        @for (link of footerLinks(); track link.label) {
+          <a class="lp__footer-link" [href]="link.url">{{ link.label }}</a>
+        } @empty {
+          <a class="lp__footer-link" href="#teams">Teams</a>
+          <a class="lp__footer-link" href="#features">Features</a>
+          <a class="lp__footer-link" href="#about">About</a>
+        }
+        <button class="lp__footer-link lp__footer-link--btn" (click)="enterPortal()">{{ footer()?.portalLabel ?? 'Open Portal' }}</button>
       </nav>
     </div>
   </footer>
