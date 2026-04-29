@@ -1,3 +1,4 @@
+@use 'sass:color';
 $navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc;
 
 .ux-showcase { display: flex; flex-direction: column; gap: 40px; }
@@ -25,7 +26,7 @@ $navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc
 }
 .ux-diamond__axis {
   display: flex; justify-content: space-around; padding: 0 4px;
-  span { font-family: 'Inter', sans-serif; font-size: 11px; color: lighten($muted, 10%); font-style: italic; }
+  span { font-family: 'Inter', sans-serif; font-size: 11px; color: color.adjust($muted, $lightness: 10%); font-style: italic; }
 }
 
 // Research Methods

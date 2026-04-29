@@ -1,3 +1,4 @@
+@use 'sass:color';
 $navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc;
 
 .db-showcase { display: flex; flex-direction: column; gap: 40px; }
@@ -18,7 +19,7 @@ $navy: #091635; $green: #8DCB2C; $muted: #5a6a85; $border: #e4e8f0; $bg: #f7f8fc
   &__h2      { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 700; color: $navy; }
   &__h3      { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; color: $navy; }
   &__body    { font-family: 'Inter', sans-serif; font-size: 14px; color: $muted; line-height: 1.6; }
-  &__caption { font-family: 'Inter', sans-serif; font-size: 11px; color: lighten($muted, 15%); letter-spacing: .04em; }
+  &__caption { font-family: 'Inter', sans-serif; font-size: 11px; color: color.adjust($muted, $lightness: 15%); letter-spacing: .04em; }
 }
 
 // Gestalt
