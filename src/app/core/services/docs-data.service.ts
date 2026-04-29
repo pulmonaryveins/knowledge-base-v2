@@ -96,10 +96,33 @@ export class DocsDataService {
             // to match the hardcoded project order for that team.
             const sortedTeams = this._sortByKeyOrder(liveTeams, this._teamKeyOrder).map(team => {
               const staticTeam = this._staticTeams.find(st => st.key === team.key);
+
+              // Sort projects to match hardcoded order
               if (staticTeam && Array.isArray(team.projects) && team.projects.length > 0) {
                 const projectKeyOrder = staticTeam.projects.map((p: any) => p.id);
                 team = { ...team, projects: this._sortByKeyOrder(team.projects, projectKeyOrder) };
               }
+
+              // Re-inject hardcoded-only sections that Strapi doesn't manage
+              // (e.g. custom frontend-only types like 'pi-ecosystem' that have no Strapi component).
+              // Any section id present in static data but absent from the Strapi response
+              // is spliced back in at its original index position.
+              if (staticTeam && Array.isArray(team.sections)) {
+                const liveSectionIds = new Set(team.sections.map((s: any) => s.id));
+                const hardcodedOnly = staticTeam.sections.filter(s => !liveSectionIds.has(s.id));
+
+                if (hardcodedOnly.length > 0) {
+                  const merged = [...team.sections];
+                  for (const section of hardcodedOnly) {
+                    const targetIdx = staticTeam.sections.findIndex(s => s.id === section.id);
+                    // Clamp to valid range in case live sections are fewer
+                    const insertAt = Math.min(targetIdx, merged.length);
+                    merged.splice(insertAt, 0, section);
+                  }
+                  team = { ...team, sections: merged };
+                }
+              }
+
               return team;
             });
             this._teams.set(sortedTeams);
