@@ -103,19 +103,21 @@ export class DocsDataService {
                 team = { ...team, projects: this._sortByKeyOrder(team.projects, projectKeyOrder) };
               }
 
-              // Re-inject hardcoded-only sections that Strapi doesn't manage
-              // (e.g. custom frontend-only types like 'pi-ecosystem' that have no Strapi component).
-              // Any section id present in static data but absent from the Strapi response
-              // is spliced back in at its original index position.
+              // Re-inject sections that are frontend-only (no Strapi component schema exists).
+              // Matched by content.type — NOT by id — because Strapi-mapped IDs use a generated
+              // fallback pattern (`sec-sections-type-N`) that never matches static IDs like `pp-ecosystem`.
+              // Only types explicitly listed in FRONTEND_ONLY_TYPES are re-injected.
+              const FRONTEND_ONLY_TYPES = new Set(['pi-ecosystem']);
               if (staticTeam && Array.isArray(team.sections)) {
-                const liveSectionIds = new Set(team.sections.map((s: any) => s.id));
-                const hardcodedOnly = staticTeam.sections.filter(s => !liveSectionIds.has(s.id));
+                const liveTypes = new Set(team.sections.map((s: any) => s.content?.type));
+                const hardcodedOnly = staticTeam.sections.filter(
+                  s => FRONTEND_ONLY_TYPES.has(s.content.type) && !liveTypes.has(s.content.type)
+                );
 
                 if (hardcodedOnly.length > 0) {
                   const merged = [...team.sections];
                   for (const section of hardcodedOnly) {
                     const targetIdx = staticTeam.sections.findIndex(s => s.id === section.id);
-                    // Clamp to valid range in case live sections are fewer
                     const insertAt = Math.min(targetIdx, merged.length);
                     merged.splice(insertAt, 0, section);
                   }
