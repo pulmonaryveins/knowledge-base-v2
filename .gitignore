@@ -50,3 +50,4 @@ Thumbs.db
 
 # Angular environment file (contains Supabase keys — fill in locally, never commit)
 src/environments/environment.ts
+src/environments/environment.prod.ts
