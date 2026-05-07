@@ -115,19 +115,18 @@ $navy:  #091635;
 
 .login__nav-back {
   display: inline-flex; align-items: center; gap: 6px;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-  color: rgba(255,255,255,0.45);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 9px; padding: 8px 14px;
-  cursor: pointer; flex-shrink: 0; margin-left: 12px;
-  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  color: $navy;
+  background: $green;
+  border: none;
+  border-radius: 9px; padding: 9px 16px;
+  cursor: pointer; flex-shrink: 0; margin-left: 16px;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
 
   @media (max-width: 768px) { display: none; }
   &:hover {
-    color: rgba(255,255,255,0.85);
-    background: rgba(255,255,255,0.09);
-    border-color: rgba(255,255,255,0.18);
+    filter: brightness(1.1);
+    box-shadow: 0 0 20px rgba(141,203,44,0.35);
   }
   &--drawer {
     display: inline-flex !important; margin-left: 0; margin-top: 8px;

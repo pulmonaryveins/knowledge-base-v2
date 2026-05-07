@@ -16,10 +16,11 @@ export class DocsDataService {
   private readonly _teams: ReadonlyArray<Team> = [
     frontendTeam,
     backendTeam,
-    webdevTeam,
-    qaTeam,
-    rdTeam,
-    uiuxTeam,
+    // TEMP: hidden — uncomment to restore
+    // webdevTeam,
+    // qaTeam,
+    // rdTeam,
+    // uiuxTeam,
     piPlayerTeam,
   ];
 

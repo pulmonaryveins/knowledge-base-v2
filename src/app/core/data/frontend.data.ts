@@ -79,6 +79,8 @@ export const frontendTeam: Team = {
         ],
       },
     },
+    // TEMP: hidden — uncomment to restore Channels UI, Host Revamp, Component Pantry
+    /*
     {
       id: 'fe-channels',
       name: 'Channels UI',
@@ -267,6 +269,7 @@ export const frontendTeam: Team = {
         ],
       },
     },
+    */ // END TEMP hidden projects
   ],
   sections: [
     {
