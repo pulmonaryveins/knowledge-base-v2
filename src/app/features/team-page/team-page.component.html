@@ -234,6 +234,65 @@
           }
         }
       </section>
+
+      <!-- Pi Player Documents — injected after the tech-stack section -->
+      @if (team().key === 'pi-player' && section.content.type === 'tech-stack') {
+        <section class="team-page__section team-page__pi-docs" id="pp-documents" appReveal>
+          <app-section-header num="*" label="Documents" subHeader="Reference materials and guides for Pi Player setup and operation." />
+
+          @if (piDocsLoading()) {
+            <div class="team-page__pi-docs-skeleton">
+              @for (_ of [1,2,3]; track $index) {
+                <div class="team-page__pi-docs-skel-row">
+                  <div class="team-page__pi-docs-skel team-page__pi-docs-skel--icon"></div>
+                  <div class="team-page__pi-docs-skel team-page__pi-docs-skel--text"></div>
+                </div>
+              }
+            </div>
+          } @else if (piDocuments().length === 0) {
+            <div class="team-page__pi-docs-empty">
+              <lucide-icon [img]="FileTextIcon" [size]="28" />
+              <span>No documents published yet.</span>
+            </div>
+          } @else {
+            <div class="team-page__pi-docs-groups">
+              @for (group of piGroupedDocs(); track group.section; let gi = $index) {
+                <div class="team-page__pi-docs-group" [appReveal]="'up'" [appRevealDelay]="gi * 60">
+                  @if (group.section) {
+                    <div class="team-page__pi-docs-section-banner">
+                      <span class="team-page__pi-docs-section-num">{{ (gi + 1).toString().padStart(2, '0') }}</span>
+                      <div class="team-page__pi-docs-section-text">
+                        <h3 class="team-page__pi-docs-section-title">{{ group.section }}</h3>
+                        <span class="team-page__pi-docs-section-count">{{ group.docs.length }}&nbsp;{{ group.docs.length === 1 ? 'document' : 'documents' }}</span>
+                      </div>
+                    </div>
+                  }
+                  <ol class="team-page__pi-docs-list">
+                    @for (doc of group.docs; track doc.id; let di = $index) {
+                      <li class="team-page__pi-docs-item">
+                        <a class="team-page__pi-docs-link"
+                           [href]="doc.url"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                          <span class="team-page__pi-docs-num">{{ (di + 1).toString().padStart(2, '0') }}</span>
+                          <div class="team-page__pi-docs-body">
+                            <span class="team-page__pi-docs-title">{{ doc.title }}</span>
+                            <span class="team-page__pi-docs-meta">{{ piDocType(doc) }}</span>
+                          </div>
+                          <span class="team-page__pi-docs-cta">
+                            Open
+                            <lucide-icon [img]="ArrowUpRightIcon" [size]="14" />
+                          </span>
+                        </a>
+                      </li>
+                    }
+                  </ol>
+                </div>
+              }
+            </div>
+          }
+        </section>
+      }
     }
   </div>
 </div>
