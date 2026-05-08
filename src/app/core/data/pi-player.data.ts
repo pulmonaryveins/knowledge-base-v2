@@ -14,6 +14,13 @@ export const piPlayerTeam: Team = {
   projects: [],
   sections: [
     {
+      id: 'pp-documents',
+      label: 'Documents',
+      num: '*',
+      subHeader: 'Reference materials and guides for Pi Player setup and operation.',
+      content: { type: 'pi-docs' as const },
+    },
+    {
       id: 'pp-tech-stack',
       label: 'Tech Stack',
       num: '01',
@@ -109,9 +116,44 @@ ls /var/www/html/ui                # player-ui files present`,
       },
     },
     {
+      id: 'pp-player-v2-setup',
+      label: 'Player v2 + Pulselink + Phoenix',
+      num: '04',
+      subHeader: 'Deploy Player V2 and associated services onto a Raspberry Pi 5 using the encrypted installer.',
+      content: {
+        type: 'getting-started',
+        steps: [
+          {
+            icon: 'clipboard-list',
+            title: 'Hardware & System Requirements',
+            description: 'Device: Raspberry Pi 5 (Recommended 4GB or 8GB RAM). OS Image: Custom Base Image — pre-configured with SSH enabled for remote access during testing. Network: Stable internet connection via Ethernet or Wi-Fi.',
+          },
+          {
+            icon: 'cpu',
+            title: 'Flash the Base Image',
+            description: 'Flash the custom Pi 5 base image to a microSD card using Raspberry Pi Imager.',
+            code: '# Base image (Google Drive)\nhttps://drive.google.com/drive/folders/1mocSFK6IgmNAkbchw0eQyOT0Lo-eQiaV?usp=sharing',
+            language: 'bash',
+          },
+          {
+            icon: 'download',
+            title: 'Run the Player V2 Installer',
+            description: 'Paste the command into the terminal. The encrypted script decrypts and runs automatically, configuring the full Player V2 environment and all dependencies. The Pi will reboot automatically on completion.',
+            code: `curl -fsSL http://54.84.201.81:8080/setup.enc | openssl enc -aes-256-cbc -d -salt -pbkdf2 -k "ThankYouTechMagic" | sudo bash`,
+            language: 'bash',
+          },
+          {
+            icon: 'shield',
+            title: 'Post-Install — USB Security (Pulselink)',
+            description: "After reboot all services initialize automatically. Physical USB access is intentionally open during the testing phase — Leigh's Pulselink service will manage USB port block/allow after setup. SSH remains open for testing.",
+          },
+        ],
+      },
+    },
+    {
       id: 'pp-imaging',
       label: 'Player Imaging Guide',
-      num: '04',
+      num: '05',
       subHeader: 'How to create and deploy standardized SD card images for Pi player devices.',
       content: {
         type: 'getting-started',
@@ -151,7 +193,7 @@ sudo ./ntv-rpi-imager.sh /dev/sda ./my-custom-image.img.xz  # Custom output`,
     {
       id: 'pp-issue-protocol',
       label: 'Player Issue Protocol',
-      num: '05',
+      num: '06',
       subHeader: 'Troubleshooting guide for the Technical Support team when addressing player issues in production.',
       content: {
         type: 'getting-started',
@@ -191,7 +233,7 @@ sudo ./ntv-rpi-imager.sh /dev/sda ./my-custom-image.img.xz  # Custom output`,
     {
       id: 'pp-contacts',
       label: 'Team Contacts',
-      num: '06',
+      num: '07',
       content: {
         type: 'team-contacts',
         contacts: [

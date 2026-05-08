@@ -189,6 +189,11 @@ export interface PiEcosystemSection {
   readonly type: 'pi-ecosystem';
 }
 
+/** Pi Player documents list section */
+export interface PiDocsSection {
+  readonly type: 'pi-docs';
+}
+
 /** Discriminated union of all possible section content types */
 export type SectionContent =
   | TechStackSection
@@ -212,7 +217,8 @@ export type SectionContent =
   | NcPrintSection
   | NcBrandSection
   | TeamContactsSection
-  | PiEcosystemSection;
+  | PiEcosystemSection
+  | PiDocsSection;
 
 /** A single documentation section within a team page */
 export interface TeamSection {
