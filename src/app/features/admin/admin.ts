@@ -5,6 +5,7 @@ import {
   LucideAngularModule,
   UserPlus, Pencil, Trash2, Shield, User, ArrowLeft, LogOut, X, Check, Users, Search,
   ChevronLeft, ChevronRight, ChevronDown, FileText, Link, Upload, ExternalLink, FolderPlus, Folder, Plus, GripVertical,
+  Microscope, Cpu,
 } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -532,6 +533,8 @@ export class Admin implements OnInit {
   protected readonly PlusIcon          = Plus;
   protected readonly GripVerticalIcon  = GripVertical;
   protected readonly ChevronDownIcon   = ChevronDown;
+  protected readonly MicroscopeIcon    = Microscope;
+  protected readonly CpuIcon           = Cpu;
 
   // ── Reactive form ──────────────────────────────────────────────────────────
 

@@ -238,6 +238,8 @@ export interface TeamSection {
 export interface Team {
   /** Unique key used for routing and active state */
   readonly key: string;
+  /** When true, team is excluded from the portal — toggle without deleting data */
+  readonly isHidden?: boolean;
   /** Display name shown in sidebar and hero */
   readonly label: string;
   /** Brand hex color for dots, accents, badges, and hero gradient */

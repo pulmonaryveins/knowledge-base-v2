@@ -4,6 +4,7 @@ import { Team } from '../models/team.model';
 
 export const piPlayerTeam: Team = {
   key: 'pi-player',
+  isHidden: false,
   label: 'Pi Player',
   color: '#C2185B',
   gradient: 'linear-gradient(135deg, #1a0010, #4a0020)',
