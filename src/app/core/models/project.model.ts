@@ -58,6 +58,8 @@ export interface ProjectDoc {
 export interface Project {
   /** Unique project identifier */
   readonly id: string;
+  /** When true, project is excluded from the portal — toggle without deleting data */
+  readonly isHidden?: boolean;
   /** Display name of the project */
   readonly name: string;
   /** One-line description shown in the collapsed card */

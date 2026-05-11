@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Team, TeamSection, AppEntry } from '../models/team.model';
 import { Tool } from '../models/tool.model';
 import { SearchResult } from '../models/search.model';
-import { frontendTeam, backendTeam, uiuxTeam, qaTeam, rdTeam, webdevTeam, piPlayerTeam, appEntries, tools } from '../data';
+import { frontendTeam, backendTeam, webdevTeam, qaTeam, rdTeam, uiuxTeam, piPlayerTeam, appEntries, tools } from '../data';
 
 /**
  * DocsDataService is the single source of truth for all portal content.
@@ -31,7 +31,9 @@ export class DocsDataService {
    * @returns All five portal teams
    */
   public getTeams(): ReadonlyArray<Team> {
-    return this._teams;
+    return this._teams
+      .filter(t => !t.isHidden)
+      .map(t => ({ ...t, projects: t.projects.filter(p => !p.isHidden) }));
   }
 
   /**
@@ -57,7 +59,7 @@ export class DocsDataService {
   public getSearchIndex(): ReadonlyArray<SearchResult> {
     const results: SearchResult[] = [];
 
-    for (const team of this._teams) {
+    for (const team of this.getTeams()) {
       for (const section of team.sections) {
         const keywords = this._extractKeywords(section);
         const snippet  = this._extractSnippet(section);

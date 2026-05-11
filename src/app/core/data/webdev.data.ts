@@ -4,6 +4,7 @@ import { Team } from '../models/team.model';
 
 export const webdevTeam: Team = {
   key: 'webdev',
+  isHidden: true,
   label: 'Web Development',
   color: '#F97316',
   gradient: 'linear-gradient(135deg, #3d1500, #7c2d12)',

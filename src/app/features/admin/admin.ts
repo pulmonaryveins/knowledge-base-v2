@@ -5,20 +5,25 @@ import {
   LucideAngularModule,
   UserPlus, Pencil, Trash2, Shield, User, ArrowLeft, LogOut, X, Check, Users, Search,
   ChevronLeft, ChevronRight, ChevronDown, FileText, Link, Upload, ExternalLink, FolderPlus, Folder, Plus, GripVertical,
+  Microscope, Cpu,
 } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
 import { RdDocumentsService } from '../../core/services/rd-documents.service';
 import { RdSectionsService } from '../../core/services/rd-sections.service';
+import { PiDocumentsService } from '../../core/services/pi-documents.service';
+import { PiSectionsService } from '../../core/services/pi-sections.service';
 import type { AdminUserRecord, UserRole } from '../../core/models/profile.model';
 import type { RdDocument } from '../../core/models/rd-document.model';
 import type { RdSection } from '../../core/models/rd-section.model';
+import type { PiDocument } from '../../core/models/pi-document.model';
+import type { PiSection } from '../../core/models/pi-section.model';
 
 /** Modal can be in create-new or edit-existing mode. */
 type ModalMode = 'create' | 'edit';
 
 /** Active tab in the admin panel. */
-type AdminTab = 'users' | 'documents';
+type AdminTab = 'users' | 'documents' | 'pi-documents';
 
 /** Document modal can be in create-new or edit-existing mode. */
 type DocModalMode = 'create' | 'edit';
@@ -67,6 +72,8 @@ export class Admin implements OnInit {
   private readonly _toast     = inject(ToastService);
   private readonly _rdDocs    = inject(RdDocumentsService);
   private readonly _rdSections = inject(RdSectionsService);
+  private readonly _piDocs    = inject(PiDocumentsService);
+  private readonly _piSections = inject(PiSectionsService);
 
   // ── Table state ────────────────────────────────────────────────────────────
 
@@ -275,8 +282,138 @@ export class Admin implements OnInit {
       });
   });
 
-  // ── Docs search / filter / pagination ────────────────────────────────────
+  // ── Pi Player Documents state ──────────────────────────────────────────────
 
+  protected readonly piDocuments      = signal<PiDocument[]>([]);
+  protected readonly piDocsLoading    = signal(false);
+  protected readonly piDocsError      = signal<string | null>(null);
+
+  protected readonly piDocModalOpen   = signal(false);
+  protected readonly piDocModalMode   = signal<DocModalMode>('create');
+  protected readonly piDocModalError  = signal<string | null>(null);
+  protected readonly piDocSaving      = signal(false);
+  protected readonly editingPiDocId   = signal<string | null>(null);
+
+  protected readonly piDocSectionTouched = signal(false);
+  protected readonly piDocLinkType    = signal<DocLinkType>('url');
+  protected readonly piStagedFile     = signal<File | null>(null);
+  protected readonly piStagedFileName = signal<string>('');
+  protected readonly deletePiDocTarget = signal<PiDocument | null>(null);
+  protected readonly piDocDeleting     = signal(false);
+  protected readonly deletePiDocError  = signal<string | null>(null);
+
+  protected readonly piSections         = signal<PiSection[]>([]);
+  protected readonly piSectionsLoading  = signal(false);
+  protected readonly piSecMgmtOpen      = signal(false);
+  protected readonly piSecMgmtError     = signal<string | null>(null);
+  protected readonly piNewSectionInput  = signal('');
+  protected readonly piEditingSecId     = signal<string | null>(null);
+  protected readonly piEditingSecInput  = signal('');
+  protected readonly piDragSectionId   = signal<string | null>(null);
+  protected readonly piDragOverSecId   = signal<string | null>(null);
+  protected readonly piSecMgmtSaving   = signal(false);
+  protected readonly piExpandedSecId   = signal<string | null>(null);
+  protected readonly piDragDocId       = signal<string | null>(null);
+  protected readonly piDragDocOverId   = signal<string | null>(null);
+  protected readonly piDocSectionSelect = signal<string>('');
+  protected readonly piDocSectionModalDropdownOpen = signal(false);
+
+  protected readonly piAvailableSections = computed<string[]>(() =>
+    this.piSections().map(s => s.name)
+  );
+
+  protected readonly piDocsBySection = computed<Map<string, PiDocument[]>>(() => {
+    const map = new Map<string, PiDocument[]>();
+    for (const sec of this.piSections()) map.set(sec.name, []);
+    for (const doc of this.piDocuments()) {
+      const key = doc.section?.trim() || '';
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(doc);
+    }
+    for (const docs of map.values()) {
+      docs.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+    }
+    return map;
+  });
+
+  // ── Pi docs search / filter / pagination ──────────────────────────────────
+
+  protected readonly piDocSearchQuery  = signal('');
+  protected readonly piDocSectionFilter  = signal<string>('all');
+  protected readonly piDocDropdownOpen   = signal(false);
+  protected readonly piDocPageIndex      = signal(0);
+  protected readonly piDocPageSize     = 7;
+
+  protected readonly piFilteredDocs = computed(() => {
+    const q   = this.piDocSearchQuery().toLowerCase().trim();
+    const sec = this.piDocSectionFilter();
+    return this.piDocuments().filter(doc => {
+      const matchesSec    = sec === 'all' || (doc.section?.trim() || '(No section)') === sec;
+      const matchesSearch = !q || doc.title.toLowerCase().includes(q) ||
+                            (doc.section ?? '').toLowerCase().includes(q);
+      return matchesSec && matchesSearch;
+    });
+  });
+
+  protected readonly piDocTotalPages = computed(() =>
+    Math.max(1, Math.ceil(this.piFilteredDocs().length / this.piDocPageSize))
+  );
+
+  protected readonly piPaginatedDocs = computed(() => {
+    const start = this.piDocPageIndex() * this.piDocPageSize;
+    return this.piFilteredDocs().slice(start, start + this.piDocPageSize);
+  });
+
+  protected readonly piDocPageStart = computed(() =>
+    this.piFilteredDocs().length === 0 ? 0 : this.piDocPageIndex() * this.piDocPageSize + 1
+  );
+
+  protected readonly piDocPageEnd = computed(() =>
+    Math.min(this.piFilteredDocs().length, (this.piDocPageIndex() + 1) * this.piDocPageSize)
+  );
+
+  protected readonly piDocFilterSections = computed<string[]>(() =>
+    this.piSections().map(s => s.name)
+  );
+
+  protected prevPiDocPage(): void {
+    this.piDocPageIndex.update(p => Math.max(0, p - 1));
+  }
+
+  protected nextPiDocPage(): void {
+    this.piDocPageIndex.update(p => Math.min(this.piDocTotalPages() - 1, p + 1));
+  }
+
+  protected setPiDocSectionFilter(sec: string): void {
+    this.piDocSectionFilter.set(sec);
+    this.piDocPageIndex.set(0);
+  }
+
+  protected togglePiDocDropdown(): void {
+    this.piDocDropdownOpen.update(v => !v);
+  }
+
+  protected pickPiDocSection(sec: string): void {
+    this.setPiDocSectionFilter(sec);
+    this.piDocDropdownOpen.set(false);
+  }
+
+  protected togglePiDocSectionModal(): void {
+    this.piDocSectionModalDropdownOpen.update(v => !v);
+  }
+
+  protected pickPiDocSectionModal(sec: string): void {
+    this.onPiSectionChange(sec);
+    this.piDocSectionTouched.set(true);
+    this.piDocSectionModalDropdownOpen.set(false);
+  }
+
+  protected onPiDocSearch(q: string): void {
+    this.piDocSearchQuery.set(q);
+    this.piDocPageIndex.set(0);
+  }
+
+  // ── Docs search / filter / pagination ────────────────────────────────────
   /** Search query for the documents table. */
   protected readonly docSearchQuery  = signal('');
   /** Active section filter; `'all'` means no filter. */
@@ -396,6 +533,8 @@ export class Admin implements OnInit {
   protected readonly PlusIcon          = Plus;
   protected readonly GripVerticalIcon  = GripVertical;
   protected readonly ChevronDownIcon   = ChevronDown;
+  protected readonly MicroscopeIcon    = Microscope;
+  protected readonly CpuIcon           = Cpu;
 
   // ── Reactive form ──────────────────────────────────────────────────────────
 
@@ -417,6 +556,12 @@ export class Admin implements OnInit {
    * `externalUrl` is only required when `docLinkType === 'url'`.
    */
   protected readonly docForm = this._fb.nonNullable.group({
+    title:       ['', Validators.required],
+    externalUrl: [''],
+  });
+
+  /** Form for the Pi Player document create/edit modal. */
+  protected readonly piDocFormHelper = this._fb.nonNullable.group({
     title:       ['', Validators.required],
     externalUrl: [''],
   });
@@ -450,6 +595,14 @@ export class Admin implements OnInit {
       }
       if (this.sections().length === 0 && !this.sectionsLoading()) {
         await this._loadSections();
+      }
+    }
+    if (tab === 'pi-documents') {
+      if (this.piDocuments().length === 0 && !this.piDocsLoading()) {
+        await this._loadPiDocuments();
+      }
+      if (this.piSections().length === 0 && !this.piSectionsLoading()) {
+        await this._loadPiSections();
       }
     }
   }
@@ -1127,6 +1280,413 @@ export class Admin implements OnInit {
       this.sectionsLoading.set(false);
     }
   }
+
+  private async _loadPiDocuments(): Promise<void> {
+    this.piDocsLoading.set(true);
+    this.piDocsError.set(null);
+    try {
+      const list = await this._piDocs.listDocuments();
+      this.piDocuments.set(list);
+      this.piDocPageIndex.set(0);
+    } catch (err: unknown) {
+      this.piDocsError.set(err instanceof Error ? err.message : 'Failed to load documents.');
+    } finally {
+      this.piDocsLoading.set(false);
+    }
+  }
+
+  private async _loadPiSections(): Promise<void> {
+    this.piSectionsLoading.set(true);
+    try {
+      this.piSections.set(await this._piSections.listSections());
+    } catch {
+      // Non-critical
+    } finally {
+      this.piSectionsLoading.set(false);
+    }
+  }
+
+  // ── Pi document modal actions ──────────────────────────────────────────────
+
+  protected openCreatePiDocModal(): void {
+    this.piDocFormHelper.reset();
+    this.piDocModalMode.set('create');
+    this.editingPiDocId.set(null);
+    this.piDocModalError.set(null);
+    this.piDocLinkType.set('url');
+    this.piStagedFile.set(null);
+    this.piStagedFileName.set('');
+    this.piDocSectionSelect.set('');
+    this.piDocSectionTouched.set(false);
+    this.piDocSectionModalDropdownOpen.set(false);
+    this.piDocModalOpen.set(true);
+  }
+
+  protected openEditPiDocModal(doc: PiDocument): void {
+    this.piDocFormHelper.reset({
+      title:       doc.title,
+      externalUrl: doc.file_path ? '' : doc.url,
+    });
+    this.piDocModalMode.set('edit');
+    this.editingPiDocId.set(doc.id);
+    this.piDocModalError.set(null);
+    this.piDocLinkType.set(doc.file_path ? 'upload' : 'url');
+    this.piStagedFile.set(null);
+    this.piStagedFileName.set(doc.file_path ? doc.url.split('/').pop() ?? '' : '');
+    this.piDocSectionSelect.set(doc.section ?? '');
+    this.piDocSectionTouched.set(false);
+    this.piDocSectionModalDropdownOpen.set(false);
+    this.piDocModalOpen.set(true);
+  }
+
+  protected closePiDocModal(): void {
+    this.piDocSectionModalDropdownOpen.set(false);
+    this.piDocModalOpen.set(false);
+  }
+
+  protected onPiSectionChange(val: string): void {
+    this.piDocSectionSelect.set(val);
+  }
+
+  protected onPiFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file  = input.files?.[0] ?? null;
+    this.piStagedFile.set(file);
+    this.piStagedFileName.set(file?.name ?? '');
+  }
+
+  protected async onPiDocSave(): Promise<void> {
+    this.piDocFormHelper.markAllAsTouched();
+    this.piDocSectionTouched.set(true);
+    if (this.piDocSaving()) return;
+
+    const { title, externalUrl } = this.piDocFormHelper.getRawValue();
+
+    if (!title.trim()) {
+      this.piDocModalError.set('Title is required.');
+      return;
+    }
+
+    const sectionVal = this.piDocSectionSelect();
+    if (!sectionVal) {
+      this.piDocModalError.set('Section is required.');
+      return;
+    }
+
+    const isUpload = this.piDocLinkType() === 'upload';
+
+    if (isUpload && !this.piStagedFile() && this.piDocModalMode() === 'create') {
+      this.piDocModalError.set('Please select a file to upload.');
+      return;
+    }
+    if (!isUpload && !externalUrl.trim()) {
+      this.piDocModalError.set('Please enter a URL.');
+      return;
+    }
+
+    this.piDocSaving.set(true);
+    this.piDocModalError.set(null);
+
+    try {
+      let url       = externalUrl.trim();
+      let file_path: string | null = null;
+
+      if (isUpload && this.piStagedFile()) {
+        const uploaded = await this._piDocs.uploadFile(this.piStagedFile()!);
+        url       = uploaded.url;
+        file_path = uploaded.file_path;
+      } else if (isUpload && this.piDocModalMode() === 'edit') {
+        const existing = this.piDocuments().find(d => d.id === this.editingPiDocId());
+        url       = existing?.url ?? '';
+        file_path = existing?.file_path ?? null;
+      }
+
+      const mode = this.piDocModalMode();
+
+      if (mode === 'create') {
+        await this._piDocs.adminCreateDocument({ title: title.trim(), url, file_path, section: sectionVal });
+      } else {
+        await this._piDocs.adminUpdateDocument(this.editingPiDocId()!, { title: title.trim(), url, file_path, section: sectionVal });
+      }
+
+      this.piDocModalOpen.set(false);
+      this._toast.show(
+        mode === 'create' ? 'Document added successfully.' : 'Document updated successfully.',
+        'success'
+      );
+      await this._loadPiDocuments();
+    } catch (err: unknown) {
+      this.piDocModalError.set(err instanceof Error ? err.message : 'An error occurred.');
+    } finally {
+      this.piDocSaving.set(false);
+    }
+  }
+
+  protected confirmDeletePiDoc(doc: PiDocument): void {
+    this.deletePiDocError.set(null);
+    this.deletePiDocTarget.set(doc);
+  }
+
+  protected cancelDeletePiDoc(): void {
+    this.deletePiDocTarget.set(null);
+    this.deletePiDocError.set(null);
+  }
+
+  protected async executeDeletePiDoc(): Promise<void> {
+    const target = this.deletePiDocTarget();
+    if (!target || this.piDocDeleting()) return;
+
+    this.piDocDeleting.set(true);
+    try {
+      await this._piDocs.adminDeleteDocument(target.id, target.file_path);
+      this.deletePiDocTarget.set(null);
+      this.deletePiDocError.set(null);
+      this._toast.show(`"${target.title}" has been removed.`, 'success');
+      await this._loadPiDocuments();
+    } catch (err: unknown) {
+      this.deletePiDocError.set(err instanceof Error ? err.message : 'Delete failed.');
+    } finally {
+      this.piDocDeleting.set(false);
+    }
+  }
+
+  // ── Pi section management actions ──────────────────────────────────────────
+
+  protected openPiSecMgmt(): void {
+    this.piSecMgmtError.set(null);
+    this.piNewSectionInput.set('');
+    this.piEditingSecId.set(null);
+    this.piEditingSecInput.set('');
+    this.piExpandedSecId.set(null);
+    if (this.piDocuments().length === 0 && !this.piDocsLoading()) {
+      void this._loadPiDocuments();
+    }
+    this.piSecMgmtOpen.set(true);
+  }
+
+  protected closePiSecMgmt(): void {
+    this.piSecMgmtOpen.set(false);
+  }
+
+  protected async createPiSection(): Promise<void> {
+    const name = this.piNewSectionInput().trim();
+    if (!name || this.piSecMgmtSaving()) return;
+    this.piSecMgmtSaving.set(true);
+    this.piSecMgmtError.set(null);
+    try {
+      await this._piSections.createSection(name);
+      this.piNewSectionInput.set('');
+      this._toast.show(`Section "${name}" created.`, 'success');
+      await this._loadPiSections();
+    } catch (err: unknown) {
+      this.piSecMgmtError.set(err instanceof Error ? err.message : 'Failed to create section.');
+    } finally {
+      this.piSecMgmtSaving.set(false);
+    }
+  }
+
+  protected startRenamePiSection(id: string, currentName: string): void {
+    this.piEditingSecId.set(id);
+    this.piEditingSecInput.set(currentName);
+    this.piSecMgmtError.set(null);
+  }
+
+  protected cancelRenamePiSection(): void {
+    this.piEditingSecId.set(null);
+    this.piEditingSecInput.set('');
+  }
+
+  protected async commitRenamePiSection(): Promise<void> {
+    const id   = this.piEditingSecId();
+    const name = this.piEditingSecInput().trim();
+    if (!id || !name || this.piSecMgmtSaving()) return;
+    this.piSecMgmtSaving.set(true);
+    this.piSecMgmtError.set(null);
+    try {
+      await this._piSections.renameSection(id, name);
+      this.piEditingSecId.set(null);
+      this.piEditingSecInput.set('');
+      this._toast.show('Section renamed.', 'success');
+      await this._loadPiSections();
+    } catch (err: unknown) {
+      this.piSecMgmtError.set(err instanceof Error ? err.message : 'Failed to rename section.');
+    } finally {
+      this.piSecMgmtSaving.set(false);
+    }
+  }
+
+  protected async deletePiSection(id: string, name: string): Promise<void> {
+    if (this.piSecMgmtSaving()) return;
+    this.piSecMgmtSaving.set(true);
+    this.piSecMgmtError.set(null);
+    try {
+      await this._piSections.deleteSection(id);
+      this._toast.show(`Section "${name}" deleted.`, 'success');
+      await this._loadPiSections();
+    } catch (err: unknown) {
+      this.piSecMgmtError.set(err instanceof Error ? err.message : 'Failed to delete section.');
+    } finally {
+      this.piSecMgmtSaving.set(false);
+    }
+  }
+
+  protected onPiSecDragStart(event: DragEvent, id: string): void {
+    this.piDragSectionId.set(id);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  protected onPiSecDragOver(event: DragEvent, id: string): void {
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    this.piDragOverSecId.set(id);
+  }
+
+  protected onPiSecDragLeave(event: DragEvent, id: string): void {
+    const related = event.relatedTarget as Node | null;
+    if (!related || !(event.currentTarget as HTMLElement).contains(related)) {
+      if (this.piDragOverSecId() === id) this.piDragOverSecId.set(null);
+    }
+  }
+
+  protected async onPiSecDrop(event: DragEvent, targetId: string): Promise<void> {
+    event.preventDefault();
+
+    const docId = this.piDragDocId();
+    if (docId) {
+      this.piDragDocId.set(null);
+      this.piDragDocOverId.set(null);
+      this.piDragOverSecId.set(null);
+      const targetSec = this.piSections().find(s => s.id === targetId);
+      const sourceDoc = this.piDocuments().find(d => d.id === docId);
+      if (!targetSec || !sourceDoc || sourceDoc.section === targetSec.name || this.piSecMgmtSaving()) return;
+
+      const movedDoc = { ...sourceDoc, section: targetSec.name };
+      this.piDocuments.update(docs => docs.map(d => d.id === docId ? movedDoc : d));
+
+      this.piSecMgmtSaving.set(true);
+      this.piSecMgmtError.set(null);
+      try {
+        await this._piDocs.adminUpdateDocument(docId, {
+          title: sourceDoc.title,
+          url:   sourceDoc.url,
+          file_path: sourceDoc.file_path,
+          section: targetSec.name,
+        });
+        this._toast.show(`"${sourceDoc.title}" moved to "${targetSec.name}".`, 'success');
+        await this._loadPiDocuments();
+      } catch (err: unknown) {
+        this.piDocuments.update(docs => docs.map(d => d.id === docId ? sourceDoc : d));
+        this.piSecMgmtError.set(err instanceof Error ? err.message : 'Failed to move document.');
+      } finally {
+        this.piSecMgmtSaving.set(false);
+      }
+      return;
+    }
+
+    const sourceId = this.piDragSectionId();
+    this.piDragSectionId.set(null);
+    this.piDragOverSecId.set(null);
+    if (!sourceId || sourceId === targetId || this.piSecMgmtSaving()) return;
+
+    const secs = [...this.piSections()];
+    const fromIdx = secs.findIndex(s => s.id === sourceId);
+    const toIdx   = secs.findIndex(s => s.id === targetId);
+    if (fromIdx < 0 || toIdx < 0) return;
+
+    const [moved] = secs.splice(fromIdx, 1);
+    secs.splice(toIdx, 0, moved);
+    const reordered = secs.map((s, i) => ({ ...s, position: i }));
+    this.piSections.set(reordered);
+
+    this.piSecMgmtSaving.set(true);
+    this.piSecMgmtError.set(null);
+    try {
+      await this._piSections.reorderSections(reordered.map(s => ({ id: s.id, position: s.position })));
+    } catch (err: unknown) {
+      this.piSecMgmtError.set(err instanceof Error ? err.message : 'Failed to reorder sections.');
+      await this._loadPiSections();
+    } finally {
+      this.piSecMgmtSaving.set(false);
+    }
+  }
+
+  protected onPiSecDragEnd(): void {
+    this.piDragSectionId.set(null);
+    this.piDragOverSecId.set(null);
+  }
+
+  protected togglePiSecExpand(id: string): void {
+    this.piExpandedSecId.set(this.piExpandedSecId() === id ? null : id);
+  }
+
+  protected onPiDocDragStart(event: DragEvent, docId: string): void {
+    this.piDragDocId.set(docId);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  protected onPiDocDragOver(event: DragEvent, docId: string): void {
+    event.preventDefault();
+    this.piDragDocOverId.set(docId);
+  }
+
+  protected async onPiDocDrop(event: DragEvent, sectionId: string, targetDocId: string): Promise<void> {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const sourceDocId = this.piDragDocId();
+    if (!sourceDocId) return;
+
+    if (sourceDocId === targetDocId) {
+      this.piDragDocId.set(null);
+      this.piDragDocOverId.set(null);
+      return;
+    }
+
+    const sourceDoc  = this.piDocuments().find(d => d.id === sourceDocId);
+    const targetSec  = this.piSections().find(s => s.id === sectionId);
+    if (!sourceDoc || !targetSec || this.piSecMgmtSaving()) return;
+
+    if (sourceDoc.section === targetSec.name) {
+      this.piDragDocId.set(null);
+      this.piDragDocOverId.set(null);
+
+      const sectionDocs = [...(this.piDocsBySection().get(targetSec.name) ?? [])];
+      const fromIdx = sectionDocs.findIndex(d => d.id === sourceDocId);
+      const toIdx   = sectionDocs.findIndex(d => d.id === targetDocId);
+      if (fromIdx < 0 || toIdx < 0 || fromIdx === toIdx) return;
+
+      const [movedDoc] = sectionDocs.splice(fromIdx, 1);
+      sectionDocs.splice(toIdx, 0, movedDoc);
+      const reordered = sectionDocs.map((d, i) => ({ ...d, position: i }));
+
+      const reorderedMap = new Map(reordered.map(d => [d.id, d]));
+      this.piDocuments.update(docs => docs.map(d => reorderedMap.has(d.id) ? reorderedMap.get(d.id)! : d));
+
+      this.piSecMgmtSaving.set(true);
+      this.piSecMgmtError.set(null);
+      try {
+        await this._piDocs.reorderDocuments(reordered.map(d => ({ id: d.id, position: d.position })));
+      } catch (err: unknown) {
+        await this._loadPiDocuments();
+        this.piSecMgmtError.set(err instanceof Error ? err.message : 'Failed to reorder documents.');
+      } finally {
+        this.piSecMgmtSaving.set(false);
+      }
+      return;
+    }
+
+    void this.onPiSecDrop(event, sectionId);
+  }
+
+  protected onPiDocDragLeave(docId: string): void {
+    if (this.piDragDocOverId() === docId) this.piDragDocOverId.set(null);
+  }
+
+  protected onPiDocDragEnd(): void {
+    this.piDragDocId.set(null);
+    this.piDragDocOverId.set(null);
+  }
+
 
   /**
    * Formats an ISO date string into a short locale string (e.g. `Apr 15, 2026`).

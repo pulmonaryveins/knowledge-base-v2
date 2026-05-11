@@ -1,9 +1,15 @@
 // ── FILE: src/app/features/team-page/team-page.component.ts ──
 
-import { Component, computed, inject } from '@angular/core';
-import { LucideAngularModule, LucideIconData } from 'lucide-angular';
+import { Component, computed, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { LucideAngularModule, LucideIconData, FileText, ExternalLink, ArrowUpRight } from 'lucide-angular';
 import { getStepIcon } from '../../core/utils/icons';
 import { NavigationService } from '../../core/services';
+import { PiDocumentsService } from '../../core/services/pi-documents.service';
+import { PiSectionsService } from '../../core/services/pi-sections.service';
+import type { PiDocument } from '../../core/models/pi-document.model';
+import type { PiSection } from '../../core/models/pi-section.model';
+import type { RealtimeChannel } from '@supabase/supabase-js';
+import { SupabaseService } from '../../core/services/supabase.service';
 import {
   Team,
   TeamSection,
@@ -49,6 +55,11 @@ import { NcBrandShowcaseComponent } from '../../shared/components/nc-brand-showc
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import { PiEcosystemComponent } from '../../shared/components/pi-ecosystem/pi-ecosystem.component';
 
+interface PiDocGroup {
+  section: string | null;
+  docs: PiDocument[];
+}
+
 /**
  * TeamPageComponent renders the full documentation page for the active team.
  * It uses the generic section structure from NavigationService, rendering each
@@ -89,17 +100,102 @@ import { PiEcosystemComponent } from '../../shared/components/pi-ecosystem/pi-ec
   templateUrl: './team-page.component.html',
   styleUrl: './team-page.component.scss',
 })
-export class TeamPageComponent {
-  /** Navigation service for the active team signal */
+export class TeamPageComponent implements OnInit, OnDestroy {
   private readonly _nav = inject(NavigationService);
+  private readonly _piDocs = inject(PiDocumentsService);
+  private readonly _piSecs = inject(PiSectionsService);
+  private readonly _sb     = inject(SupabaseService);
 
-  /** The currently active team object */
+  private _piChannel: RealtimeChannel | null = null;
+
   protected readonly team = computed<Team>(() => this._nav.activeTeam());
-
-  /** Ordered documentation sections for the active team */
   protected readonly sections = computed<ReadonlyArray<TeamSection>>(
     () => this._nav.activeSections()
   );
+
+  protected readonly piDocuments = signal<PiDocument[]>([]);
+  protected readonly piSections  = signal<PiSection[]>([]);
+  protected readonly piDocsLoading = signal(false);
+
+  protected readonly FileTextIcon     = FileText;
+  protected readonly ExternalLinkIcon = ExternalLink;
+  protected readonly ArrowUpRightIcon = ArrowUpRight;
+
+  protected readonly piGroupedDocs = computed<PiDocGroup[]>(() => {
+    const docs = this.piDocuments();
+    if (!docs.length) return [];
+
+    const map = new Map<string, PiDocument[]>();
+    for (const doc of docs) {
+      const key = doc.section?.trim() || '';
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(doc);
+    }
+
+    const orderedKeys: string[] = this.piSections().map(s => s.name);
+    const remaining = [...map.keys()].filter(k => !orderedKeys.includes(k));
+
+    return [...orderedKeys, ...remaining]
+      .filter(key => map.has(key))
+      .map(key => ({ section: key || null, docs: map.get(key)! }));
+  });
+
+  async ngOnInit(): Promise<void> {
+    if (this.team().key === 'pi-player') {
+      await this._fetchPiDocs();
+      this._subscribePiRealtime();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this._piChannel) {
+      this._sb.client.removeChannel(this._piChannel);
+      this._piChannel = null;
+    }
+  }
+
+  private async _fetchPiDocs(): Promise<void> {
+    this.piDocsLoading.set(true);
+    const [docs, sections] = await Promise.all([
+      this._piDocs.listDocuments(),
+      this._piSecs.listSections(),
+    ]);
+    this.piDocuments.set(docs);
+    this.piSections.set(sections);
+    this.piDocsLoading.set(false);
+  }
+
+  private _subscribePiRealtime(): void {
+    this._piChannel = this._sb.client
+      .channel('pi-docs-live')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'pi_documents' },
+        () => { this._piDocs.listDocuments().then(docs => this.piDocuments.set(docs)); }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'pi_sections' },
+        () => { this._piSecs.listSections().then(secs => this.piSections.set(secs)); }
+      )
+      .subscribe();
+  }
+
+  protected piDocType(doc: PiDocument): string {
+    const source = doc.file_path ?? doc.url ?? '';
+    const ext = source.split('?')[0].split('.').pop()?.toLowerCase();
+    switch (ext) {
+      case 'pdf':          return 'PDF';
+      case 'doc':
+      case 'docx':         return 'Word Document';
+      case 'md':           return 'Markdown';
+      case 'ppt':
+      case 'pptx':         return 'Presentation';
+      case 'xls':
+      case 'xlsx':         return 'Spreadsheet';
+      default:             return 'URL';
+    }
+  }
 
   /** Resolves an icon name string to LucideIconData for process card rendering */
   protected iconData(name: string): LucideIconData {

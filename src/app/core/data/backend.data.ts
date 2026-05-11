@@ -4,6 +4,7 @@ import { Team } from '../models/team.model';
 
 export const backendTeam: Team = {
   key: 'backend',
+  isHidden: false,
   label: 'Backend',
   color: '#7C3AED',
   gradient: 'linear-gradient(135deg, #1e1035, #3b1d6e)',

@@ -4,6 +4,7 @@ import { Team } from '../models/team.model';
 
 export const frontendTeam: Team = {
   key: 'frontend',
+  isHidden: false,
   label: 'Frontend',
   color: '#8DCB2C',
   gradient: 'linear-gradient(135deg, #091635, #1a3366)',
@@ -81,6 +82,7 @@ export const frontendTeam: Team = {
     },
     {
       id: 'fe-channels',
+      isHidden: true,
       name: 'Channels UI',
       description: 'Angular 20 SSR app for managing Channels, Collections, and Content for the NTV360 platform.',
       status: 'Dev',
@@ -139,6 +141,7 @@ export const frontendTeam: Team = {
     },
     {
       id: 'fe-host-revamp',
+      isHidden: true,
       name: 'Host Revamp',
       description: 'Nx monorepo housing the Host Installation flow — a multi-step wizard for host setup and screen provisioning.',
       status: 'Revamp',
@@ -198,6 +201,7 @@ export const frontendTeam: Team = {
     },
     {
       id: 'fe-component-pantry',
+      isHidden: true,
       name: 'Component Pantry',
       description: 'NTV360 Angular component library with Storybook integration and live hosted docs.',
       status: 'Live',
