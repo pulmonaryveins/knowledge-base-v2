@@ -55,10 +55,10 @@ export const piPlayerTeam: Team = {
       },
     },
     {
-      id: 'pp-device-setup',
-      label: 'Device Setup Guide',
+      id: 'pp-device-setup-v1',
+      label: 'Player V1 Setup Guide',
       num: '03',
-      subHeader: 'Step-by-step process for setting up a fresh Raspberry Pi as an NTV Player device.',
+      subHeader: 'Step-by-step process for setting up a Raspberry Pi 3/4 as a Player V1 device using the legacy installer.',
       content: {
         type: 'getting-started',
         steps: [
@@ -117,8 +117,8 @@ ls /var/www/html/ui                # player-ui files present`,
       },
     },
     {
-      id: 'pp-player-v2-setup',
-      label: 'Player v2 + Pulselink + Phoenix',
+      id: 'pp-device-setup-v2',
+      label: 'Player V2 Setup Guide',
       num: '04',
       subHeader: 'Deploy Player V2 and associated services onto a Raspberry Pi 5 using the encrypted installer.',
       content: {
@@ -155,7 +155,7 @@ ls /var/www/html/ui                # player-ui files present`,
       id: 'pp-imaging',
       label: 'Player Imaging Guide',
       num: '05',
-      subHeader: 'How to create and deploy standardized SD card images for Pi player devices.',
+      subHeader: 'How to create and deploy standardized SD card images for Pi player devices (V1 & V2).',
       content: {
         type: 'getting-started',
         steps: [
@@ -195,7 +195,7 @@ sudo ./ntv-rpi-imager.sh /dev/sda ./my-custom-image.img.xz  # Custom output`,
       id: 'pp-issue-protocol',
       label: 'Player Issue Protocol',
       num: '06',
-      subHeader: 'Troubleshooting guide for the Technical Support team when addressing player issues in production.',
+      subHeader: 'Troubleshooting guide for the Technical Support team when addressing player issues in production (V1 & V2).',
       content: {
         type: 'getting-started',
         steps: [

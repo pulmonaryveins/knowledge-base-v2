@@ -9,7 +9,7 @@ export const backendTeam: Team = {
   color: '#7C3AED',
   gradient: 'linear-gradient(135deg, #1e1035, #3b1d6e)',
   icon: 'server',
-  subtitle: 'NestJS Monorepo · AWS Lambda (SAM) · TypeORM · MySQL · GraphQL',
+  subtitle: 'NestJS 10.x · AWS Lambda (SAM) · TypeORM · Aurora MySQL · GraphQL + WebSockets',
   description: 'Monorepo structure, API design patterns, entity conventions, Lambda deployment, and backend development standards for NCompassTV services.',
   projects: [],
   sections: [
@@ -22,13 +22,15 @@ export const backendTeam: Team = {
         table: {
           headers: ['Technology', 'Version', 'Purpose', 'Status'],
           rows: [
-            { cells: ['NestJS', '10.x', 'Opinionated Node.js framework — monorepo with 3 apps', 'Live'] },
+            { cells: ['NestJS', '10.x', 'Opinionated Node.js framework — monorepo with 3 independent apps', 'Live'] },
             { cells: ['TypeORM', '0.3', 'ORM for entity definitions, migrations, and field mapping', 'Live'] },
-            { cells: ['MySQL', '8.x', 'Primary relational database; UUIDs stored as BINARY(16)', 'Live'] },
-            { cells: ['GraphQL / Apollo', '4.x', 'Schema-first GraphQL API via @nestjs/graphql', 'Dev'] },
-            { cells: ['Socket.IO', '4.x', 'Real-time WebSocket gateway for device health events', 'Live'] },
-            { cells: ['AWS SAM', '1.x', 'Serverless deployment template for all three Lambda apps', 'Live'] },
-            { cells: ['AWS Lambda', 'N/A', 'Serverless compute — each monorepo app is one Lambda function', 'Live'] },
+            { cells: ['Aurora MySQL', '8.x', 'Primary relational database; UUIDs stored as BINARY(16)', 'Live'] },
+            { cells: ['GraphQL / Apollo', '4.x', 'Schema-first GraphQL API via @nestjs/graphql', 'Live'] },
+            { cells: ['WebSockets', '4.x', 'Real-time event gateway for device health and system events', 'Live'] },
+            { cells: ['AWS SAM', '1.x', 'Serverless Application Model for infrastructure as code', 'Live'] },
+            { cells: ['AWS Lambda', 'N/A', 'Serverless compute — each monorepo app deploys as one Lambda function', 'Live'] },
+            { cells: ['Valkey', 'Forked from Redis', 'Session caching and rate limiting (forked Redis)', 'Live'] },
+            { cells: ['Auth0', '2.x', 'Authentication and authorization for all protected endpoints', 'Live'] },
             { cells: ['class-transformer', '0.5', '@Expose() decorators on DTOs for serialisation control', 'Live'] },
             { cells: ['class-validator', '0.14', 'Declarative DTO validation via decorators + ValidationPipe', 'Live'] },
           ],
@@ -42,7 +44,7 @@ export const backendTeam: Team = {
       content: {
         type: 'getting-started',
         steps: [
-          { icon: 'git-branch',        title: 'Clone the Monorepo', description: 'Clone the NTV360 monorepo and install all dependencies.', code: 'git clone git@github.com:nctv/ntv360-monorepo.git\ncd ntv360-monorepo && npm install', language: 'bash' },
+          { icon: 'git-branch',        title: 'Clone the Monorepo', description: 'Clone the NTV360 monorepo and install all dependencies.', code: 'git clone git@git-ssh.n-compass.online:NTV360/ntv360-api.git\ncd ntv360-api && npm install', language: 'bash' },
           { icon: 'container',         title: 'Start MySQL', description: 'Spin up the local MySQL database with Docker Compose.', code: 'docker-compose up -d mysql', language: 'bash' },
           { icon: 'key-round',         title: 'Configure Environment', description: 'Copy the env template and set your local database URL and secrets.', code: 'cp .env.example .env\n# Set DATABASE_URL, JWT_SECRET, AWS_REGION', language: 'bash' },
           { icon: 'arrow-right-left',  title: 'Run Migrations', description: 'Apply all pending TypeORM migrations to create the schema.', code: 'npm run migration:run', language: 'bash' },
@@ -51,8 +53,8 @@ export const backendTeam: Team = {
         codeBlock: {
           language: 'bash',
           code: `# Full local setup
-git clone git@github.com:nctv/ntv360-monorepo.git
-cd ntv360-monorepo && npm install
+git clone git@git-ssh.n-compass.online:NTV360/ntv360-api.git
+cd ntv360-api && npm install
 cp .env.example .env
 docker-compose up -d mysql
 npm run migration:run
@@ -67,45 +69,298 @@ npm run start:dev ntv360-api`,
       content: {
         type: 'folder-arch',
         cards: [
-          { title: 'apps/', body: 'Three deployable NestJS applications: ntv360-api (REST), graphql (GraphQL), and ntv360-websocket. Each compiles to its own Lambda bundle via SAM.' },
-          { title: 'libs/core/', body: 'Shared library consumed by all three apps. Contains BaseMetadataEntity, FieldMappingService, UuidBinaryTransformer, shared DTOs, and common decorators.' },
-          { title: 'libs/core/entities/', body: 'BaseMetadataEntity extends all domain entities with audit columns: created_at/by, updated_at/by, deleted_at/by. UUIDs stored as BINARY(16) via UuidBinaryTransformer.' },
-          { title: 'template.yaml', body: 'AWS SAM template defining all Lambda functions, API Gateway routes, environment variables, and IAM roles for production deployment.' },
+          { title: 'apps/', body: 'Three independent deployable NestJS applications: ntv360-api (REST API), graphql (GraphQL API), and ntv360-websocket (WebSocket server). Each compiles to its own Lambda bundle.' },
+          { title: 'libs/core/', body: 'Shared library consumed by all three apps. Contains BaseMetadataEntity, all entity definitions, services, DTOs, decorators, guards, interceptors, filters, and utilities.' },
+          { title: 'libs/types/', body: 'Shared TypeScript type definitions used across all applications and libraries.' },
+          { title: 'env/', body: 'Environment configuration files (.env, .env.dev, .env.staging, .env.prod, .env.test) — only .env.test is committed; others are git-ignored.' },
+          { title: 'template.yaml', body: 'AWS SAM template defining all Lambda functions, API Gateway routes, environment variables, and IAM roles for all environments.' },
+          { title: 'yaml/', body: 'Additional CloudFormation and Stack templates for infrastructure setup.' },
         ],
         codeBlock: {
           language: 'bash',
-          code: `ntv360-monorepo/
+          code: `ntv360-api/
 ├── apps/
-│   ├── ntv360-api/
+│   ├── graphql/                              # GraphQL API application
 │   │   └── src/
 │   │       ├── modules/
-│   │       │   ├── devices/
-│   │       │   ├── schedules/
-│   │       │   └── auth/
+│   │       │   ├── app/                      # GraphQL app module
+│   │       │   └── user/                     # User module with resolvers
 │   │       └── main.ts
-│   ├── graphql/
+│   ├── ntv360-api/                           # REST API application
 │   │   └── src/
 │   │       ├── modules/
+│   │       │   ├── app/                      # REST app module
+│   │       │   └── user/                     # User module with controllers
 │   │       └── main.ts
-│   └── ntv360-websocket/
-│       └── src/
-│           ├── gateways/
-│           └── main.ts
+│   └── ntv360-websocket/                     # WebSocket API application
+│       ├── src/
+│       │   ├── lambda.ts                     # AWS Lambda entry point
+│       │   ├── modules/
+│       │   │   └── app/                      # WebSocket module
+│       │   └── main.ts
+│       └── tsconfig.app.json
 ├── libs/
-│   └── core/
-│       ├── entities/        # BaseMetadataEntity
-│       ├── services/        # FieldMappingService
-│       ├── dto/             # Shared DTOs
-│       └── transformers/    # UuidBinaryTransformer
-├── template.yaml            # AWS SAM config
-└── nest-cli.json`,
+│   ├── core/                                 # Shared core library
+│   │   ├── auth0-management/                 # Auth0 API integration
+│   │   ├── common/                           # Common utilities
+│   │   │   ├── bootstrap/                    # Bootstrap logic
+│   │   │   ├── cookies/                      # Cookie management
+│   │   │   ├── decorators/                   # Custom decorators
+│   │   │   ├── filters/                      # Exception filters
+│   │   │   ├── guards/                       # Auth/authorization guards
+│   │   │   ├── interceptors/                 # Request/response interceptors
+│   │   │   ├── middlewares/                  # Custom middlewares
+│   │   │   ├── responses/                    # Standard response classes
+│   │   │   └── transformers/                 # Data transformers
+│   │   ├── constants/
+│   │   │   └── tokens/                       # DI tokens
+│   │   ├── dtos/                             # Data Transfer Objects
+│   │   ├── entities/                         # Database entities with BaseMetadataEntity
+│   │   ├── modules/                          # Shared modules
+│   │   ├── services/                         # Business logic services
+│   │   ├── strategies/                       # Passport auth strategies
+│   │   └── utils/                            # Utility functions
+│   └── types/                                # TypeScript type definitions
+├── config/                                   # Configuration files
+├── docs/                                     # Documentation
+├── env/                                      # Environment variables (.env.*)
+├── scripts/                                  # Build/deployment scripts
+├── tools/                                    # Development tools (scaffold-entity.ts)
+├── yaml/                                     # CloudFormation templates
+├── template.yaml                             # AWS SAM config
+├── nest-cli.json                             # NestJS CLI configuration
+├── jest.config.cjs                           # Jest testing configuration
+├── webpack.config.js                         # Webpack bundler config
+└── package.json                              # Project dependencies`,
         },
+      },
+    },
+    {
+      id: 'be-environment-config',
+      label: 'Environment Configuration',
+      num: '04',
+      content: {
+        type: 'coding-patterns',
+        layout: 'stack',
+        patterns: [
+          {
+            title: 'Environment Variables Setup',
+            description: 'All environments have dedicated .env files in the /env folder. Only .env.test is git-committed; others must be obtained from your team lead.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Environment file locations
+env/.env           — Local development (localhost DB)
+env/.env.dev       — Development environment (Aurora dev DB)
+env/.env.staging   — Staging environment
+env/.env.prod      — Production environment
+env/.env.test      — Test environment (unit/e2e tests) [COMMITTED]
+
+# Copy template and configure
+cp env/.env.test env/.env
+# Then ask team lead for actual values`,
+            },
+          },
+          {
+            title: 'Run Commands by Environment',
+            description: 'Each npm run start command loads a specific .env file based on the environment flag.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Start REST API in different environments
+npm run start              # Uses env/.env (local)
+npm run start:dev          # Uses env/.env.dev (development)
+npm run start:staging      # Uses env/.env.staging (staging)
+npm run start:prod         # Runs built dist/ with env/.env.prod
+npm run start:debug        # Debug mode with watch
+
+# Start other apps
+npm run start:dev --project graphql         # GraphQL API
+npm run start:dev --project ntv360-websocket  # WebSocket`,
+            },
+          },
+          {
+            title: 'Build Commands by Environment',
+            description: 'Build commands compile TypeScript and run tests before deployment.',
+            codeBlock: {
+              language: 'bash',
+              code: `npm run build              # Clean + compile (uses env/.env)
+npm run build:dev          # Clean + compile (dev environment)
+npm run build:staging      # Tests + clean + compile (staging)
+npm run build:prod         # Tests + clean + compile (production)`,
+            },
+          },
+        ],
+      },
+    },
+    {
+      id: 'be-database-migrations',
+      label: 'Database Migrations & Seeders',
+      num: '05',
+      content: {
+        type: 'coding-patterns',
+        layout: 'stack',
+        patterns: [
+          {
+            title: 'Running Migrations',
+            description: 'Apply all pending TypeORM migrations to create or update the database schema.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Run all pending migrations
+npm run migrate run
+
+# This creates or updates the database schema based on entity definitions`,
+            },
+          },
+          {
+            title: 'Running Seeders',
+            description: 'Populate the database with initial or test data.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Run all seeders
+npm run migrate seed
+
+# This inserts initial data into the database for testing or setup`,
+            },
+          },
+          {
+            title: 'Creating New Migrations',
+            description: 'Generate a new migration file when you modify entity structures. Always use camelCase for migration names.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Create a new migration
+npm run migrate generate <migration-name>
+
+# Example:
+npm run migrate generate addDeviceStatusColumn
+
+# This creates a new migration file that can be customized before running`,
+            },
+          },
+        ],
+      },
+    },
+    {
+      id: 'be-entity-scaffolding',
+      label: 'Entity Scaffolding',
+      num: '06',
+      content: {
+        type: 'coding-patterns',
+        layout: 'stack',
+        patterns: [
+          {
+            title: 'Scaffold a Complete Entity Module',
+            description: 'Generate a full module structure for both REST and GraphQL APIs with one command. The tool creates entities, DTOs, services, controllers, and tests.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Interactive mode
+npx ts-node tools/scaffold-entity.ts
+
+# Specify entity name
+npx ts-node tools/scaffold-entity.ts device-category
+
+# Preview without creating files
+npx ts-node tools/scaffold-entity.ts device-category --dry-run`,
+            },
+          },
+          {
+            title: 'What Gets Generated',
+            description: 'The scaffolding tool creates a complete module structure across all three apps and the core library.',
+            codeBlock: {
+              language: 'bash',
+              code: `Generated files:
+├── libs/core/src/
+│   ├── entities/DeviceCategory.ts
+│   ├── dtos/
+│   │   ├── createDeviceCategory.dto.ts
+│   │   ├── updateDeviceCategory.dto.ts
+│   │   ├── deviceCategory.dto.ts
+│   │   └── deviceCategoryRaw.dto.ts
+│   ├── services/DeviceCategory.service.ts
+│   └── services/DeviceCategory.service.spec.ts
+├── apps/ntv360-api/src/modules/
+│   ├── device-category/
+│   │   ├── controller/deviceCategory.controller.ts
+│   │   ├── controller/deviceCategory.controller.spec.ts
+│   │   └── deviceCategory.module.ts
+├── apps/graphql/src/modules/
+│   ├── device-category/
+│   │   ├── resolver/deviceCategory.resolver.ts
+│   │   ├── resolver/deviceCategory.resolver.spec.ts
+│   │   ├── response/deviceCategory.response.ts
+│   │   └── deviceCategory.module.ts
+└── apps/graphql/src/constants/Providers.ts [UPDATED]`,
+            },
+          },
+        ],
+      },
+    },
+    {
+      id: 'be-deployment',
+      label: 'Deployment Architecture',
+      num: '07',
+      content: {
+        type: 'coding-patterns',
+        layout: 'stack',
+        patterns: [
+          {
+            title: 'Branch-based Deployment Strategy',
+            description: 'Each branch automatically deploys to its corresponding AWS environment. Every deployment runs tests first.',
+            codeBlock: {
+              language: 'bash',
+              code: `development branch → Development environment
+staging branch     → Staging environment
+production branch  → Production environment
+
+All deployments:
+1. Run lint + unit tests
+2. Deploy independent Lambda applications via CloudFormation
+3. Create/update stacks for each service`,
+            },
+          },
+          {
+            title: 'Manual Deployment Commands',
+            description: 'Deploy specific applications to the development environment manually.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Deploy GraphQL application
+npm run deploy:graphql-app
+
+# Deploy REST API application
+npm run deploy:rest-api-app
+
+# Deploy both applications
+npm run deploy:both-apps
+
+# CloudFormation stacks created:
+# - ntv360-graphql-app-{environment}
+# - ntv360-rest-api-app-{environment}
+# - ntv360-websocket-app-{environment}`,
+            },
+          },
+          {
+            title: 'API Endpoints — Development',
+            description: 'Access the APIs during local development or in deployed environments.',
+            codeBlock: {
+              language: 'bash',
+              code: `# Local Development
+Swagger (REST API):     http://localhost:42052/api/docs#/
+GraphQL Playground:     http://localhost:42055/graphql
+
+# Development Environment (deployed)
+Swagger:   https://{rest-api-id}.execute-api.us-east-1.amazonaws.com/development/api/docs
+GraphQL:   https://{graphql-api-id}.execute-api.us-east-1.amazonaws.com/development/graphql
+
+# Staging & Production
+Same structure but /staging and /production paths
+Production has Swagger & GraphQL Playground DISABLED for security`,
+            },
+          },
+        ],
       },
     },
     {
       id: 'be-coding-patterns',
       label: 'Coding Patterns',
-      num: '04',
+      num: '08',
       content: {
         type: 'coding-patterns',
         layout: 'stack',
@@ -208,7 +463,7 @@ git commit -m "refactor: Extract FieldMappingService to libs/core"
     {
       id: 'be-mistakes',
       label: 'Common Mistakes',
-      num: '05',
+      num: '09',
       content: {
         type: 'mistakes',
         table: {
@@ -228,7 +483,7 @@ git commit -m "refactor: Extract FieldMappingService to libs/core"
     {
       id: 'be-contacts',
       label: 'Team Contacts',
-      num: '06',
+      num: '10',
       content: {
         type: 'team-contacts',
         contacts: [
