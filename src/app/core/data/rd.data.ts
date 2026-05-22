@@ -4,7 +4,7 @@ import { Team } from '../models/team.model';
 
 export const rdTeam: Team = {
   key: 'rd',
-  isHidden: true,
+  isHidden: false,
   label: 'Research & Development',
   color: '#0D9488',
   gradient: 'linear-gradient(135deg, #022c22, #065f46)',
