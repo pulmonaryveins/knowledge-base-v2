@@ -4,7 +4,7 @@ import { Team } from '../models/team.model';
 
 export const qaTeam: Team = {
   key: 'qa',
-  isHidden: true,
+  isHidden: false,
   label: 'Quality Assurance',
   color: '#0891B2',
   gradient: 'linear-gradient(135deg, #042f3d, #0c4a6e)',

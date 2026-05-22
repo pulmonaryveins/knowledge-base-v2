@@ -21,53 +21,75 @@ export const frontendTeam: Team = {
       teamKey: 'frontend',
       teamColor: '#8DCB2C',
       doc: {
-        meta: { stack: 'Angular 21 · TypeScript 5.9 · Tailwind CSS 3.x · RxJS 7.8 · Auth0 2.3 · SSR', repo: 'ncompasstv-dashboard', deploy: 'AWS CloudFront (SSR + Hydration)', sprint: 'Sprint 42' },
+        meta: { stack: 'Angular 21 · TypeScript 5.9 · Tailwind CSS 3.x · RxJS 7.8 · Auth0 2.3 · SSR', repo: 'ncompasstv-dashboard', deploy: 'AWS App Runner (Docker + ECR)', sprint: 'Sprint 42' },
         purpose: 'The ncompasstv-dashboard is the primary control plane for NCompassTV operators. Built as an Angular 21 SSR application with zoneless change detection, it provides license management, user administration, advertiser CRUD, host location management, and a media library — all driven exclusively by Angular Signals.',
         features: [
           { title: 'Zoneless Change Detection', body: 'Uses provideZonelessChangeDetection() instead of Zone.js. All UI updates are driven by signals — no manual ChangeDetectorRef.markForCheck() calls needed.' },
           { title: 'Standalone Components Only', body: 'No NgModules anywhere. Every component is standalone: true and imports its own dependencies. Combined with lazy-loaded routes this significantly reduces initial bundle size.' },
-          { title: 'SSR + Hydration', body: 'The app renders on the server first then hydrates on the client via Angular SSR, improving SEO and perceived load times.' },
+          { title: 'SSR + Hydration', body: 'The app renders on the server first then hydrates on the client via Angular SSR. Express 5.x serves the SSR app on port 4000 with a /health endpoint.' },
           { title: 'Auth0 Authentication', body: 'Auth0 v2.3 handles all authentication and authorization. Route guards protect all feature routes.' },
           { title: 'ApexCharts Data Visualization', body: 'ApexCharts 5.x renders analytics charts across dashboard views with configurable series and responsive breakpoints.' },
-          { title: 'Component Pantry UI Library', body: 'Shared @ntv360/component-pantry components are used throughout — tables, buttons, autocomplete, modals — ensuring visual consistency across all NCompassTV frontends.' },
+          { title: 'Component Pantry UI Library', body: 'Shared @ntv360/component-pantry ^0.5.5 components are used throughout — tables, buttons, autocomplete, modals — ensuring visual consistency across all NCompassTV frontends.' },
+          { title: 'Filestack Media Uploads', body: 'Filestack SDK handles all media asset uploads. Config lives in src/environments/environment.ts (apiKey + S3 bucket).' },
+          { title: 'Geospatial / Maps', body: '@angular/google-maps for map views; @turf/turf for geospatial calculations; Leaflet 1.9 for territory and location features.' },
         ],
         folderStructure: {
           language: 'bash',
           code: `ncompasstv-dashboard/
-├── src/app/
-│   ├── core/
-│   │   ├── guards/          # authGuard, guestGuard
-│   │   ├── services/        # auth, licenses, users, dealers, hosts, export
-│   │   ├── dto/             # Data Transfer Objects for API requests/responses
-│   │   └── index.ts         # Barrel file
-│   ├── shared/
-│   │   ├── components/      # table, button, autocomplete, modals
-│   │   ├── constants/       # colors, icons, timezones
-│   │   ├── directives/      # click-outside, copy
-│   │   ├── interfaces/      # table, media, stats, city
-│   │   ├── pipes/           # duration-formatter, file-size, kebab-case
-│   │   ├── utils/           # withLoading, Logger, query-builder
-│   │   ├── validators/      # Custom form validators
-│   │   └── index.ts
-│   ├── features/
-│   │   ├── advertisers/     # CRUD for advertisers
-│   │   ├── auth/            # Login + Auth0 callback
-│   │   ├── dashboard/       # Main dashboard view
-│   │   ├── dealers/         # Dealer management
-│   │   ├── hosts/           # Host location management
-│   │   ├── licenses/        # License management
-│   │   ├── media-library/   # Media asset management
-│   │   ├── screens/         # Screen/player management
-│   │   └── users/           # User management
-│   └── layout/
-│       ├── authenticated/   # Layout for logged-in users
-│       ├── public/          # Layout for guest pages
-│       └── main-layout/     # Sidebar + header + router-outlet`,
+├── src/
+│   ├── app/
+│   │   ├── core/
+│   │   │   ├── guards/          # authGuard, guestGuard
+│   │   │   ├── services/        # auth, licenses, users, dealers, hosts, export
+│   │   │   ├── dto/             # Data Transfer Objects for API requests/responses
+│   │   │   └── index.ts         # Barrel file
+│   │   ├── shared/
+│   │   │   ├── components/      # table, button, autocomplete, modals
+│   │   │   ├── constants/       # colors, icons, timezones
+│   │   │   ├── directives/      # click-outside, copy
+│   │   │   ├── interfaces/      # table, media, stats, city
+│   │   │   ├── pipes/           # duration-formatter, file-size, kebab-case
+│   │   │   ├── utils/           # withLoading, Logger, query-builder
+│   │   │   ├── validators/      # Custom form validators
+│   │   │   └── index.ts
+│   │   ├── features/
+│   │   │   ├── advertisers/     # CRUD for advertisers
+│   │   │   ├── auth/            # Login + Auth0 callback
+│   │   │   ├── dashboard/       # Main dashboard view
+│   │   │   ├── dealers/         # Dealer management
+│   │   │   ├── hosts/           # Host location management
+│   │   │   ├── licenses/        # License management
+│   │   │   ├── media-library/   # Media asset management
+│   │   │   ├── screens/         # Screen/player management
+│   │   │   └── users/           # User management
+│   │   └── layout/
+│   │       ├── authenticated/   # Layout for logged-in users
+│   │       ├── public/          # Layout for guest pages
+│   │       └── main-layout/     # Sidebar + header + router-outlet
+│   ├── environments/
+│   │   ├── environment.ts       # Filestack apiKey + S3 bucket config
+│   │   └── environment.dev.ts   # Dev overrides
+│   ├── server/                  # Express SSR server entrypoint
+│   ├── styles.scss              # Global styles
+│   ├── index.html               # Shell HTML
+│   ├── main.ts                  # Client bootstrap
+│   └── main.server.ts           # Server bootstrap
+├── scripts/
+│   ├── inject-testid.mjs        # Injects data-testid attrs into component HTML
+│   ├── css-to-bem/              # SCSS-to-BEM refactoring skill
+│   └── deployment/              # AWS infra setup & Terraform deploy scripts
+├── terraform/                   # IaC for App Runner + ECR + networking
+├── .agents/rules/security/      # Custom security scanner
+├── .github/workflows/           # CI/CD pipelines
+├── Dockerfile                   # Multi-stage Docker build for SSR app
+├── apprunner.yaml               # AWS App Runner config
+└── .husky/                      # Git hooks (commitlint, prettier)`,
         },
         gettingStarted: [
-          { title: 'Clone & Install', description: 'Clone the repository and install dependencies.', code: 'git clone <repo-url>\ncd ncompasstv-dashboard\nnpm install', language: 'bash' },
-          { title: 'Configure Environment', description: 'Copy the example env file and fill in required values.', code: 'cp .env.example .env\n# Required:\n# AWS_API_URL       — backend API URL\n# AUTH0_DOMAIN      — Auth0 domain\n# AUTH0_CLIENT_ID   — Auth0 client ID\n# AUTH0_AUDIENCE    — Auth0 audience\n# ALLOWED_ORIGIN    — allowed CORS origin', language: 'bash' },
+          { title: 'Clone & Install', description: 'Clone the repository and install dependencies.', code: 'git clone https://github.com/NTV360/ncompasstv-dashboard.git\ncd ncompasstv-dashboard\nnpm install', language: 'bash' },
+          { title: 'Configure Environment', description: 'Copy the example env file and fill in required values. Note: Filestack and S3 config live in src/environments/environment.ts (not .env).', code: 'cp .env.example .env\n# Required:\n# PORT              — SSR server port (default: 4000)\n# NODE_ENV          — development or production\n# ENABLE_LOGGING    — enable server-side request logging (true/false)\n# AWS_API_URL       — backend API Gateway URL\n# AWS_API_TIMEOUT   — API request timeout in ms (default: 30000)\n# AUTH0_DOMAIN      — Auth0 tenant domain\n# AUTH0_CLIENT_ID   — Auth0 client ID\n# AUTH0_AUDIENCE    — Auth0 API audience URL\n# ALLOWED_ORIGIN    — allowed CORS origin', language: 'bash' },
           { title: 'Start Dev Server', description: 'Run the Angular development server with hot-reload.', code: 'npm run start\n# Opens at http://localhost:4200', language: 'bash' },
+          { title: 'Run SSR Server (after build)', description: 'Build then serve the SSR app via Express on port 4000.', code: 'npm run build\nnpm run serve:ssr:ncompasstv-dashboard\n# Serves at http://localhost:4000', language: 'bash' },
           { title: 'Run Tests', description: 'Execute the Karma + Jasmine unit test suite.', code: 'npm test', language: 'bash' },
           { title: 'Format Code', description: 'Run Prettier across all source files.', code: 'npm run pretty\n# Check only (no write):\nnpm run pretty:check', language: 'bash' },
         ],
@@ -76,13 +98,13 @@ export const frontendTeam: Team = {
           { name: 'Earl Vhin Gabuat', role: 'Lead Engineer', initials: 'EV', color: '#6366F1' },
         ],
         links: [
-          { label: 'Git Repository', url: 'https://git.n-compass.online/NTV360/knowledge-base-v2.git', type: 'repo' },
+          { label: 'Git Repository', url: 'https://github.com/NTV360/ncompasstv-dashboard', type: 'repo' },
         ],
       },
     },
     {
       id: 'fe-channels',
-      isHidden: true,
+      isHidden: false,
       name: 'Channels UI',
       description: 'Angular 20 SSR app for managing Channels, Collections, and Content for the NTV360 platform.',
       status: 'Dev',
@@ -141,7 +163,7 @@ export const frontendTeam: Team = {
     },
     {
       id: 'fe-host-revamp',
-      isHidden: true,
+      isHidden: false,
       name: 'Host Revamp',
       description: 'Nx monorepo housing the Host Installation flow — a multi-step wizard for host setup and screen provisioning.',
       status: 'Revamp',
@@ -201,7 +223,7 @@ export const frontendTeam: Team = {
     },
     {
       id: 'fe-component-pantry',
-      isHidden: true,
+      isHidden: false,
       name: 'Component Pantry',
       description: 'NTV360 Angular component library with Storybook integration and live hosted docs.',
       status: 'Live',
@@ -288,18 +310,26 @@ export const frontendTeam: Team = {
         table: {
           headers: ['Technology', 'Version', 'Purpose', 'Status'],
           rows: [
-            { cells: ['Angular',            '21',                       'Core framework — standalone components, zoneless change detection',    'Live'] },
-            { cells: ['TypeScript',         '5.9',                      'Language — strict mode enabled across all source files',              'Live'] },
-            { cells: ['Tailwind CSS',       '3.x',                      'Utility-first CSS applied via @apply in BEM SCSS',                    'Live'] },
-            { cells: ['SCSS',               '—',                        'Preprocessor with BEM naming conventions',                            'Live'] },
-            { cells: ['RxJS',               '7.8',                      'Reactive programming for API calls and async streams',                'Live'] },
-            { cells: ['Auth0',              '2.3',                      'Authentication & authorization for all protected routes',             'Live'] },
-            { cells: ['Angular SSR',        '—',                        'Server-side rendering with hydration for improved SEO',               'Live'] },
-            { cells: ['Component Pantry',   '@ntv360/component-pantry', 'Internal shared UI component library',                               'Live'] },
-            { cells: ['Leaflet',            '1.9',                      'Maps integration for territory and location features',                'Live'] },
-            { cells: ['ApexCharts',         '5.x',                      'Charts & data visualization across dashboard views',                  'Live'] },
-            { cells: ['Husky + Commitlint', '—',                        'Git hooks & commit message format enforcement',                       'Live'] },
-            { cells: ['Prettier',           '3.x',                      'Code formatting — run npm run pretty before every PR',                'Live'] },
+            { cells: ['Angular',             '21',    'Core framework — standalone components, zoneless change detection',   'Live'] },
+            { cells: ['TypeScript',          '5.9',   'Language — strict mode enabled across all source files',             'Live'] },
+            { cells: ['Tailwind CSS',        '3.x',   'Utility-first CSS applied via @apply in BEM SCSS',                   'Live'] },
+            { cells: ['SCSS',                '—',     'Preprocessor with BEM naming conventions',                           'Live'] },
+            { cells: ['RxJS',                '7.8',   'Reactive programming for API calls and async streams',               'Live'] },
+            { cells: ['Auth0',               '2.3',   'Authentication & authorization for all protected routes',            'Live'] },
+            { cells: ['Angular SSR',         '21',    'Server-side rendering with hydration; Express 5.x on port 4000',     'Live'] },
+            { cells: ['Express',             '5.x',   'SSR server runtime — serves rendered HTML and BFF proxy routes',     'Live'] },
+            { cells: ['Axios',               '1.x',   'HTTP client for server-side BFF proxy requests',                     'Live'] },
+            { cells: ['ApexCharts',          '5.x',   'Charts & data visualization across dashboard views',                 'Live'] },
+            { cells: ['Leaflet',             '1.9',   'Maps for territory and location features',                           'Live'] },
+            { cells: ['Angular Google Maps', '21.x',  'Google Maps integration (@angular/google-maps)',                     'Live'] },
+            { cells: ['Nx',                  '21+',   'Monorepo tooling for Host Revamp workspace',                         'Live'] },
+            { cells: ['Storybook',           '10',    'Component documentation and visual testing for Component Pantry',    'Live'] },
+            { cells: ['Jest',                '29+',   'Unit testing for Nx monorepo projects',                              'Live'] },
+            { cells: ['Playwright',          '1.x',   'End-to-end testing for Host Installation flow',                      'Live'] },
+            { cells: ['Docker',              '—',     'Multi-stage container build for SSR deployment',                     'Live'] },
+            { cells: ['Terraform',           '—',     'Infrastructure as Code for AWS resources (App Runner + ECR)',        'Live'] },
+            { cells: ['Husky + Commitlint',  '—',     'Git hooks & commit message format enforcement',                     'Live'] },
+            { cells: ['Prettier',            '3.x',   'Code formatting — run npm run pretty before every PR',               'Live'] },
           ],
         },
       },
@@ -318,12 +348,31 @@ export const frontendTeam: Team = {
         ],
         codeBlock: {
           language: 'bash',
-          code: `# Available scripts
-npm run start         # Start the development server
-npm run build         # Production build
-npm test              # Run unit tests (Karma + Jasmine)
-npm run pretty        # Format all files with Prettier
-npm run pretty:check  # Check formatting without fixing`,
+          code: `# Development
+npm run start                           # Dev server (port 4200)
+npm run watch                           # Build in watch mode
+npm run build                           # Production build
+npm run serve:ssr:ncompasstv-dashboard  # Serve SSR build on port 4000
+
+# Testing
+npm test                                # Karma + Jasmine unit tests
+
+# Formatting
+npm run pretty                          # Format all files with Prettier
+npm run pretty:quick                    # Quick format (changed files only)
+npm run pretty:staged                   # Format staged files (Husky hook)
+npm run pretty:check                    # Check formatting without fixing
+
+# Tooling
+npm run inject:testid                   # Inject data-testid into all component HTML
+npm run inject:testid:dry               # Dry run (preview changes only)
+npm run css:bem                         # Run CSS-to-BEM refactoring script
+
+# Security
+npm run security:scan                   # Run security scan (terminal output)
+npm run security:scan:html              # Save HTML report
+npm run security:scan:ci                # Exit 1 if critical found (CI use)
+npm run security:fix                    # Auto-fix security issues where possible`,
         },
       },
     },
@@ -509,7 +558,7 @@ git commit -m "update: Fix something"             # invalid type`,
             { cells: ['Using *ngIf / *ngFor structural directives', 'Use @if {} and @for {} with a track expression'] },
             { cells: ['Using constructor injection',                'Use inject() for all dependency injection'] },
             { cells: ['Using any type',                             'Define a proper interface or use unknown with a type guard'] },
-            { cells: ['Deep relative imports (../../../)',          'Use path aliases: @core, @shared, @features, @layouts'] },
+            { cells: ['Deep relative imports (../../../)',          'Use path aliases: @core, @shared, @features, @layouts, @env'] },
             { cells: ['Forgetting takeUntilDestroyed',              'Always add it as the last pipe operator in every subscription'] },
             { cells: ['Forgetting JSDoc on classes & methods',      'Add JSDoc on every class, method, function, and interface'] },
             { cells: ['Using console.log directly',                 'Use Logger.log() / Logger.error() / Logger.warn()'] },
@@ -517,6 +566,7 @@ git commit -m "update: Fix something"             # invalid type`,
             { cells: ['BehaviorSubject for UI state',               'Use signal() and computed() from @angular/core'] },
             { cells: ['Using @media queries in SCSS',               "Use Tailwind's max-lg: / max-md: variants (desktop-first)"] },
             { cells: ['Committing without formatting',              'Run npm run pretty before every commit or PR'] },
+            { cells: ['Skipping security scan before PR',           'Run npm run security:scan and resolve critical/high findings'] },
           ],
         },
       },

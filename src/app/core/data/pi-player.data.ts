@@ -21,26 +21,28 @@ export const piPlayerTeam: Team = {
       subHeader: 'Reference materials and guides for Pi Player setup and operation.',
       content: { type: 'pi-docs' as const },
     },
+
+    // ── Player V1 ─────────────────────────────────────────────────────────────
+
     {
-      id: 'pp-tech-stack',
-      label: 'Tech Stack',
+      id: 'pp-tech-stack-v1',
+      label: 'Player V1 — Tech Stack',
       num: '01',
-      subHeader: 'Technologies running on each Raspberry Pi player device.',
+      subHeader: 'Technologies running on each Raspberry Pi 3/4 player device under the legacy V1 architecture.',
       content: {
         type: 'tech-stack',
         table: {
           headers: ['Technology', 'Version', 'Purpose', 'Status'],
           rows: [
-            { cells: ['Raspberry Pi', '3 / 4', 'ARM-based hardware running each NTV display kiosk', 'Live'] },
-            { cells: ['Raspbian OS', 'Legacy "Buster"', 'Base operating system for the Pi player devices', 'Live'] },
-            { cells: ['Node.js', 'v12', 'Runtime for the player-server local backend', 'Live'] },
-            { cells: ['PM2', '5.x', 'Process manager — runs player-server and player-chromium on boot', 'Live'] },
-            { cells: ['NGINX', '1.x', 'Local web server serving the player-ui static files', 'Live'] },
-            { cells: ['Angular', '18', 'Framework for the player-ui Chromium kiosk frontend', 'Dev'] },
-            { cells: ['Chromium', 'Latest', 'Kiosk browser rendering the player-ui in fullscreen', 'Live'] },
-            { cells: ['Socket.IO', '4.x', 'Real-time communication between player-server and api-v1', 'Live'] },
-            { cells: ['AnyDesk', '6.1.1', 'Remote management access to deployed Pi devices', 'Live'] },
-            { cells: ['MeshCentral', 'Latest', 'Remote monitoring and management agent on each Pi', 'Live'] },
+            { cells: ['Raspberry Pi',      '3 / 4',          'ARM-based hardware running each NTV display kiosk',                          'Live'] },
+            { cells: ['Raspbian OS',        'Legacy "Buster"', 'Base operating system for V1 Pi player devices',                            'Live'] },
+            { cells: ['Node.js',            'v12',            'Runtime for the player-server local backend',                                 'Live'] },
+            { cells: ['PM2',               '5.x',            'Process manager — runs player-server and player-chromium on boot',            'Live'] },
+            { cells: ['NGINX',             '1.x',            'Local web server serving the player-ui static files',                         'Live'] },
+            { cells: ['Chromium',          'Latest',         'Kiosk browser rendering the player-ui in fullscreen',                         'Live'] },
+            { cells: ['Socket.IO',         '4.x',            'Real-time communication between player-server and api-v1',                    'Live'] },
+            { cells: ['AnyDesk',           '6.1.1',          'Remote management access to deployed Pi devices',                             'Live'] },
+            { cells: ['MeshCentral',       'Latest',         'Remote monitoring and management agent on each Pi',                           'Live'] },
           ],
         },
       },
@@ -56,9 +58,9 @@ export const piPlayerTeam: Team = {
     },
     {
       id: 'pp-device-setup',
-      label: 'Device Setup Guide',
+      label: 'Player V1 — Setup Guide',
       num: '03',
-      subHeader: 'Step-by-step process for setting up a fresh Raspberry Pi as an NTV Player device.',
+      subHeader: 'Step-by-step process for setting up a Raspberry Pi 3/4 as an NTV Player V1 device.',
       content: {
         type: 'getting-started',
         steps: [
@@ -117,45 +119,10 @@ ls /var/www/html/ui                # player-ui files present`,
       },
     },
     {
-      id: 'pp-player-v2-setup',
-      label: 'Player v2 + Pulselink + Phoenix',
-      num: '04',
-      subHeader: 'Deploy Player V2 and associated services onto a Raspberry Pi 5 using the encrypted installer.',
-      content: {
-        type: 'getting-started',
-        steps: [
-          {
-            icon: 'clipboard-list',
-            title: 'Hardware & System Requirements',
-            description: 'Device: Raspberry Pi 5 (Recommended 4GB or 8GB RAM). OS Image: Custom Base Image — pre-configured with SSH enabled for remote access during testing. Network: Stable internet connection via Ethernet or Wi-Fi.',
-          },
-          {
-            icon: 'cpu',
-            title: 'Flash the Base Image',
-            description: 'Flash the custom Pi 5 base image to a microSD card using Raspberry Pi Imager.',
-            code: '# Base image (Google Drive)\nhttps://drive.google.com/drive/folders/1mocSFK6IgmNAkbchw0eQyOT0Lo-eQiaV?usp=sharing',
-            language: 'bash',
-          },
-          {
-            icon: 'download',
-            title: 'Run the Player V2 Installer',
-            description: 'Paste the command into the terminal. The encrypted script decrypts and runs automatically, configuring the full Player V2 environment and all dependencies. The Pi will reboot automatically on completion.',
-            code: `curl -fsSL http://54.84.201.81:8080/setup.enc | openssl enc -aes-256-cbc -d -salt -pbkdf2 -k "ThankYouTechMagic" | sudo bash`,
-            language: 'bash',
-          },
-          {
-            icon: 'shield',
-            title: 'Post-Install — USB Security (Pulselink)',
-            description: "After reboot all services initialize automatically. Physical USB access is intentionally open during the testing phase — Leigh's Pulselink service will manage USB port block/allow after setup. SSH remains open for testing.",
-          },
-        ],
-      },
-    },
-    {
       id: 'pp-imaging',
-      label: 'Player Imaging Guide',
-      num: '05',
-      subHeader: 'How to create and deploy standardized SD card images for Pi player devices.',
+      label: 'Player V1 — Imaging Guide',
+      num: '04',
+      subHeader: 'How to create and deploy standardized SD card images for Pi V1 player devices.',
       content: {
         type: 'getting-started',
         steps: [
@@ -191,10 +158,76 @@ sudo ./ntv-rpi-imager.sh /dev/sda ./my-custom-image.img.xz  # Custom output`,
         },
       },
     },
+
+    // ── Player V2 ─────────────────────────────────────────────────────────────
+
+    {
+      id: 'pp-tech-stack-v2',
+      label: 'Player V2 — Tech Stack',
+      num: '05',
+      subHeader: 'Technologies powering the next-generation Raspberry Pi 5 player devices under the V2 architecture.',
+      content: {
+        type: 'tech-stack',
+        table: {
+          headers: ['Technology', 'Version', 'Purpose', 'Status'],
+          rows: [
+            { cells: ['Raspberry Pi',      '5 (4GB / 8GB)',  'Next-gen ARM hardware for V2 NTV display kiosks',                            'Live'] },
+            { cells: ['Custom Base Image', 'Pi 5 (Debian)',  'Pre-configured OS image with SSH enabled for remote access during testing',  'Live'] },
+            { cells: ['Node.js',           'Latest LTS',     'Runtime for the V2 player-server local backend',                             'Live'] },
+            { cells: ['PM2',              '5.x',            'Process manager — auto-starts all V2 services on boot',                      'Live'] },
+            { cells: ['NGINX',            '1.x',            'Local web server serving the player-ui static files',                         'Live'] },
+            { cells: ['Angular',          '18',             'Framework for the V2 player-ui Chromium kiosk frontend',                      'Dev'] },
+            { cells: ['Chromium',         'Latest',         'Kiosk browser rendering the player-ui in fullscreen',                         'Live'] },
+            { cells: ['Pulselink',        'Latest',         "Leigh's USB port security service — block/allow control after setup",         'Dev'] },
+            { cells: ['Phoenix',          'Latest',         'V2 companion service for player lifecycle and health management',              'Dev'] },
+            { cells: ['AnyDesk',          '6.1.1',          'Remote management access to deployed Pi devices',                             'Live'] },
+            { cells: ['MeshCentral',      'Latest',         'Remote monitoring and management agent on each Pi',                           'Live'] },
+          ],
+        },
+      },
+    },
+    {
+      id: 'pp-player-v2-setup',
+      label: 'Player V2 — Setup Guide',
+      num: '06',
+      subHeader: 'Deploy Player V2 and associated services onto a Raspberry Pi 5 using the encrypted installer.',
+      content: {
+        type: 'getting-started',
+        steps: [
+          {
+            icon: 'clipboard-list',
+            title: 'Hardware & System Requirements',
+            description: 'Device: Raspberry Pi 5 (Recommended 4GB or 8GB RAM). OS Image: Custom Base Image — pre-configured with SSH enabled for remote access during testing. Network: Stable internet connection via Ethernet or Wi-Fi.',
+          },
+          {
+            icon: 'cpu',
+            title: 'Flash the Base Image',
+            description: 'Use a tool like Raspberry Pi Imager to write the base image to your microSD card. Note: Physical access and SSH are intentionally open for testing purposes to prevent lockout.',
+            code: '# Base image (Google Drive)\nhttps://drive.google.com/drive/folders/1mocSFK6IgmNAkbchw0eQyOT0Lo-eQiaV?usp=sharing',
+            language: 'bash',
+          },
+          {
+            icon: 'download',
+            title: 'Run the Player V2 Installer',
+            description: 'Paste the command into the terminal. The encrypted script decrypts and runs automatically, configuring the full Player V2 environment and all dependencies.',
+            code: `curl -fsSL http://54.84.201.81:8080/setup.enc | openssl enc -aes-256-cbc -d -salt -pbkdf2 -k "ThankYouTechMagic" | sudo bash`,
+            language: 'bash',
+          },
+          {
+            icon: 'refresh-cw',
+            title: 'System Reboot',
+            description: 'Once the script completes its tasks, the Raspberry Pi will automatically reboot. This is necessary to initialize the new services and apply system-level configurations.',
+          },
+        ],
+      },
+    },
+
+    // ── Shared ────────────────────────────────────────────────────────────────
+
     {
       id: 'pp-issue-protocol',
       label: 'Player Issue Protocol',
-      num: '06',
+      num: '07',
       subHeader: 'Troubleshooting guide for the Technical Support team when addressing player issues in production.',
       content: {
         type: 'getting-started',
@@ -234,7 +267,7 @@ sudo ./ntv-rpi-imager.sh /dev/sda ./my-custom-image.img.xz  # Custom output`,
     {
       id: 'pp-contacts',
       label: 'Team Contacts',
-      num: '07',
+      num: '08',
       content: {
         type: 'team-contacts',
         contacts: [
