@@ -4,7 +4,7 @@ import { Team } from '../models/team.model';
 
 export const uiuxTeam: Team = {
   key: 'uiux',
-  isHidden: true,
+  isHidden: false,
   label: 'UI / UX',
   color: '#EC4899',
   gradient: 'linear-gradient(135deg, #4a0a2e, #831843)',
